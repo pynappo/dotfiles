@@ -2,15 +2,15 @@ const path = require('path')
 
 // Purposefully incomplete ContentManager
 class ContentManager {
-  get pluginsFolder () {
+  static get pluginsFolder () {
     return window.powercord.pluginManager.plugins.get('pc-bdCompat').PluginManager.pluginDirectory
   }
-  get themesFolder () {
+  static get themesFolder () {
     // We'll just pretend it exists.
     return path.join(ContentManager.pluginsFolder, '..', 'themes')
   }
 
-  get extractMeta () {
+  static get extractMeta () {
     return window.powercord.pluginManager.plugins.get('pc-bdCompat').PluginManager.extractMeta
   }
 }
