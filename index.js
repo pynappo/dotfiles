@@ -3,9 +3,11 @@
 const Plugin = require('powercord/Plugin')
 const path = require('path')
 
-const BDApi = require('./BDApi.js')
-const BDPluginManager = require('./BDPluginManager.js')
-const Settings = require('./components/Settings.jsx')
+const BDApi = require('./libraries/BDApi.js')
+const BDV2 = require('./libraries/BDV2.js')
+
+const BDPluginManager = require('./components/BDPluginManager.js')
+const Settings = require('./reactcomponents/Settings.jsx')
 
 
 class BDCompat extends Plugin {
@@ -47,25 +49,7 @@ class BDCompat extends Plugin {
     window.bdPluginStorage = { get: BDApi.getData, set: BDApi.setData }
     window.Utils = { monkeyPatch: BDApi.monkeyPatch, suppressErrors: BDApi.suppressErrors, escapeID: BDApi.escapeID }
 
-    window.BDV2 = class V2 {
-      static get WebpackModules () {
-        return {
-          find: BDApi.findModule,
-          findAll: BDApi.findAllModules,
-          findByUniqueProperties: BDApi.findModuleByProps,
-          findByDisplayName: BDApi.findModuleByDisplayName,
-        }
-      }
-      static get react () {
-        return BDApi.React
-      }
-      static get reactDom () {
-        return BDApi.ReactDOM
-      }
-      static getInternalInstance (node) {
-        return BDApi.getInternalInstance(node)
-      }
-    }
+    window.BDV2 = BDV2
 
     this.log('Defined BetterDiscord globals')
   }

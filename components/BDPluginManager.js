@@ -16,6 +16,7 @@ class BDPluginManager {
 
     // DevilBro's plugins checks whether or not it's running on ED
     // This isn't BetterDiscord, so we'd be better off doing this.
+    // eslint-disable-next-line no-process-env
     process.env.injDir = __dirname
 
     // Wait for jQuery, then load the plugins
@@ -28,7 +29,7 @@ class BDPluginManager {
   }
 
   get pluginDirectory () {
-    return path.join(__dirname, 'plugins/')
+    return path.join(__dirname, '..', 'plugins/')
   }
 
   destroy () {
@@ -36,7 +37,8 @@ class BDPluginManager {
     this.currentWindow.webContents.off('did-navigate-in-page', () => this.onSwitchListener())
 
     this.stopAllPlugins()
-    
+
+    // eslint-disable-next-line no-process-env
     process.env.injDir = ''
   }
 
@@ -124,13 +126,14 @@ class BDPluginManager {
 
     let content = fs.readFileSync(pluginPath, 'utf8')
     if (content.charCodeAt(0) === 0xFEFF) content = content.slice(1)
-    
+
     const meta = this.extractMeta(content)
     content += `\nmodule.exports = ${meta.name};`
-    
+
     const tempPluginPath = path.join(this.pluginDirectory, `__${pluginName}.plugin.js`)
     fs.writeFileSync(tempPluginPath, content)
 
+    // eslint-disable-next-line global-require
     const Plugin = require(tempPluginPath)
     const plugin = new Plugin
     plugin.__meta = meta
@@ -140,13 +143,13 @@ class BDPluginManager {
     delete window.bdplugins[plugin.getName()]
     window.bdplugins[plugin.getName()] = plugin
 
-    if (plugin.load && typeof plugin.load === 'function') {
+    if (plugin.load && typeof plugin.load === 'function')
       try {
         plugin.load()
       } catch (err) {
         this.__error(err, `Failed to preload ${plugin.getName()}`)
       }
-    }
+
 
     this.__log(`Loaded ${plugin.getName()} v${plugin.getVersion()} by ${plugin.getAuthor()}`)
     fs.unlinkSync(tempPluginPath)
