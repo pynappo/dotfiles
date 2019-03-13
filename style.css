@@ -173,6 +173,9 @@
 	flex-grow: 1;
 	flex-shrink: 1;
 }
+.bdc-margin {
+	width: 20px;
+}
 .bdc-justifystart {
 	justify-content: flex-start;
 }

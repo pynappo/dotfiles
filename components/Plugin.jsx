@@ -8,6 +8,7 @@ const { open: openModal } = require('powercord/modal')
 
 const Icons = require('./Icons.jsx')
 const SettingsModal = require('./PluginSettings.jsx')
+const DeleteConfirm = require('./DeleteConfirm.jsx')
 
 class Plugin extends React.Component {
   constructor (props) {
@@ -77,6 +78,18 @@ class Plugin extends React.Component {
 
           <div class='bdc-spacer'></div>
 
+          <Button
+            onClick={() => openModal(() => <DeleteConfirm plugin={this.props.plugin} onConfirm={this.props.onDelete} />)}
+            look={Button.Looks.OUTLINED}
+            size={Button.Sizes.SMALL}
+            color={Button.Colors.RED}
+          >
+            Delete
+          </Button>
+
+          {typeof this.props.plugin.getSettingsPanel === 'function' &&
+            <div class='bdc-margin'></div>
+          }
           {typeof this.props.plugin.getSettingsPanel === 'function' &&
             <Button
               disabled={!this.props.enabled}

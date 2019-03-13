@@ -47,7 +47,7 @@ class PluginList extends React.Component {
 
               onEnable={() => this.props.pluginManager.enablePlugin(plugin.getName())}
               onDisable={() => this.props.pluginManager.disablePlugin(plugin.getName())}
-              onDelete={() => this.pros.pluginManager.deletePlugin(plugin.getName())}
+              onDelete={() => this.__deletePlugin(plugin.getName())}
             />
           )}
         </div>
@@ -78,6 +78,12 @@ class PluginList extends React.Component {
 
       return 0
     })
+  }
+
+  __deletePlugin (pluginName) {
+    this.props.pluginManager.deletePlugin(pluginName)
+
+    this.forceUpdate()
   }
 }
 
