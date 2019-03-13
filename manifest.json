@@ -1,0 +1,8 @@
+{
+  "name": "BetterDiscord plugin compatibility",
+  "version": "0.1.0",
+  "description": "Adds support for running BetterDiscord plugins",
+  "author": "intrnl",
+  "license": "MIT",
+  "repo": null
+}
