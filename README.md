@@ -2,6 +2,8 @@
 
 Compatibilty layer for running BetterDiscord plugins in Powercord
 
+[![Screenshot showing a list of BetterDiscord plugins](https://i.imgur.com/pUfaXLf.png)](https://imgur.com/a/2gWgY7q)
+
 ## Installation
 
 Clone this repository to your Powercord install's plugins folder
