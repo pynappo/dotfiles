@@ -78,18 +78,6 @@ class Plugin extends React.Component {
 
           <div class='bdc-spacer'></div>
 
-          <Button
-            onClick={() => openModal(() => <DeleteConfirm plugin={this.props.plugin} onConfirm={this.props.onDelete} />)}
-            look={Button.Looks.OUTLINED}
-            size={Button.Sizes.SMALL}
-            color={Button.Colors.RED}
-          >
-            Delete
-          </Button>
-
-          {typeof this.props.plugin.getSettingsPanel === 'function' &&
-            <div class='bdc-margin'></div>
-          }
           {typeof this.props.plugin.getSettingsPanel === 'function' &&
             <Button
               disabled={!this.props.enabled}
@@ -100,6 +88,18 @@ class Plugin extends React.Component {
               Settings
             </Button>
           }
+          {typeof this.props.plugin.getSettingsPanel === 'function' &&
+            <div class='bdc-margin'></div>
+          }
+          
+          <Button
+            onClick={() => openModal(() => <DeleteConfirm plugin={this.props.plugin} onConfirm={this.props.onDelete} />)}
+            look={Button.Looks.OUTLINED}
+            size={Button.Sizes.SMALL}
+            color={Button.Colors.RED}
+          >
+            Delete
+          </Button>
         </div>
       </div>
     )
