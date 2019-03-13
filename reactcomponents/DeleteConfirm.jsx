@@ -1,8 +1,10 @@
 'use strict'
 
-const { React } = require('powercord/webpack')
+const { React, getModule } = require('powercord/webpack')
 const { Confirm: ConfirmModal } = require('powercord/components/modal')
 const { close: closeModal } = require('powercord/modal')
+
+const Text = getModule(['Sizes', 'Weights'])
 
 class DeleteConfirm extends React.Component {
   constructor (props) {
@@ -19,9 +21,12 @@ class DeleteConfirm extends React.Component {
         onConfirm={this.props.onConfirm}
         onCancel={() => closeModal()}
       >
-        <div className='powercord-plugins-modal'>
-          <span>Are you sure you want to delete {this.props.plugin.getName()}? This can't be undone!</span>
-        </div>
+        <Text
+          color={Text.Colors.PRIMARY}
+          size={Text.Sizes.MEDIUM}
+        >
+          Are you sure you want to delete <strong>{this.props.plugin.getName()}</strong>? This can't be undone!
+        </Text>
       </ConfirmModal>
     )
   }
