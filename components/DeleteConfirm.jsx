@@ -20,7 +20,7 @@ class DeleteConfirm extends React.Component {
         onCancel={() => closeModal()}
       >
         <div className='powercord-plugins-modal'>
-          <span>Are you sure you want to delete ${this.props.plugin.getName()}? This can't be undone!</span>
+          <span>Are you sure you want to delete {this.props.plugin.getName()}? This can't be undone!</span>
         </div>
       </ConfirmModal>
     )
