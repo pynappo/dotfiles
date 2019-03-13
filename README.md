@@ -1,6 +1,6 @@
 # pc-bdCompat
 
-Compatibilty layer for running BetterDiscord plugins in Powercord
+Compatibility layer for running BetterDiscord plugins in Powercord
 
 [![Screenshot showing a list of BetterDiscord plugins](https://i.imgur.com/pUfaXLf.png)](https://imgur.com/a/2gWgY7q)
 
