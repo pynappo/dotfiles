@@ -29,7 +29,11 @@ class BDPluginManager {
   }
 
   get pluginDirectory () {
-    return path.join(__dirname, '..', 'plugins/')
+    const pluginDir = path.join(__dirname, '..', 'plugins/')
+
+    if (!fs.existsSync(pluginDir)) fs.mkdirSync(pluginDir)
+
+    return pluginDir
   }
 
   destroy () {
