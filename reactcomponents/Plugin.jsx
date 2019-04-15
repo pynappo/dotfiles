@@ -32,7 +32,7 @@ class Plugin extends React.Component {
 
         <div className='powercord-plugin-container'>
           <div className='author'>
-            <Tooltip text='Author'>
+            <Tooltip text='Author(s)'>
               <Icons.Author />
             </Tooltip>
             <span>{this.props.plugin.getAuthor()}</span>
