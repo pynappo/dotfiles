@@ -1,11 +1,11 @@
 'use strict'
 
-const { React }  = require('powercord/webpack')
+const { React } = require('powercord/webpack')
 const { Modal } = require('powercord/components/modal')
 const { getModuleByDisplayName } = require('powercord/webpack')
 const { close: closeModal } = require('powercord/modal')
 
-const FormTitle = getModuleByDisplayName('FormTitle')
+const FormTitle = getModuleByDisplayName('FormTitle', false)
 
 class PluginSettings extends React.Component {
   constructor (props) {
@@ -13,7 +13,7 @@ class PluginSettings extends React.Component {
   }
 
   render () {
-    const plugin = this.props.plugin
+    const { plugin } = this.props.plugin
 
     return (
       <Modal size={Modal.Sizes.MEDIUM}>
@@ -22,15 +22,21 @@ class PluginSettings extends React.Component {
           <Modal.CloseButton onClick={closeModal}/>
         </Modal.Header>
         <Modal.Content>
-          <div id="bdc-plugin-settings" ref={(node) => this.PluginSettingsContainer = node}></div>
+          <div class='plugin-settings' id={'plugin-settings-' + plugin.getName()}></div>
         </Modal.Content>
       </Modal>
     )
   }
 
   componentDidMount () {
-    if (!this.PluginSettingsContainer) return
-    this.PluginSettingsContainer.appendChild(this.props.plugin.getSettingsPanel())
+    setTimeout(() => {
+      const { plugin } = this.props.plugin
+      const el = document.getElementById(`plugin-settings-${plugin.getName()}`)
+      if(!el) return
+      const panel = plugin.getSettingsPanel()
+      if(typeof panel == 'string') el.innerHTML = panel
+      else el.append(panel)
+    })
   }
 }
 

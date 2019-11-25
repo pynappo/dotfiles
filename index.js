@@ -20,7 +20,7 @@ class BDCompat extends Plugin {
     this.PluginManager = new BDPluginManager
 
     this.registerSettings(
-      'pc-bdCompat',
+      'bdCompat',
       'BetterDiscord Plugins',
       () => React.createElement(Settings, { settings: this.settings })
     )
@@ -28,13 +28,7 @@ class BDCompat extends Plugin {
 
   pluginWillUnload () {
     this.PluginManager.destroy()
-
-    this.unloadCSS()
     this.destroyGlobals()
-
-    powercord.pluginManager
-      .get('pc-settings')
-      .unregister('pc-bdCompat')
   }
 
   defineGlobals () {
@@ -49,7 +43,13 @@ class BDCompat extends Plugin {
     window.themeCookie = {}
     window.bdthemeErrors = []
 
-    window.BdApi = BDApi
+    // window.BdApi = BDApi
+
+    // Orignally BdApi is an object, not a class
+    window.BdApi = {}
+    Object.getOwnPropertyNames(BDApi).filter(m => typeof BDApi[m] == 'function' || typeof BDApi[m] == 'object').forEach(m => {
+      window.BdApi[m] = BDApi[m]
+    })
     window.bdPluginStorage = { get: BDApi.getData, set: BDApi.setData }
     window.Utils = { monkeyPatch: BDApi.monkeyPatch, suppressErrors: BDApi.suppressErrors, escapeID: BDApi.escapeID }
 
@@ -60,18 +60,12 @@ class BDCompat extends Plugin {
   }
 
   destroyGlobals () {
-    delete window.bdConfig
-    delete window.settingsCookie
-    delete window.bdplugins
-    delete window.pluginCookie
-    delete window.bdpluginErrors
-    delete window.bdthemes
-    delete window.themeCookie
-    delete window.bdthemeErrors
-    delete window.BdApi
-    delete window.bdPluginStorage
-    delete window.Utils
-    delete window.BDV2
+    const globals = ['bdConfig', 'settingsCookie', 'bdplugins', 'pluginCookie', 'bdpluginErrors', 'bdthemes',
+      'themeCookie', 'bdthemeErrors', 'BdApi', 'bdPluginStorage', 'Utils', 'BDV2']
+
+    globals.forEach(g => {
+      delete window[g]
+    })
 
     this.log('Destroyed BetterDiscord globals')
   }

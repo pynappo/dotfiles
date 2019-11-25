@@ -8,7 +8,7 @@ class Settings extends React.Component {
   constructor (props) {
     super(props)
 
-    this.pluginManager = powercord.pluginManager.plugins.get('pc-bdCompat').PluginManager
+    this.pluginManager = powercord.pluginManager.plugins.get('bdCompat').PluginManager
   }
 
   render () {

@@ -7,7 +7,7 @@ class V2 {
       find: window.BdApi.findModule,
       findAll: window.BdApi.findAll,
       findByUniqueProperties: window.BdApi.findModuleByProps,
-      findByDisplayName: window.BdApi._findModuleByDisplayName,
+      findByDisplayName: window.BdApi.findModuleByDisplayName,
     }
   }
 

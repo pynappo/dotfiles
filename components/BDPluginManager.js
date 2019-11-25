@@ -17,7 +17,7 @@ class BDPluginManager {
     // DevilBro's plugins checks whether or not it's running on ED
     // This isn't BetterDiscord, so we'd be better off doing this.
     // eslint-disable-next-line no-process-env
-    process.env.injDir = __dirname
+    process.env.injDir = bdConfig.dataPath
 
     // Wait for jQuery, then load the plugins
     window.BdApi.linkJS('jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
@@ -78,12 +78,12 @@ class BDPluginManager {
     if (plugin.__started) return
 
     try {
-      plugin.start()
+      plugin.plugin.start()
       plugin.__started = true
-      this.__log(`Started plugin ${plugin.getName()}`)
+      this.__log(`Started plugin ${plugin.plugin.getName()}`)
     } catch (err) {
-      this.__error(err, `Could not start ${plugin.getName()}`)
-      window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.getName(), false)
+      this.__error(err, `Could not start ${plugin.plugin.getName()}`)
+      window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), false)
     }
   }
   stopPlugin (pluginName) {
@@ -93,12 +93,12 @@ class BDPluginManager {
     if (!plugin.__started) return
 
     try {
-      plugin.stop()
+      plugin.plugin.stop()
       plugin.__started = false
-      this.__log(`Stopped plugin ${plugin.getName()}`)
+      this.__log(`Stopped plugin ${plugin.plugin.getName()}`)
     } catch (err) {
-      this.__error(err, `Could not stop ${plugin.getName()}`)
-      window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.getName(), false)
+      this.__error(err, `Could not stop ${plugin.plugin.getName()}`)
+      window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), false)
     }
   }
 
@@ -106,14 +106,14 @@ class BDPluginManager {
     const plugin = window.bdplugins[pluginName]
     if (!plugin) return this.__error(null, `Tried to enable a missing plugin: ${pluginName}`)
 
-    window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.getName(), true)
+    window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), true)
     this.startPlugin(pluginName)
   }
   disablePlugin (pluginName) {
     const plugin = window.bdplugins[pluginName]
     if (!plugin) return this.__error(null, `Tried to disable a missing plugin: ${pluginName}`)
 
-    window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.getName(), false)
+    window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), false)
     this.stopPlugin(pluginName)
   }
 
@@ -143,9 +143,9 @@ class BDPluginManager {
     plugin.__meta = meta
     plugin.__filePath = pluginPath
 
-    if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].stop()
+    if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
     delete window.bdplugins[plugin.getName()]
-    window.bdplugins[plugin.getName()] = plugin
+    window.bdplugins[plugin.getName()] = { plugin }
 
     if (plugin.load && typeof plugin.load === 'function')
       try {
@@ -178,7 +178,7 @@ class BDPluginManager {
     if (!plugin) return this.__error(null, `Tried to delete a missing plugin: ${pluginName}`)
 
     this.disablePlugin(pluginName)
-    if (typeof plugin.unload === 'function') plugin.unload()
+    if (typeof plugin.unload === 'function') plugin.plugin.unload()
     delete window.bdplugins[pluginName]
 
     fs.unlinkSync(plugin.__filePath)
@@ -187,7 +187,7 @@ class BDPluginManager {
 
   fireEvent (event, ...args) {
     for (const plug in window.bdplugins) {
-      const plugin = window.bdplugins[plug]
+      const plugin = window.bdplugins[plug].plugin
       if (!plugin[event] || typeof plugin[event] !== 'function') continue
 
       try {

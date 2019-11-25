@@ -3,10 +3,9 @@
 const { shell: { openExternal } } = require('electron')
 
 const { React }  = require('powercord/webpack')
-const { Tooltip, Switch, Button } = require('powercord/components')
+const { Tooltip, Switch, Button, Card, Icon } = require('powercord/components')
 const { open: openModal } = require('powercord/modal')
 
-const Icons = require('./Icons.jsx')
 const SettingsModal = require('./PluginSettings.jsx')
 const DeleteConfirm = require('./DeleteConfirm.jsx')
 
@@ -20,9 +19,9 @@ class Plugin extends React.Component {
 
     // We're reusing Powercord's plugin manager classes
     return (
-      <div className='powercord-plugin'>
+      <Card className='powercord-plugin'>
         <div className='powercord-plugin-header'>
-          <h4>{this.props.plugin.getName()}</h4>
+          <h4>{this.props.plugin.plugin.getName()}</h4>
           <Tooltip>
             <div>
               <Switch value={this.props.plugin.__started} onChange={() => this.togglePlugin()}/>
@@ -33,23 +32,23 @@ class Plugin extends React.Component {
         <div className='powercord-plugin-container'>
           <div className='author'>
             <Tooltip text='Author(s)'>
-              <Icons.Author />
+              <Icon name='Person' />
             </Tooltip>
-            <span>{this.props.plugin.getAuthor()}</span>
+            <span>{this.props.plugin.plugin.getAuthor()}</span>
           </div>
 
           <div className='version'>
             <Tooltip text='Version'>
-              <Icons.Version />
+              <Icon name='StoreTag' />
             </Tooltip>
-            <span>v{this.props.plugin.getVersion()}</span>
+            <span>v{this.props.plugin.plugin.getVersion()}</span>
           </div>
 
           <div className='description'>
             <Tooltip text='Description'>
-              <Icons.Description />
+              <Icon name='Receipt' />
             </Tooltip>
-            <span>{this.props.plugin.getDescription()}</span>
+            <span>{this.props.plugin.plugin.getDescription()}</span>
           </div>
         </div>
 
@@ -78,7 +77,7 @@ class Plugin extends React.Component {
 
           <div class='bdc-spacer'></div>
 
-          {typeof this.props.plugin.getSettingsPanel === 'function' &&
+          {typeof this.props.plugin.plugin.getSettingsPanel === 'function' &&
             <Button
               disabled={!this.props.enabled}
               onClick={() => openModal(() => <SettingsModal plugin={this.props.plugin}/>)}
@@ -88,7 +87,7 @@ class Plugin extends React.Component {
               Settings
             </Button>
           }
-          {typeof this.props.plugin.getSettingsPanel === 'function' &&
+          {typeof this.props.plugin.plugin.getSettingsPanel === 'function' &&
             <div class='bdc-margin'></div>
           }
           
@@ -101,7 +100,7 @@ class Plugin extends React.Component {
             Delete
           </Button>
         </div>
-      </div>
+      </Card>
     )
   }
 

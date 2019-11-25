@@ -1,8 +1,7 @@
 {
   "name": "BetterDiscord plugin compatibility",
-  "version": "0.2.0",
+  "version": "0.2.5",
   "description": "Adds support for running BetterDiscord plugins",
-  "author": "intrnl",
-  "license": "MIT",
-  "repo": "https://github.com/intrnl/pc-bdCompat"
+  "author": "intrnl & Juby210",
+  "license": "MIT"
 }

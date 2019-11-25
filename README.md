@@ -14,7 +14,7 @@ git clone https://github.com/intrnl/pc-bdCompat
 
 ## Installing BD plugins
 
-Before you download and install any BD plugins, please take a look at the incompatibilites note on `INCOMPATIBILITIES.md` file
+<!-- Before you download and install any BD plugins, please take a look at the incompatibilites note on `INCOMPATIBILITIES.md` file -->
 
 - Put the plugin in the `plugins` folder, if it doesn't exist then create one.
 - Reload your Discord.

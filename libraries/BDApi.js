@@ -104,7 +104,7 @@ class BdApi {
   }
 
   static __getPluginConfigPath (pluginName) {
-    return path.join(__dirname, '..', 'config', pluginName + '.json')
+    return path.join(__dirname, '..', 'config', pluginName + '.config.json')
   }
 
   static __getPluginConfig (pluginName) {
@@ -172,9 +172,9 @@ class BdApi {
 
 
   // Alerts and toasts
-  static alert (title, body) {
-    const ModalStack = getModule(['push', 'update', 'pop', 'popWithKey'])
-    const AlertModal = getModule((module) => module.prototype &&
+  static async alert (title, body) {
+    const ModalStack = await getModule(['push', 'update', 'pop', 'popWithKey'])
+    const AlertModal = await getModule((module) => module.prototype &&
       module.prototype.handleCancel && module.prototype.handleSubmit && module.prototype.handleMinorConfirm)
 
     ModalStack.push((props) => BdApi.React.createElement(AlertModal, { title, body, ...props }))
@@ -266,7 +266,7 @@ class BdApi {
   }
 
   static findModule (filter) {
-    return getModule(filter)
+    return getModule(filter, false)
   }
 
   static findAllModules (filter) {
@@ -277,7 +277,7 @@ class BdApi {
     return BdApi.findModule((module) => props.every((prop) => typeof module[prop] !== 'undefined'))
   }
 
-  static _findModuleByDisplayName (displayName) {
+  static findModuleByDisplayName (displayName) {
     return BdApi.findModule((module) => module.displayName === displayName)
   }
 
@@ -286,7 +286,7 @@ class BdApi {
       what.displayName || what.name || what.constructor.displayName || what.constructor.name ||
       'MissingName'
 
-    if (options.instead) return BdApi.__warn('Powercord API currently does not support replacing the entire method!')
+    // if (options.instead) return BdApi.__warn('Powercord API currently does not support replacing the entire method!')
 
     if (!what[methodName])
       if (options.force) {
@@ -300,6 +300,26 @@ class BdApi {
     if (!options.silent)
       BdApi.__log(`Patching ${displayName}'s ${methodName} method`)
 
+    if (options.instead) {
+      const origMethod = what[methodName]
+      const cancel = () => {
+        what[methodName] = origMethod
+      }
+      what[methodName] = function() {
+        const data = {
+          thisObject: this,
+          methodArguments: arguments,
+          cancelPatch: cancel,
+          originalMethod: origMethod,
+          callOriginalMethod: () => data.returnValue = data.originalMethod.apply(data.thisObject, data.methodArguments)
+        }
+        const tempRet = BdApi.suppressErrors(options.instead, "`instead` callback of " + what[methodName].displayName)(data)
+        if (tempRet !== undefined) data.returnValue = tempRet
+        return data.returnValue
+      }
+      return cancel
+    }
+  
 
     const patches = []
     if (options.before) patches.push(BdApi.__injectBefore({ what, methodName, options, displayName }))
