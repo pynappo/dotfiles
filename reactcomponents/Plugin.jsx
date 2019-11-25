@@ -91,14 +91,15 @@ class Plugin extends React.Component {
             <div class='bdc-margin'></div>
           }
           
-          <Button
+          {// not fixed yet
+          /*<Button
             onClick={() => openModal(() => <DeleteConfirm plugin={this.props.plugin} onConfirm={this.props.onDelete} />)}
             look={Button.Looks.OUTLINED}
             size={Button.Sizes.SMALL}
             color={Button.Colors.RED}
           >
             Delete
-          </Button>
+          </Button>*/}
         </div>
       </Card>
     )

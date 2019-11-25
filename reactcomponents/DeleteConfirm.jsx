@@ -25,7 +25,7 @@ class DeleteConfirm extends React.Component {
           color={Text.Colors.PRIMARY}
           size={Text.Sizes.MEDIUM}
         >
-          Are you sure you want to delete <strong>{this.props.plugin.getName()}</strong>? This can't be undone!
+          Are you sure you want to delete <strong>{this.props.plugin.plugin.getName()}</strong>? This can't be undone!
         </Text>
       </ConfirmModal>
     )

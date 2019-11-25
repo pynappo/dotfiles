@@ -396,6 +396,10 @@ class BdApi {
     return cancelPatch
   }
 
+  static isPluginEnabled (name) {
+    const plugin = bdplugins[name]
+    return plugin ? plugin.__started : false
+  }
 
   // Miscellaneous, things that aren't part of BD
   static __elemParent (id) {
