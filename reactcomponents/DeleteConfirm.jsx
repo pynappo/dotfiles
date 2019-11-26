@@ -4,7 +4,7 @@ const { React, getModule } = require('powercord/webpack')
 const { Confirm: ConfirmModal } = require('powercord/components/modal')
 const { close: closeModal } = require('powercord/modal')
 
-const Text = getModule(['Sizes', 'Weights'], false)
+const Text = getModule(['Sizes', 'Weights'], false).default
 
 class DeleteConfirm extends React.Component {
   constructor (props) {

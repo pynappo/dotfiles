@@ -98,7 +98,8 @@ class BDPluginManager {
       this.__log(`Stopped plugin ${plugin.plugin.getName()}`)
     } catch (err) {
       this.__error(err, `Could not stop ${plugin.plugin.getName()}`)
-      window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), false)
+      if (powercord.pluginManager.get('bdCompat').settings.get('disableWhenStopFailed'))
+        window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), false)
     }
   }
 
@@ -141,11 +142,10 @@ class BDPluginManager {
     const Plugin = require(tempPluginPath)
     const plugin = new Plugin
     plugin.__meta = meta
-    plugin.__filePath = pluginPath
 
     if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
     delete window.bdplugins[plugin.getName()]
-    window.bdplugins[plugin.getName()] = { plugin }
+    window.bdplugins[plugin.getName()] = { plugin, __filePath: pluginPath }
 
     if (plugin.load && typeof plugin.load === 'function')
       try {

@@ -6,7 +6,7 @@ const crypto = require('crypto')
 
 const { React, ReactDOM } = require('powercord/webpack')
 const { getModule, getAllModules } = require('powercord/webpack')
-const { getOwnerInstance } = require('powercord/util')
+const { getOwnerInstance, getReactInstance } = require('powercord/util')
 const { inject, uninject } = require('powercord/injector')
 
 const PluginData = {}
@@ -345,7 +345,7 @@ class BdApi {
         methodArguments: args,
         returnValue: res,
         cancelPatch: cancelPatch,
-        // originalMethod,
+        originalMethod: data.what[data.methodName],
         // callOriginalMethod,
       }
 
@@ -378,7 +378,7 @@ class BdApi {
         methodArguments: args,
         returnValue: res,
         cancelPatch: cancelPatch,
-        // originalMethod,
+        originalMethod: data.what[data.methodName],
         // callOriginalMethod,
       }
 
@@ -396,9 +396,19 @@ class BdApi {
     return cancelPatch
   }
 
+  static getInternalInstance (node) {
+    if (!(node instanceof window.jQuery) && !(node instanceof Element)) return undefined
+    if (node instanceof window.jQuery) node = node[0]
+    return getReactInstance(node)
+  }
+
   static isPluginEnabled (name) {
     const plugin = bdplugins[name]
     return plugin ? plugin.__started : false
+  }
+
+  static isThemeEnabled () {
+    return false
   }
 
   // Miscellaneous, things that aren't part of BD

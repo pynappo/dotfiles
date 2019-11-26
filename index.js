@@ -1,7 +1,6 @@
 'use strict'
 
 const { Plugin } = require('powercord/entities')
-const { React } = require('powercord/webpack')
 const path = require('path')
 
 const BDApi = require('./libraries/BDApi.js')
@@ -19,11 +18,7 @@ class BDCompat extends Plugin {
 
     this.PluginManager = new BDPluginManager
 
-    this.registerSettings(
-      'bdCompat',
-      'BetterDiscord Plugins',
-      () => React.createElement(Settings, { settings: this.settings })
-    )
+    this.registerSettings('bdCompat', 'BetterDiscord Plugins', Settings)
   }
 
   pluginWillUnload () {
