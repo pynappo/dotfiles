@@ -19,6 +19,11 @@ class BDPluginManager {
     // eslint-disable-next-line no-process-env
     process.env.injDir = bdConfig.dataPath
 
+    this.observer = new MutationObserver((mutations) => {
+        for (let i = 0, mlen = mutations.length; i < mlen; i++) this.fireEvent('observer', mutations[i])
+    })
+    this.observer.observe(document, { childList: true, subtree: true })
+
     // Wait for jQuery, then load the plugins
     window.BdApi.linkJS('jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
       .then(() => {
@@ -40,6 +45,7 @@ class BDPluginManager {
     window.BdApi.unlinkJS('jquery')
     this.currentWindow.webContents.off('did-navigate-in-page', () => this.onSwitchListener())
 
+    this.observer.disconnect()
     this.stopAllPlugins()
 
     // eslint-disable-next-line no-process-env
@@ -101,6 +107,18 @@ class BDPluginManager {
       if (powercord.pluginManager.get('bdCompat').settings.get('disableWhenStopFailed'))
         window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), false)
     }
+  }
+  reloadPlugin (pluginName) {
+    const plugin = window.bdplugins[pluginName]
+    if (!plugin) return this.__error(null, `Tried to reload a missing plugin: ${pluginName}`)
+
+    this.stopPlugin(pluginName)
+
+    delete window.bdplugins[pluginName]
+    delete require.cache[plugin.__filePath]
+
+    this.loadPlugin(pluginName)
+    this.startPlugin(pluginName)
   }
 
   enablePlugin (pluginName) {
