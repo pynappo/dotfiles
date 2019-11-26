@@ -300,9 +300,11 @@ class BdApi {
     if (!options.silent)
       BdApi.__log(`Patching ${displayName}'s ${methodName} method`)
 
+    const origMethod = what[methodName]
+
     if (options.instead) {
-      const origMethod = what[methodName]
       const cancel = () => {
+        if (!options.silent) BdApi.__log(`Unpatching instead of ${displayName} ${methodName}`)
         what[methodName] = origMethod
       }
       what[methodName] = function() {
@@ -322,15 +324,15 @@ class BdApi {
   
 
     const patches = []
-    if (options.before) patches.push(BdApi.__injectBefore({ what, methodName, options, displayName }))
-    if (options.after) patches.push(BdApi.__injectAfter({ what, methodName, options, displayName }))
+    if (options.before) patches.push(BdApi.__injectBefore({ what, methodName, options, displayName }, origMethod))
+    if (options.after) patches.push(BdApi.__injectAfter({ what, methodName, options, displayName }, origMethod))
 
     const finalCancelPatch = () => patches.forEach((patch) => patch())
 
     return finalCancelPatch
   }
 
-  static __injectBefore (data) {
+  static __injectBefore (data, origMethod) {
     const patchID = `bd-patch-before-${data.displayName.toLowerCase()}-${crypto.randomBytes(4).toString('hex')}`
 
     const cancelPatch = () => {
@@ -345,8 +347,8 @@ class BdApi {
         methodArguments: args,
         returnValue: res,
         cancelPatch: cancelPatch,
-        originalMethod: data.what[data.methodName],
-        // callOriginalMethod,
+        originalMethod: origMethod,
+        callOriginalMethod: () => patchData.returnValue = patchData.originalMethod.apply(patchData.thisObject, patchData.methodArguments)
       }
 
       try {
@@ -363,7 +365,7 @@ class BdApi {
     return cancelPatch
   }
 
-  static __injectAfter (data) {
+  static __injectAfter (data, origMethod) {
     const patchID = `bd-patch-after-${data.displayName.toLowerCase()}-${crypto.randomBytes(4).toString('hex')}`
 
     const cancelPatch = () => {
@@ -378,8 +380,8 @@ class BdApi {
         methodArguments: args,
         returnValue: res,
         cancelPatch: cancelPatch,
-        originalMethod: data.what[data.methodName],
-        // callOriginalMethod,
+        originalMethod: origMethod,
+        callOriginalMethod: () => patchData.returnValue = patchData.originalMethod.apply(patchData.thisObject, patchData.methodArguments)
       }
 
       try {
