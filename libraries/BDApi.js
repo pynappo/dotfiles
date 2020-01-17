@@ -359,7 +359,7 @@ class BdApi {
 
       if (data.options.once) cancelPatch()
 
-      return patchData.returnValue
+      return patchData.methodArguments
     }, true)
 
     return cancelPatch

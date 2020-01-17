@@ -51,12 +51,14 @@ class BDCompat extends Plugin {
     window.BDV2 = BDV2
     window.ContentManager = BDContentManager
 
+    window.bdPluginManger = this.PluginManager
+
     this.log('Defined BetterDiscord globals')
   }
 
   destroyGlobals () {
     const globals = ['bdConfig', 'settingsCookie', 'bdplugins', 'pluginCookie', 'bdpluginErrors', 'bdthemes',
-      'themeCookie', 'bdthemeErrors', 'BdApi', 'bdPluginStorage', 'Utils', 'BDV2']
+      'themeCookie', 'bdthemeErrors', 'BdApi', 'bdPluginStorage', 'Utils', 'BDV2', 'bdPluginManger']
 
     globals.forEach(g => {
       delete window[g]

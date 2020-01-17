@@ -228,8 +228,8 @@ class BDPluginManager {
 
   fireEvent (event, ...args) {
     for (const plug in window.bdplugins) {
-      const plugin = window.bdplugins[plug].plugin
-      if (!plugin[event] || typeof plugin[event] !== 'function') continue
+      const p = window.bdplugins[plug], { plugin } = p
+      if (!p.__started || !plugin[event] || typeof plugin[event] !== 'function') continue
 
       try {
         plugin[event](...args)
