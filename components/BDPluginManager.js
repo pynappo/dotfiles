@@ -8,9 +8,11 @@ const { Module } = require('module')
 
 Module.globalPaths.push(path.resolve(electron.remote.app.getAppPath(), 'node_modules'))
 
-
 class BDPluginManager {
-  constructor () {
+  constructor(ContentManger, settings) {
+    this.ContentManger = ContentManger
+    this.settings = settings
+
     this.currentWindow = electron.remote.getCurrentWindow()
     this.currentWindow.webContents.on('did-navigate-in-page', () => this.onSwitchListener())
 
@@ -31,14 +33,6 @@ class BDPluginManager {
         this.loadAllPlugins()
         this.startAllEnabledPlugins()
       })
-  }
-
-  get pluginDirectory () {
-    const pluginDir = path.join(__dirname, '..', 'plugins/')
-
-    if (!fs.existsSync(pluginDir)) fs.mkdirSync(pluginDir)
-
-    return pluginDir
   }
 
   destroy () {
@@ -104,7 +98,7 @@ class BDPluginManager {
       this.__log(`Stopped plugin ${plugin.plugin.getName()}`)
     } catch (err) {
       this.__error(err, `Could not stop ${plugin.plugin.getName()}`)
-      if (powercord.pluginManager.get('bdCompat').settings.get('disableWhenStopFailed'))
+      if (this.settings.get('disableWhenStopFailed'))
         window.BdApi.saveData('BDCompat-EnabledPlugins', plugin.plugin.getName(), false)
     }
   }
@@ -137,23 +131,23 @@ class BDPluginManager {
   }
 
   loadAllPlugins () {
-    const plugins = fs.readdirSync(this.pluginDirectory)
+    const plugins = fs.readdirSync(this.ContentManger.pluginsFolder)
       .filter((pluginFile) => pluginFile.endsWith('.plugin.js'))
       .map((pluginFile) => pluginFile.slice(0, -('.plugin.js'.length)))
 
     plugins.forEach((pluginName) => this.loadPlugin(pluginName))
   }
   loadPlugin (pluginName) {
-    const pluginPath = path.join(this.pluginDirectory, `${pluginName}.plugin.js`)
+    const pluginPath = path.join(this.ContentManger.pluginsFolder, `${pluginName}.plugin.js`)
     if (!fs.existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
 
     let content = fs.readFileSync(pluginPath, 'utf8')
     if (content.charCodeAt(0) === 0xFEFF) content = content.slice(1)
 
-    const meta = this.extractMeta(content)
+    const meta = this.ContentManger.extractMeta(content)
     if(meta.format != 'jsdoc') content += `\nmodule.exports = ${meta.name};`
 
-    const tempPluginPath = path.join(this.pluginDirectory, `__${pluginName}.plugin.js`)
+    const tempPluginPath = path.join(this.ContentManger.pluginsFolder, `__${pluginName}.plugin.js`)
     fs.writeFileSync(tempPluginPath, content)
 
     // eslint-disable-next-line global-require
@@ -176,42 +170,6 @@ class BDPluginManager {
     this.__log(`Loaded ${plugin.getName()} v${plugin.getVersion()} by ${plugin.getAuthor()}`)
     fs.unlinkSync(tempPluginPath)
     delete require.cache[require.resolve(tempPluginPath)]
-  }
-
-  extractMeta (content) {
-    if(content.startsWith('/**')) { // new meta, https://github.com/rauenzi/BetterDiscordApp/blob/master/js/main.js#L1444
-      const block = content.split("/**", 2)[1].split("*/", 1)[0];
-      const out = {};
-      let field = "";
-      let accum = "";
-      for (const line of block.split(/[^\S\r\n]*?(?:\r\n|\n)[^\S\r\n]*?\*[^\S\r\n]?/)) {
-          if (line.length === 0) continue;
-          if (line.charAt(0) === "@" && line.charAt(1) !== " ") {
-              out[field] = accum;
-              const l = line.indexOf(" ");
-              field = line.substr(1, l - 1);
-              accum = line.substr(l + 1);
-          }
-          else {
-              accum += " " + line.replace("\\n", "\n").replace(escapedAtRegex, "@");
-          }
-      }
-      out[field] = accum.trim();
-      delete out[""];
-      out.format = "jsdoc";
-      return out;
-    } else {
-      const metaLine = content.split('\n')[0]
-      const rawMeta = metaLine.substring(metaLine.lastIndexOf('//META') + 6, metaLine.lastIndexOf('*//'))
-  
-      if (metaLine.indexOf('META') < 0) throw new Error('META was not found.')
-      if (!window.BdApi.testJSON(rawMeta)) throw new Error('META could not be parsed')
-  
-      const parsed = JSON.parse(rawMeta)
-      if (!parsed.name) throw new Error('META missing name data')
-  
-      return parsed
-    }
   }
 
   deletePlugin (pluginName) {

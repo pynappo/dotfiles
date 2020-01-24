@@ -11,12 +11,10 @@ const BDPluginManager = require('./components/BDPluginManager.js')
 const Settings = require('./reactcomponents/Settings.jsx')
 
 
-class BDCompat extends Plugin {
+module.exports = class BDCompat extends Plugin {
   startPlugin () {
     this.loadCSS(path.join(__dirname, 'style.css'))
     this.defineGlobals()
-
-    this.PluginManager = new BDPluginManager
 
     this.registerSettings('bdCompat', 'BetterDiscord Plugins', Settings)
   }
@@ -50,15 +48,14 @@ class BDCompat extends Plugin {
 
     window.BDV2 = BDV2
     window.ContentManager = BDContentManager
-
-    window.bdPluginManger = this.PluginManager
+    window.PluginModule = new BDPluginManager(BDContentManager, this.settings)
 
     this.log('Defined BetterDiscord globals')
   }
 
   destroyGlobals () {
     const globals = ['bdConfig', 'settingsCookie', 'bdplugins', 'pluginCookie', 'bdpluginErrors', 'bdthemes',
-      'themeCookie', 'bdthemeErrors', 'BdApi', 'bdPluginStorage', 'Utils', 'BDV2', 'bdPluginManger']
+      'themeCookie', 'bdthemeErrors', 'BdApi', 'bdPluginStorage', 'Utils', 'BDV2', 'ContentManager', 'PluginModule']
 
     globals.forEach(g => {
       delete window[g]
@@ -67,5 +64,3 @@ class BDCompat extends Plugin {
     this.log('Destroyed BetterDiscord globals')
   }
 }
-
-module.exports = BDCompat
