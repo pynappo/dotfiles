@@ -1,15 +1,15 @@
-# pc-bdCompat
+# bdCompat
 
 Compatibility layer for running BetterDiscord plugins in Powercord
 
-[![Screenshot showing a list of BetterDiscord plugins](https://i.imgur.com/pUfaXLf.png)](https://imgur.com/a/2gWgY7q)
+[![Screenshot showing a list of BetterDiscord plugins](https://i.imgur.com/xaAOdSE.png)](https://i.imgur.com/xaAOdSE.png)
 
 ## Installation
 
 Clone this repository to your Powercord install's plugins folder
 
 ```
-git clone https://github.com/intrnl/pc-bdCompat
+git clone https://github.com/Juby210/bdCompat
 ```
 
 ## Installing BD plugins

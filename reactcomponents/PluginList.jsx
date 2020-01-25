@@ -8,8 +8,7 @@ const { TextInput } = require('powercord/components/settings')
 
 const Plugin = require('./Plugin.jsx')
 
-
-class PluginList extends React.Component {
+module.exports = class PluginList extends React.Component {
   constructor (props) {
     super(props)
     
@@ -43,8 +42,8 @@ class PluginList extends React.Component {
         <div className='powercord-entities-manage-container'>
           {plugins.map((plugin) =>
             <Plugin
-              plugin={plugin}
-              meta={plugin.plugin.__meta}
+              plugin={plugin.plugin}
+              meta={plugin}
 
               onEnable={() => this.props.pluginManager.enablePlugin(plugin.plugin.getName())}
               onDisable={() => this.props.pluginManager.disablePlugin(plugin.plugin.getName())}
@@ -87,5 +86,3 @@ class PluginList extends React.Component {
     this.forceUpdate()
   }
 }
-
-module.exports = PluginList

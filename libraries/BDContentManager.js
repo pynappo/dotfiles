@@ -1,9 +1,21 @@
-const { existsSync, mkdirSync } = require('fs')
-const { join } = require('path')
+const { existsSync, mkdirSync, readFileSync } = require('fs')
+const { join, dirname, resolve, basename } = require('path')
+const { Module } = require('module')
+const originalRequire = Module._extensions['.js']
+let _this
 
 // Purposefully incomplete ContentManager
 module.exports = class ContentManager {
-  static get pluginsFolder() {
+  constructor() {
+    _this = this
+    Module._extensions['.js'] = this.getContentRequire()
+  }
+
+  destroy() {
+    Module._extensions['.js'] = originalRequire
+  }
+
+  get pluginsFolder() {
     const pluginDir = join(__dirname, '..', 'plugins')
 
     if (!existsSync(pluginDir)) mkdirSync(pluginDir)
@@ -11,12 +23,12 @@ module.exports = class ContentManager {
     return pluginDir
   }
 
-  static get themesFolder() {
+  get themesFolder() {
     // We'll just pretend it exists.
     return join(ContentManager.pluginsFolder, '..', 'themes')
   }
 
-  static extractMeta(content) {
+  extractMeta(content) {
     const firstLine = content.split("\n")[0]
     const hasOldMeta = firstLine.includes("//META")
     if (hasOldMeta) return this.parseOldMeta(content)
@@ -25,7 +37,7 @@ module.exports = class ContentManager {
     throw new Error('META was not found.')
   }
 
-  static parseOldMeta(content) {
+  parseOldMeta(content) {
     const metaLine = content.split('\n')[0]
     const rawMeta = metaLine.substring(metaLine.lastIndexOf('//META') + 6, metaLine.lastIndexOf('*//'))
 
@@ -40,7 +52,7 @@ module.exports = class ContentManager {
   }
 
   // https://github.com/rauenzi/BetterDiscordApp/blob/master/js/main.js#L1429
-  static parseNewMeta(content) {
+  parseNewMeta(content) {
     const block = content.split("/**", 2)[1].split("*/", 1)[0]
     const out = {}
     let field = "", accum = ""
@@ -59,5 +71,28 @@ module.exports = class ContentManager {
     delete out[""]
     out.format = "jsdoc"
     return out
+  }
+
+  getContentRequire() {
+    return function(module, filename) {
+      if (!filename.endsWith('.plugin.js') ||
+        dirname(filename) !== resolve(bdConfig.dataPath, 'plugins'))
+        return originalRequire.apply(this, arguments)
+
+      let content = readFileSync(filename, 'utf8');
+      if (content.charCodeAt(0) === 0xFEFF) content = content.slice(1) // Strip BOM
+      const meta = _this.extractMeta(content)
+      meta.filename = basename(filename)
+      module._compile(content, filename)
+      if (!module.exports ||
+        (typeof module.exports === 'object' &&
+        !Object.keys(module.exports).length)) {
+        content += `\nmodule.exports = ${JSON.stringify(meta)}; module.exports.type = ${meta.name}`
+        module._compile(content, filename)
+      } else {
+        meta.type = module.exports
+        module.exports = meta
+      }
+    }
   }
 }

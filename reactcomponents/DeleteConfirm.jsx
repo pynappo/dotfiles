@@ -6,7 +6,7 @@ const { close: closeModal } = require('powercord/modal')
 
 const Text = getModule(['Sizes', 'Weights'], false).default
 
-class DeleteConfirm extends React.Component {
+module.exports = class DeleteConfirm extends React.Component {
   constructor (props) {
     super(props)
   }
@@ -25,11 +25,9 @@ class DeleteConfirm extends React.Component {
           color={Text.Colors.PRIMARY}
           size={Text.Sizes.MEDIUM}
         >
-          Are you sure you want to delete <strong>{this.props.plugin.plugin.getName()}</strong>? This can't be undone!
+          Are you sure you want to delete <strong>{this.props.plugin.getName()}</strong>? This can't be undone!
         </Text>
       </ConfirmModal>
     )
   }
 }
-
-module.exports = DeleteConfirm

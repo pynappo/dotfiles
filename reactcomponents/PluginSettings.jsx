@@ -7,13 +7,13 @@ const { close: closeModal } = require('powercord/modal')
 
 const FormTitle = getModuleByDisplayName('FormTitle', false)
 
-class PluginSettings extends React.Component {
+module.exports = class PluginSettings extends React.Component {
   constructor (props) {
     super(props)
   }
 
   render () {
-    const { plugin } = this.props.plugin
+    const { plugin } = this.props
 
     return (
       <Modal size={Modal.Sizes.MEDIUM}>
@@ -30,7 +30,7 @@ class PluginSettings extends React.Component {
 
   componentDidMount () {
     setTimeout(() => {
-      const { plugin } = this.props.plugin
+      const { plugin } = this.props
       const el = document.getElementById(`plugin-settings-${plugin.getName()}`)
       if(!el) return
       const panel = plugin.getSettingsPanel()
@@ -39,5 +39,3 @@ class PluginSettings extends React.Component {
     })
   }
 }
-
-module.exports = PluginSettings

@@ -8,7 +8,7 @@ const { Module } = require('module')
 
 Module.globalPaths.push(path.resolve(electron.remote.app.getAppPath(), 'node_modules'))
 
-class BDPluginManager {
+module.exports = class BDPluginManager {
   constructor(ContentManger, settings) {
     this.ContentManger = ContentManger
     this.settings = settings
@@ -137,39 +137,30 @@ class BDPluginManager {
 
     plugins.forEach((pluginName) => this.loadPlugin(pluginName))
   }
-  loadPlugin (pluginName) {
+
+  loadPlugin(pluginName) {
     const pluginPath = path.join(this.ContentManger.pluginsFolder, `${pluginName}.plugin.js`)
     if (!fs.existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
 
-    let content = fs.readFileSync(pluginPath, 'utf8')
-    if (content.charCodeAt(0) === 0xFEFF) content = content.slice(1)
-
-    const meta = this.ContentManger.extractMeta(content)
-    if(meta.format != 'jsdoc') content += `\nmodule.exports = ${meta.name};`
-
-    const tempPluginPath = path.join(this.ContentManger.pluginsFolder, `__${pluginName}.plugin.js`)
-    fs.writeFileSync(tempPluginPath, content)
-
     // eslint-disable-next-line global-require
-    const Plugin = require(tempPluginPath)
-    const plugin = new Plugin
-    plugin.__meta = meta
+    const meta = require(pluginPath)
+    try {
+      const plugin = new meta.type
+      if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
+      delete window.bdplugins[plugin.getName()]
+      window.bdplugins[plugin.getName()] = { plugin, __filePath: pluginPath, ...meta }
 
-    if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
-    delete window.bdplugins[plugin.getName()]
-    window.bdplugins[plugin.getName()] = { plugin, __filePath: pluginPath }
+      if (plugin.load && typeof plugin.load === 'function')
+        try {
+          plugin.load()
+        } catch (err) {
+          this.__error(err, `Failed to preload ${plugin.getName()}`)
+        }
 
-    if (plugin.load && typeof plugin.load === 'function')
-      try {
-        plugin.load()
-      } catch (err) {
-        this.__error(err, `Failed to preload ${plugin.getName()}`)
-      }
-
-
-    this.__log(`Loaded ${plugin.getName()} v${plugin.getVersion()} by ${plugin.getAuthor()}`)
-    fs.unlinkSync(tempPluginPath)
-    delete require.cache[require.resolve(tempPluginPath)]
+      this.__log(`Loaded ${plugin.getName()} v${plugin.getVersion()} by ${plugin.getAuthor()}`)
+    } catch (e) {
+      this.__error(e, meta)
+    }
   }
 
   deletePlugin (pluginName) {
@@ -177,12 +168,11 @@ class BDPluginManager {
     if (!plugin) return this.__error(null, `Tried to delete a missing plugin: ${pluginName}`)
 
     this.disablePlugin(pluginName)
-    if (typeof plugin.unload === 'function') plugin.plugin.unload()
+    if (typeof plugin.plugin.unload === 'function') plugin.plugin.unload()
     delete window.bdplugins[pluginName]
 
     fs.unlinkSync(plugin.__filePath)
   }
-
 
   fireEvent (event, ...args) {
     for (const plug in window.bdplugins) {
@@ -220,5 +210,3 @@ class BDPluginManager {
     }
   }
 }
-
-module.exports = BDPluginManager

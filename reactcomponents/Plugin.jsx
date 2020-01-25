@@ -9,22 +9,22 @@ const { open: openModal } = require('powercord/modal')
 const SettingsModal = require('./PluginSettings.jsx')
 const DeleteConfirm = require('./DeleteConfirm.jsx')
 
-class Plugin extends React.Component {
+module.exports = class Plugin extends React.Component {
   constructor (props) {
     super(props)
   }
   
   render () {
-    this.props.enabled = this.props.plugin.__started
+    this.props.enabled = this.props.meta.__started
 
     // We're reusing Powercord's plugin manager classes
     return (
       <Card className='powercord-plugin'>
         <div className='powercord-plugin-header'>
-          <h4>{this.props.plugin.plugin.getName()}</h4>
+          <h4>{this.props.plugin.getName()}</h4>
           <Tooltip>
             <div>
-              <Switch value={this.props.plugin.__started} onChange={() => this.togglePlugin()}/>
+              <Switch value={this.props.enabled} onChange={() => this.togglePlugin()}/>
             </div>
           </Tooltip>
         </div>
@@ -34,21 +34,21 @@ class Plugin extends React.Component {
             <Tooltip text='Author(s)'>
               <Icon name='Person' />
             </Tooltip>
-            <span>{this.props.plugin.plugin.getAuthor()}</span>
+            <span>{this.props.plugin.getAuthor()}</span>
           </div>
 
           <div className='version'>
             <Tooltip text='Version'>
               <Icon name='StoreTag' />
             </Tooltip>
-            <span>v{this.props.plugin.plugin.getVersion()}</span>
+            <span>v{this.props.plugin.getVersion()}</span>
           </div>
 
           <div className='description'>
             <Tooltip text='Description'>
               <Icon name='Receipt' />
             </Tooltip>
-            <span>{this.props.plugin.plugin.getDescription()}</span>
+            <span>{this.props.plugin.getDescription()}</span>
           </div>
         </div>
 
@@ -77,7 +77,7 @@ class Plugin extends React.Component {
 
           <div class='bdc-spacer'></div>
 
-          {typeof this.props.plugin.plugin.getSettingsPanel === 'function' &&
+          {typeof this.props.plugin.getSettingsPanel === 'function' &&
             <Button
               disabled={!this.props.enabled}
               onClick={() => openModal(() => <SettingsModal plugin={this.props.plugin}/>)}
@@ -87,7 +87,7 @@ class Plugin extends React.Component {
               Settings
             </Button>
           }
-          {typeof this.props.plugin.plugin.getSettingsPanel === 'function' &&
+          {typeof this.props.plugin.getSettingsPanel === 'function' &&
             <div class='bdc-margin'></div>
           }
           
@@ -114,6 +114,3 @@ class Plugin extends React.Component {
     this.forceUpdate()
   }
 }
-
-module.exports = Plugin
-

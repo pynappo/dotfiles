@@ -5,11 +5,9 @@ const { SwitchItem } = require('powercord/components/settings')
 
 const PluginList = require('./PluginList.jsx')
 
-class Settings extends React.Component {
+module.exports = class Settings extends React.Component {
   constructor (props) {
     super(props)
-
-    this.pluginManager = powercord.pluginManager.plugins.get('bdCompat').PluginManager
   }
 
   render () {
@@ -19,10 +17,8 @@ class Settings extends React.Component {
         onChange={() => this.props.toggleSetting('disableWhenStopFailed')}>
           Disable plugin when failed to stop
         </SwitchItem>
-        <PluginList pluginManager={this.pluginManager} />
+        <PluginList pluginManager={window.PluginModule} />
       </div>
     )
   }
 }
-
-module.exports = Settings

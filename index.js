@@ -20,7 +20,8 @@ module.exports = class BDCompat extends Plugin {
   }
 
   pluginWillUnload () {
-    this.PluginManager.destroy()
+    if (window.PluginModule) window.PluginModule.destroy()
+    if (window.ContentManager) window.ContentManager.destroy()
     this.destroyGlobals()
   }
 
@@ -47,8 +48,8 @@ module.exports = class BDCompat extends Plugin {
     window.Utils = { monkeyPatch: BDApi.monkeyPatch, suppressErrors: BDApi.suppressErrors, escapeID: BDApi.escapeID }
 
     window.BDV2 = BDV2
-    window.ContentManager = BDContentManager
-    window.PluginModule = new BDPluginManager(BDContentManager, this.settings)
+    window.ContentManager = new BDContentManager
+    window.PluginModule = new BDPluginManager(window.ContentManager, this.settings)
 
     this.log('Defined BetterDiscord globals')
   }
