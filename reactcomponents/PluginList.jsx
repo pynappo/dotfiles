@@ -23,7 +23,7 @@ module.exports = class PluginList extends React.Component {
       <div className='powercord-entities-manage powercord-text'>
         <div className='powercord-entities-manage-header'>
           <Button
-            onClick={() => openItem(this.props.pluginManager.pluginDirectory)}
+            onClick={() => openItem(window.ContentManager.pluginsFolder)}
             size={Button.Sizes.SMALL}
           >
             Open Plugin Folder

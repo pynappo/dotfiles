@@ -20,3 +20,6 @@ git clone https://github.com/Juby210/bdCompat
 - Reload your Discord.
 - Go to User Settings and head to the `BetterDiscord Plugins` section
 - Enable the said plugin
+
+#### edCompat? ED plugins support?
+If you want EnhancedDiscord plugins support, you can use [EDPluginsLoader](https://github.com/Juby210/EDPluginsLoader) for BD.
