@@ -2,8 +2,8 @@
 
 const { shell: { openExternal } } = require('electron')
 
-const { React }  = require('powercord/webpack')
-const { Tooltip, Switch, Button, Card, Icon } = require('powercord/components')
+const { React, i18n: { Messages } }  = require('powercord/webpack')
+const { Tooltip, Switch, Button, Card, Icons: { Person, Tag, Receipt } } = require('powercord/components')
 const { open: openModal } = require('powercord/modal')
 
 const SettingsModal = require('./PluginSettings.jsx')
@@ -31,22 +31,22 @@ module.exports = class Plugin extends React.Component {
 
         <div className='powercord-plugin-container'>
           <div className='author'>
-            <Tooltip text='Author(s)'>
-              <Icon name='Person' />
+            <Tooltip text={Messages.APPLICATION_STORE_DETAILS_DEVELOPER}>
+              <Person />
             </Tooltip>
             <span>{this.props.plugin.getAuthor()}</span>
           </div>
 
           <div className='version'>
-            <Tooltip text='Version'>
-              <Icon name='StoreTag' />
+            <Tooltip text={Messages.POWERCORD_PLUGINS_VERSION}>
+              <Tag />
             </Tooltip>
             <span>v{this.props.plugin.getVersion()}</span>
           </div>
 
           <div className='description'>
-            <Tooltip text='Description'>
-              <Icon name='Receipt' />
+            <Tooltip text={Messages.DESCRIPTION}>
+              <Receipt />
             </Tooltip>
             <span>{this.props.plugin.getDescription()}</span>
           </div>
@@ -97,7 +97,7 @@ module.exports = class Plugin extends React.Component {
             size={Button.Sizes.SMALL}
             color={Button.Colors.RED}
           >
-            Delete
+            {Messages.APPLICATION_CONTEXT_MENU_UNINSTALL}
           </Button>
         </div>
       </Card>

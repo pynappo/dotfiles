@@ -25,8 +25,10 @@ module.exports = class PluginList extends React.Component {
           <Button
             onClick={() => openItem(window.ContentManager.pluginsFolder)}
             size={Button.Sizes.SMALL}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.OUTLINED}
           >
-            Open Plugin Folder
+            Open Plugins Folder
           </Button>
         </div>
         <div className='powercord-entities-manage-search'>
