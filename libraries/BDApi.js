@@ -404,6 +404,10 @@ class BdApi {
     return getReactInstance(node)
   }
 
+  static isSettingEnabled(e) {
+    return !!settingsCookie[e]
+  }
+
   static isPluginEnabled (name) {
     const plugin = bdplugins[name]
     return plugin ? plugin.__started : false
