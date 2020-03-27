@@ -1,7 +1,6 @@
 'use strict'
 
 const electron = require('electron')
-const process = require('process')
 const path = require('path')
 const fs = require('fs')
 const { Module } = require('module')
@@ -14,12 +13,7 @@ module.exports = class BDPluginManager {
     this.settings = settings
 
     this.currentWindow = electron.remote.getCurrentWindow()
-    this.currentWindow.webContents.on('did-navigate-in-page', () => this.onSwitchListener())
-
-    // DevilBro's plugins checks whether or not it's running on ED
-    // This isn't BetterDiscord, so we'd be better off doing this.
-    // eslint-disable-next-line no-process-env
-    process.env.injDir = bdConfig.dataPath
+    this.currentWindow.webContents.on('did-navigate-in-page', this.channelSwitch = () => this.fireEvent('onSwitch'))
 
     this.observer = new MutationObserver((mutations) => {
         for (let i = 0, mlen = mutations.length; i < mlen; i++) this.fireEvent('observer', mutations[i])
@@ -37,13 +31,10 @@ module.exports = class BDPluginManager {
 
   destroy () {
     window.BdApi.unlinkJS('jquery')
-    this.currentWindow.webContents.off('did-navigate-in-page', () => this.onSwitchListener())
+    if (this.channelSwitch) this.currentWindow.webContents.off('did-navigate-in-page', this.channelSwitch)
 
     this.observer.disconnect()
     this.stopAllPlugins()
-
-    // eslint-disable-next-line no-process-env
-    process.env.injDir = ''
   }
 
 
@@ -163,7 +154,7 @@ module.exports = class BDPluginManager {
     }
   }
 
-  deletePlugin (pluginName) {
+  delete(pluginName) {
     const plugin = window.bdplugins[pluginName]
     if (!plugin) return this.__error(null, `Tried to delete a missing plugin: ${pluginName}`)
 
@@ -187,10 +178,10 @@ module.exports = class BDPluginManager {
     }
   }
 
-  onSwitchListener () {
-    this.fireEvent('onSwitch')
-  }
-
+  disable = this.disablePlugin
+  enable  = this.enablePlugin
+  reload  = this.reloadPlugin
+  
 
   __log (...message) {
     console.log('%c[BDCompat:BDPluginManager]', 'color: #3a71c1;', ...message)

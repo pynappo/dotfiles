@@ -82,8 +82,8 @@ module.exports = class PluginList extends React.Component {
     })
   }
 
-  __deletePlugin (pluginName) {
-    this.props.pluginManager.deletePlugin(pluginName)
+  __deletePlugin(pluginName) {
+    this.props.pluginManager.delete(pluginName)
 
     this.forceUpdate()
   }

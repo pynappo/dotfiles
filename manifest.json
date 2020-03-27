@@ -1,6 +1,6 @@
 {
   "name": "BetterDiscord plugin compatibility",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Adds support for running BetterDiscord plugins",
   "author": "intrnl & Juby210",
   "license": "MIT"
