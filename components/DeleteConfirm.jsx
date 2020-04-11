@@ -1,17 +1,12 @@
 'use strict'
 
-const { React, getModule } = require('powercord/webpack')
+const { React } = require('powercord/webpack')
+const { Text } = require('powercord/components')
 const { Confirm: ConfirmModal } = require('powercord/components/modal')
 const { close: closeModal } = require('powercord/modal')
 
-const Text = getModule(['Sizes', 'Weights'], false).default
-
 module.exports = class DeleteConfirm extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
-  render () {
+  render() {
     return (
       <ConfirmModal
         red={true}

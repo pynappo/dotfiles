@@ -114,7 +114,12 @@ class BdApi {
       if (!fs.existsSync(configPath)) {
         BdApi.__pluginData[pluginName] = {}
       } else {
-        BdApi.__pluginData[pluginName] = JSON.parse(fs.readFileSync(configPath))
+        try {
+          BdApi.__pluginData[pluginName] = JSON.parse(fs.readFileSync(configPath))
+        } catch (e) {
+          BdApi.__pluginData[pluginName] = {}
+          BdApi.__warn(`${pluginName} has corrupted or empty config file, loaded as {}`)
+        }
       }
 
 
