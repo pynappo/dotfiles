@@ -44,7 +44,7 @@ module.exports = class BDCompat extends Plugin {
 
     window.BDV2 = BDV2
     window.ContentManager = new ContentManager
-    window.pluginModule = new PluginManager(window.ContentManager, this.settings)
+    window.pluginModule   = new PluginManager(window.ContentManager.pluginsFolder, this.settings)
 
     // DevilBro's plugins checks whether or not it's running on ED
     // This isn't BetterDiscord, so we'd be better off doing this.

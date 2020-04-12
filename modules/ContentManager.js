@@ -51,7 +51,6 @@ module.exports = class ContentManager {
     return parsed
   }
 
-  // https://github.com/rauenzi/BetterDiscordApp/blob/master/js/main.js#L1429
   parseNewMeta(content) {
     const block = content.split("/**", 2)[1].split("*/", 1)[0]
     const out = {}
@@ -64,7 +63,7 @@ module.exports = class ContentManager {
         field = line.substr(1, l - 1)
         accum = line.substr(l + 1)
       } else {
-        accum += " " + line.replace("\\n", "\n").replace(escapedAtRegex, "@")
+        accum += " " + line.replace("\\n", "\n").replace(/^\\@/, "@")
       }
     }
     out[field] = accum.trim()

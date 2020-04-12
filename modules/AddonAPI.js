@@ -1,7 +1,8 @@
 module.exports = class AddonAPI {
     constructor(list, manager) {
-        this.list = list
+        this.list    = list
         this.manager = manager
+        this.folder  = manager.folder
 
         this.enable  = this.manager.enable  || (() => {})
         this.disable = this.manager.disable || (() => {})

@@ -8,8 +8,8 @@ const { Module } = require('module')
 Module.globalPaths.push(path.resolve(electron.remote.app.getAppPath(), 'node_modules'))
 
 module.exports = class BDPluginManager {
-  constructor(ContentManger, settings) {
-    this.ContentManger = ContentManger
+  constructor(pluginsFolder, settings) {
+    this.folder   = pluginsFolder
     this.settings = settings
 
     this.currentWindow = electron.remote.getCurrentWindow()
@@ -121,8 +121,8 @@ module.exports = class BDPluginManager {
     this.stopPlugin(pluginName)
   }
 
-  loadAllPlugins () {
-    const plugins = fs.readdirSync(this.ContentManger.pluginsFolder)
+  loadAllPlugins() {
+    const plugins = fs.readdirSync(this.folder)
       .filter((pluginFile) => pluginFile.endsWith('.plugin.js'))
       .map((pluginFile) => pluginFile.slice(0, -('.plugin.js'.length)))
 
@@ -130,7 +130,7 @@ module.exports = class BDPluginManager {
   }
 
   loadPlugin(pluginName) {
-    const pluginPath = path.join(this.ContentManger.pluginsFolder, `${pluginName}.plugin.js`)
+    const pluginPath = path.join(this.folder, `${pluginName}.plugin.js`)
     if (!fs.existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
 
     // eslint-disable-next-line global-require
