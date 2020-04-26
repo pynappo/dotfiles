@@ -6,7 +6,14 @@
 	width: 20px;
 }
 .bdc-justifystart {
+	display: flex;
 	justify-content: flex-start;
+}
+.bdc-plugin .metadata > div {
+	width: 50% !important;
+}
+.bdc-plugin .metadata > .license {
+	display: none;
 }
 
 /* Toast CSS */

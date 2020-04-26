@@ -41,7 +41,7 @@ module.exports = class PluginList extends React.Component {
           </TextInput>
         </div>
 
-        <div className='powercord-entities-manage-container'>
+        <div className='powercord-entities-manage-items'>
           {plugins.map((plugin) =>
             <Plugin
               plugin={plugin.plugin}

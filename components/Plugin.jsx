@@ -3,24 +3,27 @@
 const { shell: { openExternal } } = require('electron')
 
 const { React, i18n: { Messages } }  = require('powercord/webpack')
-const { Tooltip, Switch, Button, Card, Icons: { Person, Tag, Receipt } } = require('powercord/components')
+const { Tooltip, Switch, Button, Card, Divider } = require('powercord/components')
 const { open: openModal } = require('powercord/modal')
 
 const SettingsModal = require('./PluginSettings.jsx')
 const DeleteConfirm = require('./DeleteConfirm.jsx')
 
+let Details
+try {         // v2-dev
+  Details = require('../../pc-moduleManager/components/parts/Details')
+} catch (e) { // v2
+  Details = require('../../pc-moduleManager/components/items/Products/parts/InstalledDetails')
+}
+
 module.exports = class Plugin extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-  
   render () {
     this.props.enabled = this.props.meta.__started
 
     // We're reusing Powercord's plugin manager classes
     return (
-      <Card className='powercord-plugin'>
-        <div className='powercord-plugin-header'>
+      <Card className='powercord-plugin powercord-product bdc-plugin'>
+        <div className='powercord-plugin-header powercord-product-header'>
           <h4>{this.props.plugin.getName()}</h4>
           <Tooltip>
             <div>
@@ -28,31 +31,19 @@ module.exports = class Plugin extends React.Component {
             </div>
           </Tooltip>
         </div>
+        <Divider />
 
-        <div className='powercord-plugin-container'>
-          <div className='author'>
-            <Tooltip text={Messages.APPLICATION_STORE_DETAILS_DEVELOPER}>
-              <Person />
-            </Tooltip>
-            <span>{this.props.plugin.getAuthor()}</span>
-          </div>
+        <Details
+          svgSize={24} license=''
+          author={this.props.plugin.getAuthor()}
+          version={this.props.plugin.getVersion()}
+          description={this.props.plugin.getDescription()}
+        />
 
-          <div className='version'>
-            <Tooltip text={Messages.POWERCORD_PLUGINS_VERSION}>
-              <Tag />
-            </Tooltip>
-            <span>v{this.props.plugin.getVersion()}</span>
-          </div>
+        <div class='bdc-spacer'></div>
+        <Divider />
 
-          <div className='description'>
-            <Tooltip text={Messages.DESCRIPTION}>
-              <Receipt />
-            </Tooltip>
-            <span>{this.props.plugin.getDescription()}</span>
-          </div>
-        </div>
-
-        <div className='powercord-plugin-footer bdc-justifystart'>
+        <div className='powercord-plugin-footer powercord-product-footer bdc-justifystart'>
           {this.props.meta.source &&
             <Button
               onClick={() => openExternal(this.props.meta.source)}
