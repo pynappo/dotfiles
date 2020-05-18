@@ -9,12 +9,7 @@ const { open: openModal } = require('powercord/modal')
 const SettingsModal = require('./PluginSettings.jsx')
 const DeleteConfirm = require('./DeleteConfirm.jsx')
 
-let Details
-try {         // v2-dev
-  Details = require('../../pc-moduleManager/components/parts/Details')
-} catch (e) { // v2
-  Details = require('../../pc-moduleManager/components/items/Products/parts/InstalledDetails')
-}
+const Details = require('../../pc-moduleManager/components/parts/Details')
 
 module.exports = class Plugin extends React.Component {
   render () {

@@ -133,24 +133,28 @@ module.exports = class BDPluginManager {
     const pluginPath = path.join(this.folder, `${pluginName}.plugin.js`)
     if (!fs.existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
 
-    // eslint-disable-next-line global-require
-    const meta = require(pluginPath)
     try {
-      const plugin = new meta.type
-      if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
-      delete window.bdplugins[plugin.getName()]
-      window.bdplugins[plugin.getName()] = { plugin, __filePath: pluginPath, ...meta }
+      const meta = require(pluginPath)
+      try {
+        // eslint-disable-next-line global-require
+        const plugin = new meta.type
+        if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
+        delete window.bdplugins[plugin.getName()]
+        window.bdplugins[plugin.getName()] = { plugin, __filePath: pluginPath, ...meta }
 
-      if (plugin.load && typeof plugin.load === 'function')
-        try {
-          plugin.load()
-        } catch (err) {
-          this.__error(err, `Failed to preload ${plugin.getName()}`)
-        }
+        if (plugin.load && typeof plugin.load === 'function')
+          try {
+            plugin.load()
+          } catch (err) {
+            this.__error(err, `Failed to preload ${plugin.getName()}`)
+          }
 
-      this.__log(`Loaded ${plugin.getName()} v${plugin.getVersion()} by ${plugin.getAuthor()}`)
+        this.__log(`Loaded ${plugin.getName()} v${plugin.getVersion()} by ${plugin.getAuthor()}`)
+      } catch (e) {
+        this.__error(e, meta)
+      }
     } catch (e) {
-      this.__error(e, meta)
+      this.__error(`Failed to compile ${pluginName}:`, e)
     }
   }
 
@@ -192,7 +196,7 @@ module.exports = class BDPluginManager {
   }
 
   __error (error, ...message) {
-    console.log('%c[BDCompat:BDPluginManager]', 'color: red;', ...message)
+    console.error('%c[BDCompat:BDPluginManager]', 'color: red;', ...message)
 
     if (error) {
       console.groupCollapsed(`%cError: ${error.message}`, 'color: red;')
