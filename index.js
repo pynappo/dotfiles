@@ -1,7 +1,6 @@
 'use strict'
 
 const { Plugin } = require('powercord/entities')
-const { join } = require('path')
 const process = require('process')
 
 const { AddonAPI, BDApi, BDV2, ContentManager, PluginManager } = require('./modules')
@@ -9,7 +8,7 @@ const Settings = require('./components/Settings')
 
 module.exports = class BDCompat extends Plugin {
   startPlugin () {
-    this.loadCSS(join(__dirname, 'style.css'))
+    this.loadStylesheet('style.css')
     this.defineGlobals()
 
     this.registerSettings('bdCompat', 'BetterDiscord Plugins', Settings)

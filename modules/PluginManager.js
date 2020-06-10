@@ -134,9 +134,9 @@ module.exports = class BDPluginManager {
     if (!fs.existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
 
     try {
+      // eslint-disable-next-line global-require
       const meta = require(pluginPath)
       try {
-        // eslint-disable-next-line global-require
         const plugin = new meta.type
         if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
         delete window.bdplugins[plugin.getName()]

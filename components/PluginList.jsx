@@ -1,6 +1,6 @@
 'use strict'
 
-const { shell: { openItem } } = require('electron')
+const { shell: { openPath } } = require('electron')
 
 const { React } = require('powercord/webpack')
 const { Button } = require('powercord/components')
@@ -23,7 +23,7 @@ module.exports = class PluginList extends React.Component {
       <div className='powercord-entities-manage powercord-text'>
         <div className='powercord-entities-manage-header'>
           <Button
-            onClick={() => openItem(window.ContentManager.pluginsFolder)}
+            onClick={() => openPath(window.ContentManager.pluginsFolder)}
             size={Button.Sizes.SMALL}
             color={Button.Colors.PRIMARY}
             look={Button.Looks.OUTLINED}
