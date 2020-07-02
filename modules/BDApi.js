@@ -409,6 +409,10 @@ class BdApi {
     return getReactInstance(node)
   }
 
+  static get settings() { // mess
+    return {"Custom css live update":{id:"bda-css-0"},"Custom css auto udpate":{id:"bda-css-1"},"BetterDiscord Blue":{id:"bda-gs-b"},"Public Servers":{id:"bda-gs-1"},"Minimal Mode":{id:"bda-gs-2"},"Voice Mode":{id:"bda-gs-4"},"Hide Channels":{id:"bda-gs-3"},"Dark Mode":{id:"bda-gs-5"},"Voice Disconnect":{id:"bda-dc-0"},"24 Hour Timestamps":{id:"bda-gs-6"},"Colored Text":{id:"bda-gs-7"},"Normalize Classes":{id:"fork-ps-4"},"Content Error Modal":{id:"fork-ps-1"},"Show Toasts":{id:"fork-ps-2"},"Scroll To Settings":{id:"fork-ps-3"},"Automatic Loading":{id:"fork-ps-5"},"Developer Mode":{id:"bda-gs-8"},"Copy Selector":{id:"fork-dm-1"},"React DevTools":{id:"reactDevTools"},"Enable Transparency":{id:"fork-wp-1"},"Window Frame":{id:"fork-wp-2"},"Download Emotes":{id:"fork-es-3"},"Twitch Emotes":{id:"bda-es-7"},"FrankerFaceZ Emotes":{id:"bda-es-1"},"BetterTTV Emotes":{id:"bda-es-2"},"Emote Menu":{id:"bda-es-0"},"Emoji Menu":{id:"bda-es-9"},"Emote Auto Capitalization":{id:"bda-es-4"},"Show Names":{id:"bda-es-6"},"Show emote modifiers":{id:"bda-es-8"},"Animate On Hover":{id:"fork-es-2"}}
+  }
+
   static isSettingEnabled(e) {
     return !!settingsCookie[e]
   }
