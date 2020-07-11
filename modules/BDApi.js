@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const crypto = require('crypto')
 
-const { React, ReactDOM, getModuleByDisplayName, modal } = require('powercord/webpack')
+const { getModuleByDisplayName, modal, React, ReactDOM } = require('powercord/webpack')
 const { getModule, getAllModules } = require('powercord/webpack')
 const { getOwnerInstance, getReactInstance } = require('powercord/util')
 const { inject, uninject } = require('powercord/injector')
@@ -279,26 +279,25 @@ class BdApi {
     return getOwnerInstance(node)
   }
 
-  static findModule (filter) {
+  static findModule(filter) {
     return getModule(filter, false)
   }
 
-  static findAllModules (filter) {
+  static findAllModules(filter) {
     return getAllModules(filter)
   }
 
-  static findModuleByProps (...props) {
+  static findModuleByProps(...props) {
     return BdApi.findModule((module) => props.every((prop) => typeof module[prop] !== 'undefined'))
   }
 
-  static findModuleByDisplayName (displayName) {
-    return BdApi.findModule((module) => module.displayName === displayName)
+  static findModuleByDisplayName(displayName) {
+    return getModuleByDisplayName(displayName, false)
   }
 
   static monkeyPatch (what, methodName, options = {}) {
-    const displayName = options.displayName ||
-      what.displayName || what.name || what.constructor.displayName || what.constructor.name ||
-      'MissingName'
+    const displayName = options.displayName || what.displayName || what[methodName].displayName
+      || what.name || what.constructor.displayName || what.constructor.name || 'MissingName'
 
     // if (options.instead) return BdApi.__warn('Powercord API currently does not support replacing the entire method!')
 
@@ -321,7 +320,7 @@ class BdApi {
         if (!options.silent) BdApi.__log(`Unpatching instead of ${displayName} ${methodName}`)
         what[methodName] = origMethod
       }
-      what[methodName] = function() {
+      what[methodName] = function () {
         const data = {
           thisObject: this,
           methodArguments: arguments,
@@ -333,6 +332,7 @@ class BdApi {
         if (tempRet !== undefined) data.returnValue = tempRet
         return data.returnValue
       }
+      if (displayName != 'MissingName') what[methodName].displayName = displayName
       return cancel
     }
   
@@ -340,6 +340,7 @@ class BdApi {
     const patches = []
     if (options.before) patches.push(BdApi.__injectBefore({ what, methodName, options, displayName }, origMethod))
     if (options.after) patches.push(BdApi.__injectAfter({ what, methodName, options, displayName }, origMethod))
+    if (displayName != 'MissingName') what[methodName].displayName = displayName
 
     const finalCancelPatch = () => patches.forEach((patch) => patch())
 
