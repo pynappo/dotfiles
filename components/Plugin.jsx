@@ -7,9 +7,13 @@ const { Tooltip, Switch, Button, Card, Divider } = require('powercord/components
 const { open: openModal } = require('powercord/modal')
 
 const SettingsModal = require('./PluginSettings.jsx')
-const DeleteConfirm = require('./DeleteConfirm.jsx')
 
-const Details = require('../../pc-moduleManager/components/parts/Details')
+let Details = () => <div>Failed to load powercord module manager's details component!</div>
+try {
+  Details = require('../../pc-moduleManager/components/parts/Details')
+} catch (e) {
+  console.error('Failed to load powercord module manager\'s details component! Settings won\'t render correctly.', e)
+}
 
 module.exports = class Plugin extends React.Component {
   render () {
@@ -78,10 +82,14 @@ module.exports = class Plugin extends React.Component {
           }
           
           <Button
-            onClick={() => openModal(() => <DeleteConfirm plugin={this.props.plugin} onConfirm={this.props.onDelete} />)}
-            look={Button.Looks.OUTLINED}
-            size={Button.Sizes.SMALL}
+            onClick={() => window.BdApi.showConfirmationModal(
+              'Delete Plugin',
+              `Are you sure you want to delete **${this.props.plugin.getName()}**? This can't be undone!`,
+              { confirmText: 'Delete', danger: true, onConfirm: this.props.onDelete }
+            )}
             color={Button.Colors.RED}
+            look={Button.Looks.FILLED}
+            size={Button.Sizes.SMALL}
           >
             {Messages.APPLICATION_CONTEXT_MENU_UNINSTALL}
           </Button>

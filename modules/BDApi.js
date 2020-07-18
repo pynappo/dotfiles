@@ -4,8 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const crypto = require('crypto')
 
-const { getModuleByDisplayName, modal, React, ReactDOM } = require('powercord/webpack')
-const { getModule, getAllModules } = require('powercord/webpack')
+const { getModule, getAllModules, getModuleByDisplayName, React, ReactDOM } = require('powercord/webpack')
 const { getOwnerInstance, getReactInstance } = require('powercord/util')
 const { inject, uninject } = require('powercord/injector')
 
@@ -182,16 +181,17 @@ class BdApi {
   }
 
   static async showConfirmationModal(title, children, options = {}) {
-    const { onConfirm = () => {}, onCancel = () => {}, confirmText = 'Okay', cancelText = 'Cancel', danger = false, key = undefined } = options
+    const { onConfirm = () => {}, onCancel = () => {}, confirmText = 'Okay', cancelText = 'Cancel', danger = false, key } = options
 
+    const { openModal } = await getModule(['openModal', 'updateModal'])
     const Markdown = await getModuleByDisplayName('Markdown')
-    const ConfirmationModal = await getModule(m => m.defaultProps && m.key && m.key() == 'confirm-modal')
+    const ConfirmModal = await getModuleByDisplayName('ConfirmModal')
 
     if (!Array.isArray(children)) children = [ children ]
     children = children.map(c => typeof c == 'string' ? React.createElement(Markdown, null, c) : c)
-    modal.push(ConfirmationModal, {
-      header: title, children, red: danger, confirmText, cancelText, onConfirm, onCancel
-    }, key)
+    return openModal(props => React.createElement(ConfirmModal, {
+      header: title, red: danger, confirmText, cancelText, onConfirm, onCancel, ...props
+    }, children), { modalKey: key })
   }
 
   static showToast (content, options = {}) {
