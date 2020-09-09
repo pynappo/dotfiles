@@ -68,6 +68,8 @@ module.exports = class BDPluginManager {
 
     if (plugin.__started) return
 
+    if (!this.settings.get('__dontEnableMe') && plugin.authorId == '278543574059057154') return this.__warn(`Tried to start unsupported plugin: ${pluginName} (DevilBro plugins won't be supported)`)
+
     try {
       plugin.plugin.start()
       plugin.__started = true
@@ -192,7 +194,7 @@ module.exports = class BDPluginManager {
   }
 
   __warn (...message) {
-    console.log('%c[BDCompat:BDPluginManager]', 'color: #e8a400;', ...message)
+    console.warn('%c[BDCompat:BDPluginManager]', 'color: #e8a400;', ...message)
   }
 
   __error (error, ...message) {
