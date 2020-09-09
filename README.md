@@ -4,6 +4,12 @@ Compatibility layer for running BetterDiscord plugins in Powercord
 
 [![Screenshot showing a list of BetterDiscord plugins](https://i.imgur.com/xaAOdSE.png)](https://i.imgur.com/xaAOdSE.png)
 
+### INCOMPATIBILITES WARNING
+DevilBro plugins won't work (for now), they use bad practices that are a security problem. See:
+- https://github.com/Juby210/bdCompat/issues/5
+- https://github.com/powercord-org/powercord/issues/386
+Anyway, you shouldn't care because they cause problems with high memory usage and probably you can find alternatives for powercord.
+
 ## Installation
 
 Clone this repository to your Powercord install's plugins folder
