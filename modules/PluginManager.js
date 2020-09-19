@@ -68,8 +68,6 @@ module.exports = class BDPluginManager {
 
     if (plugin.__started) return
 
-    if (!this.settings.get('__dontEnableMe') && plugin.authorId == '278543574059057154') return this.__warn(`Tried to start unsupported plugin: ${pluginName} (DevilBro plugins won't be supported)`)
-
     try {
       plugin.plugin.start()
       plugin.__started = true
