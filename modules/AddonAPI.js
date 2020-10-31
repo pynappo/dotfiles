@@ -4,9 +4,9 @@ module.exports = class AddonAPI {
         this.manager = manager
         this.folder  = manager.folder
 
-        this.enable  = this.manager.enable.bind(this.manager)  || (() => {})
-        this.disable = this.manager.disable.bind(this.manager) || (() => {})
-        this.reload  = this.manager.reload.bind(this.manager)  || (() => {})
+        this.enable  = this.manager.enable?.bind(this.manager)  || (() => {})
+        this.disable = this.manager.disable?.bind(this.manager) || (() => {})
+        this.reload  = this.manager.reload?.bind(this.manager)  || (() => {})
     }
 
     isEnabled(name) {
