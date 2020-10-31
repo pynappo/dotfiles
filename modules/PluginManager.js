@@ -1,19 +1,13 @@
-'use strict'
-
-const electron = require('electron')
 const path = require('path')
 const fs = require('fs')
-const { Module } = require('module')
-
-Module.globalPaths.push(path.resolve(electron.remote.app.getAppPath(), 'node_modules'))
+const { FluxDispatcher } = require('powercord/webpack')
 
 module.exports = class BDPluginManager {
   constructor(pluginsFolder, settings) {
     this.folder   = pluginsFolder
     this.settings = settings
 
-    this.currentWindow = electron.remote.getCurrentWindow()
-    this.currentWindow.webContents.on('did-navigate-in-page', this.channelSwitch = () => this.fireEvent('onSwitch'))
+    FluxDispatcher.subscribe('CHANNEL_SELECT', this.channelSwitch = () => this.fireEvent('onSwitch'))
 
     this.observer = new MutationObserver((mutations) => {
         for (let i = 0, mlen = mutations.length; i < mlen; i++) this.fireEvent('observer', mutations[i])
@@ -31,7 +25,7 @@ module.exports = class BDPluginManager {
 
   destroy () {
     window.BdApi.unlinkJS('jquery')
-    if (this.channelSwitch) this.currentWindow.webContents.off('did-navigate-in-page', this.channelSwitch)
+    if (this.channelSwitch) FluxDispatcher.unsubscribe('CHANNEL_SELECT', this.channelSwitch)
 
     this.observer.disconnect()
     this.stopAllPlugins()
