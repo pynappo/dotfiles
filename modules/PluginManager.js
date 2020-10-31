@@ -1,6 +1,8 @@
-const path = require('path')
+const { join } = require('path')
 const fs = require('fs')
 const { FluxDispatcher } = require('powercord/webpack')
+
+require('module').Module.globalPaths.push(join(__dirname, '..', '..', '..', '..', '..', 'node_modules'))
 
 module.exports = class BDPluginManager {
   constructor(pluginsFolder, settings) {
@@ -124,7 +126,7 @@ module.exports = class BDPluginManager {
   }
 
   loadPlugin(pluginName) {
-    const pluginPath = path.join(this.folder, `${pluginName}.plugin.js`)
+    const pluginPath = join(this.folder, `${pluginName}.plugin.js`)
     if (!fs.existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
 
     try {
