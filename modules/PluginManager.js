@@ -1,8 +1,10 @@
 const { join } = require('path')
-const fs = require('fs')
+const { Module } = require('module')
+const { existsSync, readdirSync, unlinkSync } = require('fs')
 const { FluxDispatcher } = require('powercord/webpack')
 
-require('module').Module.globalPaths.push(join(__dirname, '..', '..', '..', '..', '..', 'node_modules'))
+// Allow loading from discords node_modules
+Module.globalPaths.push(join(process.resourcesPath, 'app.asar/node_modules'))
 
 module.exports = class BDPluginManager {
   constructor(pluginsFolder, settings) {
@@ -118,7 +120,7 @@ module.exports = class BDPluginManager {
   }
 
   loadAllPlugins() {
-    const plugins = fs.readdirSync(this.folder)
+    const plugins = readdirSync(this.folder)
       .filter((pluginFile) => pluginFile.endsWith('.plugin.js'))
       .map((pluginFile) => pluginFile.slice(0, -('.plugin.js'.length)))
 
@@ -127,7 +129,7 @@ module.exports = class BDPluginManager {
 
   loadPlugin(pluginName) {
     const pluginPath = join(this.folder, `${pluginName}.plugin.js`)
-    if (!fs.existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
+    if (!existsSync(pluginPath)) return this.__error(null, `Tried to load a nonexistant plugin: ${pluginName}`)
 
     try {
       // eslint-disable-next-line global-require
@@ -162,7 +164,7 @@ module.exports = class BDPluginManager {
     if (typeof plugin.plugin.unload === 'function') plugin.plugin.unload()
     delete window.bdplugins[pluginName]
 
-    fs.unlinkSync(plugin.__filePath)
+    unlinkSync(plugin.__filePath)
   }
 
   fireEvent (event, ...args) {
