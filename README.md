@@ -4,8 +4,6 @@ Compatibility layer for running BetterDiscord plugins in Powercord
 
 [![Screenshot showing a list of BetterDiscord plugins](https://i.imgur.com/xaAOdSE.png)](https://i.imgur.com/xaAOdSE.png)
 
-Anyway, you shouldn't care because they cause problems with high memory usage and probably you can find alternatives for powercord.
-
 ## Installation
 
 Clone this repository to your Powercord install's plugins folder
