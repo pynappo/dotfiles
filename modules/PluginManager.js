@@ -1,7 +1,7 @@
 const { join } = require('path')
 const { Module } = require('module')
 const { existsSync, readdirSync, unlinkSync } = require('fs')
-const { FluxDispatcher } = require('powercord/webpack')
+const { getModule, FluxDispatcher } = require('powercord/webpack')
 
 // Allow loading from discords node_modules
 Module.globalPaths.push(join(process.resourcesPath, 'app.asar/node_modules'))
@@ -20,10 +20,18 @@ module.exports = class BDPluginManager {
 
     // Wait for jQuery, then load the plugins
     window.BdApi.linkJS('jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
-      .then(() => {
+      .then(async () => {
         this.__log('Loaded jQuery')
-        this.loadAllPlugins()
-        this.startAllEnabledPlugins()
+        const ConnectionStore = await getModule(['isTryingToConnect', 'isConnected'])
+        const listener = () => {
+          if (!ConnectionStore.isConnected()) return
+          ConnectionStore.removeChangeListener(listener)
+          this.__log('Loading plugins..')
+          this.loadAllPlugins()
+          this.startAllEnabledPlugins()
+        }
+        if (ConnectionStore.isConnected()) listener()
+        else ConnectionStore.addChangeListener(listener)
       })
   }
 
