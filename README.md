@@ -12,4 +12,4 @@ A powercord plugin that requires you to double click voice channels to join them
 
 # Support
 
--  eternal#1000
+-  eternal#0404
