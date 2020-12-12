@@ -1,22 +1,39 @@
-'use strict'
-
-const { React } = require('powercord/webpack')
+const { React, getModuleByDisplayName } = require('powercord/webpack')
 const { Modal } = require('powercord/components/modal')
-const { getModuleByDisplayName } = require('powercord/webpack')
 const { close: closeModal } = require('powercord/modal')
+const { resolve } = require('path')
 
 const FormTitle = getModuleByDisplayName('FormTitle', false)
 
+let ErrorBoundary = props => props.children
+try {
+  ErrorBoundary = require('../../pc-settings/components/ErrorBoundary')
+} catch (e) {
+  console.error('Failed to load powercord\'s ErrorBoundary component!', e)
+}
+
 module.exports = class PluginSettings extends React.Component {
-  constructor (props) {
-    super(props)
-    this.settingsRef = el => {
-      const { plugin } = this.props
-      if(!el) return
-      const panel = plugin.getSettingsPanel()
-      if(typeof panel == 'string') el.innerHTML = panel
-      else el.append(panel)
+  renderPluginSettings() {
+    let panel
+    try {
+      panel = this.props.plugin.getSettingsPanel()
+    } catch (e) {
+      console.error(e)
+
+      const error = (e.stack || e.toString()).split('\n')
+        .filter(l => !l.includes('discordapp.com/assets/') && !l.includes('discord.com/assets/'))
+        .join('\n')
+        .split(resolve(__dirname, '..', '..')).join('')
+
+      return <div className='powercord-text powercord-settings-error'>
+        <div>An error occurred while rendering settings panel.</div>
+        <code>{error}</code>
+      </div>
     }
+    if (panel instanceof Node || typeof panel === 'string') {
+      return <div ref={el => el ? panel instanceof Node ? el.append(panel) : el.innerHTML = panel : void 0}></div>
+    }
+    return typeof panel === 'function' ? React.createElement(panel) : panel
   }
 
   render () {
@@ -29,7 +46,9 @@ module.exports = class PluginSettings extends React.Component {
           <Modal.CloseButton onClick={closeModal}/>
         </Modal.Header>
         <Modal.Content>
-          <div class='plugin-settings' ref={this.settingsRef} id={'plugin-settings-' + plugin.getName()}></div>
+          <div className='plugin-settings' id={'plugin-settings-' + plugin.getName()}>
+            <ErrorBoundary>{this.renderPluginSettings()}</ErrorBoundary>
+          </div>
         </Modal.Content>
       </Modal>
     )
