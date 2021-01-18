@@ -9,7 +9,3 @@ A powercord plugin that requires you to double click voice channels to join them
 # Installation
 
 -  `git clone https://github.com/slow/double-click-vc`
-
-# Support
-
--  eternal#1000
