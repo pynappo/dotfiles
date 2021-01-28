@@ -1,3 +1,4 @@
+const { webFrame } = require('electron')
 const { join } = require('path')
 const { Module } = require('module')
 const { existsSync, readdirSync, unlinkSync } = require('fs')
@@ -22,6 +23,14 @@ module.exports = class BDPluginManager {
     window.BdApi.linkJS('jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
       .then(async () => {
         this.__log('Loaded jQuery')
+
+        if (!window.jQuery) {
+          Object.defineProperty(window, 'jQuery', {
+            get: () => webFrame.top.context.window.jQuery
+          })
+          window.$ = window.jQuery
+        }
+
         const ConnectionStore = await getModule(['isTryingToConnect', 'isConnected'])
         const listener = () => {
           if (!ConnectionStore.isConnected()) return
