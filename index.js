@@ -12,15 +12,15 @@ module.exports = class DoubleClickVc extends Plugin {
             if (props) {
                const onClick = props.onClick;
                props.onDoubleClick = onClick;
-               props.onClick = () => {};
+               props.onClick = () => { };
             } else {
                this.log('Failed to get nested props.');
             }
          } else if (!channel) {
             this.log('Failed to determine channel type.');
          }
-         
-         return res
+
+         return res;
       });
    }
 
