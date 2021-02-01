@@ -3,6 +3,7 @@ const { join } = require('path')
 const { Module } = require('module')
 const { existsSync, readdirSync, unlinkSync } = require('fs')
 const { getModule, FluxDispatcher } = require('powercord/webpack')
+const { inject, uninject } = require('powercord/injector')
 
 // Allow loading from discords node_modules
 Module.globalPaths.push(join(process.resourcesPath, 'app.asar/node_modules'))
@@ -160,6 +161,8 @@ module.exports = class BDPluginManager {
         if (plugin.load && typeof plugin.load === 'function')
           try {
             plugin.load()
+
+            if (pluginName === '0PluginLibrary') this.__patchZLibPatcher()
           } catch (err) {
             this.__error(err, `Failed to preload ${plugin.getName()}`)
           }
@@ -196,6 +199,33 @@ module.exports = class BDPluginManager {
       }
     }
   }
+
+
+  // ZLibrary checks for instanceof Function and Function class is different in renderer and preload, so need to fix it in bdCompat
+  __patchZLibPatcher() {
+    this.__unpatchZLibPatcher()
+
+    const _window = webFrame.top.context.window
+    if (!window?.ZLibrary?.Patcher) return this.__error(null, 'Failed to patch ZLibrary Patcher')
+
+    const origFunction = Function
+    inject('bdCompat-zlib-patcher-pre', window.ZLibrary.Patcher, 'pushChildPatch', args => {
+      const orig = args[1]?.[args[2]]
+      if (orig && !(orig instanceof origFunction) && orig instanceof _window.Function) window.Function = _window.Function
+      return args
+    }, true)
+    inject('bdCompat-zlib-patcher', window.ZLibrary.Patcher, 'pushChildPatch', (_, res) => {
+      window.Function = origFunction
+      return res
+    })
+
+    this.__log('Patched ZLibrary Patcher')
+  }
+  __unpatchZLibPatcher() {
+    uninject('bdCompat-zlib-patcher-pre')
+    uninject('bdCompat-zlib-patcher')
+  }
+
 
   disable = this.disablePlugin
   enable  = this.enablePlugin
