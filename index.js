@@ -5,9 +5,9 @@ const { AnimatedAvatar } = getModule(['AnimatedAvatar'], false);
 module.exports = class ProfilePictureLink extends Plugin {
    startPlugin() {
       this.original = AnimatedAvatar.type;
-      AnimatedAvatar.type = function (props) {
+      AnimatedAvatar.type = (props) => {
          try {
-            const node = AnimatedAvatar(props).type(props);
+            const node = this.original(props).type(props);
             node.props.onClick = v => {
                if (v.target.parentElement.classList.contains("header-QKLPzZ")) {
                   window.open(props.src.replace(/(?:\?size=\d{3,4})?$/, "?size=4096"), "_blank");
@@ -15,13 +15,11 @@ module.exports = class ProfilePictureLink extends Plugin {
             };
             return node;
          } catch { }
-         return React.createElement(AnimatedAvatar, props);
+         return React.createElement(this.original, props);
       };
-
-      this.cancel = () => AnimatedAvatar.type = this.original;
    }
 
    pluginWillUnload() {
-      this.cancel && this.cancel();
+      AnimatedAvatar.type = this.original;
    }
 };
