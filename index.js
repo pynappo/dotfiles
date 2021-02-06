@@ -1,5 +1,5 @@
 const { Plugin } = require('powercord/entities');
-const { getModule } = require('powercord/webpack');
+const { React, getModule } = require('powercord/webpack');
 const { AnimatedAvatar } = getModule(['AnimatedAvatar'], false);
 
 module.exports = class ProfilePictureLink extends Plugin {
