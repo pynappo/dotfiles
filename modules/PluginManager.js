@@ -154,6 +154,7 @@ module.exports = class BDPluginManager {
       const meta = require(pluginPath)
       try {
         const plugin = new meta.type
+        this.addMissingGetMethods(pluginName, meta, plugin)
         if (window.bdplugins[plugin.getName()]) window.bdplugins[plugin.getName()].plugin.stop()
         delete window.bdplugins[plugin.getName()]
         window.bdplugins[plugin.getName()] = { plugin, __filePath: pluginPath, ...meta }
@@ -169,7 +170,7 @@ module.exports = class BDPluginManager {
 
         this.__log(`Loaded ${plugin.getName()} v${plugin.getVersion()} by ${plugin.getAuthor()}`)
       } catch (e) {
-        this.__error(e, meta)
+        this.__error(e, `Failed to load ${pluginName}:`, meta)
       }
     } catch (e) {
       this.__error(`Failed to compile ${pluginName}:`, e)
@@ -198,6 +199,13 @@ module.exports = class BDPluginManager {
         this.__error(err, `Could not fire ${event} event for ${plugin.name}`)
       }
     }
+  }
+
+  addMissingGetMethods(pluginName, meta, plugin) {
+    if (!plugin.getName) plugin.getName = () => meta.name || pluginName
+    if (!plugin.getDescription) plugin.getDescription = () => meta.description || ''
+    if (!plugin.getVersion) plugin.getVersion = () => meta.version || '0.0.0'
+    if (!plugin.getAuthor) plugin.getAuthor = () => meta.author || meta.authorId || 'Unknown'
   }
 
 
