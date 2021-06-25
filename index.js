@@ -29,49 +29,35 @@ module.exports = class PetPet extends Plugin {
         const { upload } = await getModule(["upload", "cancel"]);
         const { getUser } = await getModule(["getUser"]);
 
+        const res = result => ({ result });
+
         powercord.api.commands.registerCommand({
             command: "petpet",
             aliases: ["patpat"],
             description: "Generate a pet gif",
             usage: "<IMAGE_URL | UserID / Mention> [FILE_NAME - default pet.gif] [DELAY - default 20)] [RESOLUTION - default 128]",
             executor: async ([url, fileName, delay, resolution]) => {
-                if (!url)
-                    return {
-                        result: `give me an image or user to pet dummy`
-                    };
+                if (!url) return res(`give me an image or user to pet dummy`);
 
-                const id = url.match(/\d{17,19}/)?.[0];
-                if (id) {
-                    const user = await getUser(id);
-                    if (!user)
-                        return {
-                            result: "That user doesn't exist"
-                        };
+                if (!url.startsWith("http")) {
+                    const id = url.match(/\d{17,19}/)?.[0];
+                    if (!id) return res("Please specify either a valid url (must start with http), or a user");
+                    const user = await getUser(id).catch(() => void 0);
+                    if (!user) return res("That user doesn't exist");
                     url = user.getAvatarURL();
-                    if (!url)
-                        return {
-                            result: "That user doesn't have an avatar"
-                        };
-                } else {
-                    if (!url.startsWith("http"))
-                        return {
-                            result: "Please specify a valid link"
-                        };
+                    if (!url) return res("That user doesn't have an avatar");
                 }
 
                 const av = await this.loadImage(url, false).catch(() => void 0);
-                if (!av)
-                    return {
-                        result: "Something went wrong while loading that image"
-                    };
+                if (!av) return res("Something went wrong while loading that image");
 
                 const options = {};
                 if (delay !== undefined) {
-                    if (typeof (delay = this.parseInt(delay, "delay")) === "string") return { result: delay };
+                    if (typeof (delay = this.parseInt(delay, "delay")) === "string") return res(delay);
                     options.delay = delay;
                 }
                 if (resolution !== undefined) {
-                    if (typeof (resolution = this.parseInt(resolution, "resolution")) === "string") return { result: resolution };
+                    if (typeof (resolution = this.parseInt(resolution, "resolution")) === "string") return res(resolution);
                     options.resolution = resolution;
                 }
 
@@ -80,9 +66,7 @@ module.exports = class PetPet extends Plugin {
                     buf = await this.petpet(av, options);
                 } catch (error) {
                     this.error(error);
-                    return {
-                        result: "Sorry, something went wrong. Check the console for more info"
-                    };
+                    return res("Sorry, something went wrong. Check the console for more info");
                 }
 
                 let name;
@@ -130,6 +114,7 @@ module.exports = class PetPet extends Plugin {
         });
     }
 
+    // Modified version of https://github.com/aDu/pet-pet-gif, licensed under ISC
     async petpet(avatar, options) {
         if (!this.frames)
             await Promise.all(
