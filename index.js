@@ -41,7 +41,7 @@ module.exports = class PetPet extends Plugin {
 
                 if (!url.startsWith("http")) {
                     const id = url.match(/\d{17,19}/)?.[0];
-                    if (!id) return res("Please specify either a valid url (must start with http), or a user");
+                    if (!id) return res("Please specify either a valid url (must start with http(s)) or a user");
                     const user = await getUser(id).catch(() => void 0);
                     if (!user) return res("That user doesn't exist");
                     url = user.getAvatarURL();
