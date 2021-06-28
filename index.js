@@ -1,7 +1,11 @@
 const { Plugin } = require('powercord/entities');
+const { inject, uninject } = require('powercord/injector');
 const { React, getModule } = require('powercord/webpack');
-const { AnimatedAvatar } = getModule(['AnimatedAvatar'], false);
+const { findInReactTree } = require('powercord/util');
+
+const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
 const { header, avatar } = getModule(['avatar', 'header', 'nameTag'], false);
+const { AnimatedAvatar } = getModule(['AnimatedAvatar'], false);
 
 module.exports = class ProfilePictureLink extends Plugin {
    startPlugin() {
@@ -25,9 +29,24 @@ module.exports = class ProfilePictureLink extends Plugin {
          } catch { }
          return React.createElement(this.original, props);
       };
+
+      inject('pfp-link-banner', Banner, 'default', (args, res) => {
+         let handler = findInReactTree(res.props.children, p => p.onClick);
+         let image = res.props.style?.backgroundImage?.replace('url(', '')?.replace(')', '');
+         if (!handler?.children && image) {
+            res.props.onClick = () => {
+               open(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
+            };
+         }
+
+         return res;
+      });
+
+      Banner.default.displayName = 'UserBanner';
    }
 
    pluginWillUnload() {
       AnimatedAvatar.type = this.original;
+      uninject('pfp-link-banner');
    }
 };
