@@ -37,6 +37,8 @@ module.exports = class ProfilePictureLink extends Plugin {
             res.props.onClick = () => {
                open(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
             };
+
+            res.props.className += ' picture-link'
          }
 
          return res;
