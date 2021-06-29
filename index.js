@@ -24,6 +24,8 @@ const defaults = {
     delay: 20
 };
 
+const emoteRegex = /<?(a)?:?(\w{2,32}):(\d{17,19})>?/;
+
 module.exports = class PetPet extends Plugin {
     async startPlugin() {
         const { upload } = await getModule(["upload", "cancel"]);
@@ -35,17 +37,22 @@ module.exports = class PetPet extends Plugin {
             command: "petpet",
             aliases: ["patpat"],
             description: "Generate a pet gif",
-            usage: "<IMAGE_URL | UserID / Mention> [FILE_NAME - default pet.gif] [DELAY - default 20)] [RESOLUTION - default 128]",
+            usage: "<IMAGE_URL | EMOTE | UserID / Mention> [FILE_NAME - default pet.gif] [DELAY - default 20)] [RESOLUTION - default 128]",
             executor: async ([url, fileName, delay, resolution]) => {
                 if (!url) return res(`give me an image or user to pet dummy`);
 
                 if (!url.startsWith("http")) {
-                    const id = url.match(/\d{17,19}/)?.[0];
-                    if (!id) return res("Please specify either a valid url (must start with http(s)) or a user");
-                    const user = await getUser(id).catch(() => void 0);
-                    if (!user) return res("That user doesn't exist");
-                    url = user.getAvatarURL();
-                    if (!url) return res("That user doesn't have an avatar");
+                    const emoteMatch = emoteRegex.exec(url);
+                    if (emoteMatch) {
+                        url = `https://cdn.discordapp.com/emojis/${emoteMatch[3]}.${emoteMatch[1] ? "gif" : "png"}`;
+                    } else {
+                        const id = url.match(/\d{17,19}/)?.[0];
+                        if (!id) return res("Please specify either a valid url (must start with http(s)), a user or an emote");
+                        const user = await getUser(id).catch(() => void 0);
+                        if (!user) return res("That user doesn't exist");
+                        url = user.getAvatarURL();
+                        if (!url) return res("That user doesn't have an avatar");
+                    }
                 }
 
                 const av = await this.loadImage(url, false).catch(() => void 0);
