@@ -121,17 +121,17 @@ module.exports = class PetPet extends Plugin {
         });
     }
 
-    // Modified version of https://github.com/aDu/pet-pet-gif, licensed under ISC
+    // Based on https://github.com/aDu/pet-pet-gif, licensed under ISC
     async petpet(avatar, options) {
         if (!this.frames)
-            await Promise.all(
+            this.frames = await Promise.all(
                 Array(10)
                     .fill(null)
                     .map((_, i) => {
-                        const filename = join(__dirname, "img", `pet${i}.gif`);
+                        const filename = join(__dirname, "frames", `pet${i}.gif`);
                         return this.loadImage(filename, true);
                     })
-            ).then(frames => (this.frames = frames));
+            );
 
         const FRAMES = this.frames.length;
 
