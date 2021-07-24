@@ -4,7 +4,7 @@ Allows you to click people's profile pictures and banners in their user modal an
 
 # Requirements
 
--  Desire
+-  Powercord
 
 # Installation
 
