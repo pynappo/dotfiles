@@ -4,41 +4,35 @@ const { React, getModule } = require('powercord/webpack');
 const { findInReactTree } = require('powercord/util');
 
 const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
-const { header, avatar } = getModule(['avatar', 'header', 'nameTag'], false);
-const { AnimatedAvatar } = getModule(['AnimatedAvatar'], false);
+const { header, avatar } = getModule(['avatar', 'warningCircleIcon', 'nameTag'], false);
+const Avatar = getModule(['AnimatedAvatar'], false);
 
 module.exports = class ProfilePictureLink extends Plugin {
    startPlugin() {
       this.loadStylesheet('style.css');
-      this.original = AnimatedAvatar.type;
-      AnimatedAvatar.type = (props) => {
-         try {
-            const node = this.original(props).type(props);
-            const className = node.props.className;
-            if (className?.includes(avatar)) {
-               node.props.className += ' picture-link';
-            }
+      inject('pfp-link-profile', Avatar, 'default', (args, res) => {
+         if (res.props?.className?.includes?.(avatar)) {
+            res.props.className = [res.props.className, 'picture-link'].join(' ');
 
-            node.props.onClick = v => {
+            res.props.onClick = (v) => {
                if (v.target.parentElement.classList.contains(header)) {
-                  open(props.src.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
+                  open(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
                }
             };
+         }
 
-            return node;
-         } catch { }
-         return React.createElement(this.original, props);
-      };
+         return res;
+      });
 
       inject('pfp-link-banner', Banner, 'default', (args, res) => {
          let handler = findInReactTree(res.props.children, p => p.onClick);
-         let image = res.props.style?.backgroundImage?.replace('url(', '')?.replace(')', '');
+         let image = args[0].user?.bannerURL;
          if (!handler?.children && image) {
             res.props.onClick = () => {
                open(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
             };
 
-            res.props.className += ' picture-link'
+            res.props.className = [res.props.className, 'picture-link'].join(' ');
          }
 
          return res;
@@ -48,7 +42,7 @@ module.exports = class ProfilePictureLink extends Plugin {
    }
 
    pluginWillUnload() {
-      AnimatedAvatar.type = this.original;
       uninject('pfp-link-banner');
+      uninject('pfp-link-profile');
    }
 };
