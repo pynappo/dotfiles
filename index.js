@@ -4,7 +4,7 @@ const { React, getModule } = require('powercord/webpack');
 const { findInReactTree } = require('powercord/util');
 
 const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
-const { header, avatar } = getModule(['avatar', 'warningCircleIcon', 'nameTag'], false);
+const { header, avatar } = getModule(['discriminator', 'header'], false);
 const Avatar = getModule(['AnimatedAvatar'], false);
 
 module.exports = class ProfilePictureLink extends Plugin {
