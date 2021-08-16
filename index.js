@@ -13,7 +13,8 @@
  */
 
 const { Plugin } = require("powercord/entities");
-const { channels, getModule } = require("powercord/webpack");
+const { channels, getModule, getModuleByDisplayName } = require("powercord/webpack");
+const { open: openModal } = require("powercord/modal");
 const { readFileSync } = require("fs");
 const { join } = require("path");
 
@@ -28,7 +29,8 @@ const emoteRegex = /<?(a)?:?(\w{2,32}):(\d{17,19})>?/;
 
 module.exports = class PetPet extends Plugin {
     async startPlugin() {
-        const { upload } = await getModule(["upload", "cancel"]);
+        const { pushFiles } = await getModule(["pushFiles"]);
+        const UploadModal = await getModuleByDisplayName("UploadModal");
         const { getUser } = await getModule(["getUser"]);
 
         const res = result => ({ result });
@@ -83,8 +85,9 @@ module.exports = class PetPet extends Plugin {
                 } else {
                     name = "petpet.gif";
                 }
-                const file = new File([buf], name);
-                upload(channels.getChannelId(), file);
+                const file = new File([buf], name, { type: "image/gif" });
+                pushFiles({ channelId: channels.getChannelId(), files: [file] });
+                openModal(UploadModal);
             }
         });
     }
