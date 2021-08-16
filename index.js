@@ -1,8 +1,10 @@
-const { Plugin } = require('powercord/entities');
+const { React, getModule, contextMenu: { openContextMenu, closeContextMenu } } = require('powercord/webpack');
 const { inject, uninject } = require('powercord/injector');
-const { React, getModule } = require('powercord/webpack');
 const { findInReactTree } = require('powercord/util');
+const { Plugin } = require('powercord/entities');
+const { clipboard } = require('electron');
 
+const ContextMenu = getModule(['MenuGroup', 'MenuItem'], false);
 const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
 const { header, avatar } = getModule(['discriminator', 'header'], false);
 const Avatar = getModule(['AnimatedAvatar'], false);
@@ -19,6 +21,18 @@ module.exports = class ProfilePictureLink extends Plugin {
                   open(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
                }
             };
+
+            res.props.onContextMenu = (e) => {
+               return openContextMenu(e, () =>
+                  React.createElement(ContextMenu.default, { onClose: closeContextMenu },
+                     React.createElement(ContextMenu.MenuItem, {
+                        label: 'Copy Avatar URL',
+                        id: 'copy-avatar-url',
+                        action: () => clipboard.writeText(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
+                     })
+                  )
+               );
+            };
          }
 
          return res;
@@ -30,6 +44,18 @@ module.exports = class ProfilePictureLink extends Plugin {
          if (!handler?.children && image) {
             res.props.onClick = () => {
                open(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
+            };
+
+            res.props.onContextMenu = (e) => {
+               return openContextMenu(e, () =>
+                  React.createElement(ContextMenu.default, { onClose: closeContextMenu },
+                     React.createElement(ContextMenu.MenuItem, {
+                        label: 'Copy Avatar URL',
+                        id: 'copy-avatar-url',
+                        action: () => clipboard.writeText(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
+                     })
+                  )
+               );
             };
 
             res.props.className = [res.props.className, 'picture-link'].join(' ');
