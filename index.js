@@ -50,9 +50,9 @@ module.exports = class ProfilePictureLink extends Plugin {
                return openContextMenu(e, () =>
                   React.createElement(ContextMenu.default, { onClose: closeContextMenu },
                      React.createElement(ContextMenu.MenuItem, {
-                        label: 'Copy Avatar URL',
-                        id: 'copy-avatar-url',
-                        action: () => clipboard.writeText(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
+                        label: 'Copy Banner URL',
+                        id: 'copy-banner-url',
+                        action: () => clipboard.writeText(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
                      })
                   )
                );
