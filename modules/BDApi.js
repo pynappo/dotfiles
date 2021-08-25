@@ -10,6 +10,8 @@ const { inject, uninject } = require('powercord/injector')
 
 const PluginData = {}
 
+const Patcher = require('./Patcher')
+
 
 // __ is not part of BdApi entirely
 // _ is part of BD but not exactly in BdApi, but kept here anyway for easier maintain
@@ -21,6 +23,11 @@ class BdApi {
   }
   static get ReactDOM () {
     return ReactDOM
+  }
+
+  // Patcher
+  static get Patcher() {
+    return Patcher
   }
 
 
