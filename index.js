@@ -9,7 +9,7 @@ const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
 const { header, avatar } = getModule(['discriminator', 'header'], false);
 const Avatar = getModule(['AnimatedAvatar'], false);
 
-module.exports = class ProfilePictureLink extends Plugin {
+module.exports = class PictureLink extends Plugin {
    startPlugin() {
       this.loadStylesheet('style.css');
       inject('pfp-link-profile', Avatar, 'default', (args, res) => {
