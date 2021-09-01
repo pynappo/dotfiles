@@ -2,7 +2,7 @@ const { React, getModule, contextMenu: { openContextMenu, closeContextMenu } } =
 const { inject, uninject } = require('powercord/injector');
 const { findInReactTree } = require('powercord/util');
 const { Plugin } = require('powercord/entities');
-const { clipboard, shell } = require('electron');
+const { clipboard } = require('electron');
 
 const ContextMenu = getModule(['MenuGroup', 'MenuItem'], false);
 const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
@@ -18,7 +18,7 @@ module.exports = class PictureLink extends Plugin {
 
             res.props.onClick = (v) => {
                if (v.target.parentElement.classList.contains(header)) {
-                  shell.openExternal(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
+                  open(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
                }
             };
 
@@ -43,7 +43,7 @@ module.exports = class PictureLink extends Plugin {
          let image = args[0].user?.bannerURL;
          if (!handler?.children && image) {
             res.props.onClick = () => {
-               shell.openExternal(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
+               open(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
             };
 
             res.props.onContextMenu = (e) => {
