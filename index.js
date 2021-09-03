@@ -6,29 +6,27 @@ const { clipboard } = require('electron');
 
 const ContextMenu = getModule(['MenuGroup', 'MenuItem'], false);
 const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
-const { header, avatar } = getModule(['discriminator', 'header'], false);
-const Avatar = getModule(['AnimatedAvatar'], false);
+const ProfileModalHeader = getModule(m => m.default?.displayName == 'UserProfileModalHeader', false);
+const classes = getModule(['discriminator', 'header'], false);
 
 module.exports = class PictureLink extends Plugin {
    startPlugin() {
       this.loadStylesheet('style.css');
-      inject('pfp-link-profile', Avatar, 'default', (args, res) => {
-         if (res.props?.className?.includes?.(avatar)) {
-            res.props.className = [res.props.className, 'picture-link'].join(' ');
+      inject('pfp-link-profile', ProfileModalHeader, 'default', (args, res) => {
+         const avatar = findInReactTree(res, m => m?.props?.className == classes.avatar);
 
-            res.props.onClick = (v) => {
-               if (v.target.parentElement.classList.contains(header)) {
-                  open(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
-               }
+         if (avatar) {
+            avatar.props.onClick = (v) => {
+               open(avatar.props.src.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
             };
 
-            res.props.onContextMenu = (e) => {
+            avatar.props.onContextMenu = (e) => {
                return openContextMenu(e, () =>
                   React.createElement(ContextMenu.default, { onClose: closeContextMenu },
                      React.createElement(ContextMenu.MenuItem, {
                         label: 'Copy Avatar URL',
                         id: 'copy-avatar-url',
-                        action: () => clipboard.writeText(args[0].src?.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
+                        action: () => clipboard.writeText(avatar.props.src.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
                      })
                   )
                );
