@@ -38,7 +38,7 @@ module.exports = class PictureLink extends Plugin {
 
       inject('pfp-link-banner', Banner, 'default', (args, res) => {
          let handler = findInReactTree(res.props.children, p => p.onClick);
-         let image = args[0].user?.bannerURL;
+         let image = args[0].user?.getBannerURL?.();
          if (!handler?.children && image) {
             res.props.onClick = () => {
                open(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
