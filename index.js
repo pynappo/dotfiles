@@ -34,7 +34,7 @@ module.exports = class PictureLink extends Plugin {
       });
 
       inject('pfp-link-banner', Banner, 'default', (args, res) => {
-         const handler = findInReactTree(res.props.children, p => p.onClick);
+         const handler = findInReactTree(res.props.children, p => p?.onClick);
          const image = args[0].user?.getBannerURL?.(4096, true)?.replace('.webp', '.png');
 
          if (!handler?.children && image) {
