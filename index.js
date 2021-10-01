@@ -4,9 +4,9 @@ const { findInReactTree } = require('powercord/util');
 const { Plugin } = require('powercord/entities');
 const { clipboard } = require('electron');
 
-const ContextMenu = getModule(['MenuGroup', 'MenuItem'], false);
-const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
 const ProfileModalHeader = getModule(m => m.default?.displayName == 'UserProfileModalHeader', false);
+const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
+const ContextMenu = getModule(['MenuGroup', 'MenuItem'], false);
 const classes = getModule(['discriminator', 'header'], false);
 
 module.exports = class PictureLink extends Plugin {
@@ -14,47 +14,43 @@ module.exports = class PictureLink extends Plugin {
       this.loadStylesheet('style.css');
       inject('pfp-link-profile', ProfileModalHeader, 'default', (args, res) => {
          const avatar = findInReactTree(res, m => m?.props?.className == classes.avatar);
+         const image = args[0].user?.getAvatarURL?.(false, 4096, true)?.replace('.webp', '.png');
 
-         if (avatar) {
-            avatar.props.onClick = (v) => {
-               open(avatar.props.src.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
-            };
+         if (avatar && image) {
+            avatar.props.onClick = () => open(image);
 
-            avatar.props.onContextMenu = (e) => {
-               return openContextMenu(e, () =>
-                  React.createElement(ContextMenu.default, { onClose: closeContextMenu },
-                     React.createElement(ContextMenu.MenuItem, {
-                        label: 'Copy Avatar URL',
-                        id: 'copy-avatar-url',
-                        action: () => clipboard.writeText(avatar.props.src.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
-                     })
-                  )
-               );
-            };
+            avatar.props.onContextMenu = (e) => openContextMenu(e, () =>
+               React.createElement(ContextMenu.default, { onClose: closeContextMenu },
+                  React.createElement(ContextMenu.MenuItem, {
+                     label: 'Copy Avatar URL',
+                     id: 'copy-avatar-url',
+                     action: () => clipboard.writeText(image)
+                  })
+               )
+            );
          }
 
          return res;
       });
 
       inject('pfp-link-banner', Banner, 'default', (args, res) => {
-         let handler = findInReactTree(res.props.children, p => p.onClick);
-         let image = args[0].user?.getBannerURL?.();
+         const handler = findInReactTree(res.props.children, p => p.onClick);
+         const image = args[0].user?.getBannerURL?.(4096, true)?.replace('.webp', '.png');
+
          if (!handler?.children && image) {
             res.props.onClick = () => {
-               open(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'));
+               open(image);
             };
 
-            res.props.onContextMenu = (e) => {
-               return openContextMenu(e, () =>
-                  React.createElement(ContextMenu.default, { onClose: closeContextMenu },
-                     React.createElement(ContextMenu.MenuItem, {
-                        label: 'Copy Banner URL',
-                        id: 'copy-banner-url',
-                        action: () => clipboard.writeText(image.replace(/(?:\?size=\d{3,4})?$/, '?size=4096'))
-                     })
-                  )
-               );
-            };
+            res.props.onContextMenu = (e) => openContextMenu(e, () =>
+               React.createElement(ContextMenu.default, { onClose: closeContextMenu },
+                  React.createElement(ContextMenu.MenuItem, {
+                     label: 'Copy Banner URL',
+                     id: 'copy-banner-url',
+                     action: () => clipboard.writeText(image)
+                  })
+               )
+            );
 
             res.props.className = [res.props.className, 'picture-link'].join(' ');
          }
