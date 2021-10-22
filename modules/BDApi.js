@@ -191,7 +191,7 @@ class BdApi {
     const { onConfirm = () => {}, onCancel = () => {}, confirmText = 'Okay', cancelText = 'Cancel', danger = false, key } = options
 
     const { openModal } = await getModule(['openModal', 'updateModal'])
-    const Markdown = await getModuleByDisplayName('Markdown')
+    const Markdown = await getModule(m => m.displayName === 'Markdown' && m.rules)
     const ConfirmModal = await getModuleByDisplayName('ConfirmModal')
 
     if (!Array.isArray(children)) children = [ children ]
