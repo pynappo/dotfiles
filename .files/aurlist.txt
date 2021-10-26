@@ -1,0 +1,8 @@
+appimagelauncher-git
+go-tuner-git
+googler
+nerd-fonts-complete
+noisetorch-bin
+paru
+vscodium-bin
+youtube-viewer
