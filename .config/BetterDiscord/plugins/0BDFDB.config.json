@@ -1,0 +1,25 @@
+{
+	"changeLogs": {
+		"BDFDB": "1.9.2",
+		"BetterFriendList": "1.3.9",
+		"CharCounter": "1.5.6",
+		"CreationDate": "1.4.6",
+		"GameActivityToggle": "1.0.4",
+		"ShowBadgesInChat": "1.8.1",
+		"ShowHiddenChannels": "3.0.2",
+		"SplitLargeMessages": "1.7.0",
+		"Translator": "2.3.2"
+	},
+	"choices": {
+		"toastPosition": "right"
+	},
+	"general": {
+		"showToasts": true,
+		"showSupportBadges": true,
+		"useChromium": false
+	},
+	"hashes": {
+		"0BDFDB.data.json": "41b30991e13587e202da5e384a2ba3fb03d961be",
+		"0BDFDB.raw.css": "6bb82eb9f45d2d68a03ad2d3e21dcf35a5e2e3ee"
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"cachedState": {
+		"date": "2021-10-24T04:39:36.713Z",
+		"value": true
+	},
+	"general": {
+		"playEnable": true,
+		"playDisable": true
+	},
+	"selections": {
+		"enableSound": "stream_started",
+		"disableSound": "stream_ended"
+	}
+}

@@ -1,10 +1,13 @@
 amd-ucode
+ark
 autoconf
 automake
 base
 binutils
 bison
 btrfs-progs
+cups
+discord
 dolphin
 efibootmgr
 egl-wayland
@@ -13,6 +16,7 @@ file
 findutils
 fish
 flex
+fzf
 gawk
 gcc
 gettext
@@ -22,7 +26,10 @@ groff
 grub
 gst-plugin-pipewire
 gzip
+hplip
 htop
+intellij-idea-community-edition
+inter-font
 iwd
 kate
 konsole
@@ -33,11 +40,16 @@ linux
 linux-firmware
 m4
 make
+man-db
 nano
 neovim
+nodejs
+ntfs-3g
 ntp
 opendoas
 openssh
+otf-cascadia-code
+otf-overpass
 pacman
 patch
 pipewire
@@ -48,6 +60,7 @@ pipewire-pulse
 pkgconf
 plasma-meta
 plasma-wayland-session
+reflector
 sddm
 sed
 smartmontools

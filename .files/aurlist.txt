@@ -1,4 +1,5 @@
 appimagelauncher-git
+code-marketplace
 go-tuner-git
 googler
 nerd-fonts-complete

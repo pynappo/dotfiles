@@ -1,0 +1,54 @@
+{
+    "settings": {
+        "tabs": [
+            {
+                "name": "@CStatic",
+                "url": "/channels/@me/510953901122650112",
+                "selected": true,
+                "currentStatus": "dnd",
+                "iconUrl": "https://cdn.discordapp.com/avatars/312456933099438090/45e46553bf3407982a1e771fe3b1eff0.webp?size=128",
+                "channelId": "510953901122650112"
+            }
+        ],
+        "favs": [
+            {
+                "name": "@CStatic",
+                "iconUrl": "https://cdn.discordapp.com/avatars/312456933099438090/45e46553bf3407982a1e771fe3b1eff0.webp?size=128",
+                "url": "/channels/@me/510953901122650112",
+                "channelId": "510953901122650112",
+                "groupId": -1
+            },
+            {
+                "name": "#general",
+                "iconUrl": "https://cdn.discordapp.com/icons/326080489658253313/d6f2276b989b89381f58af8bec17054d.webp?",
+                "url": "/channels/326080489658253313/646203267574923265",
+                "channelId": "646203267574923265",
+                "groupId": -1
+            }
+        ],
+        "favGroups": [],
+        "showTabBar": true,
+        "showFavBar": true,
+        "reopenLastChannel": true,
+        "showFavUnreadBadges": true,
+        "showFavMentionBadges": true,
+        "showFavTypingBadge": true,
+        "showEmptyFavBadges": true,
+        "showTabUnreadBadges": true,
+        "showTabMentionBadges": true,
+        "showTabTypingBadge": true,
+        "showEmptyTabBadges": false,
+        "showActiveTabUnreadBadges": false,
+        "showActiveTabMentionBadges": false,
+        "showActiveTabTypingBadge": false,
+        "showEmptyActiveTabBadges": false,
+        "compactStyle": true,
+        "privacyMode": false,
+        "showFavGroupUnreadBadges": true,
+        "showFavGroupMentionBadges": true,
+        "showFavGroupTypingBadge": true,
+        "showEmptyFavGroupBadges": true,
+        "showQuickSettings": true,
+        "alwaysFocusNewTabs": false
+    }
+}
