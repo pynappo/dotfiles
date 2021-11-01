@@ -2,6 +2,8 @@ appimagelauncher-git
 code-marketplace
 go-tuner-git
 googler
+jdk-jetbrains
+jetbrains-toolbox
 nerd-fonts-complete
 noisetorch-bin
 paru

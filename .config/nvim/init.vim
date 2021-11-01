@@ -41,3 +41,7 @@ cmap w!! w !sudo tee > /dev/null %
 :inoremap ^L ^X^L
 
 let g:airline_powerline_fonts = 1
+
+
+
+
