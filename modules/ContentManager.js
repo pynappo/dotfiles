@@ -82,7 +82,7 @@ module.exports = class ContentManager {
       if (content.charCodeAt(0) === 0xFEFF) content = content.slice(1) // Strip BOM
       const meta = _this.extractMeta(content)
       meta.filename = basename(filename)
-      content += `module.exports = Object.assign(${JSON.stringify(meta)}, { type: module.exports.__esModule ? module.exports.default : module.exports.prototype ? module.exports : ${meta.exports || meta.name} })`
+      content += `\nmodule.exports = Object.assign(${JSON.stringify(meta)}, { type: module.exports.__esModule ? module.exports.default : module.exports.prototype ? module.exports : ${meta.exports || meta.name} })`
       module._compile(
         meta.name === 'ZeresPluginLibrary' ?
           content
