@@ -10,12 +10,15 @@ btrfs-progs
 cups
 discord
 dolphin
+dotnet-runtime
+dotnet-sdk
 efibootmgr
 egl-wayland
 fakeroot
 file
 findutils
 fish
+flameshot
 flex
 fzf
 gawk
@@ -43,6 +46,7 @@ make
 man-db
 nano
 neovim
+networkmanager
 nodejs
 ntfs-3g
 ntp
@@ -51,7 +55,7 @@ opendoas
 openssh
 os-prober
 otf-cascadia-code
-otf-overpass
+packagekit-qt5
 pacman
 patch
 pipewire
@@ -73,11 +77,11 @@ texinfo
 v4l2loopback-dkms
 vim
 vivaldi
+vivaldi-ffmpeg-codecs
 vulkan-radeon
 wget
 which
 wireless_tools
-wpa_supplicant
 xdg-desktop-portal-wlr
 xdg-utils
 xf86-video-amdgpu
