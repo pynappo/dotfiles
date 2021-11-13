@@ -13,9 +13,8 @@
  */
 
 const { Plugin } = require("powercord/entities");
-const { channels, getModule, getModuleByDisplayName } = require("powercord/webpack");
-const { open: openModal } = require("powercord/modal");
-const { readFileSync } = require("fs");
+const { channels, getModule } = require("powercord/webpack");
+const readFile = require("util").promisify(require("fs").readFile);
 const { join } = require("path");
 
 const GifEncoder = require("./gifencoder");
@@ -29,9 +28,9 @@ const emoteRegex = /<?(a)?:?(\w{2,32}):(\d{17,19})>?/;
 
 module.exports = class PetPet extends Plugin {
     async startPlugin() {
-        const { pushFiles } = await getModule(["pushFiles"]);
-        const UploadModal = await getModuleByDisplayName("UploadModal");
+        const { promptToUpload } = await getModule(["promptToUpload"]);
         const { getUser } = await getModule(["getUser"]);
+        const { getChannel } = await getModule(["getChannel", "hasChannel"])
 
         const res = result => ({ result });
 
@@ -86,8 +85,7 @@ module.exports = class PetPet extends Plugin {
                     name = "petpet.gif";
                 }
                 const file = new File([buf], name, { type: "image/gif" });
-                pushFiles({ channelId: channels.getChannelId(), files: [file] });
-                openModal(UploadModal);
+                promptToUpload([file], getChannel(channels.getChannelId()));
             }
         });
     }
@@ -104,7 +102,7 @@ module.exports = class PetPet extends Plugin {
     }
 
     loadImage(src, local) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const img = new Image();
             img.onload = () => {
                 if (local) URL.revokeObjectURL(src);
@@ -113,7 +111,7 @@ module.exports = class PetPet extends Plugin {
             img.onerror = reject;
             if (local) {
                 try {
-                    const buf = readFileSync(src);
+                    const buf = await readFile(src);
                     const blob = new Blob([buf], { type: "image/gif" });
                     src = URL.createObjectURL(blob);
                 } catch (err) {
