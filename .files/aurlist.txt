@@ -1,9 +1,10 @@
 appimagelauncher-git
-code-marketplace
 go-tuner-git
 googler
-nerd-fonts-complete
+jdk-jetbrains
+jetbrains-toolbox
 noisetorch-bin
 paru
+visual-studio-code-bin
 vscodium-bin
 youtube-viewer

@@ -9,7 +9,7 @@
     "BlurNSFW": true,
     "BugReportHelper": true,
     "CallTimeCounter": true,
-    "ChannelTabs": true,
+    "ChannelTabs": false,
     "CharCounter": true,
     "CreationDate": true,
     "FreeEmojis": false,
