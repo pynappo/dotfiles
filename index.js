@@ -8,6 +8,9 @@ const ProfileModalHeader = getModule(m => m.default?.displayName == 'UserProfile
 const Banner = getModule(m => m.default?.displayName == 'UserBanner', false);
 const ContextMenu = getModule(['MenuGroup', 'MenuItem'], false);
 const classes = getModule(['discriminator', 'header'], false);
+const Banners = getModule(['getUserBannerURL'], false);
+
+const SizeRegex = /(?:\?size=\d{3,4})?$/;
 
 module.exports = class PictureLink extends Plugin {
    startPlugin() {
@@ -35,7 +38,10 @@ module.exports = class PictureLink extends Plugin {
 
       inject('pfp-link-banner', Banner, 'default', (args, res) => {
          const handler = findInReactTree(res.props.children, p => p?.onClick);
-         const image = args[0].user?.getBannerURL?.(4096, true)?.replace('.webp', '.png');
+         const image = Banners.getUserBannerURL({
+            ...args[0].user,
+            canAnimate: true
+         }).replace(SizeRegex, '?size=4096')?.replace('.webp', '.png');
 
          if (!handler?.children && image) {
             res.props.onClick = () => {
