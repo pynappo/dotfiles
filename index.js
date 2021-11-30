@@ -41,7 +41,7 @@ module.exports = class PictureLink extends Plugin {
          const image = Banners.getUserBannerURL({
             ...args[0].user,
             canAnimate: true
-         }).replace(SizeRegex, '?size=4096')?.replace('.webp', '.png');
+         })?.replace(SizeRegex, '?size=4096')?.replace('.webp', '.png');
 
          if (!handler?.children && image) {
             res.props.onClick = () => {
