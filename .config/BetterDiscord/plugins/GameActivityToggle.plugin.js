@@ -2,7 +2,7 @@
  * @name GameActivityToggle
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.0.4
+ * @version 1.0.8
  * @description Adds a Quick-Toggle Game Activity Button
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,13 +17,8 @@ module.exports = (_ => {
 		"info": {
 			"name": "GameActivityToggle",
 			"author": "DevilBro",
-			"version": "1.0.4",
+			"version": "1.0.8",
 			"description": "Adds a Quick-Toggle Game Activity Button"
-		},
-		"changeLog": {
-			"improved": {
-				"Cached State": "Now saves the state of your activity status, to avoid the activity status being turned off on each start of discord, this is an issue with Discord btw and not the plugin"
-			}
 		}
 	};
 	
@@ -81,18 +76,21 @@ module.exports = (_ => {
 				toggleButton = this;
 			}
 			render() {
+				const enabled = this.props.forceState != undefined ? this.props.forceState : BDFDB.DiscordUtils.getSettings("ShowCurrentGame");
+				delete this.props.forceState;
 				return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.PanelButton, Object.assign({}, this.props, {
-					tooltipText: BDFDB.LibraryModules.SettingsStore.showCurrentGame ? _this.labels.disable_activity : _this.labels.enable_activity,
+					tooltipText: enabled ? _this.labels.disable_activity : _this.labels.enable_activity,
 					icon: iconProps => BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, Object.assign({}, iconProps, {
 						nativeClass: true,
 						width: 20,
 						height: 20,
 						foreground: BDFDB.disCN.accountinfobuttonstrikethrough,
-						name: BDFDB.LibraryModules.SettingsStore.showCurrentGame ? BDFDB.LibraryComponents.SvgIcon.Names.GAMEPAD : BDFDB.LibraryComponents.SvgIcon.Names.GAMEPAD_DISABLED
+						name: enabled ? BDFDB.LibraryComponents.SvgIcon.Names.GAMEPAD : BDFDB.LibraryComponents.SvgIcon.Names.GAMEPAD_DISABLED
 					})),
 					onClick: _ => {
-						_this.settings.general[!BDFDB.LibraryModules.SettingsStore.showCurrentGame ? "playEnable" : "playDisable"] && BDFDB.LibraryModules.SoundUtils.playSound(_this.settings.selections[!BDFDB.LibraryModules.SettingsStore.showCurrentGame ? "enableSound" : "disableSound"], .4);
-						BDFDB.LibraryModules.SettingsUtils.updateRemoteSettings({showCurrentGame: !BDFDB.LibraryModules.SettingsStore.showCurrentGame});
+						const shouldEnable = !BDFDB.DiscordUtils.getSettings("ShowCurrentGame");
+						_this.settings.general[shouldEnable ? "playEnable" : "playDisable"] && BDFDB.LibraryModules.SoundUtils.playSound(_this.settings.selections[shouldEnable ? "enableSound" : "disableSound"], .4);
+						BDFDB.DiscordUtils.setSettings("ShowCurrentGame", shouldEnable);
 					}
 				}));
 			}
@@ -126,16 +124,18 @@ module.exports = (_ => {
 			
 			onStart () {
 				let cachedState = BDFDB.DataUtils.load(this, "cachedState");
+				let state = BDFDB.DiscordUtils.getSettings("ShowCurrentGame");
 				if (!cachedState.date || (new Date() - cachedState.date) > 1000*60*60*24*3) {
-					cachedState.value = BDFDB.LibraryModules.SettingsStore.showCurrentGame;
+					cachedState.value = state;
 					cachedState.date = new Date();
 					BDFDB.DataUtils.save(cachedState, this, "cachedState");
 				}
-				else if (cachedState.value != null && cachedState.value != BDFDB.LibraryModules.SettingsStore.showCurrentGame) BDFDB.LibraryModules.SettingsUtils.updateRemoteSettings({showCurrentGame: cachedState.value});
+				else if (cachedState.value != null && cachedState.value != state) BDFDB.DiscordUtils.setSettings("ShowCurrentGame", cachedState.value);
 				
-				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.SettingsUtils, "updateLocalSettings", {after: e => {
+				if (BDFDB.LibraryModules.SettingsUtils) BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.SettingsUtils.ShowCurrentGame, "updateSetting", {after: e => {
+					if (toggleButton) toggleButton.props.forceState = e.methodArguments[0];
 					BDFDB.ReactUtils.forceUpdate(toggleButton);
-					BDFDB.DataUtils.save({date: new Date(), value: BDFDB.LibraryModules.SettingsStore.showCurrentGame}, this, "cachedState");
+					BDFDB.DataUtils.save({date: new Date(), value: e.methodArguments[0]}, this, "cachedState");
 				}});
 				
 				BDFDB.PatchUtils.forceAllUpdates(this);

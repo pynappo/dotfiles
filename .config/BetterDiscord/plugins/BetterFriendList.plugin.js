@@ -2,7 +2,7 @@
  * @name BetterFriendList
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.3.9
+ * @version 1.4.1
  * @description Adds extra Controls to the Friends Page, for example sort by Name/Status, Search and All/Request/Blocked Amount
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,17 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "BetterFriendList",
 			"author": "DevilBro",
-			"version": "1.3.9",
+			"version": "1.4.1",
 			"description": "Adds extra Controls to the Friends Page, for example sort by Name/Status, Search and All/Request/Blocked Amount"
-		},
-		"changeLog": {
-			"fixed": {
-				"Count": "No longer says Count = 0 for all categories if hidden is disabled"
-			}
 		}
 	};
 
-	return (window.Lightcord && !Node.prototype.isPrototypeOf(window.Lightcord) || window.LightCord && !Node.prototype.isPrototypeOf(window.LightCord)) ? class {
+	return (window.Lightcord && !Node.prototype.isPrototypeOf(window.Lightcord) || window.LightCord && !Node.prototype.isPrototypeOf(window.LightCord) || window.Astra && !Node.prototype.isPrototypeOf(window.Astra)) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
@@ -271,6 +266,9 @@ module.exports = (_ => {
 										newChildren.push(this.createBadge(relationshipCount[BDFDB.DiscordConstants.RelationshipTypes.PENDING_INCOMING], this.labels.incoming, relationshipCount[BDFDB.DiscordConstants.RelationshipTypes.PENDING_INCOMING] > 0));
 										newChildren.push(this.createBadge(relationshipCount[BDFDB.DiscordConstants.RelationshipTypes.PENDING_OUTGOING], this.labels.outgoing));
 										break;
+									case BDFDB.DiscordConstants.FriendsSections.SUGGESTIONS:
+										newChildren.push(this.createBadge(BDFDB.LibraryModules.RelationshipSuggestionUtils.getSuggestionCount()));
+										break;
 									case BDFDB.DiscordConstants.FriendsSections.BLOCKED:
 										newChildren.push(this.createBadge(relationshipCount[BDFDB.DiscordConstants.RelationshipTypes.BLOCKED]));
 										break;
@@ -286,6 +284,10 @@ module.exports = (_ => {
 			}
 
 			processPeopleListSectionedLazy (e) {
+				this.processPeopleListSectionedNonLazy(e);
+			}
+			
+			processPeopleListSectionedNonLazy (e) {
 				if (this.settings.general.addFavorizedCategory) {
 					if (isFavoritesSelected) e.instance.props.statusSections = [].concat(e.instance.props.statusSections).map(section => [].concat(section).filter(entry => entry && entry.user && favorizedFriends.indexOf(entry.user.id) > -1));
 				}
@@ -334,8 +336,8 @@ module.exports = (_ => {
 									children: this.settings.general.addFavorizedCategory && isFavoritesSelected ? `${this.labels.favorites} - ${users.filter(u => u && u.key != placeHolderId).length}` : this.settings.general.addHiddenCategory && isHiddenSelected ? `${this.labels.hidden} - ${users.filter(u => u && u.key != placeHolderId).length}` : e2.returnValue.replace(users.length, users.filter(u => u && u.key != placeHolderId).length)
 								}),
 								this.settings.general.addSortOptions && [
-									{key: "usernameLower", label: BDFDB.LanguageUtils.LanguageStrings.FRIENDS_COLUMN_NAME},
-									{key: "statusIndex", label: BDFDB.LanguageUtils.LanguageStrings.FRIENDS_COLUMN_STATUS}
+									{key: "usernameLower", label: BDFDB.LanguageUtils.LanguageStrings.USER_SETTINGS_LABEL_USERNAME},
+									{key: "statusIndex", label: BDFDB.LanguageUtils.LibraryStrings.status}
 								].filter(n => n).map(data => BDFDB.ReactUtils.createElement("div", {
 									className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.tableheadercellwrapper, BDFDB.disCN.tableheadercell, BDFDB.disCN._betterfriendlistnamecell, sortKey == data.key && BDFDB.disCN.tableheadercellsorted, BDFDB.disCN.tableheadercellclickable),
 									children: BDFDB.ReactUtils.createElement("div", {
@@ -389,10 +391,6 @@ module.exports = (_ => {
 						type: !currentSection || !Object.entries(BDFDB.DiscordConstants.FriendsSections).find(n => n[1] == currentSection) ? BDFDB.DiscordConstants.FriendsSections.ALL : currentSection
 					})
 				});
-			}
-			
-			processPeopleListSectionedNonLazy (e) {
-				this.processPeopleListSectionedLazy(e);
 			}
 			
 			processFriendRow (e) {
@@ -649,14 +647,14 @@ module.exports = (_ => {
 						};
 					case "pl":		// Polish
 						return {
-							context_favorizefriend:				"Dodaj przyjaciela do ulubionych",
-							context_hidefriend:					"Ukryj przyjaciela",
-							context_unfavorizefriend:			"Usuń przyjaciela z ulubionych",
-							context_unhidefriend:				"Odkryj przyjaciela",
+							context_favorizefriend:				"Dodaj znajomego do ulubionych",
+							context_hidefriend:					"Ukryj znajomego",
+							context_unfavorizefriend:			"Usuń znajomego z ulubionych",
+							context_unhidefriend:				"Pokaż znajomego",
 							favorites:							"Ulubione",
-							hidden:								"Ukryty",
-							incoming:							"Przychodzący",
-							outgoing:							"Towarzyski"
+							hidden:								"Ukryci",
+							incoming:							"Przychodzące",
+							outgoing:							"Wychodzące"
 						};
 					case "pt-BR":	// Portuguese (Brazil)
 						return {
@@ -748,25 +746,25 @@ module.exports = (_ => {
 						};
 					case "zh-CN":	// Chinese (China)
 						return {
-							context_favorizefriend:				"将朋友添加到收藏夹",
-							context_hidefriend:					"隐藏朋友",
-							context_unfavorizefriend:			"从收藏夹中删除朋友",
+							context_favorizefriend:				"添加好友到收藏夹",
+							context_hidefriend:					"隐藏好友",
+							context_unfavorizefriend:			"从收藏夹中移除好友",
 							context_unhidefriend:				"取消隐藏好友",
 							favorites:							"收藏夹",
-							hidden:								"隐",
-							incoming:							"进来的",
-							outgoing:							"外向"
+							hidden:								"隐藏",
+							incoming:							"导入",
+							outgoing:							"导出"
 						};
 					case "zh-TW":	// Chinese (Taiwan)
 						return {
-							context_favorizefriend:				"將朋友添加到收藏夾",
-							context_hidefriend:					"隱藏朋友",
-							context_unfavorizefriend:			"從收藏夾中刪除朋友",
+							context_favorizefriend:				"新增好友到我的最愛",
+							context_hidefriend:					"隱藏好友",
+							context_unfavorizefriend:			"從我的最愛中移除好友",
 							context_unhidefriend:				"取消隱藏好友",
-							favorites:							"收藏夾",
-							hidden:								"隱",
-							incoming:							"傳入",
-							outgoing:							"外向"
+							favorites:							"我的最愛",
+							hidden:								"隱藏",
+							incoming:							"匯入",
+							outgoing:							"匯出"
 						};
 					default:		// English
 						return {

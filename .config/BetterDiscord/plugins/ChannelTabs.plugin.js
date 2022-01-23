@@ -49,42 +49,18 @@ module.exports = (() => {
 					twitter_username: "carter5467_99"
 				}
 			],
-			version: "2.5.6",
+			version: "2.5.8",
 			description: "Allows you to have multiple tabs and bookmark channels",
 			github: "https://github.com/l0c4lh057/BetterDiscordStuff/blob/master/Plugins/ChannelTabs/",
 			github_raw: "https://raw.githubusercontent.com/l0c4lh057/BetterDiscordStuff/master/Plugins/ChannelTabs/ChannelTabs.plugin.js"
 		},
 		changelog: [
 			{
-				"title": "NEW",
-				"type": "added",
-				"items": [
-					"TypingIndicator Intergration",
-					"Compact & Cozy Modes",
-					"Tabs/Favs User Status Indicators",
-					"Toolbar Quick Settings",
-					"Favorite Bar Groups",
-					"Privacy Mode",
-					"Dragging Items"
-				]
-			},
-			{
-				"title": "Added",
-				"type": "added",
-				"items": [
-					"More Control Over the Badge Visibility",
-					"Always Focus when Opening in New Tab Option",
-					"Multi-User Support",
-					
-				]
-			},
-			{
 				"title": "Fixed",
 				"type": "fixed",
 				"items": [
-					"Guild Context Menus not Working",
-					"Minor Naming Inconsistencies",
-					"**NEW: Fixed PFPs for DMs and group DMs**"
+					"The plugin now works again",
+					"Context menus are still broken, but at least everything else should work again now"
 				]
 			}
 		]
@@ -103,7 +79,7 @@ module.exports = (() => {
 					cancelText: "Cancel",
 					onConfirm: () => {
 						require("request").get("https://rauenzi.github.io/BDPluginLibrary/release/0PluginLibrary.plugin.js", async (error, response, body) => {
-							if (error) return require("electron").shell.openExternal("https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js");
+							if (error) return require("electron").shell.openExternal("https://betterdiscord.app/Download?id=9");
 							await new Promise(r => require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0PluginLibrary.plugin.js"), body, r));
 						});
 					}
@@ -154,25 +130,6 @@ module.exports = (() => {
 			var currentGroupDragDestinationIndex = -1;
 
 			var currentGroupOpened = -1;
-
-			if(!BdApi.Plugins.get("BugReportHelper") && !BdApi.getData(config.info.name, "didShowIssueHelperPopup")){
-				BdApi.saveData(config.info.name, "didShowIssueHelperPopup", true);
-				BdApi.showConfirmationModal("Do you want to download a helper plugin?", 
-					[`Do you want to download a helper plugin that makes it easier for you to report issues? That plugin is not needed to anything else to function correctly but nice to have when reporting iissues, shortening the time until the problem gets resolved by asking you for specific information and also including additional information you did not provide.`],
-					{
-						confirmText: "Download",
-						cancelText: "Cancel",
-						onConfirm: () => {
-							require("request").get("https://raw.githubusercontent.com/l0c4lh057/BetterDiscordStuff/master/Plugins/BugReportHelper/BugReportHelper.plugin.js", (error, response, body) => {
-								if (error) return require("electron").shell.openExternal("https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/l0c4lh057/BetterDiscordStuff/master/Plugins/BugReportHelper/BugReportHelper.plugin.js");
-								else require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "BugReportHelper.plugin.js"), body, ()=>{
-									window.setTimeout(()=>BdApi.Plugins.enable("BugReportHelper"), 1000);
-								});
-							});
-						}
-					}
-				);
-			};
 
 			//#endregion
 			
@@ -2337,7 +2294,7 @@ module.exports = (() => {
 					this.keybindHandler = this.keybindHandler.bind(this);
 					this.onSwitch();
 					this.patchAppView(this.promises.state);
-					this.patchContextMenus();
+					//this.patchContextMenus();
 					this.ifReopenLastChannelDefault();
 					document.addEventListener("keydown", this.keybindHandler);
 					window.onclick = (event) => this.clickHandler(event);
@@ -2415,7 +2372,7 @@ module.exports = (() => {
 						background: var(--background-secondary);
 						border: none;
 						padding: 6px 6px 6px 6px;
-						border-radius: 5px;
+						border-radius: 4px;
 						color: var(--interactive-normal);
 						height: var(--channelTabs-tabHeight);
 					}
@@ -2426,7 +2383,7 @@ module.exports = (() => {
 
 					.channelTabs-tabContainer {
 						min-height: calc(var(--channelTabs-tabHeight) + 16px);
-						background: var(--background-secondary-alt);
+						background: rgb(var(--background-tertiary));
 						position: relative;
 					}
 					.channelTabs-tab:not(.channelTabs-selected):hover {
@@ -2463,14 +2420,14 @@ module.exports = (() => {
 						height: 40px;
 						position: relative;
 						display: inline-block;
-						background: var(--background-floating);
+						background: rgb(var(--background-tertiary));
 						width: 40px;
 						float: right;
-						border-radius: 0% 0% 0% 25%;
+						border-radius: 0% 0% 0% 0%;
 					}
 
 					#channelTabs-settingsMenu:hover {
-						background: var(--background-secondary);
+						background: var(--background-modifier-hover);
 					}
 					
 					.channelTabs-settingsIcon {
@@ -2571,11 +2528,11 @@ module.exports = (() => {
 						background: var(--interactive-normal);
 					}
 					.channelTabs-tab:not(.channelTabs-selected):hover .channelTabs-closeTab:hover {
-						background: red;
+						background: hsl(359, calc(var(--saturation-factor, 1)*82.6%), 59.4%);
 						color: white;
 					}
 					.channelTabs-tab.channelTabs-selected .channelTabs-closeTab:hover {
-						background: red;
+						background: hsl(359, calc(var(--saturation-factor, 1)*82.6%), 59.4%);
 						color: white;
 					}
 					
@@ -2965,7 +2922,7 @@ module.exports = (() => {
 				
 				async patchAppView(promiseState)
 				{
-					const AppView = await ReactComponents.getComponent("Shakeable", ".app-2rEoOp");
+					const AppView = await ReactComponents.getComponent("Shakeable", ".app-2CXKsg");
 					if(promiseState.cancelled) return;
 					Patcher.after(AppView.component.prototype, "render", (thisObject, _, returnValue) => {
 						returnValue.props.children = [
@@ -3001,6 +2958,7 @@ module.exports = (() => {
 							returnValue.props.children
 						].flat();
 					});
+					AppView.selector = ".app-2CXKsg"; // dirty fix for AppView.selector still being the old one, breaking forceUpdateAll()
 					AppView.forceUpdateAll();
 					patches.push(()=>AppView.forceUpdateAll());
 				}

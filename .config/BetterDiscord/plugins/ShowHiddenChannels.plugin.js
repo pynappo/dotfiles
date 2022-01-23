@@ -2,7 +2,7 @@
  * @name ShowHiddenChannels
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 3.0.2
+ * @version 3.0.5
  * @description Displays all hidden Channels, which can't be accessed due to Role Restrictions, this won't allow you to read them (impossible)
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,17 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "ShowHiddenChannels",
 			"author": "DevilBro",
-			"version": "3.0.2",
+			"version": "3.0.5",
 			"description": "Displays all hidden Channels, which can't be accessed due to Role Restrictions, this won't allow you to read them (impossible)"
-		},
-		"changeLog": {
-			"improved": {
-				"Threads": "Added the Channel Info Modal for Threads, it's not possible to see a list of all threads in a server, because Discord only sends you the info a thread after you attempted to join it, which isn't possible with private threads (it's similar like server invites)"
-			}
 		}
 	};
 
-	return (window.Lightcord && !Node.prototype.isPrototypeOf(window.Lightcord) || window.LightCord && !Node.prototype.isPrototypeOf(window.LightCord)) ? class {
+	return (window.Lightcord && !Node.prototype.isPrototypeOf(window.Lightcord) || window.LightCord && !Node.prototype.isPrototypeOf(window.LightCord) || window.Astra && !Node.prototype.isPrototypeOf(window.Astra)) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
@@ -433,7 +428,7 @@ module.exports = (_ => {
 					for (let catId in e.instance.props.categories) e.instance.props.categories[catId] = [].concat(e.instance.props.categories[catId]);
 					e.instance.props.channels = Object.assign({}, e.instance.props.channels);
 					for (let type in e.instance.props.channels) e.instance.props.channels[type] = [].concat(e.instance.props.channels[type]);
-						
+					
 					let hiddenId = e.instance.props.guild.id + "_hidden";
 					
 					delete e.instance.props.categories[hiddenId];
@@ -494,7 +489,7 @@ module.exports = (_ => {
 			}
 			
 			processChannelItem (e) {
-				if (e.instance.props.channel && this.isChannelHidden(e.instance.props.channel.id)) {
+				if (e.instance.props.channel && !blackList.includes(e.instance.props.channel.guild_id) && this.isChannelHidden(e.instance.props.channel.id)) {
 					if (!e.returnvalue) e.instance.props.className = BDFDB.DOMUtils.formatClassName(e.instance.props.className, BDFDB.disCN._showhiddenchannelshiddenchannel);
 					else {
 						let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "ChannelItemIcon"});
@@ -578,7 +573,7 @@ module.exports = (_ => {
 			}
 			
 			openAccessModal (channel, allowed) {
-				let isThread = channel.isThread();
+				let isThread = BDFDB.ChannelUtils.isThread(channel);
 				let guild = BDFDB.LibraryModules.GuildStore.getGuild(channel.guild_id);
 				let myMember = guild && BDFDB.LibraryModules.MemberStore.getMember(guild.id, BDFDB.UserUtils.me.id);
 				let parentChannel = isThread && BDFDB.LibraryModules.ChannelStore.getChannel(BDFDB.LibraryModules.ChannelStore.getChannel(channel.id).parent_id);
@@ -590,23 +585,26 @@ module.exports = (_ => {
 					if (user) users.push(Object.assign({}, user, BDFDB.LibraryModules.MemberStore.getMember(guild.id, id) || {}));
 					else users.push({id: id, username: `UserId: ${id}`, fetchable: true});
 				};
-				let checkPerm = permString => {
+				let checkAllowPerm = permString => {
+					return ((permString | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == permString && ((permString | BDFDB.DiscordConstants.Permissions.READ_MESSAGE_HISTORY) == permString || channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_VOICE && (permString | BDFDB.DiscordConstants.Permissions.CONNECT) == permString));
+				};
+				let checkDenyPerm = permString => {
 					return ((permString | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == permString || (permString | BDFDB.DiscordConstants.Permissions.READ_MESSAGE_HISTORY) == permString || channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_VOICE && (permString | BDFDB.DiscordConstants.Permissions.CONNECT) == permString);
 				};
 				
 				let allowedRoles = [], allowedUsers = [], deniedRoles = [], deniedUsers = [], everyoneDenied = false;
 				for (let id in channel.permissionOverwrites) {
-					if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.ROLE || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.ROLE) && (guild.roles[id] && guild.roles[id].name != "@everyone") && checkPerm(channel.permissionOverwrites[id].allow)) {
+					if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.ROLE || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.ROLE) && (guild.roles[id] && guild.roles[id].name != "@everyone") && checkAllowPerm(channel.permissionOverwrites[id].allow)) {
 						allowedRoles.push(Object.assign({overwritten: myMember && myMember.roles.includes(id) && !allowed}, guild.roles[id]));
 					}
-					else if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER) && checkPerm(channel.permissionOverwrites[id].allow)) {
+					else if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER) && checkAllowPerm(channel.permissionOverwrites[id].allow)) {
 						addUser(id, allowedUsers);
 					}
-					if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.ROLE || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.ROLE) && checkPerm(channel.permissionOverwrites[id].deny)) {
+					if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.ROLE || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.ROLE) && checkDenyPerm(channel.permissionOverwrites[id].deny)) {
 						deniedRoles.push(guild.roles[id]);
 						if (guild.roles[id] && guild.roles[id].name == "@everyone") everyoneDenied = true;
 					}
-					else if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER) && checkPerm(channel.permissionOverwrites[id].deny)) {
+					else if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER) && checkDenyPerm(channel.permissionOverwrites[id].deny)) {
 						addUser(id, deniedUsers);
 					}
 				}
