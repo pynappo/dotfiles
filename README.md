@@ -21,10 +21,10 @@ abbr -a dotfiles 'git --git-dir=$HOME/.files/ --work-tree=$HOME'
 
 **Fish abbreviations that are cool**
 
-```
-jammers => 'youtube-viewer :playlist=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep -s -A -a --append-arg="--volume=40"'
-pm => doas pacman
-pr => paru
-pacup => pacman -Qqen > .files/paclist.txt && pacman -Qqem > .files/aurlist.txt
-```
+| Command   | Output                                                                                             |
+|:---------:|----------------------------------------------------------------------------------------------------|
+| `jammers` | `youtube-viewer :playlist=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep -s -A -a --append-arg="--volume=40" ` |
+| `pm`      | `doas pacman`                                                                                      |
+| `pr`      | `paru`                                                                                             |
+| `pacup`   | `pacman -Qqen > .files/paclist.txt && pacman -Qqem > .files/aurlist.txt`                           |
 
