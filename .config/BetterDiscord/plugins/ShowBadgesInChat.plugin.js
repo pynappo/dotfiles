@@ -2,7 +2,7 @@
  * @name ShowBadgesInChat
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.8.1
+ * @version 1.8.2
  * @description Displays Badges (Nitro, Hypesquad, etc...) in the Chat/MemberList/DMList
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,17 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "ShowBadgesInChat",
 			"author": "DevilBro",
-			"version": "1.8.1",
+			"version": "1.8.2",
 			"description": "Displays Badges (Nitro, Hypesquad, etc...) in the Chat/MemberList/DMList"
-		},
-		"changeLog": {
-			"fixed": {
-				"Chat Position": ""
-			}
 		}
 	};
 	
-	return (window.Lightcord || window.LightCord) ? class {
+	return (window.Lightcord && !Node.prototype.isPrototypeOf(window.Lightcord) || window.LightCord && !Node.prototype.isPrototypeOf(window.LightCord) || window.Astra && !Node.prototype.isPrototypeOf(window.Astra)) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
@@ -294,8 +289,19 @@ module.exports = (_ => {
 
 			processPrivateChannel (e) {
 				if (!e.instance.props.user || !this.settings.places.dmsList) return;
-				e.returnvalue.props.decorators = [e.returnvalue.props.decorators].flat(10);
-				this.injectBadges(e.returnvalue.props.decorators, e.instance.props.user, null, "dms");
+				if (typeof e.returnvalue.props.children == "function") {
+					let childrenRender = e.returnvalue.props.children;
+					e.returnvalue.props.children = BDFDB.TimeUtils.suppress((...args) => {
+						let children = childrenRender(...args);
+						children.props.decorators = [children.props.decorators].flat(10);
+						this.injectBadges(children.props.decorators, e.instance.props.user, null, "dms");
+						return children;
+					}, "", this);
+				}
+				else {
+					e.returnvalue.props.decorators = [e.returnvalue.props.decorators].flat(10);
+					this.injectBadges(e.returnvalue.props.decorators, e.instance.props.user, null, "dms");
+				}
 			}
 			
 			processUserProfileBadgeList (e) {
