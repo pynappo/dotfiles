@@ -85,7 +85,7 @@ module.exports = class PetPet extends Plugin {
                     name = "petpet.gif";
                 }
                 const file = new File([buf], name, { type: "image/gif" });
-                promptToUpload([file], getChannel(channels.getChannelId()));
+                promptToUpload([file], getChannel(channels.getChannelId()), 0);
             }
         });
     }
