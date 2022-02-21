@@ -84,38 +84,48 @@ module.exports = class PictureLink extends Plugin {
       const direct = getModule(filter, false);
       if (direct) return direct;
 
-      const oldPush = window.webpackChunkdiscord_app.push;
+      let oldPush = window.webpackChunkdiscord_app.push;
 
       return new Promise(resolve => {
+         const onPush = (chunk) => {
+            const [, modules] = chunk;
+
+            for (const id in modules) {
+               const orig = modules[id];
+
+               modules[id] = (module, exports, require) => {
+                  Reflect.apply(orig, null, [module, exports, require]);
+
+                  try {
+                     const res = filter(exports);
+
+                     if (res) {
+                        window.webpackChunkdiscord_app.push = oldPush;
+                        resolve(exports);
+                     }
+                  } catch { }
+               };
+
+               Object.assign(modules[id], orig, {
+                  toString: () => orig.toString()
+               });
+            }
+
+            return Reflect.apply(oldPush, window.webpackChunkdiscord_app, [chunk]);
+         };
+
          Object.defineProperty(window.webpackChunkdiscord_app, 'push', {
             configurable: true,
-            writable: true,
-            value: (chunk) => {
-               const [, modules] = chunk;
+            set: (push) => {
+               oldPush = push;
 
-               for (const id in modules) {
-                  const orig = modules[id];
-
-                  modules[id] = (module, exports, require) => {
-                     Reflect.apply(orig, null, [module, exports, require]);
-
-                     try {
-                        const res = filter(exports);
-
-                        if (res) {
-                           window.webpackChunkdiscord_app.push = oldPush;
-                           resolve(exports);
-                        }
-                     } catch { }
-                  };
-
-                  Object.assign(modules[id], orig, {
-                     toString: () => orig.toString()
-                  });
-               }
-
-               return Reflect.apply(oldPush, window.webpackChunkdiscord_app, [chunk]);
-            }
+               Object.defineProperty(window.webpackChunkdiscord_app, 'push', {
+                  value: onPush,
+                  configurable: true,
+                  writable: true
+               });
+            },
+            get: () => onPush
          });
       });
    }
