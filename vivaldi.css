@@ -1,0 +1,52 @@
+.addressfield {
+    max-width: 45vw;
+    margin: 5px auto !important   
+}
+.bookmark-bar .observer {
+ justify-content: center;
+}
+
+#switch button.webviewbtn img { background-color: transparent !important; }
+
+#header {
+    min-height: 0 !important;
+    z-index: auto !important;
+}
+
+button.vivaldi {
+    display: none !important;
+}
+
+#tabs-container.top {
+    margin-left: -1.8%;
+}
+
+.tab-header {font-size: 12px;}
+
+/*.toolbar {
+    z-index: 2;
+}
+
+.bookmark-bar {
+    position: fixed !important;
+    width: 100%;
+    transform: translateY(0);
+    transition: transform 0.2s !important;
+    z-index: 1;
+}
+
+.bookmark-bar:hover {
+    transform: translateY(125%);
+}
+
+.toolbar:hover~.bookmark-bar {
+    transform: translateY(125%);
+}
+
+#header:hover~#main .bookmark-bar {
+    transform: translateY(125%);
+}
+
+.webpanel-header {
+    z-index: 0;
+}
