@@ -1,0 +1,3 @@
+[submodule "dotglobal"]
+	path = dotglobal
+	url = https://github.com/pynappo/dotglobal.git
