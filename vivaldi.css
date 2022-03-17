@@ -1,18 +1,6 @@
-.addressfield {
-    max-width: 45vw;
-    margin: 5px auto !important   
-}
 .bookmark-bar .observer {
  justify-content: center;
 }
-
-#switch button.webviewbtn img { background-color: transparent !important; }
-
-#header {
-    min-height: 0 !important;
-    z-index: auto !important;
-}
-
 button.vivaldi {
     display: none !important;
 }
@@ -21,32 +9,67 @@ button.vivaldi {
     margin-left: -1.8%;
 }
 
-.tab-header {font-size: 12px;}
-
-/*.toolbar {
-    z-index: 2;
+/* Define any/all variables */
+.UrlBar {
+  --widthOfAddressBar: 60%; /* variable */
 }
 
-.bookmark-bar {
-    position: fixed !important;
-    width: 100%;
-    transform: translateY(0);
-    transition: transform 0.2s !important;
-    z-index: 1;
+/* Set up a grid for the URL Bar */
+.UrlBar {
+  -webkit-app-region: drag; /* Allow dragging window from UrlBar */
+  display: grid;
+  grid-template-areas: "nav space1 url space2 search profile extensions";
+  grid-template-columns: auto 1fr minmax(min-content, var(--widthOfAddressBar)) 1fr auto auto auto;
 }
 
-.bookmark-bar:hover {
-    transform: translateY(125%);
+/* Define properties for grid area: nav */
+.UrlBar > div:first-child {
+  grid-area: nav;
+  min-width: fit-content;
 }
 
-.toolbar:hover~.bookmark-bar {
-    transform: translateY(125%);
+/* Define properties for grid area: url */
+.UrlBar-UrlField, .UrlBar-AddressField, .UrlBar-SearchField {
+  grid-area: url;
+  text-align: center; /* centers text when in focus */
 }
 
-#header:hover~#main .bookmark-bar {
-    transform: translateY(125%);
+/* Define properties for grid area: search */
+.UrlBar > .button-toolbar:not(.profile-popup), /* search field button */
+.UrlBar-SearchField {
+  grid-area: search;
+  min-width: fit-content;
 }
 
-.webpanel-header {
-    z-index: 0;
+/* Define properties for grid area: profile */
+.UrlBar .profile-popup {
+  grid-area: profile;
+  min-width: fit-content;
+}
+
+/* Define properties for grid area: extensions */
+.UrlBar .toolbar-extensions {
+  grid-area: extensions;
+  min-width: fit-content;
+}
+/* centered addressfield URL */
+.UrlField:not(.UrlField--HasEditText) .UrlBar-UrlField {text-align: center;}
+.UrlFragment-Wrapper {width: fit-content; left: 0; right: 0; margin: auto;}
+
+/* hide https:// display */
+.UrlBar-AddressField > .SiteInfoButton:is(.secure, .certified) + .UrlBar-UrlFieldWrapper .UrlFragment-Wrapper > .UrlFragment--Lowlight:first-of-type {opacity:0;}
+
+/* secure domain green highlighter  */
+.UrlFragment-HostFragment-Subdomain, .UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD {-webkit-text-stroke-width: 0.6px;}
+.UrlBar-AddressField > .SiteInfoButton:is(.secure, .certified) + .UrlBar-UrlFieldWrapper :is(.UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD) {color: var(--colorSuccessBg);}
+
+/* warning domain pink highlighter */
+.UrlBar-AddressField > .SiteInfoButton.warning + .UrlBar-UrlFieldWrapper :is(.UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD) {color: deeppink;}
+
+/* highlight stuff */
+.tab-position .tab {
+  border: 1px solid transparent;
+}
+.tab-position .tab:not(.active):hover {
+  border: 1px solid #ac70ff;
 }
