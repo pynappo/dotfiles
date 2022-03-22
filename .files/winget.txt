@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-03-21T22:11:38.213-00:00",
+	"CreationDate" : "2022-03-22T00:42:57.536-00:00",
 	"Sources" : 
 	[
 		{
@@ -97,6 +97,9 @@
 					"PackageIdentifier" : "Microsoft.OneDrive"
 				},
 				{
+					"PackageIdentifier" : "RubyInstallerTeam.Ruby"
+				},
+				{
 					"PackageIdentifier" : "Spotify.Spotify"
 				},
 				{
@@ -155,9 +158,6 @@
 				},
 				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
-				},
-				{
-					"PackageIdentifier" : "Mojang.MinecraftLauncher"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x64"
@@ -230,6 +230,9 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x86"
+				},
+				{
+					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
 					"PackageIdentifier" : "Python.Python.3"
