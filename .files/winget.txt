@@ -1,11 +1,17 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-03-22T00:42:57.536-00:00",
+	"CreationDate" : "2022-03-27T01:43:12.075-00:00",
 	"Sources" : 
 	[
 		{
 			"Packages" : 
 			[
+				{
+					"PackageIdentifier" : "9NTM2QC6QWS7"
+				},
+				{
+					"PackageIdentifier" : "9NHL4NSC67WM"
+				},
 				{
 					"PackageIdentifier" : "9PC3H3V7Q9CH"
 				},
@@ -44,6 +50,9 @@
 				},
 				{
 					"PackageIdentifier" : "Discord.Discord"
+				},
+				{
+					"PackageIdentifier" : "DiskInternals.LinuxReader"
 				},
 				{
 					"PackageIdentifier" : "da2x.EdgeDeflector"
@@ -97,6 +106,9 @@
 					"PackageIdentifier" : "Microsoft.OneDrive"
 				},
 				{
+					"PackageIdentifier" : "Piriform.Recuva"
+				},
+				{
 					"PackageIdentifier" : "RubyInstallerTeam.Ruby"
 				},
 				{
@@ -128,6 +140,9 @@
 				},
 				{
 					"PackageIdentifier" : "Twilio.Authy"
+				},
+				{
+					"PackageIdentifier" : "Obsidian.Obsidian"
 				},
 				{
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
@@ -193,6 +208,9 @@
 					"PackageIdentifier" : "Tyrrrz.LightBulb"
 				},
 				{
+					"PackageIdentifier" : "TechPowerUp.GPU-Z"
+				},
+				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.16"
 				},
 				{
@@ -253,5 +271,5 @@
 			}
 		}
 	],
-	"WinGetVersion" : "1.2.3411-preview"
+	"WinGetVersion" : "1.3.692-preview"
 }
