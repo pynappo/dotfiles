@@ -1,6 +1,8 @@
+/* Screw the vivaldi button, just press Alt lol */
 .bookmark-bar .observer {
  justify-content: center;
 }
+
 button.vivaldi {
     display: none !important;
 }
@@ -9,7 +11,7 @@ button.vivaldi {
     margin-left: -1.8%;
 }
 
-/* Define any/all variables */
+/* Define any/all variables for centered URL bar */
 .UrlBar {
   --widthOfAddressBar: 60%; /* variable */
 }
