@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-03-27T01:43:12.075-00:00",
+	"CreationDate" : "2022-03-29T01:19:37.995-00:00",
 	"Sources" : 
 	[
 		{
@@ -34,7 +34,13 @@
 			"Packages" : 
 			[
 				{
+					"PackageIdentifier" : "ifedapoolarewaju.IGdm"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
+				},
+				{
+					"PackageIdentifier" : "7zip.7zip"
 				},
 				{
 					"PackageIdentifier" : "ShareX.ShareX"
@@ -53,9 +59,6 @@
 				},
 				{
 					"PackageIdentifier" : "DiskInternals.LinuxReader"
-				},
-				{
-					"PackageIdentifier" : "da2x.EdgeDeflector"
 				},
 				{
 					"PackageIdentifier" : "GitHub.GitHubDesktop"
@@ -98,6 +101,9 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.Office"
+				},
+				{
+					"PackageIdentifier" : "OBSProject.OBSStudio"
 				},
 				{
 					"PackageIdentifier" : "JanDeDobbeleer.OhMyPosh"
@@ -199,9 +205,6 @@
 					"PackageIdentifier" : "Microsoft.VisualStudioCode"
 				},
 				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.8"
-				},
-				{
 					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x64"
 				},
 				{
@@ -212,6 +215,9 @@
 				},
 				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.16"
+				},
+				{
+					"PackageIdentifier" : "ElectronicArts.EADesktop"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x86"
@@ -232,10 +238,16 @@
 					"PackageIdentifier" : "RevoUninstaller.RevoUninstaller"
 				},
 				{
+					"PackageIdentifier" : "Zoom.Zoom"
+				},
+				{
 					"PackageIdentifier" : "wez.wezterm"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerShell"
+				},
+				{
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.17"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.XNARedist"
