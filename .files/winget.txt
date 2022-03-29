@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-03-29T01:19:37.995-00:00",
+	"CreationDate" : "2022-03-29T01:23:13.575-00:00",
 	"Sources" : 
 	[
 		{
@@ -33,9 +33,6 @@
 		{
 			"Packages" : 
 			[
-				{
-					"PackageIdentifier" : "ifedapoolarewaju.IGdm"
-				},
 				{
 					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
 				},
