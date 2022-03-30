@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-03-29T17:36:14.287-00:00",
+	"CreationDate" : "2022-03-30T11:15:36.838-00:00",
 	"Sources" : 
 	[
 		{
@@ -11,9 +11,6 @@
 				},
 				{
 					"PackageIdentifier" : "9NHL4NSC67WM"
-				},
-				{
-					"PackageIdentifier" : "9PC3H3V7Q9CH"
 				},
 				{
 					"PackageIdentifier" : "9N64SQZTB3LM"
@@ -34,9 +31,6 @@
 			"Packages" : 
 			[
 				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
-				},
-				{
 					"PackageIdentifier" : "7zip.7zip"
 				},
 				{
@@ -49,19 +43,16 @@
 					"PackageIdentifier" : "Audacity.Audacity"
 				},
 				{
+					"PackageIdentifier" : "BlueStack.BlueStacks"
+				},
+				{
 					"PackageIdentifier" : "CPUID.CPU-Z"
 				},
 				{
 					"PackageIdentifier" : "Discord.Discord"
 				},
 				{
-					"PackageIdentifier" : "DiskInternals.LinuxReader"
-				},
-				{
 					"PackageIdentifier" : "GitHub.GitHubDesktop"
-				},
-				{
-					"PackageIdentifier" : "Google.Chrome"
 				},
 				{
 					"PackageIdentifier" : "REALiX.HWiNFO"
@@ -71,9 +62,6 @@
 				},
 				{
 					"PackageIdentifier" : "HearthSim.HearthstoneDeckTracker"
-				},
-				{
-					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
 					"PackageIdentifier" : "KiCad.KiCad"
@@ -127,13 +115,16 @@
 					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
+					"PackageIdentifier" : "JetBrains.Toolbox"
+				},
+				{
 					"PackageIdentifier" : "Ultimaker.Cura"
 				},
 				{
-					"PackageIdentifier" : "Ubisoft.Connect"
+					"PackageIdentifier" : "Unigine.HeavenBenchmark"
 				},
 				{
-					"PackageIdentifier" : "VideoLAN.VLC"
+					"PackageIdentifier" : "Ubisoft.Connect"
 				},
 				{
 					"PackageIdentifier" : "VivaldiTechnologies.Vivaldi"
@@ -151,6 +142,15 @@
 					"PackageIdentifier" : "Obsidian.Obsidian"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
+				},
+				{
+					"PackageIdentifier" : "Notion.Notion"
+				},
+				{
+					"PackageIdentifier" : "Peppy.Osu!"
+				},
+				{
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
 				},
 				{
@@ -160,28 +160,31 @@
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2013Redist-x64"
-				},
-				{
-					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
-				},
-				{
-					"PackageIdentifier" : "Logitech.LogiTune"
-				},
-				{
-					"PackageIdentifier" : "Python.Python.3"
-				},
-				{
 					"PackageIdentifier" : "Microsoft.VC++2010Redist-x64"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.dotnetRuntime.5-x64"
 				},
 				{
+					"PackageIdentifier" : "Peppy.Osu!"
+				},
+				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
 				},
 				{
+					"PackageIdentifier" : "Python.Python.3"
+				},
+				{
+					"PackageIdentifier" : "DominikReichl.KeePass"
+				},
+				{
+					"PackageIdentifier" : "Mojang.MinecraftLauncher"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x64"
+				},
+				{
+					"PackageIdentifier" : "Logitech.LogiTune"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
@@ -190,22 +193,37 @@
 					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x86"
 				},
 				{
+					"PackageIdentifier" : "Intel.IntelDriverAndSupportAssistant"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2005Redist-x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.Teams"
+					"PackageIdentifier" : "Microsoft.VC++2015-2022Redist-x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerToys"
+					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VisualStudioCode"
 				},
 				{
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.8"
+				},
+				{
+					"PackageIdentifier" : "Google.Chrome"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x64"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
 					"PackageIdentifier" : "Tyrrrz.LightBulb"
@@ -217,19 +235,10 @@
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.16"
 				},
 				{
-					"PackageIdentifier" : "ElectronicArts.EADesktop"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x86"
-				},
-				{
 					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
 				},
 				{
 					"PackageIdentifier" : "Google.EarthPro"
-				},
-				{
-					"PackageIdentifier" : "Peppy.Osu!"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x86"
@@ -238,7 +247,16 @@
 					"PackageIdentifier" : "RevoUninstaller.RevoUninstaller"
 				},
 				{
+					"PackageIdentifier" : "VideoLAN.VLC"
+				},
+				{
 					"PackageIdentifier" : "Zoom.Zoom"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.GeForceExperience"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.PhysX"
 				},
 				{
 					"PackageIdentifier" : "wez.wezterm"
@@ -259,19 +277,16 @@
 					"PackageIdentifier" : "Microsoft.dotnetRuntime.5-x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x86"
-				},
-				{
 					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
-					"PackageIdentifier" : "Python.Python.3"
+					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x86"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2013Redist-x86"
+					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x64"
 				}
 			],
 			"SourceDetails" : 
