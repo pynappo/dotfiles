@@ -2,6 +2,7 @@
 adb (v:31.0.3) [main]
 archwsl (v:22.3.18.0) [extras]
 aria2 (v:1.35.0-1) [main]
+cascadiacode-nf (v:2.1.0) [nerd-fonts]
 equalizer-apo-np (v:1.2.1) [nonportable]
 gcc (v:11.2.0) [main]
 git (v:2.32.0.windows.2) [main]
