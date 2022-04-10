@@ -1,7 +1,8 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR --export EDITOR:nvim
-SETUVAR __fish_initialized:3100
+SETUVAR __fish_initialized:3400
+SETUVAR _fish_abbr_df:git\x20\x2d\x2dgit\x2ddir\x3d\x24HOME/\x2efiles/\x20\x2d\x2dwork\x2dtree\x3d\x24HOME
 SETUVAR _fish_abbr_dotfiles:git\x20\x2d\x2dgit\x2ddir\x3d\x24HOME/\x2efiles/\x20\x2d\x2dwork\x2dtree\x3d\x24HOME
 SETUVAR _fish_abbr_jammers:youtube\x2dviewer\x20\x3aplaylist\x3dPLg\x2dSQpG3Qf59d1hzWtxsFqZt9n0e2llep\x20\x2ds\x20\x2dA\x20\x2da\x20\x2d\x2dappend\x2darg\x3d\x22\x2d\x2dvolume\x3d40\x22
 SETUVAR _fish_abbr_pacup:pacman\x20\x2dQqen\x20\x3e\x20\x2efiles/paclist\x2etxt\x20\x26\x26\x20pacman\x20\x2dQqem\x20\x3e\x20\x2efiles/aurlist\x2etxt
@@ -35,3 +36,4 @@ SETUVAR fish_pager_color_completion:normal
 SETUVAR fish_pager_color_description:B3A06D\x1eyellow
 SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
+SETUVAR fish_pager_color_selected_background:\x2dr
