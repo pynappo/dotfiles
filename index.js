@@ -1,36 +1,42 @@
-const { Plugin } = require('powercord/entities');
 const { inject, uninject } = require('powercord/injector');
-const { getModuleByDisplayName } = require('powercord/webpack');
+const { findInReactTree } = require('powercord/util');
+const { getModule } = require('powercord/webpack');
+const { Plugin } = require('powercord/entities');
 
 module.exports = class DoubleClickVc extends Plugin {
    async startPlugin() {
-      const ChannelItem = getModuleByDisplayName('ChannelItem', false);
-      inject('double-click-vc', ChannelItem.prototype, 'render', (args, res) => {
-         const channel = this.getNestedProp(res, 'props.children.1.props.children.1.props.children.1.props.channel');
-         if (channel && channel.type == 2) {
-            const props = this.getNestedProp(res, 'props.children.1.props.children.0.props');
-            if (props) {
-               const onClick = props.onClick;
-               props.onDoubleClick = onClick;
-               props.onClick = () => { };
-            } else {
-               this.log('Failed to get nested props.');
-            }
-         } else if (!channel) {
-            this.log('Failed to determine channel type.');
+      const ChannelItem = getModule(m => m.default?.displayName === 'ChannelItem', false);
+      inject('double-click-vc', ChannelItem, 'default', ([{ channel }], res) => {
+         if (channel.type !== 2) return res;
+
+         const clickable = findInReactTree(res, r => r.onClick);
+         if (clickable) {
+            const onClick = clickable.onClick;
+            clickable.onDoubleClick = onClick;
+            clickable.onClick = () => { };
          }
 
          return res;
       });
+
+      ChannelItem.default.displayName = 'ChannelItem';
+
+      const Mention = getModule(m => m.default?.displayName === 'Mention', false);
+      inject('double-click-vc-mention', Mention, 'default', ([{ iconType }], res) => {
+         if (iconType === 'voice') {
+            const onClick = res.props.onClick;
+            res.props.onClick = () => { };
+            res.props.onDoubleClick = onClick;
+         }
+
+         return res;
+      });
+
+      Mention.default.displayName = 'Mention';
    }
 
    pluginWillUnload() {
       uninject('double-click-vc');
-   }
-
-   getNestedProp(obj, path) {
-      return path.split('.').reduce(function (obj, prop) {
-         return obj && obj[prop];
-      }, obj);
+      uninject('double-click-vc-mention');
    }
 };
