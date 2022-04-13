@@ -9,7 +9,7 @@ module.exports = class DoubleClickVc extends Plugin {
       inject('double-click-vc', ChannelItem, 'default', ([{ channel }], res) => {
          if (channel.type !== 2) return res;
 
-         const clickable = findInReactTree(res, r => r.onClick);
+         const clickable = findInReactTree(res, r => r?.onClick);
          if (clickable) {
             const onClick = clickable.onClick;
             clickable.onDoubleClick = onClick;
