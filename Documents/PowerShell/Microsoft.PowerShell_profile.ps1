@@ -8,8 +8,10 @@ $env:POSH_GIT_ENABLED = $true
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
 
+Function notepad { notepads @Args } 
 Function Dotfiles { git --git-dir=$Home/.files/ --work-tree=$HOME @Args }
 set-alias -name df -value dotfiles
+
 
 Function Pacup ([string]$Path = "$Home\.files\"){
 	winget export -o ($Path + 'winget.txt') --accept-source-agreements
