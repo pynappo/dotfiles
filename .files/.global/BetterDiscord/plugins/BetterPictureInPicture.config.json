@@ -1,0 +1,13 @@
+{
+    "currentVersionInfo": {
+        "version": "0.0.3",
+        "hasShownChangelog": true
+    },
+    "settings": {
+        "popupsize": 100,
+        "hideswitch": false,
+        "customswitch": false,
+        "customwidth": "320",
+        "customheight": "180"
+    }
+}
