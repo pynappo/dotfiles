@@ -14,7 +14,7 @@
 			"discord_id": "427179231164760066",
 			"github_username": "TheGreenPig"
 		}],
-		"version": "1.4.10",
+		"version": "1.4.11",
 		"description": "Instead of just showing the long and useless discord message link, make it smaller and add a preview. Thanks a ton Strencher for helping me refactor my code and Juby for making the message queueing system. ",
 		"github_raw": "https://raw.githubusercontent.com/TheGreenPig/BetterDiscordPlugins/main/BetterMessageLinks/BetterMessageLinks.plugin.js",
 	},
@@ -23,7 +23,7 @@
 			"title": "Fixed",
 			"type": "fixed",
 			"items": [
-				"Fixed crashing issue when previewing links to bots",
+				"Removed usage of eval()",
 			]
 		},
 	],
@@ -422,9 +422,22 @@ module.exports = !global.ZeresPluginLibrary ? class {
 				}
 			}
 
+			//not the prettiest solution, but the best I could come up with currently without using eval or writing data.channel, data.guild, etc. 🤷‍♂️ should be ok for now, maybe I can rework it later
+			const data = {
+				authorName: authorName,
+				authorId: authorId,
+				guildName: guildName,
+				guildId: guildId,
+				channelName: channelName,
+				channelId: channelId,
+				messageId: messageId,
+				timestamp: timestamp,
+				nsfw: nsfw
+			};
+
 			let footer = advancedFooter;
 			validFooterValues.forEach((value) => {
-				footer = footer.replace("$" + value, eval(value))
+				footer = footer.replace("$" + value, data[value])
 			})
 			if (footer.includes("$")) footer = "Invalid variables set! Make sure you don't use $ unless it's a valid variable."
 			return React.createElement("div", {
