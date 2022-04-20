@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-04-18T04:18:06.472-00:00",
+	"CreationDate" : "2022-04-20T02:53:44.168-00:00",
 	"Sources" : 
 	[
 		{
@@ -229,9 +229,6 @@
 					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
 				},
 				{
-					"PackageIdentifier" : "Google.EarthPro"
-				},
-				{
 					"PackageIdentifier" : "Peppy.Osu!"
 				},
 				{
@@ -245,6 +242,9 @@
 				},
 				{
 					"PackageIdentifier" : "wez.wezterm"
+				},
+				{
+					"PackageIdentifier" : "Google.EarthPro"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerShell"

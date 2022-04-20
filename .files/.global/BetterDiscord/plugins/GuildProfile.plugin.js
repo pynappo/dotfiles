@@ -1,7 +1,7 @@
 /**!
  * @name GuildProfile
  * @description Adds a modal that can be opened via any guild menu and contains various information about the guild, such as its owner, creation date, joined date, your friends and blocked users who are in it, and much more.
- * @version 1.5.4
+ * @version 1.5.7
  * @author Marmota (Jaime Filho)
  * @authorId 289112759948410881
  * @invite z6Yx9A8VDR
@@ -37,7 +37,7 @@ const path = require('path');
 const request = require('request');
 const electron = require('electron');
 
-const config = {"info":{"name":"GuildProfile","description":"Adds a modal that can be opened via any guild menu and contains various information about the guild, such as its owner, creation date, joined date, your friends and blocked users who are in it, and much more.","version":"1.5.4","authors":[{"name":"Marmota (Jaime Filho)","discord_id":"289112759948410881"}],"github":"https://github.com/jaimeadf/BetterDiscordPlugins/tree/release/src/GuildProfile","github_raw":"https://raw.githubusercontent.com/jaimeadf/BetterDiscordPlugins/release/dist/GuildProfile/GuildProfile.plugin.js"},"changelog":[{"title":"Fixes","type":"fixed","items":["Fixed random crashes when you open menus."]}]};
+const config = {"info":{"name":"GuildProfile","description":"Adds a modal that can be opened via any guild menu and contains various information about the guild, such as its owner, creation date, joined date, your friends and blocked users who are in it, and much more.","version":"1.5.7","authors":[{"name":"Marmota (Jaime Filho)","discord_id":"289112759948410881"}],"github":"https://github.com/jaimeadf/BetterDiscordPlugins/tree/release/src/GuildProfile","github_raw":"https://raw.githubusercontent.com/jaimeadf/BetterDiscordPlugins/release/dist/GuildProfile/GuildProfile.plugin.js"},"changelog":[{"title":"Improvements","type":"improved","items":["Maintain fixed height no matter the content of the section."]}]};
 
 function buildPlugin() {
     const [Plugin, BoundedLibrary] = global.ZeresPluginLibrary.buildPlugin(config);
@@ -1105,6 +1105,13 @@ function Relationships({ guild, relationshipType }) {
 ;// CONCATENATED MODULE: external ["BoundedLibrary","DiscordModules","Moment"]
 const external_BoundedLibrary_DiscordModules_Moment_namespaceObject = BoundedLibrary.DiscordModules.Moment;
 var external_BoundedLibrary_DiscordModules_Moment_default = /*#__PURE__*/__webpack_require__.n(external_BoundedLibrary_DiscordModules_Moment_namespaceObject);
+;// CONCATENATED MODULE: ./src/@discord/stores/StreamerModeStore.js
+ function _nullishCoalesce(lhs, rhsFn) { if (lhs != null) { return lhs; } else { return rhsFn(); } } function StreamerModeStore_optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }
+
+/* harmony default export */ const StreamerModeStore = (external_BoundedLibrary_namespaceObject.WebpackModules.find(m =>
+    Object.getOwnPropertyDescriptor(_nullishCoalesce(StreamerModeStore_optionalChain([m, 'optionalAccess', _ => _.default, 'optionalAccess', _2 => _2.__proto__]), () => ( {})), 'hidePersonalInformation')
+).default);
+
 ;// CONCATENATED MODULE: ./src/@discord/components/Form.js
 
 
@@ -1159,6 +1166,7 @@ const {
 
 
 
+
 const {
     UserStore: GuildInfo_UserStore,
     GuildChannelsStore,
@@ -1166,7 +1174,6 @@ const {
     DiscordConstants: { VerificationLevels, GuildExplicitContentFilterTypes, GuildNSFWContentLevel }
 } = external_BoundedLibrary_namespaceObject.DiscordModules;
 
-const StreamerModeStore = external_BoundedLibrary_namespaceObject.WebpackModules.getByProps('hidePersonalInformation');
 const UserMention = external_BoundedLibrary_namespaceObject.WebpackModules.getByDisplayName('UserMention');
 const UserFetcher = external_BoundedLibrary_namespaceObject.WebpackModules.getByProps('getUser', 'fetchCurrentUser');
 
@@ -1186,7 +1193,7 @@ function InfoSection({ title, children }) {
 
 function GuildInfo({ guild }) {
     const owner = useStateFromStores([GuildInfo_UserStore], () => GuildInfo_UserStore.getUser(guild.ownerId));
-    const hide = useStateFromStores([StreamerModeStore], () => StreamerModeStore.hide);
+    const hide = useStateFromStores([StreamerModeStore], () => StreamerModeStore.hidePersonalInformation);
     const channel = useStateFromStores([GuildChannelsStore], () => GuildChannelsStore.getDefaultChannel(guild.id));
 
     (0,external_BdApi_React_namespaceObject.useEffect)(() => {
@@ -1269,11 +1276,11 @@ function GuildInfo({ guild }) {
 
 
 
-const GuildRoles_StreamerModeStore = external_BoundedLibrary_namespaceObject.WebpackModules.getByProps('hidePersonalInformation');
+
 const { MemberRole } = external_BoundedLibrary_namespaceObject.WebpackModules.getByProps('MemberRole');
 
 function GuildRoles({ guild }) {
-    const hide = useStateFromStores([GuildRoles_StreamerModeStore], () => GuildRoles_StreamerModeStore.hide);
+    const hide = useStateFromStores([StreamerModeStore], () => StreamerModeStore.hidePersonalInformation);
     const roles = GuildRoles_optionalChain([Object, 'access', _ => _.values, 'call', _2 => _2(guild.roles), 'optionalAccess', _3 => _3.sort, 'call', _4 => _4((b, a) => a.position - b.position)]);
 
     if (hide) {
@@ -1297,7 +1304,7 @@ function GuildRoles({ guild }) {
 }
 
 ;// CONCATENATED MODULE: ./src/GuildProfile/components/GuildProfileModal/index.jsx
- function _nullishCoalesce(lhs, rhsFn) { if (lhs != null) { return lhs; } else { return rhsFn(); } }/* @license
+ function GuildProfileModal_nullishCoalesce(lhs, rhsFn) { if (lhs != null) { return lhs; } else { return rhsFn(); } }/* @license
  * Copyright (c) 2020 NurMarvin (Marvin Witt)
  * Copyright (c) 2021 jaimeadf (Jaime Filho)
  * Licensed under the Open Software License version 3.0
@@ -1330,7 +1337,7 @@ class GuildProfileModal extends (external_BdApi_React_default()).PureComponent {
         super(props);
 
         this.state = {
-            selectedSection: _nullishCoalesce(props.section, () => ( GuildProfileSections.GUILD_INFO))
+            selectedSection: GuildProfileModal_nullishCoalesce(props.section, () => ( GuildProfileSections.GUILD_INFO))
         };
 
         this.handleSectionSelect = this.handleSectionSelect.bind(this);
@@ -1366,7 +1373,7 @@ class GuildProfileModal extends (external_BdApi_React_default()).PureComponent {
                         )
                     )
                 )
-                , external_BdApi_React_default().createElement('div', { className: "body-1Ukv50 guild-profile-body" ,}, this.renderSelectedSection())
+                , external_BdApi_React_default().createElement('div', { className: "body-1Ukv50",}, this.renderSelectedSection())
             )
         );
     }
@@ -1413,7 +1420,7 @@ function SvgGuildProfile(props) {
 
 /* harmony default export */ const guild_profile = (SvgGuildProfile);
 ;// CONCATENATED MODULE: ./src/GuildProfile/style.scss
-/* harmony default export */ const style = (".guild-profile .guildDetail-3EJhW_{flex-shrink:0;align-self:start}.guild-profile .profileBadge-12r2Nm{color:var(--header-secondary)}.guild-profile .guild-tag{display:flex;align-items:center}.guild-profile .guild-info{padding:20px 10px}.guild-profile .guild-info .section{padding:5px 10px}.guild-profile .guild-roles{color:var(--interactive-active);padding:10px 12px}.guild-profile .guild-profile-body{flex:1;min-height:0}\n");
+/* harmony default export */ const style = (".guild-profile .guildDetail-3EJhW_{flex-shrink:0;align-self:start}.guild-profile .profileBadge-12r2Nm{color:var(--header-secondary)}.guild-profile .guild-tag{display:flex;align-items:center}.guild-profile .guild-info{padding:20px 10px}.guild-profile .guild-info .section{padding:5px 10px}.guild-profile .guild-roles{color:var(--interactive-active);padding:10px 12px}\n");
 ;// CONCATENATED MODULE: ./src/GuildProfile/locales/index.js
 /* @license
  * Copyright (c) 2021 jaimeadf (Jaime Filho)
