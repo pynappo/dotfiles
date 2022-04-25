@@ -190,7 +190,7 @@
 		"ContextMenuSubItemsMap": {
 			"UserContextMenu": {
 				"keys": ["user", "channel"],
-				"items": ["useHideNoVideoParticipantsItem", "useHideSelfVideoItem", "usePreviewVideoItem", "useChangeIdentityItem", "useMoveToAudienceItem", "useAddFriendNicknameItem", "useAddNoteItem", "useBlockUserItem", "useUserRelationshipItems", "useUserManagementItems", "useCallUserItem", "useFocusVideoItem", "useInviteUserToGuildItems", "useMentionUserItem", "useMessageUserItem", "useUserProfileItem", "useUserRolesItems", "useUserVolumeItem", "useWatchStreamItem", "useCloseDMItem", "useMuteChannelItem"]
+				"items": ["useHideNoVideoParticipantsItem", "useHideSelfVideoItem", "usePreviewVideoItem", "useChangeIdentityItem", "useMoveToAudienceItem", "useAddFriendNicknameItem", "useAddNoteItem", "useBlockUserItem", "useUserRelationshipItems", "useUserManagementItems", "useMoveUserVoiceItems", "useCallUserItem", "useFocusVideoItem", "useInviteUserToGuildItems", "useMentionUserItem", "useMessageUserItem", "useUserProfileItem", "useUserRolesItems", "useUserVolumeItem", "useWatchStreamItem", "useCloseDMItem", "useMuteChannelItem"]
 			}
 		},
 		"PatchTypes": [
@@ -1654,6 +1654,8 @@
 		"accountinfobuttonstrikethrough": ["AccountDetails", "strikethrough"],
 		"accountinfodetails": ["AccountDetails", "usernameContainer"],
 		"accountinfonametag": ["AccountDetails", "nameTag"],
+		"accountinfowithtagasbutton": ["AccountDetails", "withTagAsButton"],
+		"accountinfowithtagless": ["AccountDetails", "withTagAsButton"],
 		"aliasautocomplete": ["AutocompleteAliases", "autocomplete"],
 		"anchor": ["Anchor", "anchor"],
 		"anchorunderlineonhover": ["Anchor", "anchorUnderlineOnHover"],
@@ -5314,6 +5316,7 @@
 		}
 	},
 	"BDFDB_Patrons": {
+		"558825053668507650": 	{"active": true,		"tier": "t2",		"text": "",					"color": "",			"id": "duh AshAj"},
 		"839934284101976094": 	{"active": false,		"tier": "t2",		"text": "",					"color": "",			"id": "tacos (CoZha)"},
 		"296567130952826880": 	{"active": true,		"tier": "t2",		"text": "",					"color": "",			"id": "sukumizu (tekki)"},
 		"779410322187354163": 	{"active": true,		"tier": "t3",		"text": "",					"color": "",			"id": "Liam (LiaHu)"},

@@ -17,19 +17,16 @@ module.exports = (() => {
 					github_username: "TheGreenPig",
 				},
 			],
-			version: "1.0.4",
+			version: "1.0.5",
 			description: "View Pdf and other files directly in Discord.",
 			github_raw:
 				"https://raw.githubusercontent.com/TheGreenPig/BetterDiscordPlugins/main/FileViewer/FileViewer.plugin.js",
 		},
 		changelog: [
 			{
-				title: "Added",
-				type: "added",
-				items: [
-					"Support for some 3D model filetypes (stl, obj, vf, vsj, vsb, 3mf)",
-					"odt files",
-				],
+				title: "Fixed",
+				type: "fixed",
+				items: ["Ignore case sensitivity in file extensions."],
 			},
 		],
 	};
@@ -145,7 +142,7 @@ module.exports = (() => {
 										viewBox: "0 0 226 226",
 										onClick: (e) => {
 											if (e.shiftKey) {
-												window.open(this.props.url, "_blank").focus();
+												window.open(this.props.url, "_blank");
 												return;
 											}
 
@@ -200,13 +197,13 @@ module.exports = (() => {
 									const fileUrl = ret.props.children[2]?.props?.href;
 
 									let isGoogleExtension = googleExtensions.some((e) => {
-										return fileUrl.endsWith(e);
+										return fileUrl.toLowerCase().endsWith(e);
 									});
 									let isOfficeExtension = officeExtensions.some((e) => {
-										return fileUrl.endsWith(e);
+										return fileUrl.toLowerCase().endsWith(e);
 									});
 									let isOjectExtension = objectExtensions.some((e) => {
-										return fileUrl.endsWith(e);
+										return fileUrl.toLowerCase().endsWith(e);
 									});
 									if (
 										!isGoogleExtension &&
