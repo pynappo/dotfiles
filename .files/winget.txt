@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-04-20T02:53:44.168-00:00",
+	"CreationDate" : "2022-04-25T01:17:08.995-00:00",
 	"Sources" : 
 	[
 		{
@@ -121,6 +121,9 @@
 					"PackageIdentifier" : "RubyInstallerTeam.Ruby"
 				},
 				{
+					"PackageIdentifier" : "Spotify.Spotify"
+				},
+				{
 					"PackageIdentifier" : "Valve.Steam"
 				},
 				{
@@ -146,6 +149,9 @@
 				},
 				{
 					"PackageIdentifier" : "Obsidian.Obsidian"
+				},
+				{
+					"PackageIdentifier" : "chrisant996.Clink"
 				},
 				{
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
