@@ -1,94 +1,94 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "console_title_template": "{{.UserName}} @ {{.Folder}} ({{.Shell}}{{if .Root}} [Admin]{{end}}) ",
-  "palette": {
-    "white": "#ffffff",
-    "gray": "#666666",
-    "yellow": "#dcdc42",
-    "green": "#76ef76",
-    "orange": "#e7b165",
-    "purple": "#ab9aed",
-    "pink": "#eaa1ea",
-    "cyan": "#72c2ea",
-    "blue": "#4560f9",
-    "black": "#000000"
-  },
   "blocks": [
     {
       "alignment": "left",
       "segments": [
         {
-          "type": "path",
+          "background": "p:gray",
           "foreground": "p:white",
+          "leading_diamond": "\ue0b6",
           "properties": {
             "style": "unique"
           },
           "style": "diamond",
-          "leading_diamond": "\ue0b6",
-          "trailing_diamond": "",
-          "background": "p:gray",
-          "template": "\uf74a {{ path .Path .Location }}"
+          "template": "\uf74a {{ path .Path .Location }}",
+          "trailing_diamond": "\ue0b0",
+          "type": "path"
         },
         {
-          "type": "os",
-          "style": "powerline",
-          "powerline_symbol": "",
-          "foreground": "p:gray",
-          "background": "p:white",
-          "template": "{{if eq (and (eq .Shell \"pwsh\") (eq .Icon \"\uE62a\")) (and (eq .Shell \"fish\") (eq .Icon \"\uF303\"))}} {{.Shell}} {{.Icon}} {{end}}"
-        }, 
-        {
-          "type":"git",
-          "style": "powerline",
-          "powerline_symbol": "",
-          "foreground": "p:black",
           "background": "p:cyan",
-          "template": " {{.HEAD}}{{.BranchStatus}}{{if .Working.Changed}}({{.Working.String}}{{if .Staging.Changed}} | {{.Staging.String}}){{end}}{{end}}{{ if ne .Upstream \"\" }} → {{.UpstreamIcon}}{{ url .Upstream .UpstreamURL }}{{end}} "
+          "background_templates": [
+            "{{ if gt .Ahead 0 }}p:green{{ end }}",
+            "{{ if gt .Behind 0 }}p:red{{ end }}"
+          ],
+          "foreground": "p:black",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "style": "powerline",
+          "template": " {{ .UpstreamIcon }}{{.Upstream}}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} ",
+          "type": "git"
         },
         {
-          "type": "root",
-          "style": "powerline",
-          "powerline_symbol": "\uE0B0",
-          "foreground": "p:black",
           "background": "p:yellow",
-          "template": " \uF0E7 "
+          "foreground": "p:black",
+          "powerline_symbol": "\ue0b0",
+          "style": "powerline",
+          "template": " \uf0e7 ",
+          "type": "root"
         }
       ],
       "type": "prompt"
     },
     {
       "alignment": "right",
-      "type": "rprompt",
       "segments": [
         {
-          "type": "battery",
-          "style": "diamond",
-          "leading_diamond": "\ue0b6",
-          "trailing_diamond": "\ue0b4",
-          "foreground": "p:black",
           "background": "p:yellow",
           "background_templates": [
             "{{if eq \"Charging\" .State.String}}p:blue{{end}}",
             "{{if eq \"Discharging\" .State.String}}p:red{{end}}",
             "{{if eq \"Full\" .State.String}}p:green{{end}}"
           ],
-          "template": "{{ if not .Error }}{{ .Icon }}{{if ne \"Full\" .State.String}}{{.Percentage}}%{{end}}{{end}}",
+          "foreground": "p:black",
+          "leading_diamond": "\ue0b6",
           "properties": {
-            "discharging_icon": "\u2301",
-            "charging_icon": "\uE234",
-            "charged_icon": "🔋"
-          }
+            "charged_icon": "🔋",
+            "charging_icon": "\ue234",
+            "discharging_icon": "\u2301"
+          },
+          "style": "diamond",
+          "template": " {{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }} ",
+          "trailing_diamond": "\ue0b4",
+          "type": "battery"
         },
         {
-          "type": "time",
-          "style": "plain",
           "foreground": "p:white",
-          "template": " [{{ .CurrentDate | date .Format }}]"
+          "style": "plain",
+          "template": " {{ .CurrentDate | date .Format }} ",
+          "type": "time"
         }
-      ]
+      ],
+      "type": "rprompt"
     }
   ],
+  "console_title_template": "{{.UserName}} @ {{.Folder}} ({{.Shell}}{{if .Root}} [Admin]{{end}}) ",
   "final_space": true,
   "osc99": true,
+  "palette": {
+    "black": "#000000",
+    "blue": "#4560f9",
+    "cyan": "#72c2ea",
+    "gray": "#666666",
+    "green": "#76ef76",
+    "orange": "#e7b165",
+    "pink": "#eaa1ea",
+    "purple": "#ab9aed",
+    "white": "#ffffff",
+    "yellow": "#dcdc42"
+  },
   "version": 2
 }
