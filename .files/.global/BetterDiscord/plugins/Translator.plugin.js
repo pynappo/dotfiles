@@ -2,7 +2,7 @@
  * @name Translator
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 2.3.7
+ * @version 2.3.8
  * @description Allows you to translate Messages and your outgoing Messages within Discord
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,7 +17,7 @@ module.exports = (_ => {
 		"info": {
 			"name": "Translator",
 			"author": "DevilBro",
-			"version": "2.3.7",
+			"version": "2.3.8",
 			"description": "Allows you to translate Messages and your outgoing Messages within Discord"
 		}
 	};
@@ -657,7 +657,9 @@ module.exports = (_ => {
 			}
 			
 			processChannelTextAreaButtons (e) {
-				if (this.settings.general.addTranslateButton && (e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.NORMAL || e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.SIDEBAR) && !e.instance.props.disabled) {
+				console.log(e);
+				console.log(this.settings.general.addTranslateButton && (e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.NORMAL || e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.NORMAL_WITH_ACTIVITY || e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.SIDEBAR) && !e.instance.props.disabled);
+				if (this.settings.general.addTranslateButton && (e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.NORMAL || e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.NORMAL_WITH_ACTIVITY || e.instance.props.type == BDFDB.LibraryComponents.ChannelTextAreaTypes.SIDEBAR) && !e.instance.props.disabled) {
 					e.returnvalue.props.children.unshift(BDFDB.ReactUtils.createElement(TranslateButtonComponent, {
 						channelId: e.instance.props.channel.id
 					}));
@@ -840,7 +842,6 @@ module.exports = (_ => {
 				let toast = null, toastInterval, finished = false, finishTranslation = translation => {
 					isTranslating = false;
 					if (toast) toast.close();
-					BDFDB.TimeUtils.clear(toastInterval);
 					
 					if (finished) return;
 					finished = true;
@@ -875,25 +876,19 @@ module.exports = (_ => {
 							if (toast) toast.close();
 							BDFDB.TimeUtils.clear(toastInterval);
 							
-							let loadingString = `${this.labels.toast_translating} (${translationEngines[engine].name}) - ${BDFDB.LanguageUtils.LibraryStrings.please_wait}`;
-							let currentLoadingString = loadingString;
-							toast = BDFDB.NotificationUtils.toast(loadingString, {
+							toast = BDFDB.NotificationUtils.toast(`${this.labels.toast_translating} (${translationEngines[engine].name}) - ${BDFDB.LanguageUtils.LibraryStrings.please_wait}`, {
 								timeout: 0,
+								ellipsis: true,
 								position: "center",
 								onClose: _ => BDFDB.TimeUtils.clear(toastInterval)
 							});
 							toastInterval = BDFDB.TimeUtils.interval((_, count) => {
-								if (count > 40) {
-									finishTranslation("");
-									BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed} (${translationEngines[engine].name}) - ${this.labels.toast_translating_tryanother}`, {
-										type: "danger",
-										position: "center"
-									});
-								}
-								else {
-									currentLoadingString = currentLoadingString.endsWith(".....") ? loadingString : currentLoadingString + ".";
-									toast.update(currentLoadingString);
-								}
+								if (count < 40) return;
+								finishTranslation("");
+								BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed} (${translationEngines[engine].name}) - ${this.labels.toast_translating_tryanother}`, {
+									type: "danger",
+									position: "center"
+								});
 							}, 500);
 						};
 						if (this.validTranslator(this.settings.engines.translator, input, output, specialCase)) {

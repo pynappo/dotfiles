@@ -9,9 +9,17 @@ $env:POSH_GIT_ENABLED = $true
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
 
-Function Notepad { notepads @Args } 
-Function Dotfiles { git --git-dir=$Home/.files/ --work-tree=$HOME @Args }
-set-alias -name df -value Dotfiles
+Function Notepad { 
+	
+} 
+Function Dotfiles { 
+	if ($Args.Count -gt 2 -and $Args[0].ToString().ToLower() -eq "link") {
+		Move-Item -Path $Args[1] -Destination $Args[2]
+		New-Item -ItemType SymbolicLink -Path $Args[2] -Value $Args[1]
+	}
+	else { git --git-dir=$Home/.files/ --work-tree=$HOME @Args }
+}
+Set-Alias -Name df -Value Dotfiles
 
 
 Function Pacup ([string]$Path = "$Home\.files\"){
@@ -23,11 +31,6 @@ Function Pacup ([string]$Path = "$Home\.files\"){
 Function New-Link ($link, $target) {
     New-Item -ItemType SymbolicLink -Path $link -Value $target 
 }
-
-Function Dotfiles-Link ($link, $target) {
-    New-Link $link $target
-}
-
 
 Function Scoop-Import { 
 	<#
