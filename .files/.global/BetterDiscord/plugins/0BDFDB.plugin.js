@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 2.3.2
+ * @version 2.3.4
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,15 +19,10 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "2.3.2",
+			"version": "2.3.4",
 			"description": "Required Library for DevilBro's Plugins"
 		},
-		"rawUrl": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js",
-		"changeLog": {
-			"fixed": {
-				"Plugin Config Sync Issue": "Fixed and Issue where Plugin Configs would restore after a Discord Reload"
-			}
-		}
+		"rawUrl": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js"
 	};
 	
 	const Cache = {data: {}, modules: {}};
@@ -1648,11 +1643,13 @@ module.exports = (_ => {
 				}
 				else BDFDB.DOMUtils.addClass(data.toast, type);
 				
+				let loadingInterval;
 				let disableInteractions = data.config.disableInteractions && typeof data.config.onClick != "function";
 				let timeout = typeof data.config.timeout == "number" && !disableInteractions ? data.config.timeout : 3000;
 				timeout = (timeout > 0 ? timeout : 600000) + 300;
+				if (data.config.ellipsis && typeof data.children == "string") loadingInterval = BDFDB.TimeUtils.interval(_ => data.toast.update(data.children.endsWith(".....") ? data.children.slice(0, -5) : data.children + "."), 500);
 				
-				let progressInterval, closeTimeout = BDFDB.TimeUtils.timeout(_ => data.toast.close(), timeout);
+				let closeTimeout = BDFDB.TimeUtils.timeout(_ => data.toast.close(), timeout);
 				data.toast.close = _ => {
 					BDFDB.TimeUtils.clear(closeTimeout);
 					if (document.contains(data.toast)) {
@@ -1660,6 +1657,7 @@ module.exports = (_ => {
 						data.toast.style.setProperty("pointer-events", "none", "important");
 						BDFDB.TimeUtils.timeout(_ => {
 							if (typeof data.config.onClose == "function") data.config.onClose();
+							BDFDB.TimeUtils.clear(loadingInterval);
 							BDFDB.ArrayUtils.remove(Toasts, id);
 							BDFDB.DOMUtils.removeLocalStyle("BDFDBcustomToast" + id);
 							data.toast.remove();
@@ -1710,7 +1708,7 @@ module.exports = (_ => {
 					componentDidMount() {
 						data.toast.update = newChildren => {
 							if (!newChildren) return;
-							this.props.children = newChildren;
+							data.children = newChildren;
 							BDFDB.ReactUtils.forceUpdate(this);
 						};
 					}
@@ -1731,7 +1729,7 @@ module.exports = (_ => {
 										}),
 										BDFDB.ReactUtils.createElement("div", {
 											className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.toasttext, data.config.textClassName),
-											children: this.props.children
+											children: data.children
 										}),
 										!disableInteractions && BDFDB.ReactUtils.createElement(Internal.LibraryComponents.SvgIcon, {
 											className: BDFDB.disCN.toastcloseicon,
@@ -1751,7 +1749,7 @@ module.exports = (_ => {
 							]
 						});
 					}
-				}, {children: data.children}), data.toast);
+				}, {}), data.toast);
 				
 				ToastQueues[position].full = (BDFDB.ArrayUtils.sum(Array.from(toasts.childNodes).map(c => {
 					let height = BDFDB.DOMUtils.getRects(c).height;
@@ -2427,7 +2425,7 @@ module.exports = (_ => {
 							originalMethod: originalMethod,
 							originalMethodName: methodName,
 							callOriginalMethod: _ => data.returnValue = data.originalMethod.apply(data.thisObject, data.methodArguments),
-							callOriginalMethodAfterwards: _ => callInstead = true,
+							callOriginalMethodAfterwards: _ => (callInstead = true, data.returnValue),
 							stopOriginalMethodCall: _ => stopCall = true
 						};
 						if (module.BDFDB_patches && module.BDFDB_patches[methodName]) {
@@ -8214,9 +8212,13 @@ module.exports = (_ => {
 				if (e.node && e.node.parentElement && e.node.parentElement.getAttribute("aria-label") == BDFDB.DiscordConstants.Layers.USER_SETTINGS) Internal.addListObserver(e.node.parentElement);
 			};
 		
-			let AppViewExport = BDFDB.ModuleUtils.findByName("AppView", false);
+			let AppViewExport = InternalData.ModuleUtilsConfig.Finder.AppView && BDFDB.ModuleUtils.findByString(InternalData.ModuleUtilsConfig.Finder.AppView.strings, false);
 			if (AppViewExport) Internal.processShakeable = function (e) {
-				let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "AppView"});
+				let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {filter: n => {
+					if (!n || typeof n.type != "function") return;
+					let typeString = n.type.toString();
+					return [InternalData.ModuleUtilsConfig.Finder.AppView.strings].flat(10).filter(n => typeof n == "string").every(string => typeString.indexOf(string) > -1);
+				}});
 				if (index > -1) children[index] = BDFDB.ReactUtils.createElement(AppViewExport.exports.default, children[index].props);
 			};
 			

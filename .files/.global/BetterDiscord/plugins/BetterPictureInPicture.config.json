@@ -4,7 +4,7 @@
         "hasShownChangelog": true
     },
     "settings": {
-        "popupsize": 240,
+        "popupsize": 100,
         "hideswitch": false,
         "customswitch": false,
         "customwidth": "320",

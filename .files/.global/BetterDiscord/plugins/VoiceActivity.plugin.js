@@ -1,14 +1,14 @@
 /**
  * @name VoiceActivity
  * @author Neodymium
- * @version 1.1.6
+ * @version 1.1.7
  * @description Shows icons on the member list and info in User Popouts when somemone is in a voice channel.
  * @source https://github.com/Neodymium7/BetterDiscordStuff/blob/main/VoiceActivity/VoiceActivity.plugin.js
  * @updateUrl https://raw.githubusercontent.com/Neodymium7/BetterDiscordStuff/main/VoiceActivity/VoiceActivity.plugin.js
  * @invite fRbsqH87Av
  */
 
-module.exports = (() => {
+ module.exports = (() => {
     const config = {
         "info": {
             "name": "VoiceActivity",
@@ -17,18 +17,22 @@ module.exports = (() => {
                     "name": "Neodymium"
                 }
             ],
-            "version": "1.1.6",
+            "version": "1.1.7",
             "description": "Shows icons on the member list and info in User Popouts when somemone is in a voice channel.",
             "github": "https://github.com/Neodymium7/BetterDiscordStuff/blob/main/VoiceActivity/VoiceActivity.plugin.js",
             "github_raw": "https://raw.githubusercontent.com/Neodymium7/BetterDiscordStuff/main/VoiceActivity/VoiceActivity.plugin.js"
         },
         "changelog": [
-            {"title": "Fixed", "type": "fixed", "items": ["Fixed icons not showing on Discord startup"]},
+            {"title": "Fixed", "type": "fixed", "items": ["Fixed default guild icons"]},
         ]
     };
 
     return !global.ZeresPluginLibrary ? class {
         constructor() { this._config = config; }
+        getName() { return config.info.name; }
+        getAuthor() { return config.info.authors.map(a => a.name).join(", "); }
+        getDescription() { return config.info.description; }
+        getVersion() { return config.info.version; }
         load() {
             BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`, {
                 confirmText: "Download Now",
@@ -52,7 +56,8 @@ module.exports = (() => {
             const VoiceStateStore = BdApi.findModuleByProps("getVoiceStateForUser");
             const Dispatcher = BdApi.findModuleByProps("dirtyDispatch");
 
-            const TooltipContainer = BdApi.findModuleByProps("TooltipContainer").TooltipContainer;
+            const { TooltipContainer } = BdApi.findModuleByProps("TooltipContainer");
+            const { getAcronym } = BdApi.findModuleByProps("getAcronym");
             const PartyAvatars = BdApi.findModuleByDisplayName("PartyAvatars");
             const Speaker = BdApi.findModuleByDisplayName("Speaker");
             const People = BdApi.findModuleByDisplayName("People");
@@ -79,10 +84,12 @@ module.exports = (() => {
                 return "Unnamed";
             }
 
-            function getAcronym(name) {
-                let words = name.split(" "), acronym = "";
-                for (let i = 0; i < words.length && i < 7; i++) acronym += words[i].substring("0", "1");
-                return acronym;
+            function getIconFontSize(name) {
+                const words = name.split(" ");
+                if (words.length > 7) return 10;
+                else if (words.length === 6) return 12;
+                else if (words.length === 5) return 14;
+                else return 16;
             }
 
             function VoiceIcon(props) {
@@ -238,7 +245,8 @@ module.exports = (() => {
                                 onClick: () => {
                                     if (guild) GuildActions.transitionToGuildSync(guild.id);
                                     else if (channelPath) NavigationUtils.transitionTo(channelPath);
-                                }
+                                },
+                                style: {"font-size": `${getIconFontSize(guild ? guild.name : channel.name)}px`}
                             }, 
                             getAcronym(guild ? guild.name : channel.name)
                         ),
@@ -381,16 +389,18 @@ module.exports = (() => {
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            font-size: 18px;
                             font-weight: 500;
                             line-height: 1.2em;
                             white-space: nowrap;
                             background-color: var(--background-primary);
                             color: var(--text-normal);
+                            min-width: 48px;
                             width: 48px;
                             height: 48px;
                             border-radius: 16px;
                             cursor: pointer;
+                            white-space: nowrap;
+                            overflow: hidden;
                         }
                         .voiceActivityText {
                             padding-top: 8px;

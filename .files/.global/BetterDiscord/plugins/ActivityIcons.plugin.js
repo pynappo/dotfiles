@@ -1,7 +1,7 @@
 /**
  * @name ActivityIcons
  * @author Neodymium
- * @version 1.2.4
+ * @version 1.2.5
  * @description Improves the default icons next to statuses
  * @source https://github.com/Neodymium7/BetterDiscordStuff/blob/main/ActivityIcons/ActivityIcons.plugin.js
  * @updateUrl https://raw.githubusercontent.com/Neodymium7/BetterDiscordStuff/main/ActivityIcons/ActivityIcons.plugin.js
@@ -17,7 +17,7 @@ module.exports = (() => {
                     "name": "Neodymium"
                 }
             ],
-            "version": "1.2.4",
+            "version": "1.2.5",
             "description": "Improves the default icons next to statuses",
             "github": "https://github.com/Neodymium7/BetterDiscordStuff/blob/main/ActivityIcons/ActivityIcons.plugin.js",
             "github_raw": " https://raw.githubusercontent.com/Neodymium7/BetterDiscordStuff/main/ActivityIcons/ActivityIcons.plugin.js"
@@ -28,7 +28,11 @@ module.exports = (() => {
     };
 
     return !global.ZeresPluginLibrary ? class {
-        constructor() {this._config = config;}
+        constructor() { this._config = config; }
+        getName() { return config.info.name; }
+        getAuthor() { return config.info.authors.map(a => a.name).join(", "); }
+        getDescription() { return config.info.description; }
+        getVersion() { return config.info.version; }
         load() {
             BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`, {
                 confirmText: "Download Now",
