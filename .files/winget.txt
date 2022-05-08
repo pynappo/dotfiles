@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-04-25T01:17:08.995-00:00",
+	"CreationDate" : "2022-05-08T14:30:08.809-00:00",
 	"Sources" : 
 	[
 		{
@@ -20,6 +20,15 @@
 				},
 				{
 					"PackageIdentifier" : "9NBLGGH5L9XT"
+				},
+				{
+					"PackageIdentifier" : "9P7QFQMJRFP7"
+				},
+				{
+					"PackageIdentifier" : "9P7QFQMJRFP7"
+				},
+				{
+					"PackageIdentifier" : "9P7QFQMJRFP7"
 				}
 			],
 			"SourceDetails" : 
@@ -127,6 +136,9 @@
 					"PackageIdentifier" : "Valve.Steam"
 				},
 				{
+					"PackageIdentifier" : "StefanSundin.Superf4"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
@@ -151,6 +163,9 @@
 					"PackageIdentifier" : "Obsidian.Obsidian"
 				},
 				{
+					"PackageIdentifier" : "code52.Carnac"
+				},
+				{
 					"PackageIdentifier" : "chrisant996.Clink"
 				},
 				{
@@ -172,16 +187,10 @@
 					"PackageIdentifier" : "Microsoft.dotnet"
 				},
 				{
-					"PackageIdentifier" : "Python.Python.3"
+					"PackageIdentifier" : "Zoom.Zoom"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2010Redist-x64"
-				},
-				{
-					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
-				},
-				{
-					"PackageIdentifier" : "Python.Python.3"
 				},
 				{
 					"PackageIdentifier" : "DominikReichl.KeePass"
@@ -196,13 +205,25 @@
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerToys"
+					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x64"
+				},
+				{
+					"PackageIdentifier" : "GoLang.Go"
+				},
+				{
+					"PackageIdentifier" : "Neovim.Neovim"
+				},
+				{
+					"PackageIdentifier" : "OpenJS.NodeJS"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x64"
+					"PackageIdentifier" : "Yarn.Yarn"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2005Redist-x86"
@@ -211,13 +232,16 @@
 					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x64"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VisualStudioCode"
 				},
 				{
 					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x64"
+					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
 					"PackageIdentifier" : "TechPowerUp.GPU-Z"
@@ -244,16 +268,13 @@
 					"PackageIdentifier" : "RevoUninstaller.RevoUninstaller"
 				},
 				{
-					"PackageIdentifier" : "Zoom.Zoom"
-				},
-				{
 					"PackageIdentifier" : "wez.wezterm"
 				},
 				{
-					"PackageIdentifier" : "Google.EarthPro"
+					"PackageIdentifier" : "ClockworkMod.UniversalADBDriver"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Google.EarthPro"
 				},
 				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.17"
@@ -263,6 +284,9 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2010Redist-x86"
+				},
+				{
+					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
 				},
 				{
 					"PackageIdentifier" : "msys2.msys2"
