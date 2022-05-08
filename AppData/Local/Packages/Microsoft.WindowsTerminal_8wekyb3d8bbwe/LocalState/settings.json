@@ -4,20 +4,26 @@
     "actions": 
     [
         {
+            "command": "unbound",
+            "keys": "ctrl+c"
+        },
+        {
+            "command": "unbound",
+            "keys": "ctrl+v"
+        },
+        {
             "command": 
             {
                 "action": "copy",
                 "singleLine": false
-            },
-            "keys": "ctrl+c"
+            }
         },
         {
             "command": "find",
             "keys": "ctrl+shift+f"
         },
         {
-            "command": "paste",
-            "keys": "ctrl+v"
+            "command": "paste"
         },
         {
             "command": 
@@ -36,13 +42,15 @@
     {
         "defaults": 
         {
+            "antialiasingMode": "cleartype",
+            "bellStyle": "taskbar",
             "colorScheme": "One Half Dark",
             "font": 
             {
                 "face": "CaskaydiaCove Nerd Font Mono",
-                "size": 14
+                "size": 13
             },
-            "opacity": 70,
+            "opacity": 85,
             "useAcrylic": false
         },
         "list": 
@@ -296,5 +304,6 @@
             "white": "#C0C0C0",
             "yellow": "#808000"
         }
-    ]
+    ],
+    "useAcrylicInTabRow": true
 }
