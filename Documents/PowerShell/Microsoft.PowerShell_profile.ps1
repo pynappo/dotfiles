@@ -13,9 +13,18 @@ Function Notepad {
 	
 } 
 Function Dotfiles { 
-	if ($Args.Count -gt 2 -and $Args[0].ToString().ToLower() -eq "link") {
-		Move-Item -Path $Args[1] -Destination $Args[2]
-		New-Item -ItemType SymbolicLink -Path $Args[2] -Value $Args[1]
+	if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
+		if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
+		else {
+			if (([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+				$Path = (Resolve-Path $Args[1]).ToString()
+				$Target = (Resolve-Path $Args[2]).ToString()
+				Dotfiles mv $Path $Target
+				New-Item -ItemType SymbolicLink -Path $Path.TrimEnd('\/') -Value $Target
+				Dotfiles add $Path.TrimEnd('\/')
+			}
+			else {"Run as administrator please."}
+		}
 	}
 	else { git --git-dir=$Home/.files/ --work-tree=$HOME @Args }
 }
@@ -28,8 +37,8 @@ Function Pacup ([string]$Path = "$Home\.files\"){
 	winget export -o ($Path + 'winget.txt') --accept-source-agreements
 }
 
-Function New-Link ($link, $target) {
-    New-Item -ItemType SymbolicLink -Path $link -Value $target 
+Function New-Link ($Path, $Target) {
+    New-Item -ItemType SymbolicLink -Path $Path -Value $Target 
 }
 
 Function Scoop-Import { 
@@ -61,12 +70,7 @@ Function Scoop-Import {
 	#>
 
 	[CmdletBinding(HelpURI="https://gist.github.com/pynappo/ae3f5cf67aa2fea83dd8cc55219ef79e", PositionalBinding)]
-	param (
-		[string]
-		$Buckets,
-		[string]
-		$Apps
-	)
+	param ([string]$Buckets, [string]$Apps)
 	if ( Test-Path $Buckets ) { Import-Csv -Path $Buckets | ForEach-Object { scoop bucket add $_.Name $_.Source } } 
 	else {"No valid bucket list supplied, continuing..."}
 	if ( Test-Path $Apps ) { 
