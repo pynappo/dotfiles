@@ -17,11 +17,20 @@ Function Dotfiles {
 		if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
 		else {
 			if (([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-				$Path = (Resolve-Path $Args[1]).ToString()
-				$Target = (Resolve-Path $Args[2]).ToString()
-				Dotfiles mv $Path $Target
-				New-Item -ItemType SymbolicLink -Path $Path.TrimEnd('\/') -Value $Target
-				Dotfiles add $Path.TrimEnd('\/')
+				if (Test-Path $Args[1]) {
+					if (Test-Path $Args[2]) {
+						$Path = (Resolve-Path $Args[1]).ToString()
+						$Target = (Resolve-Path $Args[2]).ToString()
+						
+						Move-Item $Path $Target
+						$Path = $Path.TrimEnd('\/')
+						New-Item -ItemType SymbolicLink -Path $Path -Value ($Target + (Split-Path $Path -Leaf).ToString())
+						Dotfiles add $Path
+						Dotfiles add $Target
+					}
+					else {"Target invalid."}
+				}
+				else {"Path invalid."}
 			}
 			else {"Run as administrator please."}
 		}
