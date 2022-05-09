@@ -90,7 +90,7 @@ require('ayu').setup({
 
 
 require('telescope').setup {
-  defaults = 
+  defaults = {
     mappings = {
       i = {
         ['<C-u>'] = false,

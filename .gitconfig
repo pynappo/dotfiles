@@ -1,0 +1,12 @@
+[user]
+	email = git+lehtien.david@gmail.com
+	name = pynappo
+[credential "helperselector"]
+	selected = manager-core
+[credential]
+	helper = manager-core
+[safe]
+	directory = C:/Users/lehti/scoop/buckets/extras
+[core]
+	symlinks = true
+	fsmonitor = true
