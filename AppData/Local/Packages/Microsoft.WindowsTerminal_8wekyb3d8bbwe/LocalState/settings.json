@@ -44,7 +44,7 @@
         {
             "antialiasingMode": "cleartype",
             "bellStyle": "taskbar",
-            "colorScheme": "One Half Dark",
+            "colorScheme": "Ayu Mirage",
             "font": 
             {
                 "face": "CaskaydiaCove Nerd Font Mono",
@@ -80,23 +80,80 @@
                 "hidden": false,
                 "name": "Azure Cloud Shell",
                 "source": "Windows.Terminal.Azure"
-            },
-            {
-                "guid": "{3a73aa20-f9e3-54df-aa94-4f3cbe593185}",
-                "hidden": false,
-                "name": "Developer Command Prompt for VS 2022",
-                "source": "Windows.Terminal.VisualStudio"
-            },
-            {
-                "guid": "{b70a8e77-1e0f-5c08-8b06-69923f4c85e8}",
-                "hidden": false,
-                "name": "Developer PowerShell for VS 2022",
-                "source": "Windows.Terminal.VisualStudio"
             }
         ]
     },
     "schemes": 
     [
+        {
+            "background": "#0A0E14",
+            "black": "#01060E",
+            "blue": "#53BDFA",
+            "brightBlack": "#686868",
+            "brightBlue": "#59C2FF",
+            "brightCyan": "#95E6CB",
+            "brightGreen": "#C2D94C",
+            "brightPurple": "#FFEE99",
+            "brightRed": "#F07178",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFB454",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#90E1C6",
+            "foreground": "#B3B1AD",
+            "green": "#91B362",
+            "name": "Ayu Dark",
+            "purple": "#FAE994",
+            "red": "#EA6C73",
+            "selectionBackground": "#FFFFFF",
+            "white": "#C7C7C7",
+            "yellow": "#F9AF4F"
+        },
+        {
+            "background": "#FAFAFA",
+            "black": "#000000",
+            "blue": "#3199E1",
+            "brightBlack": "#686868",
+            "brightBlue": "#399EE6",
+            "brightCyan": "#4CBF99",
+            "brightGreen": "#86B300",
+            "brightPurple": "#A37ACC",
+            "brightRed": "#F07171",
+            "brightWhite": "#D1D1D1",
+            "brightYellow": "#F2AE49",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#46BA94",
+            "foreground": "#6C7680",
+            "green": "#99BF4D",
+            "name": "Ayu Light",
+            "purple": "#9E75C7",
+            "red": "#EA6C6D",
+            "selectionBackground": "#FFFFFF",
+            "white": "#C7C7C7",
+            "yellow": "#ECA944"
+        },
+        {
+            "background": "#1F2430",
+            "black": "#191E2A",
+            "blue": "#6DCBFA",
+            "brightBlack": "#686868",
+            "brightBlue": "#73D0FF",
+            "brightCyan": "#95E6CB",
+            "brightGreen": "#BAE67E",
+            "brightPurple": "#D4BFFF",
+            "brightRed": "#F28779",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFD580",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#90E1C6",
+            "foreground": "#CBCCC6",
+            "green": "#A6CC70",
+            "name": "Ayu Mirage",
+            "purple": "#CFBAFA",
+            "red": "#ED8274",
+            "selectionBackground": "#FFFFFF",
+            "white": "#C7C7C7",
+            "yellow": "#FAD07B"
+        },
         {
             "background": "#0C0C0C",
             "black": "#0C0C0C",
