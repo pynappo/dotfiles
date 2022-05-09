@@ -23,7 +23,7 @@ require('packer').startup(function(use)
     config = function() require('lualine').setup {
       options = {
 	      theme = 'ayu', 
-	      component_separators = '|',
+	      component_separators = '',
 	      section_separators = ''
       }
     }
