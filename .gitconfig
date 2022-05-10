@@ -7,6 +7,8 @@
 	helper = manager-core
 [safe]
 	directory = C:/Users/lehti/scoop/buckets/extras
+	directory = C:/Users/lehti/scoop/buckets
+	directory = C:/Users/lehti/scoop/buckets/nonportable
 [core]
 	symlinks = true
 	fsmonitor = true
