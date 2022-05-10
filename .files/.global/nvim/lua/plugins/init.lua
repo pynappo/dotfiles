@@ -14,22 +14,18 @@ require('packer').startup(function(use)
   use 'Shatur/neovim-ayu'
   use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
   use 'ludovicchabant/vim-gutentags'
-  use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
-  use { 'nvim-telescope/telescope-fzf-native.nvim', 
-    run = 'make',
-    config = function() require('telescope').load_extension 'fzf' end
-  }
+  use ({
+    { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } },
+    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', config = function() require('telescope').load_extension('fzf') end }
+  })
   use { 'nvim-lualine/lualine.nvim',
     config = function() require('lualine').setup {
-      options = {
-	      theme = 'ayu', 
-	      component_separators = '',
-	      section_separators = ''
-      }
+      options = { theme = 'ayu',}
     }
     end
   }
   use { 'lukas-reineke/indent-blankline.nvim',
+    event = "BufEnter",
     config = function() require('indent_blankline').setup {
       char = '┊',
       show_trailing_blankline_indent = false,
@@ -49,25 +45,34 @@ require('packer').startup(function(use)
     }
     end
   } 
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'nvim-treesitter/nvim-treesitter-textobjects'
-  use 'neovim/nvim-lspconfig' 
-  use 'williamboman/nvim-lsp-installer'
-  use 'p00f/nvim-ts-rainbow'
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'saadparwaiz1/cmp_luasnip'
+  use ({
+    { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' },
+    {'nvim-treesitter/nvim-treesitter-textobjects'},
+    {'p00f/nvim-ts-rainbow'}
+  })
+  use ({
+    {'neovim/nvim-lspconfig'},
+    {'williamboman/nvim-lsp-installer'}
+  })
+  use ({
+    {'hrsh7th/nvim-cmp'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'saadparwaiz1/cmp_luasnip' }
+  })
   use 'L3MON4D3/LuaSnip' 
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview'}
   use 'kyazdani42/nvim-web-devicons'
   use {
     'kyazdani42/nvim-tree.lua',
-    requires = {'kyazdani42/nvim-web-devicons',}
+    requires = {'kyazdani42/nvim-web-devicons'},
+    config = function() require('nvim-tree').setup{} end
   }
   use { "folke/which-key.nvim", config = function() require('which-key').setup {} end }
   use { 'goolord/alpha-nvim', config = function () require'alpha'.setup(require'alpha.themes.dashboard'.config) end }
   use 'lewis6991/impatient.nvim'
   use 'dstein64/vim-startuptime'
+  use 'andymass/vim-matchup'
+  use 'dstein64/nvim-scrollview'
   if packer_bootstrap then
     require('packer').sync()
   end
@@ -87,18 +92,6 @@ require('ayu').setup({
     Folded = {bg='none'},
   }
 })
-
-
-require('telescope').setup {
-  defaults = {
-    mappings = {
-      i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
-      },
-    },
-  },
-}
 
 -- Treesitter configuration
 -- Parsers must be installed manually via :TSInstall
@@ -157,28 +150,6 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
--- LSP settings
-local lspconfig = require 'lspconfig'
-local on_attach = function(_, bufnr)
-  local opts = { buffer = bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wl', function()
-    vim.inspect(vim.lsp.buf.list_workspace_folders())
-  end, opts)
-  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', '<leader>so', require('telescope.builtin').lsp_document_symbols, opts)
-  vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
-end
-
 -- nvim-cmp supports additional completion capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -224,3 +195,10 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+require('scrollview').setup({
+  excluded_filetypes = {'nerdtree', 'NvimTree'},
+  current_only = true,
+  winblend = 75,
+  base = 'right'
+})

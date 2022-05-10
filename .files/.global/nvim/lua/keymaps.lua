@@ -1,58 +1,62 @@
+local map=vim.keymap.set
+map({ 'n', 'v' }, ';;', '<Esc>')
 --Remap space as leader key
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
---Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
---Add leader shortcuts
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers)
-vim.keymap.set('n', '<leader>sf', function()
-  require('telescope.builtin').find_files { previewer = false }
+-- Telescope
+local ts = require('telescope.builtin')
+map('n', '<leader><space>', ts.buffers)
+map('n', '<leader>sf', function()
+  ts.find_files { previewer = false }
 end)
-vim.keymap.set('n', '<leader>sb', require('telescope.builtin').current_buffer_fuzzy_find)
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags)
-vim.keymap.set('n', '<leader>st', require('telescope.builtin').tags)
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').grep_string)
-vim.keymap.set('n', '<leader>sp', require('telescope.builtin').live_grep)
-vim.keymap.set('n', '<leader>so', function()
-  require('telescope.builtin').tags { only_current_buffer = true }
+map('n', '<leader>sb', ts.current_buffer_fuzzy_find)
+map('n', '<leader>sh', ts.help_tags)
+map('n', '<leader>st', ts.tags)
+map('n', '<leader>sd', ts.grep_string)
+map('n', '<leader>sp', ts.live_grep)
+map('n', '<leader>so', function()
+  ts.tags { only_current_buffer = true }
 end)
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles)
+map('n', '<leader>?', ts.oldfiles)
 
--- LSP settings
+-- LSP
+local lsp = vim.lsp
 local on_attach = function(_, bufnr)
   local opts = { buffer = bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wl', function()
-    vim.inspect(vim.lsp.buf.list_workspace_folders())
+  map('n', 'gD', lsp.buf.declaration, opts)
+  map('n', 'gd', lsp.buf.definition, opts)
+  map('n', 'K', lsp.buf.hover, opts)
+  map('n', 'gi', lsp.buf.implementation, opts)
+  map('n', '<C-k>', lsp.buf.signature_help, opts)
+  map('n', '<leader>wa', lsp.buf.add_workspace_folder, opts)
+  map('n', '<leader>wr', lsp.buf.remove_workspace_folder, opts)
+  map('n', '<leader>wl', function()
+    vim.inspect(lsp.buf.list_workspace_folders())
   end, opts)
-  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', '<leader>so', require('telescope.builtin').lsp_document_symbols, opts)
-  vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
+  map('n', '<leader>D', lsp.buf.type_definition, opts)
+  map('n', '<leader>rn', lsp.buf.rename, opts)
+  map('n', 'gr', lsp.buf.references, opts)
+  map('n', '<leader>ca', lsp.buf.code_action, opts)
+  map('n', '<leader>so', ts.lsp_document_symbols, opts)
+  vim.api.nvim_create_user_command("Format", lsp.buf.formatting, {})
 end
 
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+-- Diagnostics
+map('n', '<leader>e', vim.diagnostic.open_float)
+map('n', '[d', vim.diagnostic.goto_prev)
+map('n', ']d', vim.diagnostic.goto_next)
+map('n', '<leader>q', vim.diagnostic.setloclist)
 
 -- Better window navigation
-vim.keymap.set('n', '<C-j>', '<C-w>j')
-vim.keymap.set('n', '<C-k>', '<C-w>k')
-vim.keymap.set('n', '<C-h>', '<C-w>h')
-vim.keymap.set('n', '<C-l>', '<C-w>l')
+map('n', '<C-j>', '<C-w>j')
+map('n', '<C-k>', '<C-w>k')
+map('n', '<C-h>', '<C-w>h')
+map('n', '<C-l>', '<C-w>l')
 
-
+-- NvimTree
+map('n', '<C-n>', ':NvimTreeToggle<CR>')            -- open/close
+map('n', '<leader>f', ':NvimTreeRefresh<CR>')       -- refresh
+map('n', '<leader>n', ':NvimTreeFindFile<CR>')      -- search file
