@@ -9,8 +9,8 @@ vim.api.nvim_create_autocmd('BufWritePost', { command = 'source <afile> | Packer
 
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
-  use 'tpope/vim-fugitive' 
-  use 'tpope/vim-rhubarb' 
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-rhubarb'
   use 'Shatur/neovim-ayu'
   use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
   use 'ludovicchabant/vim-gutentags'
@@ -32,8 +32,8 @@ require('packer').startup(function(use)
     }
     end
   }
-  use { 'lewis6991/gitsigns.nvim', 
-    requires = { 'nvim-lua/plenary.nvim' }, 
+  use { 'lewis6991/gitsigns.nvim',
+    requires = { 'nvim-lua/plenary.nvim' },
     config = function() require('gitsigns').setup {
       signs = {
         add = { text = '+' },
@@ -41,25 +41,32 @@ require('packer').startup(function(use)
         delete = { text = '_' },
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
-      } 
+      }
     }
     end
-  } 
+  }
   use ({
     { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' },
     {'nvim-treesitter/nvim-treesitter-textobjects'},
     {'p00f/nvim-ts-rainbow'}
   })
   use ({
-    {'neovim/nvim-lspconfig'},
-    {'williamboman/nvim-lsp-installer'}
+    "williamboman/nvim-lsp-installer",
+    {
+      "neovim/nvim-lspconfig",
+      config = function()
+        require("nvim-lsp-installer").setup {}
+        local lspconfig = require("lspconfig")
+        lspconfig.sumneko_lua.setup {}
+      end
+    }
   })
   use ({
-    {'hrsh7th/nvim-cmp'},
+    {'hrsh7th/nvim-cmp', config = function() require('plugins/cmp') end},
     {'hrsh7th/cmp-nvim-lsp'},
     {'saadparwaiz1/cmp_luasnip' }
   })
-  use 'L3MON4D3/LuaSnip' 
+  use 'L3MON4D3/LuaSnip'
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview'}
   use 'kyazdani42/nvim-web-devicons'
   use {
@@ -79,10 +86,10 @@ require('packer').startup(function(use)
 end)
 
 
-require('ayu').setup({ 
+require('ayu').setup({
   mirage = true,
-  overrides = { 
-    Comment = {fg='#666666', italic=true, bg="none"}, 
+  overrides = {
+    Comment = {fg='#666666', italic=true, bg="none"},
     Normal = {bg='none'},
     NonText = {bg='none'},
     SpecialKey = {bg='none'},
@@ -150,51 +157,8 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
--- nvim-cmp supports additional completion capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
--- nvim-cmp setup
-local luasnip = require 'luasnip'
-local cmp = require 'cmp'
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  }),
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-  },
-}
+
 
 require('scrollview').setup({
   excluded_filetypes = {'nerdtree', 'NvimTree'},
