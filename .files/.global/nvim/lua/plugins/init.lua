@@ -11,7 +11,7 @@ require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
-  use 'Shatur/neovim-ayu'
+  use {'Shatur/neovim-ayu', config = function() require('theme') end }
   use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
   use 'ludovicchabant/vim-gutentags'
   use ({
@@ -56,17 +56,16 @@ require('packer').startup(function(use)
       "neovim/nvim-lspconfig",
       config = function()
         require("nvim-lsp-installer").setup {}
-        local lspconfig = require("lspconfig")
-        lspconfig.sumneko_lua.setup {}
+        require('plugins/lsp')
       end
     }
   })
   use ({
     {'hrsh7th/nvim-cmp', config = function() require('plugins/cmp') end},
     {'hrsh7th/cmp-nvim-lsp'},
-    {'saadparwaiz1/cmp_luasnip' }
+    {'saadparwaiz1/cmp_luasnip'},
+    {'L3MON4D3/LuaSnip'}
   })
-  use 'L3MON4D3/LuaSnip'
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview'}
   use 'kyazdani42/nvim-web-devicons'
   use {
@@ -84,21 +83,6 @@ require('packer').startup(function(use)
     require('packer').sync()
   end
 end)
-
-
-require('ayu').setup({
-  mirage = true,
-  overrides = {
-    Comment = {fg='#666666', italic=true, bg="none"},
-    Normal = {bg='none'},
-    NonText = {bg='none'},
-    SpecialKey = {bg='none'},
-    VertSplit = {bg='none'},
-    SignColumn = {bg='none'},
-    EndOfBuffer = {bg='none'},
-    Folded = {bg='none'},
-  }
-})
 
 -- Treesitter configuration
 -- Parsers must be installed manually via :TSInstall
@@ -157,8 +141,6 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
-
-
 
 require('scrollview').setup({
   excluded_filetypes = {'nerdtree', 'NvimTree'},
