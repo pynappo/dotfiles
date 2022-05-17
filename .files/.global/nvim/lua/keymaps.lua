@@ -1,10 +1,10 @@
-local map=vim.keymap.set
-map({ 'n', 'v' }, ';;', '<Esc>')
+local map = vim.keymap.set
+map({ 'i', 'v' }, ';;', '<Esc>')
 --Remap space as leader key
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
+map('n', '<leader>cd', ':cd %:p:h')
 
 -- Telescope
 local ts = require('telescope.builtin')
@@ -57,6 +57,6 @@ map('n', '<C-h>', '<C-w>h')
 map('n', '<C-l>', '<C-w>l')
 
 -- NvimTree
-map('n', '<C-n>', ':NvimTreeToggle<CR>')            -- open/close
-map('n', '<leader>f', ':NvimTreeRefresh<CR>')       -- refresh
-map('n', '<leader>n', ':NvimTreeFindFile<CR>')      -- search file
+map('n', '<C-n>', ':NvimTreeToggle<CR>') -- open/close
+map('n', '<leader>f', ':NvimTreeRefresh<CR>') -- refresh
+map('n', '<leader>n', ':NvimTreeFindFile<CR>') -- search file

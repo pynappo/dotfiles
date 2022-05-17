@@ -4,35 +4,31 @@ Enable-PoshTooltips
 Enable-PoshLineError
 
 Import-Module posh-git
+Import-Module -Name Terminal-Icons
+
 $env:POSH_GIT_ENABLED = $true
 
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
 
-Function Notepad { 
-	
-} 
+Function Notepad { Notepads @Args } 
 Function Dotfiles { 
 	if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
 		if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
 		else {
-			if (([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-				if (Test-Path $Args[1]) {
-					if (Test-Path $Args[2]) {
-						$Path = (Resolve-Path $Args[1]).ToString()
-						$Target = (Resolve-Path $Args[2]).ToString()
-						
-						Move-Item $Path $Target
-						$Path = $Path.TrimEnd('\/')
-						New-Item -ItemType SymbolicLink -Path $Path -Value ($Target + (Split-Path $Path -Leaf).ToString())
-						Dotfiles add $Path
-						Dotfiles add $Target
-					}
-					else {"Target invalid."}
-				}
-				else {"Path invalid."}
+			if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+				Return Write-Error("Run as administrator please.")
 			}
-			else {"Run as administrator please."}
+			if (!(Test-Path $Args[1])) { Return Write-Error("Path invalid.")}
+			if (!(Test-Path $Args[2])) { Return Write-Error("Target invalid.")}
+			$Path = (Resolve-Path $Args[1]).ToString()
+			$Target = (Resolve-Path $Args[2]).ToString()
+			
+			Move-Item $Path $Target
+			$Path = $Path.TrimEnd('\/')
+			New-Item -ItemType SymbolicLink -Path $Path -Value ($Target + (Split-Path $Path -Leaf).ToString())
+			Dotfiles add $Path
+			Dotfiles add $Target
 		}
 	}
 	else { git --git-dir=$Home/.files/ --work-tree=$HOME @Args }
@@ -89,5 +85,5 @@ Function Scoop-Import {
 			}
 		}
 	}
-	else {"No valid apps list supplied, ending..."}
+	else {Write-Error("No valid apps list supplied, ending...")}
 }

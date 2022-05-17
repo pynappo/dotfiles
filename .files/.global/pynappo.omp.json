@@ -4,41 +4,68 @@
     {
       "alignment": "left",
       "segments": [
+          
         {
-          "background": "p:gray",
-          "foreground": "p:white",
+          "type": "os",
+          "style": "diamond",
           "leading_diamond": "\ue0b6",
+          "foreground": "darkGray",
+          "background": "white",
+          "template": "{{ if .WSL }}WSL at {{ end }}{{.Icon}}",
+          "properties": {
+            "macos": "mac"
+          }
+        },
+        {   
+          "type": "session",
+          "style": "powerline",
+          "foreground": "#ffffff",
+          "background": "#c386f1",
+          "powerline_symbol": "\ue0b0",
+          "template": " {{if .SSHSession}}\uF817 {{ .UserName }}@{{ .HostName }}{{end}}"
+        },
+        {
+          "background": "darkGray",
+          "foreground": "p:white",
           "properties": {
             "style": "unique"
           },
-          "style": "diamond",
-          "template": "\uf74a {{ path .Path .Location }}",
-          "trailing_diamond": "\ue0b0",
+          "powerline_symbol": "\ue0b0",
+          "style": "powerline",
+          "template": " \uf74a {{ path .Path .Location }}",
           "type": "path"
         },
         {
-          "background": "p:cyan",
+          "background": "lightBlue",
           "background_templates": [
             "{{ if gt .Ahead 0 }}p:green{{ end }}",
             "{{ if gt .Behind 0 }}p:red{{ end }}"
           ],
-          "foreground": "p:black",
-          "powerline_symbol": "\ue0b0",
+          "foreground": "black",
+            "powerline_symbol": "\ue0b0",
           "properties": {
             "fetch_status": true,
             "fetch_upstream_icon": true
           },
           "style": "powerline",
-          "template": " {{ .UpstreamIcon }}{{.Upstream}}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} ",
+          "template": " {{.UpstreamIcon}}{{ url .Upstream .UpstreamURL }} {{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }}\uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }}|{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}}\uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }}",
           "type": "git"
         },
         {
-          "background": "p:yellow",
-          "foreground": "p:black",
+          "background": "yellow",
+          "foreground": "black",
           "powerline_symbol": "\ue0b0",
           "style": "powerline",
           "template": " \uf0e7 ",
           "type": "root"
+        },
+        {
+          "type": "java",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "p:white",
+          "background": "blue",
+          "template": " \uE738 {{ .Full }}"
         }
       ],
       "type": "prompt"
@@ -47,13 +74,13 @@
       "alignment": "right",
       "segments": [
         {
-          "background": "p:yellow",
+          "background": "yellow",
           "background_templates": [
             "{{if eq \"Charging\" .State.String}}p:blue{{end}}",
             "{{if eq \"Discharging\" .State.String}}p:red{{end}}",
             "{{if eq \"Full\" .State.String}}p:green{{end}}"
           ],
-          "foreground": "p:black",
+          "foreground": "black",
           "leading_diamond": "\ue0b6",
           "properties": {
             "charged_icon": "🔋",
@@ -66,7 +93,7 @@
           "type": "battery"
         },
         {
-          "foreground": "p:white",
+          "foreground": "darkGray",
           "style": "plain",
           "template": " {{ .CurrentDate | date .Format }} ",
           "type": "time"
