@@ -9,6 +9,10 @@
 	directory = C:/Users/lehti/scoop/buckets/extras
 	directory = C:/Users/lehti/scoop/buckets
 	directory = C:/Users/lehti/scoop/buckets/nonportable
+	directory = c:/Users/lehti/AppData/Local/nvim-data/site/pack/packer/start/nvim-treesitter
+	directory = C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-treesitter\\
+	directory = *
 [core]
 	symlinks = true
 	fsmonitor = true
+	editor = nvim
