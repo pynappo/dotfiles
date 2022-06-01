@@ -2,13 +2,13 @@ vim.o.termguicolors = true
 require('ayu').setup({
   mirage = true,
   overrides = {
-    Comment = { fg = '#666666', italic = true, bg = "none" },
+    Comment = { fg = 'gray', italic = true, bg = "none" },
     Normal = { bg = 'none' },
-    NonText = { bg = 'none' },
+    NonText = { fg = 'gray', bg = 'none' },
     SpecialKey = { bg = 'none' },
     VertSplit = { bg = 'none' },
     SignColumn = { bg = 'none' },
-    EndOfBuffer = { bg = 'none' },
+    EndOfBuffer = { fg = 'gray', bg = 'none' },
     Folded = { bg = 'none' },
   }
 })

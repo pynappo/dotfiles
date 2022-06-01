@@ -10,8 +10,8 @@ vim.api.nvim_create_autocmd('BufWritePost', { command = 'source <afile> | Packer
 require('packer').startup({ function(use)
   use 'wbthomason/packer.nvim'
   use { 'tpope/vim-fugitive', cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull' } }
-  use { 'Shatur/neovim-ayu', config = function() require('theme') end }
-  use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
+  use { 'Shatur/neovim-ayu', config = [[require('theme')]] }
+  use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
   use 'ludovicchabant/vim-gutentags'
   use({
     { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } },
@@ -21,8 +21,9 @@ require('packer').startup({ function(use)
     config = function() require('lualine').setup {
         options = {
           theme = 'ayu',
-          extensions = { 'nvim-tree' },
-          section_separators = ''
+          extensions = { 'nvim-tree', 'fugitive' },
+          section_separators = '',
+          component_separators = ''
         }
       }
     end
@@ -36,7 +37,6 @@ require('packer').startup({ function(use)
     end
   }
   use { 'lewis6991/gitsigns.nvim',
-
     requires = { 'nvim-lua/plenary.nvim' },
     config = function() require('gitsigns').setup {
         signs = {
@@ -53,7 +53,7 @@ require('packer').startup({ function(use)
     {
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
-      config = function() require('plugins/treesitter') end,
+      config = [[require('plugins/treesitter')]],
     },
     { 'nvim-treesitter/nvim-treesitter-textobjects' },
     { 'p00f/nvim-ts-rainbow' }
@@ -87,11 +87,18 @@ require('packer').startup({ function(use)
   use 'andymass/vim-matchup'
   use 'Darazaki/indent-o-matic'
   use { 'wfxr/minimap.vim', config = function()
-    vim.g.minimap_auto_start = 1
     vim.g.minimap_width = 10
     vim.g.minimap_highlight_range = 1
+    vim.g.minimap_git_colors = 1
+    vim.g.minimap_block_filetypes = { 'fugitive', 'nerdtree', 'tagbar', 'fzf', 'nvimtree' }
+    vim.g.minimap_highlight_search = 1
   end
   }
+  use {
+    'ggandor/leap.nvim',
+    config = [[require('leap').set_default_keymaps()]]
+  }
+  use 'tpope/vim-repeat'
   if packer_bootstrap then
     require('packer').sync()
   end
