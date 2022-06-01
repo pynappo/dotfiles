@@ -24,25 +24,6 @@ map('n', '<leader>?', ts.oldfiles)
 
 -- LSP
 local lsp = vim.lsp
-local on_attach = function(_, bufnr)
-  local opts = { buffer = bufnr }
-  map('n', 'gD', lsp.buf.declaration, opts)
-  map('n', 'gd', lsp.buf.definition, opts)
-  map('n', 'K', lsp.buf.hover, opts)
-  map('n', 'gi', lsp.buf.implementation, opts)
-  map('n', '<C-k>', lsp.buf.signature_help, opts)
-  map('n', '<leader>wa', lsp.buf.add_workspace_folder, opts)
-  map('n', '<leader>wr', lsp.buf.remove_workspace_folder, opts)
-  map('n', '<leader>wl', function()
-    vim.inspect(lsp.buf.list_workspace_folders())
-  end, opts)
-  map('n', '<leader>D', lsp.buf.type_definition, opts)
-  map('n', '<leader>rn', lsp.buf.rename, opts)
-  map('n', 'gr', lsp.buf.references, opts)
-  map('n', '<leader>ca', lsp.buf.code_action, opts)
-  map('n', '<leader>so', ts.lsp_document_symbols, opts)
-  vim.api.nvim_create_user_command("Format", lsp.buf.formatting, {})
-end
 
 -- Diagnostics
 map('n', '<leader>e', vim.diagnostic.open_float)
@@ -57,6 +38,9 @@ map('n', '<C-h>', '<C-w>h')
 map('n', '<C-l>', '<C-w>l')
 
 -- NvimTree
-map('n', '<C-n>', ':NvimTreeToggle<CR>') -- open/close
-map('n', '<leader>f', ':NvimTreeRefresh<CR>') -- refresh
-map('n', '<leader>n', ':NvimTreeFindFile<CR>') -- search file
+map('n', '<C-n>', ':NvimTreeToggle<CR>')
+map('n', '<leader>f', ':NvimTreeRefresh<CR>')
+map('n', '<leader>n', ':NvimTreeFindFile<CR>')
+
+-- Minimap
+map('n', '<leader>m', ':MinimapToggle<CR>')

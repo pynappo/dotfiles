@@ -1,5 +1,5 @@
 Preamp: 15 dB
 VSTPlugin: Library "C:\Program Files\VSTPlugins\ReaPlugs\reafir_standalone.dll" ChunkData "nBIAAAAAtMIAAMBBAAgAAAAAgD8AAAAAAgAAAAMAAACQOjlC+YpQwneDzkIlSRTCWF4/RIsvs8IEAAAAAAAAAK1VAzwAAIA/s6IEOAAAAAA="
-VSTPlugin: Library "C:\Program Files\VSTPlugins\ReaPlugs\reagate-standalone.dll" SignIn 0 Thresh 0.0141254 Hold 0 Hipass 0 Pre-open 0 Attack 0.004 Release 0.02 Lowpass 1 AudIn 0 Dry 3.16228e-8 Wet 1 Noise 3.16228e-8 Hystrsis 1 PreviewF 0 "RMS size" 0 Usemidi 0 MidiNote 0.543307 MidiChan 0 InvrtWet 0
-VSTPlugin: Library "C:\Program Files\VSTPlugins\ReaPlugs\reacomp-standalone.dll" SignIn 0 Thresh 0.100351 Hipass 0 Pre-comp 0 Release 0.02 Ratio 0.00999465 AutoMkUp 0 Attack 0.006 resvd 0 Lowpass 1 AudIn 0 Dry 3.16228e-8 Wet 1 PreviewF 0 "RMS size" 0.005 Knee 0 AutoRel 0 ClsAttk 1 AntiAls 0
+VSTPlugin: Library "C:\Program Files\VSTPlugins\ReaPlugs\reagate-standalone.dll" SignIn 0 Thresh 0.0141254 Hold 0 Hipass 0 Pre-open 0 Attack 0.004 Release 0.06 Lowpass 1 AudIn 0 Dry 3.16228e-8 Wet 1 Noise 3.16228e-8 Hystrsis 1 PreviewF 0 "RMS size" 0 Usemidi 0 MidiNote 0.543307 MidiChan 0 InvrtWet 0
+VSTPlugin: Library "C:\Program Files\VSTPlugins\ReaPlugs\reacomp-standalone.dll" SignIn 0 Thresh 0.100351 Hipass 0 Pre-comp 0 Release 0.04 Ratio 0.00999465 AutoMkUp 0 Attack 0.006 resvd 0 Lowpass 1 AudIn 0 Dry 3.16228e-8 Wet 1 PreviewF 0 "RMS size" 0.005 Knee 0 AutoRel 0 ClsAttk 1 AntiAls 0
 VSTPlugin: Library "C:\Program Files\VSTPlugins\bin\vst\librnnoise_vst.dll"

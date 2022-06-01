@@ -47,12 +47,13 @@
                 "face": "CaskaydiaCove Nerd Font Mono",
                 "size": 13
             },
-            "opacity": 85,
+            "opacity": 90,
             "useAcrylic": false
         },
         "list": 
         [
             {
+                "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -nologo",
                 "font": 
                 {
                     "face": "Cascadia Code"

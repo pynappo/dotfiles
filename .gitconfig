@@ -16,3 +16,5 @@
 	symlinks = true
 	fsmonitor = true
 	editor = nvim
+[init]
+	defaultBranch = main

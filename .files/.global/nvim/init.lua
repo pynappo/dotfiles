@@ -27,25 +27,6 @@ opt.shiftwidth = 0
 opt.softtabstop = -1
 opt.expandtab = true
 
--- Misc
-opt.list = true
-o.updatetime = 200
-opt.whichwrap:append "<>[]hl"
-opt.listchars = {
-  extends = '⟩',
-  precedes = '⟨',
-  trail = '·'
-}
-opt.list = true
-o.completeopt = 'menuone,noselect'
-o.breakindent = true
-opt.undofile = true
-o.ignorecase = true
-o.smartcase = true
-o.backup = false
-o.writebackup = false
-o.swapfile = false
-
 -- Number of screen lines to keep above and below the cursor
 o.scrolloff = 8
 
