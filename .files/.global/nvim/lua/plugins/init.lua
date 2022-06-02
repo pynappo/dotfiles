@@ -15,7 +15,12 @@ require('packer').startup({ function(use)
   use 'ludovicchabant/vim-gutentags'
   use({
     { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } },
-    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', config = [[require('telescope').load_extension('fzf')]] }
+    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', config = [[require('telescope').load_extension('fzf')]] },
+    {
+      'nvim-telescope/telescope-frecency.nvim',
+      after = 'telescope.nvim',
+      requires = 'tami5/sqlite.lua',
+    }
   })
   use { 'nvim-lualine/lualine.nvim',
     config = function() require('lualine').setup {
@@ -93,14 +98,14 @@ require('packer').startup({ function(use)
     config = [[require('nvim-tree').setup {}]],
     cmd = 'NvimTreeToggle'
   }
-  use { "folke/which-key.nvim", config = [[require('which-key').setup {} ]] }
-  use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.dashboard').config)]] }
+  use { "folke/which-key.nvim", config = [[require('which-key').setup {} ]], cmd = 'WhichKey' }
+  use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
   use 'lewis6991/impatient.nvim'
-  use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 10]] }
+  use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
   use 'andymass/vim-matchup'
   use {
     'nmac427/guess-indent.nvim',
-    config = [[require('guess-indent').setup {}]],
+    config = [[require('guess-indent').setup{}]],
   }
   use {
     'wfxr/minimap.vim',
@@ -128,6 +133,11 @@ require('packer').startup({ function(use)
     'norcalli/nvim-colorizer.lua',
     cmd = "ColorizerToggle",
     config = [[require('colorizer').setup()]]
+  }
+  use {
+    'mbbill/undotree',
+    cmd = 'UndotreeToggle',
+    config = [[vim.g.undotree_SetFocusWhenToggle = 1]],
   }
   if packer_bootstrap then
     require('packer').sync()

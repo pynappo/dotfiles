@@ -1,4 +1,4 @@
-local modules = { 'plugins', 'keymaps', 'autocmd', 'theme' }
+local modules = { 'impatient', 'plugins', 'keymaps', 'autocmd', 'theme' }
 
 for _, module in ipairs(modules) do
   local ok, err = pcall(require, module)
