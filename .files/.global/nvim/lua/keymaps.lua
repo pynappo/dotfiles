@@ -22,8 +22,6 @@ map('n', '<leader>so', function()
 end)
 map('n', '<leader>?', ts.oldfiles)
 
--- LSP
-local lsp = vim.lsp
 
 -- Diagnostics
 map('n', '<leader>e', vim.diagnostic.open_float)

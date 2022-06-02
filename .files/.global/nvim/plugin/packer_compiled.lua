@@ -81,7 +81,7 @@ _G.packer_plugins = {
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
   ["alpha-nvim"] = {
-    config = { "require('alpha').setup(require('alpha.themes.dashboard').config)" },
+    config = { "require('alpha').setup(require('alpha.themes.startify').config)" },
     loaded = true,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\alpha-nvim",
     url = "https://github.com/goolord/alpha-nvim"
@@ -103,7 +103,7 @@ _G.packer_plugins = {
     url = "https://github.com/lewis6991/gitsigns.nvim"
   },
   ["guess-indent.nvim"] = {
-    config = { "require('guess-indent').setup {}" },
+    config = { "require('guess-indent').setup{}" },
     loaded = true,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\guess-indent.nvim",
     url = "https://github.com/nmac427/guess-indent.nvim"
@@ -114,7 +114,7 @@ _G.packer_plugins = {
     url = "https://github.com/lewis6991/impatient.nvim"
   },
   ["indent-blankline.nvim"] = {
-    config = { "\27LJ\2\nÐ\3\0\0\n\0\14\0\0256\0\0\0005\2\1\0B\0\2\4H\3\n€6\5\2\0009\5\3\0059\5\4\5)\a\0\0'\b\5\0\18\t\3\0&\b\t\b5\t\6\0=\4\a\tB\5\4\1F\3\3\3R\3ô6\0\b\0'\2\t\0B\0\2\0029\0\n\0005\2\v\0005\3\f\0=\3\r\2B\0\2\1K\0\1\0\24char_highlight_list\1\a\0\0\27IndentBlanklineIndent1\27IndentBlanklineIndent2\27IndentBlanklineIndent3\27IndentBlanklineIndent4\27IndentBlanklineIndent5\27IndentBlanklineIndent6\1\0\2\25space_char_blankline\6 #show_trailing_blankline_indent\1\nsetup\21indent_blankline\frequire\afg\1\0\0\26IndentBlanklineIndent\16nvim_set_hl\bapi\bvim\1\a\0\0\f#662121\f#666021\f#216631\f#224a5e\f#223b6b\f#662165\npairs\0" },
+    config = { "\27LJ\2\nÐ\3\0\0\n\0\14\0\0256\0\0\0005\2\1\0B\0\2\4H\3\n€6\5\2\0009\5\3\0059\5\4\5)\a\0\0'\b\5\0\18\t\3\0&\b\t\b5\t\6\0=\4\a\tB\5\4\1F\3\3\3R\3ô6\0\b\0'\2\t\0B\0\2\0029\0\n\0005\2\v\0005\3\f\0=\3\r\2B\0\2\1K\0\1\0\24char_highlight_list\1\a\0\0\27IndentBlanklineIndent1\27IndentBlanklineIndent2\27IndentBlanklineIndent3\27IndentBlanklineIndent4\27IndentBlanklineIndent5\27IndentBlanklineIndent6\1\0\2#show_trailing_blankline_indent\1\25space_char_blankline\6 \nsetup\21indent_blankline\frequire\afg\1\0\0\26IndentBlanklineIndent\16nvim_set_hl\bapi\bvim\1\a\0\0\f#662121\f#666021\f#216631\f#224a5e\f#223b6b\f#662165\npairs\0" },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -128,7 +128,7 @@ _G.packer_plugins = {
     url = "https://github.com/ggandor/leap.nvim"
   },
   ["lualine.nvim"] = {
-    config = { "\27LJ\2\n­\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\6\0005\3\3\0005\4\4\0=\4\5\3=\3\a\2B\0\2\1K\0\1\0\foptions\1\0\0\15extensions\1\3\0\0\14nvim-tree\rfugitive\1\0\3\ntheme\bayu\25component_separators\5\23section_separators\5\nsetup\flualine\frequire\0" },
+    config = { "\27LJ\2\n­\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\6\0005\3\3\0005\4\4\0=\4\5\3=\3\a\2B\0\2\1K\0\1\0\foptions\1\0\0\15extensions\1\3\0\0\14nvim-tree\rfugitive\1\0\3\23section_separators\5\25component_separators\5\ntheme\bayu\nsetup\flualine\frequire\0" },
     loaded = true,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
@@ -222,6 +222,18 @@ _G.packer_plugins = {
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
+  ["sqlite.lua"] = {
+    loaded = true,
+    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\sqlite.lua",
+    url = "https://github.com/tami5/sqlite.lua"
+  },
+  ["telescope-frecency.nvim"] = {
+    load_after = {},
+    loaded = true,
+    needs_bufread = false,
+    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\opt\\telescope-frecency.nvim",
+    url = "https://github.com/nvim-telescope/telescope-frecency.nvim"
+  },
   ["telescope-fzf-native.nvim"] = {
     config = { "require('telescope').load_extension('fzf')" },
     loaded = true,
@@ -241,6 +253,15 @@ _G.packer_plugins = {
     only_cond = false,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\opt\\trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
+  },
+  undotree = {
+    commands = { "UndotreeToggle" },
+    config = { "vim.g.undotree_SetFocusWhenToggle = 1" },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\opt\\undotree",
+    url = "https://github.com/mbbill/undotree"
   },
   ["vim-fugitive"] = {
     commands = { "Git", "Gstatus", "Gblame", "Gpush", "Gpull" },
@@ -267,7 +288,7 @@ _G.packer_plugins = {
   },
   ["vim-startuptime"] = {
     commands = { "StartupTime" },
-    config = { "vim.g.startuptime_tries = 10" },
+    config = { "vim.g.startuptime_tries = 3" },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -275,75 +296,81 @@ _G.packer_plugins = {
     url = "https://github.com/dstein64/vim-startuptime"
   },
   ["which-key.nvim"] = {
+    commands = { "WhichKey" },
     config = { "require('which-key').setup {} " },
-    loaded = true,
-    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\which-key.nvim",
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\opt\\which-key.nvim",
     url = "https://github.com/folke/which-key.nvim"
   }
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: guess-indent.nvim
-time([[Config for guess-indent.nvim]], true)
-require('guess-indent').setup {}
-time([[Config for guess-indent.nvim]], false)
--- Config for: which-key.nvim
-time([[Config for which-key.nvim]], true)
-require('which-key').setup {} 
-time([[Config for which-key.nvim]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\2\n\\\0\0\3\0\4\0\n6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\1K\0\1\0\16plugins/lsp\nsetup\23nvim-lsp-installer\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
--- Config for: nvim-treesitter
-time([[Config for nvim-treesitter]], true)
-require('plugins/treesitter')
-time([[Config for nvim-treesitter]], false)
--- Config for: gitsigns.nvim
-time([[Config for gitsigns.nvim]], true)
-try_loadstring("\27LJ\2\nÓ\1\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\0\17changedelete\1\0\1\ttext\6~\14topdelete\1\0\1\ttext\bâ€¾\vdelete\1\0\1\ttext\6_\vchange\1\0\1\ttext\6~\badd\1\0\0\1\0\1\ttext\6+\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
-time([[Config for gitsigns.nvim]], false)
--- Config for: telescope-fzf-native.nvim
-time([[Config for telescope-fzf-native.nvim]], true)
-require('telescope').load_extension('fzf')
-time([[Config for telescope-fzf-native.nvim]], false)
+-- Config for: leap.nvim
+time([[Config for leap.nvim]], true)
+require('leap').set_default_keymaps()
+time([[Config for leap.nvim]], false)
 -- Config for: neovim-ayu
 time([[Config for neovim-ayu]], true)
 require('theme')
 time([[Config for neovim-ayu]], false)
 -- Config for: alpha-nvim
 time([[Config for alpha-nvim]], true)
-require('alpha').setup(require('alpha.themes.dashboard').config)
+require('alpha').setup(require('alpha.themes.startify').config)
 time([[Config for alpha-nvim]], false)
--- Config for: leap.nvim
-time([[Config for leap.nvim]], true)
-require('leap').set_default_keymaps()
-time([[Config for leap.nvim]], false)
--- Config for: nvim-cmp
-time([[Config for nvim-cmp]], true)
-require('plugins/cmp')
-time([[Config for nvim-cmp]], false)
+-- Config for: telescope-fzf-native.nvim
+time([[Config for telescope-fzf-native.nvim]], true)
+require('telescope').load_extension('fzf')
+time([[Config for telescope-fzf-native.nvim]], false)
 -- Config for: Comment.nvim
 time([[Config for Comment.nvim]], true)
 require('Comment').setup()
 time([[Config for Comment.nvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\2\n\\\0\0\3\0\4\0\n6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\1K\0\1\0\16plugins/lsp\nsetup\23nvim-lsp-installer\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
 -- Config for: lualine.nvim
 time([[Config for lualine.nvim]], true)
-try_loadstring("\27LJ\2\n­\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\6\0005\3\3\0005\4\4\0=\4\5\3=\3\a\2B\0\2\1K\0\1\0\foptions\1\0\0\15extensions\1\3\0\0\14nvim-tree\rfugitive\1\0\3\ntheme\bayu\25component_separators\5\23section_separators\5\nsetup\flualine\frequire\0", "config", "lualine.nvim")
+try_loadstring("\27LJ\2\n­\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\6\0005\3\3\0005\4\4\0=\4\5\3=\3\a\2B\0\2\1K\0\1\0\foptions\1\0\0\15extensions\1\3\0\0\14nvim-tree\rfugitive\1\0\3\23section_separators\5\25component_separators\5\ntheme\bayu\nsetup\flualine\frequire\0", "config", "lualine.nvim")
 time([[Config for lualine.nvim]], false)
+-- Config for: guess-indent.nvim
+time([[Config for guess-indent.nvim]], true)
+require('guess-indent').setup{}
+time([[Config for guess-indent.nvim]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+require('plugins/treesitter')
+time([[Config for nvim-treesitter]], false)
+-- Config for: nvim-cmp
+time([[Config for nvim-cmp]], true)
+require('plugins/cmp')
+time([[Config for nvim-cmp]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\2\nÓ\1\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\0\17changedelete\1\0\1\ttext\6~\14topdelete\1\0\1\ttext\bâ€¾\vdelete\1\0\1\ttext\6_\vchange\1\0\1\ttext\6~\badd\1\0\0\1\0\1\ttext\6+\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
+-- Load plugins in order defined by `after`
+time([[Sequenced loading]], true)
+vim.cmd [[ packadd telescope.nvim ]]
+vim.cmd [[ packadd telescope-frecency.nvim ]]
+time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TroubleToggle lua require("packer.load")({'trouble.nvim'}, { cmd = "TroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file ColorizerToggle lua require("packer.load")({'nvim-colorizer.lua'}, { cmd = "ColorizerToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file NvimTreeToggle lua require("packer.load")({'nvim-tree.lua'}, { cmd = "NvimTreeToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TroubleToggle lua require("packer.load")({'trouble.nvim'}, { cmd = "TroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Git lua require("packer.load")({'vim-fugitive'}, { cmd = "Git", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gstatus lua require("packer.load")({'vim-fugitive'}, { cmd = "Gstatus", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gblame lua require("packer.load")({'vim-fugitive'}, { cmd = "Gblame", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gpush lua require("packer.load")({'vim-fugitive'}, { cmd = "Gpush", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gpull lua require("packer.load")({'vim-fugitive'}, { cmd = "Gpull", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file WhichKey lua require("packer.load")({'which-key.nvim'}, { cmd = "WhichKey", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file UndotreeToggle lua require("packer.load")({'undotree'}, { cmd = "UndotreeToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MinimapToggle lua require("packer.load")({'minimap.vim'}, { cmd = "MinimapToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MarkdownPreview lua require("packer.load")({'markdown-preview.nvim'}, { cmd = "MarkdownPreview", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
