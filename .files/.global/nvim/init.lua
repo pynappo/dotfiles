@@ -39,11 +39,13 @@ o.clipboard = 'unnamedplus'
 o.ignorecase = true
 o.smartcase = true
 
+-- Misc
 o.history = 50
 
 o.splitright = true
 o.splitbelow = true
-
+opt.whichwrap:append('<,>,h,l,[,]')
+opt.fillchars = { eob = ' ' }
 local disabled_built_ins = {
   "netrw",
   "netrwPlugin",

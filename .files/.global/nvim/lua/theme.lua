@@ -10,6 +10,7 @@ require('ayu').setup({
     SignColumn = { bg = 'none' },
     EndOfBuffer = { fg = 'gray', bg = 'none' },
     Folded = { bg = 'none' },
+    LineNr = { fg = 'gray' }
   }
 })
 require('ayu').colorscheme()

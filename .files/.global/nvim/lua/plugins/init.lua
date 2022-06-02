@@ -30,9 +30,21 @@ require('packer').startup({ function(use)
   }
   use { 'lukas-reineke/indent-blankline.nvim',
     event = 'BufEnter',
-    config = function() require('indent_blankline').setup {
-        char = '┊',
+    config = function()
+      for i, color in pairs({ '#662121', '#666021', '#216631', '#224a5e', '#223b6b', '#662165' }) do
+        vim.api.nvim_set_hl(0, 'IndentBlanklineIndent' .. i, { fg = color })
+      end
+      require('indent_blankline').setup {
         show_trailing_blankline_indent = false,
+        space_char_blankline = " ",
+        char_highlight_list = {
+          "IndentBlanklineIndent1",
+          "IndentBlanklineIndent2",
+          "IndentBlanklineIndent3",
+          "IndentBlanklineIndent4",
+          "IndentBlanklineIndent5",
+          "IndentBlanklineIndent6",
+        }
       }
     end
   }
@@ -63,7 +75,7 @@ require('packer').startup({ function(use)
     {
       "neovim/nvim-lspconfig",
       config = function()
-        require("nvim-lsp-installer").setup {}
+        require('nvim-lsp-installer').setup {}
         require('plugins/lsp')
       end
     }
@@ -78,27 +90,45 @@ require('packer').startup({ function(use)
   use {
     'kyazdani42/nvim-tree.lua',
     requires = { 'kyazdani42/nvim-web-devicons' },
-    config = [[require('nvim-tree').setup {}]]
+    config = [[require('nvim-tree').setup {}]],
+    cmd = 'NvimTreeToggle'
   }
   use { "folke/which-key.nvim", config = [[require('which-key').setup {} ]] }
-  use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require 'alpha.themes.dashboard'.config)]] }
+  use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.dashboard').config)]] }
   use 'lewis6991/impatient.nvim'
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 10]] }
   use 'andymass/vim-matchup'
-  use 'Darazaki/indent-o-matic'
-  use { 'wfxr/minimap.vim', config = function()
-    vim.g.minimap_width = 10
-    vim.g.minimap_highlight_range = 1
-    vim.g.minimap_git_colors = 1
-    vim.g.minimap_block_filetypes = { 'fugitive', 'nerdtree', 'tagbar', 'fzf', 'nvimtree' }
-    vim.g.minimap_highlight_search = 1
-  end
+  use {
+    'nmac427/guess-indent.nvim',
+    config = [[require('guess-indent').setup {}]],
+  }
+  use {
+    'wfxr/minimap.vim',
+    config = function()
+      vim.g.minimap_width = 10
+      vim.g.minimap_highlight_range = 1
+      vim.g.minimap_git_colors = 1
+      vim.g.minimap_block_filetypes = { 'fugitive', 'nerdtree', 'tagbar', 'fzf', 'nvimtree' }
+      vim.g.minimap_highlight_search = 1
+    end,
+    cmd = 'MinimapToggle'
   }
   use {
     'ggandor/leap.nvim',
     config = [[require('leap').set_default_keymaps()]]
   }
   use 'tpope/vim-repeat'
+  use {
+    'folke/trouble.nvim',
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = [[require("trouble").setup{}]],
+    cmd = 'TroubleToggle'
+  }
+  use {
+    'norcalli/nvim-colorizer.lua',
+    cmd = "ColorizerToggle",
+    config = [[require('colorizer').setup()]]
+  }
   if packer_bootstrap then
     require('packer').sync()
   end
