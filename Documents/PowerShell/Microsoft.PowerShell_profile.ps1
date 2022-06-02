@@ -33,7 +33,8 @@ Function Dotfiles {
 	else { git --git-dir=$Home/.files/ --work-tree=$HOME @Args }
 }
 Set-Alias -Name df -Value Dotfiles
-
+Function Lazy-Dotfiles { lazygit --git-dir=$Home/.files/ --work-tree=$HOME @Args }
+Set-Alias -Name ldf -Value Lazy-Dotfiles
 
 Function Pacup ([string]$Path = "$Home\.files\"){
 	scoop export > ($Path + 'scoop.txt')

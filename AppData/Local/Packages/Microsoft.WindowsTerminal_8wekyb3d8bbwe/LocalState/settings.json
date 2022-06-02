@@ -64,7 +64,7 @@
             },
             {
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-                "hidden": true,
+                "hidden": false,
                 "name": "Command Prompt"
             },
             {
