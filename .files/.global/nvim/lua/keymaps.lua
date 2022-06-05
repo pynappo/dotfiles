@@ -4,7 +4,9 @@ map({ 'i', 'v' }, ';;', '<Esc>')
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-map('n', '<leader>cd', ':cd %:p:h')
+
+-- Map cdh = change directory here
+map('n', '<leader>cdh', ':cd %:p:h')
 
 -- Telescope
 local ts = require('telescope.builtin')
@@ -42,3 +44,6 @@ map('n', '<leader>n', ':NvimTreeFindFile<CR>')
 
 -- Minimap
 map('n', '<leader>m', ':MinimapToggle<CR>')
+
+-- Better pasting
+map('n', 'p', 'p=`]')
