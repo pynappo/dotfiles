@@ -1,6 +1,6 @@
 Unblock-File $profile
-Invoke-Expression (&starship init powershell)
 
+oh-my-posh init pwsh --config $HOME/.files/.global/pynappo.omp.json | Invoke-Expression
 Import-Module posh-git
 Import-Module -Name Terminal-Icons
 
@@ -8,7 +8,7 @@ $env:POSH_GIT_ENABLED = $true
 
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
-$ENV:STARSHIP_CONFIG = "$HOME\.files\.global\starship.toml"
+
 
 Function Notepad { Notepads @Args } 
 Function Dotfiles { 
