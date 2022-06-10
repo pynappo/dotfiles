@@ -1,4 +1,4 @@
-local modules = { 'impatient', 'plugins', 'keymaps', 'autocmd', 'theme' }
+local modules = { 'impatient', 'pynappo/plugins', 'pynappo/keymaps', 'pynappo/autocmd', 'pynappo/theme', 'pynappo/commands' }
 
 for _, module in ipairs(modules) do
   local ok, err = pcall(require, module)
@@ -11,8 +11,12 @@ end
 local opt = vim.opt
 local o = vim.o
 local wo = vim.wo
+local g = vim.g
 
+-- Status/windowline
 o.laststatus = 3
+wo.winbar = '%f'
+
 -- Make line numbers default
 wo.relativenumber = true
 wo.number = true
@@ -33,19 +37,22 @@ o.scrolloff = 8
 -- Better editor UI
 o.cursorline = true
 o.wrap = true
-o.clipboard = 'unnamedplus'
 
 -- Case insensitive searching UNLESS /C or capital in search
 o.ignorecase = true
 o.smartcase = true
 
--- Misc
-o.history = 50
-
+-- More intuitive splits
 o.splitright = true
 o.splitbelow = true
+
+-- Misc
+o.history = 50
 opt.whichwrap:append('<,>,h,l,[,]')
-opt.fillchars = { eob = ' ' }
+opt.fillchars:append("eob: ")
+g.do_filetype_lua = 1
+o.clipboard = 'unnamedplus'
+
 local disabled_built_ins = {
   "netrw",
   "netrwPlugin",
@@ -63,10 +70,8 @@ local disabled_built_ins = {
   "2html_plugin",
   "logipat",
   "rrhelper",
-  "spellfile_plugin",
   "matchit"
 }
-
 for _, plugin in pairs(disabled_built_ins) do
   vim.g["loaded_" .. plugin] = 1
 end

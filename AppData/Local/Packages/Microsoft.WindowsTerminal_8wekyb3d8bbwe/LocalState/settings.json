@@ -11,16 +11,16 @@
             }
         },
         {
+            "command": "paste",
+            "keys": "ctrl+v"
+        },
+        {
             "command": "unbound",
             "keys": "ctrl+c"
         },
         {
             "command": "find",
             "keys": "ctrl+shift+f"
-        },
-        {
-            "command": "paste",
-            "keys": "ctrl+v"
         },
         {
             "command": 
@@ -42,12 +42,16 @@
             "antialiasingMode": "cleartype",
             "bellStyle": "taskbar",
             "colorScheme": "Ayu Mirage",
+            "experimental.retroTerminalEffect": false,
             "font": 
             {
-                "face": "CaskaydiaCove Nerd Font Mono",
-                "size": 13
+                "face": "InconsolataLGC NF",
+                "size": 12,
+                "weight": "normal"
             },
+            "intenseTextStyle": "bright",
             "opacity": 90,
+            "padding": "8",
             "useAcrylic": false
         },
         "list": 
@@ -85,6 +89,13 @@
                 "hidden": false,
                 "name": "Git Bash",
                 "source": "Git"
+            },
+            {
+                "commandline": "nu.exe",
+                "guid": "{9bce5a65-ca2c-4389-bb22-3e34f81f7b9a}",
+                "hidden": false,
+                "icon": "https://www.nushell.sh/icon.png",
+                "name": "Nu Shell"
             }
         ]
     },
