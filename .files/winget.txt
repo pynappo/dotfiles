@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-05-08T14:30:08.809-00:00",
+	"CreationDate" : "2022-06-10T01:56:29.475-00:00",
 	"Sources" : 
 	[
 		{
@@ -73,6 +73,9 @@
 					"PackageIdentifier" : "GitHub.GitHubDesktop"
 				},
 				{
+					"PackageIdentifier" : "Git.Git"
+				},
+				{
 					"PackageIdentifier" : "Google.Chrome"
 				},
 				{
@@ -104,6 +107,9 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.WindowsTerminal"
+				},
+				{
+					"PackageIdentifier" : "Mozilla.Firefox"
 				},
 				{
 					"PackageIdentifier" : "Notepad++.Notepad++"
@@ -169,58 +175,61 @@
 					"PackageIdentifier" : "chrisant996.Clink"
 				},
 				{
+					"PackageIdentifier" : "ItchIo.Itch"
+				},
+				{
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.5-x86"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.dotnet"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnet"
+					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
 				},
 				{
 					"PackageIdentifier" : "Zoom.Zoom"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.5"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VC++2010Redist-x64"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.5"
 				},
 				{
 					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x64"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.3_1"
 				},
 				{
-					"PackageIdentifier" : "Logitech.LogiTune"
+					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x64"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x64"
-				},
-				{
-					"PackageIdentifier" : "GoLang.Go"
-				},
-				{
-					"PackageIdentifier" : "Neovim.Neovim"
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
 					"PackageIdentifier" : "OpenJS.NodeJS"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
+				},
+				{
+					"PackageIdentifier" : "Nushell.Nushell"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
 				},
 				{
 					"PackageIdentifier" : "Yarn.Yarn"
@@ -230,9 +239,6 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.Teams"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x64"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VisualStudioCode"
@@ -268,19 +274,25 @@
 					"PackageIdentifier" : "RevoUninstaller.RevoUninstaller"
 				},
 				{
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.17"
+				},
+				{
+					"PackageIdentifier" : "GoLang.Go"
+				},
+				{
 					"PackageIdentifier" : "wez.wezterm"
 				},
 				{
 					"PackageIdentifier" : "ClockworkMod.UniversalADBDriver"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.XNARedist"
+				},
+				{
 					"PackageIdentifier" : "Google.EarthPro"
 				},
 				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.17"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.XNARedist"
+					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2010Redist-x86"
@@ -289,29 +301,35 @@
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
 				},
 				{
-					"PackageIdentifier" : "msys2.msys2"
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.5-x64"
+					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x86"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.5"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x86"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.5"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				}
 			],
 			"SourceDetails" : 
 			{
-				"Argument" : "https://winget.azureedge.net/cache",
+				"Argument" : "https://cdn.winget.microsoft.com/cache",
 				"Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
 				"Name" : "winget",
 				"Type" : "Microsoft.PreIndexed.Package"
 			}
 		}
 	],
-	"WinGetVersion" : "1.3.692-preview"
+	"WinGetVersion" : "1.3.1391-preview"
 }
