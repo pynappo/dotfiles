@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 2.3.9
+ * @version 2.4.1
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,7 +19,7 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "2.3.9",
+			"version": "2.4.1",
 			"description": "Required Library for DevilBro's Plugins"
 		},
 		"rawUrl": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js"
@@ -1328,7 +1328,7 @@ module.exports = (_ => {
 			}) && m, useExport, noWarnings);
 		};
 		BDFDB.ModuleUtils.findByName = function (name, useExport, noWarnings = false) {
-			return Internal.findModule("name", JSON.stringify(name), m => m.displayName === name && m || m.render && m.render.displayName === name && m || m[name] && m[name].displayName === name && m[name], typeof useExport != "boolean" ? true : useExport, noWarnings);
+			return Internal.findModule("name", JSON.stringify(name), m => m.displayName === name && m || m.render && m.render.displayName === name && m || m.constructor && m.constructor.displayName === name && m || m[name] && m[name].displayName === name && m[name], typeof useExport != "boolean" ? true : useExport, noWarnings);
 		};
 		BDFDB.ModuleUtils.findByString = function (...strings) {
 			strings = strings.flat(10);
@@ -2617,6 +2617,7 @@ module.exports = (_ => {
 					}
 					else LibraryModules[item] = BDFDB.ModuleUtils.findByProperties(InternalData.LibraryModules[item].props);
 				}
+				else if (InternalData.LibraryModules[item].name) LibraryModules[item] = BDFDB.ModuleUtils.findByName(InternalData.LibraryModules[item].name);
 				else if (InternalData.LibraryModules[item].strings) LibraryModules[item] = BDFDB.ModuleUtils.findByString(InternalData.LibraryModules[item].strings);
 				if (InternalData.LibraryModules[item].value) LibraryModules[item] = (LibraryModules[item] || {})[InternalData.LibraryModules[item].value];
 				return LibraryModules[item] ? LibraryModules[item] : null;
@@ -3374,7 +3375,7 @@ module.exports = (_ => {
 			return channel && Internal.LibraryModules.GuildEventStore.getGuildScheduledEvent(channel.id) && true;
 		};
 		BDFDB.ChannelUtils.markAsRead = function (channelIds) {
-			let unreadChannels = [channelIds].flat(10).filter(id => id && typeof id == "string" && ((BDFDB.ChannelUtils.isTextChannel(id) || BDFDB.ChannelUtils.isThread(id)) && (Internal.LibraryModules.UnreadChannelUtils.hasUnread(id) || Internal.LibraryModules.UnreadChannelUtils.getMentionCount(id) > 0))).map(id => ({
+			let unreadChannels = [channelIds].flat(10).filter(id => id && typeof id == "string" && (BDFDB.LibraryModules.ChannelStore.getChannel(id) || {}).type != BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY && (Internal.LibraryModules.UnreadChannelUtils.hasUnread(id) || Internal.LibraryModules.UnreadChannelUtils.getMentionCount(id) > 0)).map(id => ({
 				channelId: id,
 				readStateType: Internal.LibraryModules.UnreadStateTypes.CHANNEL,
 				messageId: Internal.LibraryModules.UnreadChannelUtils.lastMessageId(id)
@@ -8149,7 +8150,7 @@ module.exports = (_ => {
 					Internal.appendCustomControls(BDFDB.DOMUtils.getParent(BDFDB.dotCN._repocard, n));
 				});}});})}, {childList: true, subtree: true});
 				for (let c of layer.querySelectorAll(BDFDB.dotCN._repocard)) Internal.appendCustomControls(c);
-			}
+			};
 
 			const keyDownTimeouts = {};
 			BDFDB.ListenerUtils.add(BDFDB, document, "keydown.BDFDBPressedKeys", e => {
@@ -8234,7 +8235,7 @@ module.exports = (_ => {
 			};
 			
 			Internal.processSettingsView = function (e) {
-				if (e.node && e.node.parentElement && e.node.parentElement.getAttribute("aria-label") == BDFDB.DiscordConstants.Layers.USER_SETTINGS) Internal.addListObserver(e.node.parentElement);
+				if (e.node && e.node.parentElement && e.node.parentElement) Internal.addListObserver(e.node.parentElement);
 			};
 		
 			let AppViewExport = InternalData.ModuleUtilsConfig.Finder.AppView && BDFDB.ModuleUtils.findByString(InternalData.ModuleUtilsConfig.Finder.AppView.strings, false);
