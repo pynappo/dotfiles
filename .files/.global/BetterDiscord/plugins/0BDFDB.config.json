@@ -9,7 +9,7 @@
 			"ImageUtilities": "4.7.1",
 			"ServerDetails": "1.1.1",
 			"ShowBadgesInChat": "1.8.1",
-			"ShowHiddenChannels": "3.0.6",
+			"ShowHiddenChannels": "3.1.5",
 			"SplitLargeMessages": "1.7.2",
 			"Translator": "2.3.2"
 		},
@@ -23,7 +23,7 @@
 			"shareData": true
 		},
 		"hashes": {
-			"0BDFDB.data.json": "71ab79fef0412511c395ed372eea5bb7e6249488",
+			"0BDFDB.data.json": "3a8cbb0b9a26e61d8cd3715040cd5651b14dc88a",
 			"0BDFDB.raw.css": "e8d30d44e567f6a77ef4e90734c27c2b47306d20"
 		}
 	}

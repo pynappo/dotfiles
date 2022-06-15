@@ -2,7 +2,7 @@
  * @name ShowHiddenChannels
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 3.1.2
+ * @version 3.1.5
  * @description Displays all hidden Channels, which can't be accessed due to Role Restrictions, this won't allow you to read them (impossible)
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,8 +17,15 @@ module.exports = (_ => {
 		"info": {
 			"name": "ShowHiddenChannels",
 			"author": "DevilBro",
-			"version": "3.1.2",
+			"version": "3.1.5",
 			"description": "Displays all hidden Channels, which can't be accessed due to Role Restrictions, this won't allow you to read them (impossible)"
+		},
+		"changeLog": {
+			"fixed": {
+				"Lags": "No longer lags Discord",
+				"Vanishing Categories": "Categories that only contain hidden channels no longer vanish if collapsed",
+				"Works again": "Plugin itself works again, had to remove the option for the separate category 'hidden', since Discord completely remodeled how they structure the channel list internally and i have yet to find an easy way to insert custom categories"
+			}
 		}
 	};
 
@@ -60,7 +67,7 @@ module.exports = (_ => {
 			return template.content.firstElementChild;
 		}
 	} : (([Plugin, BDFDB]) => {
-		var blackList = [], collapseList = [], hiddenCategory, lastGuildId, overrideTypes = [];
+		var blackList = [], overrideTypes = [];
 		var hiddenChannelCache = {};
 		var accessModal;
 		
@@ -83,10 +90,16 @@ module.exports = (_ => {
 			PRIVATE_THREAD: "PRIVATE_THREAD"
 		};
 		
+		const renderLevels = {
+			CAN_NOT_SHOW: 1,
+			DO_NOT_SHOW: 2,
+			WOULD_SHOW_IF_UNCOLLAPSED: 3,
+			SHOW: 4
+		};
+		
 		const sortOrders = {
 			NATIVE: {value: "native", label: "Native Category in correct Order"},
-			BOTTOM: {value: "bottom", label: "Native Category at the bottom"},
-			EXTRA: {value: "extra", label: "Extra Category 'Hidden'"}
+			BOTTOM: {value: "bottom", label: "Native Category at the bottom"}
 		};
 		
 		const UserRowComponent = class UserRow extends BdApi.React.Component {
@@ -165,7 +178,7 @@ module.exports = (_ => {
 		return class ShowHiddenChannels extends Plugin {
 			onLoad () {
 				overrideTypes = Object.keys(BDFDB.DiscordConstants.PermissionOverrideType);
-				 
+				
 				this.defaults = {
 					sortOrder: {
 						hidden: {
@@ -175,7 +188,6 @@ module.exports = (_ => {
 						}
 					},
 					general: {
-						alwaysCollapse:			{value: false, 		description: "Always collapse 'Hidden' Category after switching Servers"},
 						showVoiceUsers:			{value: true, 		description: "Show connected Users in hidden Voice Channels"},
 						showForNormal:			{value: true,		description: "Add Access-Overview ContextMenu Entry for non-hidden Channels"}
 					},
@@ -212,9 +224,6 @@ module.exports = (_ => {
 			onStart () {
 				this.saveBlackList(this.getBlackList());
 				
-				let loadedCollapseList = BDFDB.DataUtils.load(this, "categorydata");
-				this.saveCollapseList(!BDFDB.ArrayUtils.is(loadedCollapseList) ? [] : loadedCollapseList);
-				
 				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.GuildUtils, "setChannel", {instead: e => {
 					let channelId = (BDFDB.LibraryModules.VoiceUtils.getVoiceStateForUser(e.methodArguments[1]) || {}).channelId;
 					if (!channelId || !this.isChannelHidden(channelId)) return e.callOriginalMethod();
@@ -225,45 +234,7 @@ module.exports = (_ => {
 				}});
 				
 				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.UnreadChannelUtils, "getMentionCount", {after: e => {
-					return this.isChannelHidden(e.methodArguments[0]) ? 0 : e.returnValue;
-				}});
-				
-				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.CategoryCollapseStore, "isCollapsed", {after: e => {
-					if (e.methodArguments[0] && e.methodArguments[0].endsWith("hidden")) {
-						if (this.settings.general.alwaysCollapse && e.methodArguments[0] != lastGuildId && !collapseList.includes(e.methodArguments[0])) {
-							collapseList.push(e.methodArguments[0]);
-							this.saveCollapseList(BDFDB.ArrayUtils.removeCopies(collapseList));
-						}
-						lastGuildId = e.methodArguments[0];
-						return collapseList.includes(e.methodArguments[0]);
-					}
-				}});
-				
-				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.CategoryCollapseUtils, "categoryCollapse", {before: e => {
-					if (e.methodArguments[0] && e.methodArguments[0].endsWith("hidden")) {
-						if (!collapseList.includes(e.methodArguments[0])) {
-							collapseList.push(e.methodArguments[0]);
-							this.saveCollapseList(BDFDB.ArrayUtils.removeCopies(collapseList));
-						}
-					}
-				}});
-				
-				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.CategoryCollapseUtils, "categoryExpand", {before: e => {
-					if (e.methodArguments[0] && e.methodArguments[0].endsWith("hidden")) {
-						if (collapseList.includes(e.methodArguments[0])) {
-							BDFDB.ArrayUtils.remove(collapseList, e.methodArguments[0], true);
-							this.saveCollapseList(BDFDB.ArrayUtils.removeCopies(collapseList));
-						}
-					}
-				}});
-				
-				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.GuildChannelStore, "getTextChannelNameDisambiguations", {after: e => {
-					let all = BDFDB.LibraryModules.ChannelStore.getMutableGuildChannelsForGuild(e.methodArguments[0]);
-					for (let channel_id in all) if (!e.returnValue[channel_id] && (all[channel_id].type != BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY && all[channel_id].type != BDFDB.DiscordConstants.ChannelTypes.GUILD_VOICE)) e.returnValue[channel_id] = {id: channel_id, name: all[channel_id].name};
-				}});
-				
-				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.ChannelIconUtils, "getChannelIconComponent", {before: e => {
-					if (e.methodArguments[2] && e.methodArguments[2].locked && e.methodArguments[0] && this.isChannelHidden(e.methodArguments[0].id)) e.methodArguments[2].locked = false;
+					return e.returnValue ? (this.isChannelHidden(e.methodArguments[0]) ? 0 : e.returnValue) : e.returnValue;
 				}});
 
 				this.forceUpdateAll();
@@ -430,74 +401,29 @@ module.exports = (_ => {
 			
 			processChannels (e) {
 				if (!e.instance.props.guild || blackList.includes(e.instance.props.guild.id)) return;
-				let [hiddenChannels, amount] = this.getHiddenChannels(e.instance.props.guild);
-				if (amount) {
-					e.instance.props.categories = Object.assign({}, e.instance.props.categories);
-					for (let catId in e.instance.props.categories) e.instance.props.categories[catId] = [].concat(e.instance.props.categories[catId]);
-					e.instance.props.channels = Object.assign({}, e.instance.props.channels);
-					for (let type in e.instance.props.channels) e.instance.props.channels[type] = [].concat(e.instance.props.channels[type]);
-					
-					let hiddenId = e.instance.props.guild.id + "_hidden";
-					
-					delete e.instance.props.categories[hiddenId];
-					e.instance.props.categories._categories = e.instance.props.categories._categories.filter(n => n.channel.id != hiddenId);
-					e.instance.props.channels[BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY] = e.instance.props.channels[BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY].filter(n => n.channel.id != hiddenId);
-					
-					let index = -1;
-					for (let catId in e.instance.props.categories) {
-						if (catId != "_categories") e.instance.props.categories[catId] = e.instance.props.categories[catId].filter(n => !this.isChannelHidden(n.channel.id));
-						for (let channelObj of e.instance.props.categories[catId]) if (channelObj.index > index) index = parseInt(channelObj.index);
+				e.instance.props.guildChannels.categories = Object.assign({}, e.instance.props.guildChannels.categories);
+				let sortAtBottom = this.settings.sortOrder.hidden == sortOrders.BOTTOM.value;
+				hiddenChannelCache[e.instance.props.guild.id] = [];
+				for (let id in e.instance.props.guildChannels.categories) {
+					let channelArray = BDFDB.ObjectUtils.toArray(e.instance.props.guildChannels.categories[id].channels);
+					for (let n of channelArray) if (n.renderLevel == renderLevels.CAN_NOT_SHOW || n._hidden) {
+						n._hidden = true;
+						if (e.instance.props.guildChannels.hideMutedChannels && e.instance.props.guildChannels.mutedChannelIds.has(n.record.id)) n.renderLevel = renderLevels.DO_NOT_SHOW;
+						else if (e.instance.props.guildChannels.categories[id].isCollapsed) n.renderLevel = renderLevels.WOULD_SHOW_IF_UNCOLLAPSED;
+						else n.renderLevel = renderLevels.SHOW;
+						
+						if (hiddenChannelCache[e.instance.props.guild.id].indexOf(n.record.id) == -1) hiddenChannelCache[e.instance.props.guild.id].push(n.record.id);
 					}
-					if (this.settings.sortOrder.hidden == sortOrders.EXTRA.value) {
-						hiddenCategory = new BDFDB.DiscordObjects.Channel({
-							guild_id: e.instance.props.guild.id,
-							id: hiddenId,
-							name: "hidden",
-							type: BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY
-						});
-						e.instance.props.categories[hiddenId] = [];
-						e.instance.props.categories._categories.push({
-							channel: hiddenCategory,
-							index: ++index
-						});
-						e.instance.props.channels[BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY].push({
-							comparator: (e.instance.props.channels[BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY][e.instance.props.channels[BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY].length - 1] || {comparator: 0}).comparator + 1,
-							channel: hiddenCategory
-						});
-					}
-					else hiddenCategory = null;
-					
-					for (let type in hiddenChannels) {
-						let channelType = channelGroupMap[BDFDB.DiscordConstants.ChannelTypes[type]] || type;
-						if (!BDFDB.ArrayUtils.is(e.instance.props.channels[channelType])) e.instance.props.channels[channelType] = [];
-						for (let channel of hiddenChannels[type]) {
-							let hiddenChannel = new BDFDB.DiscordObjects.Channel(Object.assign({}, channel, {
-								parent_id: hiddenCategory ? hiddenId : channel.parent_id,
-								position: this.settings.sortOrder.hidden == sortOrders.BOTTOM.value ? 999999999 : channel.position
-							}));
-							let parent_id = hiddenChannel.parent_id || "null";
-							e.instance.props.categories[parent_id].push({
-								channel: hiddenChannel,
-								index: hiddenChannel.position
-							});
-							e.instance.props.channels[channelType].push({
-								comparator: hiddenChannel.position,
-								channel: hiddenChannel
-							});
-						}
-					}
-					
-					for (let parent_id in e.instance.props.categories) BDFDB.ArrayUtils.keySort(e.instance.props.categories[parent_id], "index");
-					for (let channelType in e.instance.props.channels) BDFDB.ArrayUtils.keySort(e.instance.props.channels[channelType], "comparator");
+					e.instance.props.guildChannels.categories[id].shownChannelIds = channelArray.filter(n => n.renderLevel == renderLevels.SHOW).sort((x, y) => {
+						let xPos = x.record.position + (x.record.isVocal() ? 1e4 : 0) + (sortAtBottom && x._hidden ? 1e5 : 0);
+						let yPos = y.record.position + (y.record.isVocal() ? 1e4 : 0) + (sortAtBottom && y._hidden ? 1e5 : 0);
+						return xPos < yPos ? -1 : xPos > yPos ? 1 : 0;
+					}).map(n => n.id);
 				}
 			}
 			
-			processChannelCategoryItem (e) {
-				if (hiddenCategory && e.instance.props.channel && !e.instance.props.channel.id && e.instance.props.channel.type != BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY) e.instance.props.channel = hiddenCategory;
-			}
-			
 			processChannelItem (e) {
-				if (e.instance.props.channel && !blackList.includes(e.instance.props.channel.guild_id) && this.isChannelHidden(e.instance.props.channel.id)) {
+				if (e.instance.props.channel && this.isChannelHidden(e.instance.props.channel.id)) {
 					if (!e.returnvalue) e.instance.props.className = BDFDB.DOMUtils.formatClassName(e.instance.props.className, BDFDB.disCN._showhiddenchannelshiddenchannel);
 					else {
 						let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "ChannelItemIcon"});
@@ -537,24 +463,8 @@ module.exports = (_ => {
 			
 			isChannelHidden (channelId) {
 				let channel = BDFDB.LibraryModules.ChannelStore.getChannel(channelId);
-				return channel && hiddenChannelCache[channel.guild_id] && hiddenChannelCache[channel.guild_id].hidden[channel.type] && hiddenChannelCache[channel.guild_id].hidden[channel.type].find(c => c.id == channel.id);
-			}
-			
-			getHiddenChannels (guild) {
-				if (!guild) return [{}, 0];
-				let hiddenChannels = {}, visibleAmount = BDFDB.ArrayUtils.sum(BDFDB.ObjectUtils.toArray((BDFDB.LibraryModules.GuildChannelStore.getChannels(guild.id))).filter(BDFDB.ArrayUtils.is).map(n => n.length)), rolesAmount = (BDFDB.LibraryModules.MemberStore.getMember(guild.id, BDFDB.UserUtils.me.id) || {roles: []}).roles.length;
-				if (!hiddenChannelCache[guild.id] || hiddenChannelCache[guild.id].visible != visibleAmount || hiddenChannelCache[guild.id].roles != rolesAmount) {
-					let all = BDFDB.LibraryModules.ChannelStore.getMutableGuildChannelsForGuild(guild.id);
-					for (let type in BDFDB.DiscordConstants.ChannelTypes) hiddenChannels[BDFDB.DiscordConstants.ChannelTypes[type]] = [];
-					for (let channel_id in all) {
-						let channel = all[channel_id];
-						if (channel.guild_id == guild.id && channel.type != BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY && (this.settings.channels[BDFDB.DiscordConstants.ChannelTypes[channel.type]] || this.settings.channels[BDFDB.DiscordConstants.ChannelTypes[channel.type]] === undefined) && !BDFDB.DMUtils.isDMChannel(channel.id) && !BDFDB.UserUtils.can("VIEW_CHANNEL", BDFDB.UserUtils.me.id, channel.id)) hiddenChannels[channel.type].push(channel);
-					}
-				}
-				else hiddenChannels = hiddenChannelCache[guild.id].hidden;
-				for (let type in hiddenChannels) hiddenChannels[type] = hiddenChannels[type].filter(c => BDFDB.LibraryModules.ChannelStore.getChannel(c.id));
-				hiddenChannelCache[guild.id] = {hidden: hiddenChannels, amount: BDFDB.ObjectUtils.toArray(hiddenChannels).flat().length, visible: visibleAmount, roles: rolesAmount};
-				return [hiddenChannelCache[guild.id].hidden, hiddenChannelCache[guild.id].amount];
+				if (!channel || !channel.guild_id) return false;
+				return hiddenChannelCache[channel.guild_id] && hiddenChannelCache[channel.guild_id].indexOf(channelId) > -1;
 			}
 			
 			batchSetGuilds (settingsPanel, collapseStates, value) {
@@ -575,11 +485,6 @@ module.exports = (_ => {
 			saveBlackList (savedBlackList) {
 				blackList = savedBlackList;
 				BDFDB.DataUtils.save(savedBlackList, this, "blacklist");
-			}
-			
-			saveCollapseList (savedCollapseList) {
-				collapseList = savedCollapseList;
-				BDFDB.DataUtils.save(savedCollapseList, this, "categorydata");
 			}
 			
 			openAccessModal (channel, allowed) {

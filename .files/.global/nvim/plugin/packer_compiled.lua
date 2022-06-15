@@ -11,7 +11,7 @@ local no_errors, error_msg = pcall(function()
 
   local time
   local profile_info
-  local should_profile = true
+  local should_profile = false
   if should_profile then
     local hrtime = vim.loop.hrtime
     profile_info = {}
@@ -400,6 +400,18 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: headlines.nvim
+time([[Config for headlines.nvim]], true)
+require('headlines').setup()
+time([[Config for headlines.nvim]], false)
+-- Config for: guess-indent.nvim
+time([[Config for guess-indent.nvim]], true)
+require('guess-indent').setup{}
+time([[Config for guess-indent.nvim]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+require('pynappo/plugins/treesitter')
+time([[Config for nvim-treesitter]], false)
 -- Config for: gitsigns.nvim
 time([[Config for gitsigns.nvim]], true)
 try_loadstring("\27LJ\2\n�\1\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\0\17changedelete\1\0\1\ttext\b▎\14topdelete\1\0\1\ttext\b契\vdelete\1\0\1\ttext\b▎\vchange\1\0\1\ttext\b▎\badd\1\0\0\1\0\1\ttext\b▎\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
@@ -416,22 +428,18 @@ time([[Config for bufferline.nvim]], false)
 time([[Config for feline.nvim]], true)
 require('pynappo/plugins/feline')
 time([[Config for feline.nvim]], false)
--- Config for: alpha-nvim
-time([[Config for alpha-nvim]], true)
-require('alpha').setup(require('alpha.themes.startify').config)
-time([[Config for alpha-nvim]], false)
 -- Config for: nvim-autopairs
 time([[Config for nvim-autopairs]], true)
 require("pynappo/plugins/autopairs")
 time([[Config for nvim-autopairs]], false)
--- Config for: LuaSnip
-time([[Config for LuaSnip]], true)
-require('luasnip.loaders.from_vscode').lazy_load()
-time([[Config for LuaSnip]], false)
 -- Config for: nvim-lspconfig
 time([[Config for nvim-lspconfig]], true)
 try_loadstring("\27LJ\2\nd\0\0\3\0\4\0\n6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\1K\0\1\0\24pynappo/plugins/lsp\nsetup\23nvim-lsp-installer\frequire\0", "config", "nvim-lspconfig")
 time([[Config for nvim-lspconfig]], false)
+-- Config for: numb.nvim
+time([[Config for numb.nvim]], true)
+require("numb").setup()
+time([[Config for numb.nvim]], false)
 -- Config for: leap.nvim
 time([[Config for leap.nvim]], true)
 require('leap').set_default_keymaps()
@@ -440,30 +448,14 @@ time([[Config for leap.nvim]], false)
 time([[Config for Comment.nvim]], true)
 require('Comment').setup()
 time([[Config for Comment.nvim]], false)
--- Config for: which-key.nvim
-time([[Config for which-key.nvim]], true)
-require('which-key').setup {} 
-time([[Config for which-key.nvim]], false)
--- Config for: nvim-treesitter
-time([[Config for nvim-treesitter]], true)
-require('pynappo/plugins/treesitter')
-time([[Config for nvim-treesitter]], false)
+-- Config for: alpha-nvim
+time([[Config for alpha-nvim]], true)
+require('alpha').setup(require('alpha.themes.startify').config)
+time([[Config for alpha-nvim]], false)
 -- Config for: nvim-cmp
 time([[Config for nvim-cmp]], true)
 require('pynappo/plugins/cmp')
 time([[Config for nvim-cmp]], false)
--- Config for: numb.nvim
-time([[Config for numb.nvim]], true)
-require("numb").setup()
-time([[Config for numb.nvim]], false)
--- Config for: headlines.nvim
-time([[Config for headlines.nvim]], true)
-require('headlines').setup()
-time([[Config for headlines.nvim]], false)
--- Config for: guess-indent.nvim
-time([[Config for guess-indent.nvim]], true)
-require('guess-indent').setup{}
-time([[Config for guess-indent.nvim]], false)
 -- Config for: telescope.nvim
 time([[Config for telescope.nvim]], true)
 require('pynappo/plugins/telescope')
@@ -472,6 +464,14 @@ time([[Config for telescope.nvim]], false)
 time([[Config for neovim-ayu]], true)
 require('pynappo/theme')
 time([[Config for neovim-ayu]], false)
+-- Config for: which-key.nvim
+time([[Config for which-key.nvim]], true)
+require('which-key').setup {} 
+time([[Config for which-key.nvim]], false)
+-- Config for: LuaSnip
+time([[Config for LuaSnip]], true)
+require('luasnip.loaders.from_vscode').lazy_load()
+time([[Config for LuaSnip]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd telescope-frecency.nvim ]]
@@ -479,17 +479,17 @@ time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gpush lua require("packer.load")({'vim-fugitive'}, { cmd = "Gpush", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file UndotreeToggle lua require("packer.load")({'undotree'}, { cmd = "UndotreeToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file ColorizerToggle lua require("packer.load")({'nvim-colorizer.lua'}, { cmd = "ColorizerToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TroubleToggle lua require("packer.load")({'trouble.nvim'}, { cmd = "TroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MarkdownPreview lua require("packer.load")({'markdown-preview.nvim'}, { cmd = "MarkdownPreview", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MinimapToggle lua require("packer.load")({'minimap.vim'}, { cmd = "MinimapToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gpull lua require("packer.load")({'vim-fugitive'}, { cmd = "Gpull", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Git lua require("packer.load")({'vim-fugitive'}, { cmd = "Git", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gstatus lua require("packer.load")({'vim-fugitive'}, { cmd = "Gstatus", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gblame lua require("packer.load")({'vim-fugitive'}, { cmd = "Gblame", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gpush lua require("packer.load")({'vim-fugitive'}, { cmd = "Gpush", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gpull lua require("packer.load")({'vim-fugitive'}, { cmd = "Gpull", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MarkdownPreview lua require("packer.load")({'markdown-preview.nvim'}, { cmd = "MarkdownPreview", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TroubleToggle lua require("packer.load")({'trouble.nvim'}, { cmd = "TroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file ColorizerToggle lua require("packer.load")({'nvim-colorizer.lua'}, { cmd = "ColorizerToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MinimapToggle lua require("packer.load")({'minimap.vim'}, { cmd = "MinimapToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file UndotreeToggle lua require("packer.load")({'undotree'}, { cmd = "UndotreeToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]

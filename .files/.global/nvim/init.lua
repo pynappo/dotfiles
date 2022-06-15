@@ -16,6 +16,7 @@ local g = vim.g
 -- Status/windowline
 o.laststatus = 3
 wo.winbar = '%f'
+o.cmdheight = 0
 
 -- Make line numbers default
 wo.relativenumber = true
