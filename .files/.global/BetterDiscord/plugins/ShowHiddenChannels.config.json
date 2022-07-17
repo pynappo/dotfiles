@@ -2,6 +2,7 @@
 	"all": {
 		"blacklist": [],
 		"channels": {
+			"GUILD_CATEGORY": true,
 			"GUILD_TEXT": true,
 			"GUILD_VOICE": true,
 			"GUILD_ANNOUNCEMENT": true,

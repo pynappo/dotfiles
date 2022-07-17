@@ -1,7 +1,7 @@
 /**
  * @name VoiceActivity
- * @version 1.2.3
- * @description Shows icons on the member list and info in User Popouts when someone is in a voice channel.
+ * @version 1.3.1
+ * @description Shows icons and info in popouts, the member list, and more when someone is in a voice channel.
  * @source https://github.com/Neodymium7/BetterDiscordStuff/blob/main/VoiceActivity/VoiceActivity.plugin.js
  * @updateUrl https://raw.githubusercontent.com/Neodymium7/BetterDiscordStuff/main/VoiceActivity/VoiceActivity.plugin.js
  * @author Neodymium
@@ -33,8 +33,8 @@
 const config = {
 	"info": {
 		"name": "VoiceActivity",
-		"version": "1.2.3",
-		"description": "Shows icons on the member list and info in User Popouts when someone is in a voice channel.",
+		"version": "1.3.1",
+		"description": "Shows icons and info in popouts, the member list, and more when someone is in a voice channel.",
 		"github": "https://github.com/Neodymium7/BetterDiscordStuff/blob/main/VoiceActivity/VoiceActivity.plugin.js",
 		"github_raw": "https://raw.githubusercontent.com/Neodymium7/BetterDiscordStuff/main/VoiceActivity/VoiceActivity.plugin.js",
 		"authors": [{
@@ -46,7 +46,8 @@ const config = {
 		"title": "Fixed",
 		"type": "fixed",
 		"items": [
-			"Fixed unnecessary margins"
+			"Fixed minor styling issues",
+			"Fixed not displaying in user popouts"
 		]
 	}],
 	"build": {
@@ -281,6 +282,32 @@ function buildPlugin([BasePlugin, PluginApi]) {
 				StyleLoader.append(module.id, ___CSS_LOADER_EXPORT___.toString());
 				const __WEBPACK_DEFAULT_EXPORT__ = Object.assign(___CSS_LOADER_EXPORT___, ___CSS_LOADER_EXPORT___.locals);
 			},
+			333: (module, __webpack_exports__, __webpack_require__) => {
+				__webpack_require__.d(__webpack_exports__, {
+					Z: () => __WEBPACK_DEFAULT_EXPORT__
+				});
+				var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(645);
+				var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = __webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+				var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()((function(i) {
+					return i[1];
+				}));
+				___CSS_LOADER_EXPORT___.push([module.id, ".VoiceActivity-modalactivityitem-modalActivity{padding:16px}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-header{width:100%;min-width:0;margin-bottom:8px;display:flex;justify-content:space-between;color:var(--header-secondary);font-weight:700;text-transform:uppercase;font-family:var(--font-display);font-size:12px;line-height:16px}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body{display:flex;align-items:center}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-text{margin-left:10px;color:var(--text-normal);font-size:14px;line-height:18px;overflow:hidden;flex:1 1 auto}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-text>div,.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-text>h3{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-text>h3{font-weight:500;font-family:var(--font-display)}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer{margin-left:20px;display:flex}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer .VoiceActivity-modalactivityitem-button{height:32px;min-height:32px;width:100%;display:flex;justify-content:center;align-items:center;padding:2px 16px;border-radius:3px;background-color:var(--button-secondary-background);transition:background-color .17s ease,color .17s ease;color:#fff;font-size:14px;line-height:16px;font-weight:500;user-select:none}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer .VoiceActivity-modalactivityitem-button:hover{background-color:var(--button-secondary-background-hover)}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer .VoiceActivity-modalactivityitem-button:active{background-color:var(--button-secondary-background-active)}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer .VoiceActivity-modalactivityitem-button:disabled{background-color:var(--button-secondary-background-disabled);opacity:.5;cursor:not-allowed}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer>div[aria-label]{width:32px;margin-left:8px}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer .VoiceActivity-modalactivityitem-joinWrapper .VoiceActivity-modalactivityitem-joinButton{min-width:32px;max-width:32px;padding:0}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer .VoiceActivity-modalactivityitem-joinWrapper .VoiceActivity-modalactivityitem-joinButton:disabled{pointer-events:none}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-body .VoiceActivity-modalactivityitem-buttonContainer .VoiceActivity-modalactivityitem-joinWrapperDisabled{cursor:not-allowed}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-members{display:block;position:absolute;top:20px;right:16px}.VoiceActivity-modalactivityitem-modalActivity .VoiceActivity-modalactivityitem-hasOverflow :nth-child(3){background-color:var(--background-tertiary)}", ""]);
+				___CSS_LOADER_EXPORT___.locals = {
+					modalActivity: "VoiceActivity-modalactivityitem-modalActivity",
+					header: "VoiceActivity-modalactivityitem-header",
+					body: "VoiceActivity-modalactivityitem-body",
+					text: "VoiceActivity-modalactivityitem-text",
+					buttonContainer: "VoiceActivity-modalactivityitem-buttonContainer",
+					button: "VoiceActivity-modalactivityitem-button",
+					joinWrapper: "VoiceActivity-modalactivityitem-joinWrapper",
+					joinButton: "VoiceActivity-modalactivityitem-joinButton",
+					joinWrapperDisabled: "VoiceActivity-modalactivityitem-joinWrapperDisabled",
+					members: "VoiceActivity-modalactivityitem-members",
+					hasOverflow: "VoiceActivity-modalactivityitem-hasOverflow"
+				};
+				StyleLoader.append(module.id, ___CSS_LOADER_EXPORT___.toString());
+				const __WEBPACK_DEFAULT_EXPORT__ = Object.assign(___CSS_LOADER_EXPORT___, ___CSS_LOADER_EXPORT___.locals);
+			},
 			476: (module, __webpack_exports__, __webpack_require__) => {
 				__webpack_require__.d(__webpack_exports__, {
 					Z: () => __WEBPACK_DEFAULT_EXPORT__
@@ -313,13 +340,12 @@ function buildPlugin([BasePlugin, PluginApi]) {
 				var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()((function(i) {
 					return i[1];
 				}));
-				___CSS_LOADER_EXPORT___.push([module.id, ".VoiceActivity-voicepopoutsection-popoutSection{margin-bottom:16px}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-header{margin-bottom:8px;color:var(--header-secondary);font-size:12px;line-height:16px;font-family:var(--font-display);font-weight:700;text-transform:uppercase}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body{display:flex;flex-direction:row}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body .VoiceActivity-voicepopoutsection-text{padding-top:8px;margin:0 10px;color:var(--text-normal);font-size:16px;line-height:18px;font-family:var(--font-primary);overflow:hidden}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body .VoiceActivity-voicepopoutsection-text>div{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body .VoiceActivity-voicepopoutsection-textPrivate{padding-top:16px}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body>:last-child{padding:12px 0;margin-left:auto}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-hasOverflow>:last-child>div>:last-child{background-color:var(--background-tertiary)}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper{display:flex;flex:0 1 auto;flex-direction:row;flex-wrap:nowrap;justify-content:flex-start;align-items:stretch;margin-top:12px}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button{height:32px;min-height:32px;width:100%;display:flex;justify-content:center;align-items:center;padding:2px 16px;border-radius:3px;background-color:var(--button-secondary-background);transition:background-color .17s ease,color .17s ease;color:#fff;font-size:14px;line-height:16px;font-weight:500;user-select:none}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button:hover{background-color:var(--button-secondary-background-hover)}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button:active{background-color:var(--button-secondary-background-active)}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button:disabled{background-color:var(--button-secondary-background-disabled);opacity:.5;cursor:not-allowed}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper>div[aria-label]{width:32px;margin-left:8px}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-joinWrapper .VoiceActivity-voicepopoutsection-joinButton{min-width:32px;max-width:32px;padding:0}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-joinWrapper .VoiceActivity-voicepopoutsection-joinButton:disabled{pointer-events:none}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-joinWrapperDisabled{cursor:not-allowed}", ""]);
+				___CSS_LOADER_EXPORT___.push([module.id, ".VoiceActivity-voicepopoutsection-popoutSection{margin-bottom:16px}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-header{margin-bottom:8px;color:var(--header-secondary);font-size:12px;line-height:16px;font-family:var(--font-display);font-weight:700;text-transform:uppercase}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body{display:flex;flex-direction:row}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body .VoiceActivity-voicepopoutsection-text{margin:auto 10px;color:var(--text-normal);font-size:14px;line-height:18px;overflow:hidden}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body .VoiceActivity-voicepopoutsection-text>div,.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body .VoiceActivity-voicepopoutsection-text>h3{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body .VoiceActivity-voicepopoutsection-text>h3{font-family:var(--font-display);font-weight:500}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-body>:last-child{padding:12px 0;margin-left:auto}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-hasOverflow>:last-child>div>:last-child{background-color:var(--background-tertiary)}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper{display:flex;flex:0 1 auto;flex-direction:row;flex-wrap:nowrap;justify-content:flex-start;align-items:stretch;margin-top:12px}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button{height:32px;min-height:32px;width:100%;display:flex;justify-content:center;align-items:center;padding:2px 16px;border-radius:3px;background-color:var(--button-secondary-background);transition:background-color .17s ease,color .17s ease;color:#fff;font-size:14px;line-height:16px;font-weight:500;user-select:none}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button:hover{background-color:var(--button-secondary-background-hover)}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button:active{background-color:var(--button-secondary-background-active)}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-button:disabled{background-color:var(--button-secondary-background-disabled);opacity:.5;cursor:not-allowed}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper>div[aria-label]{width:32px;margin-left:8px}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-joinWrapper .VoiceActivity-voicepopoutsection-joinButton{min-width:32px;max-width:32px;padding:0}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-joinWrapper .VoiceActivity-voicepopoutsection-joinButton:disabled{pointer-events:none}.VoiceActivity-voicepopoutsection-popoutSection .VoiceActivity-voicepopoutsection-buttonWrapper .VoiceActivity-voicepopoutsection-joinWrapperDisabled{cursor:not-allowed}", ""]);
 				___CSS_LOADER_EXPORT___.locals = {
 					popoutSection: "VoiceActivity-voicepopoutsection-popoutSection",
 					header: "VoiceActivity-voicepopoutsection-header",
 					body: "VoiceActivity-voicepopoutsection-body",
 					text: "VoiceActivity-voicepopoutsection-text",
-					textPrivate: "VoiceActivity-voicepopoutsection-textPrivate",
 					hasOverflow: "VoiceActivity-voicepopoutsection-hasOverflow",
 					buttonWrapper: "VoiceActivity-voicepopoutsection-buttonWrapper",
 					button: "VoiceActivity-voicepopoutsection-button",
@@ -421,6 +447,7 @@ function buildPlugin([BasePlugin, PluginApi]) {
 			const external_StyleLoader_namespaceObject = StyleLoader;
 			var external_StyleLoader_default = __webpack_require__.n(external_StyleLoader_namespaceObject);
 			const flux_namespaceObject = Modules["@discord/flux"];
+			const stores_namespaceObject = Modules["@discord/stores"];
 			const external_PluginApi_namespaceObject = PluginApi;
 			const modules_namespaceObject = Modules["@discord/modules"];
 			function _defineProperty(obj, key, value) {
@@ -481,7 +508,6 @@ function buildPlugin([BasePlugin, PluginApi]) {
 				}
 			}
 			strings_defineProperty(Strings, "strings", {});
-			const stores_namespaceObject = Modules["@discord/stores"];
 			const {
 				Permissions,
 				DiscordPermissions
@@ -513,6 +539,18 @@ function buildPlugin([BasePlugin, PluginApi]) {
 				else if (channel.icon) image = `https://cdn.discordapp.com/channel-icons/${channel.id}/${channel.icon}.webp?size=32`;
 				else if (3 === channel.type) image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAABgmlDQ1BJQ0MgUHJvZmlsZQAAKM+VkTtIw1AYhb9WxQcVBzuIOGSoThZERRyliiIolFrB12CS2io0sSQtLo6Cq+DgY7Hq4OKsq4OrIAg+QBydnBRdROJ/U6FFqOCFcD/OzTnce34IFrOm5db2gGXnncRYTJuZndPqn6mlBmikTzfd3OTUaJKq6+OWgNpvoiqL/63m1JJrQkATHjJzTl54UXhgLZ9TvCscNpf1lPCpcLcjFxS+V7pR4hfFGZ+DKjPsJBPDwmFhLVPBRgWby44l3C8cSVm25AdnSpxSvK7YyhbMn3uqF4aW7OkppcvXwRjjTBJHw6DAClnyRGW3RXFJyHmsir/d98fFZYhrBVMcI6xioft+1Ax+d+um+3pLSaEY1D153lsn1G/D15bnfR563tcR1DzChV32rxZh8F30rbIWOYCWDTi7LGvGDpxvQttDTnd0X1LzD6bT8HoiY5qF1mtomi/19nPO8R0kpauJK9jbh66MZC9UeXdDZW9//uP3R+wbNjlyjzeozyoAAABgUExURVhl8oGK9LW7+erq/f///97i+7/F+mx38qGo92Ft8mFv8ujs/IuW9PP2/Wx384GM9Kux+MDF+urs/d/i+7S9+Jae9uDj/Jad9srO+tXY+4yU9aqy+MDE+qGn9/T1/neC9Liz/RcAAAAJcEhZcwAACxMAAAsTAQCanBgAAATqaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/Pg0KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNC40LjAtRXhpdjIiPg0KICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPg0KICAgIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOkdJTVA9Imh0dHA6Ly93d3cuZ2ltcC5vcmcveG1wLyIgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1wTU06RG9jdW1lbnRJRD0iZ2ltcDpkb2NpZDpnaW1wOmIzMjk5M2JmLTliZTUtNGJmMy04ZWEwLWY3ZDkzNTMyMTY2YiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNjhkOWE3MS1lYWU3LTRmZjAtYmMxZS04MGUwYmMxMTFkZDUiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDplZjU1ZGE0YS0wZTBhLTRjNTctODdmOC1lMmFmMGUyZGEzOGUiIGRjOkZvcm1hdD0iaW1hZ2UvcG5nIiBHSU1QOkFQST0iMi4wIiBHSU1QOlBsYXRmb3JtPSJXaW5kb3dzIiBHSU1QOlRpbWVTdGFtcD0iMTY0ODk0NDg1NjM4ODc5MSIgR0lNUDpWZXJzaW9uPSIyLjEwLjI0IiB0aWZmOk9yaWVudGF0aW9uPSIxIiB4bXA6Q3JlYXRvclRvb2w9IkdJTVAgMi4xMCI+DQogICAgICA8eG1wTU06SGlzdG9yeT4NCiAgICAgICAgPHJkZjpTZXE+DQogICAgICAgICAgPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDpjaGFuZ2VkPSIvIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjQ3NmFhOGE3LTVhNGEtNDcyNS05YTBjLWU1NzVmMzE1MzFmOCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iR2ltcCAyLjEwIChXaW5kb3dzKSIgc3RFdnQ6d2hlbj0iMjAyMi0wNC0wMlQxNzoxNDoxNiIgLz4NCiAgICAgICAgPC9yZGY6U2VxPg0KICAgICAgPC94bXBNTTpIaXN0b3J5Pg0KICAgIDwvcmRmOkRlc2NyaXB0aW9uPg0KICA8L3JkZjpSREY+DQo8L3g6eG1wbWV0YT4NCjw/eHBhY2tldCBlbmQ9InIiPz6JoorbAAABV0lEQVRoQ+3W23KDIBAGYIOYBk20prWNPb7/W3Z3WQ9lGmeKe/l/N/+IzAYDggUAAAAAAMB/HVzpfXV8kIuTpp3gvHJ8WTcx7VRanlSBrs+aVubxMxn7RdNGq6VVR02Pmjb6WHjCQ+80baxmgDXUxA/FaSPWXUxtctOCVF2Z2uSmhauUnT1RU61p49cq9b6npoOmDV4yK7xN8G8abhfPsXIkq7MxfdGKOt0qBuOtoqjnZ3BcN9BmZ1qftP2L91cXt4ezJszCq7uVtENfytEN1ocZLZlRJ1iNQ2zvNHd6oyWfamLpd809wofWTBxllY6a+UJyFCzkPWsve9+35N9fG/k+nZySufjkveuTOvCuzZmp/WN+F1/859AjSuahLW0LD/2kmWdjBtiNunxr5kmOyhR/VfAk5H9dxDr3TX2kcw6psmHqI51zSJUNUx/pDAAAAAAAsKkofgB06RBbh+d86AAAAABJRU5ErkJggg==";
 				return image;
+			}
+			function getLazyModule(filter) {
+				const cached = external_PluginApi_namespaceObject.WebpackModules.getModule(filter);
+				if (cached) return Promise.resolve(cached);
+				return new Promise((resolve => {
+					const removeListener = external_PluginApi_namespaceObject.WebpackModules.addListener((m => {
+						if (filter(m)) {
+							resolve(m);
+							removeListener();
+						}
+					}));
+				}));
 			}
 			function groupDMName(members) {
 				if (1 === members.length) return stores_namespaceObject.Users.getUser(members[0]).username;
@@ -687,6 +725,7 @@ function buildPlugin([BasePlugin, PluginApi]) {
 				const ignoredChannels = (0, flux_namespaceObject.useStateFromStores)([settings], (() => settings.get("ignoredChannels", [])));
 				const ignoredGuilds = (0, flux_namespaceObject.useStateFromStores)([settings], (() => settings.get("ignoredGuilds", [])));
 				const voiceState = (0, flux_namespaceObject.useStateFromStores)([VoicePopoutSection_VoiceStates], (() => VoicePopoutSection_VoiceStates.getVoiceStateForUser(props.userId)));
+				const currentUserVoiceState = (0, flux_namespaceObject.useStateFromStores)([VoicePopoutSection_VoiceStates], (() => VoicePopoutSection_VoiceStates.getVoiceStateForUser(stores_namespaceObject.Users.getCurrentUser()?.id)));
 				if (!voiceState) return null;
 				const channel = stores_namespaceObject.Channels.getChannel(voiceState.channelId);
 				if (!channel) return null;
@@ -696,31 +735,19 @@ function buildPlugin([BasePlugin, PluginApi]) {
 				let headerText, text, viewButton, joinButton, Icon, channelPath;
 				const members = Object.keys(VoicePopoutSection_VoiceStates.getVoiceStatesForChannel(channel.id)).map((id => stores_namespaceObject.Users.getUser(id)));
 				const hasOverflow = members.length > 3;
-				const inCurrentChannel = channel.id === VoicePopoutSection_VoiceStates.getVoiceStateForUser(stores_namespaceObject.Users.getCurrentUser().id)?.channelId;
+				const inCurrentChannel = channel.id === currentUserVoiceState?.channelId;
 				const channelSelected = channel.id === stores_namespaceObject.SelectedChannels.getChannelId();
 				const isCurrentUser = props.userId === stores_namespaceObject.Users.getCurrentUser().id;
 				if (guild) {
 					headerText = Strings.get("HEADER");
-					text = [external_BdApi_React_default().createElement("div", {
-						style: {
-							"font-weight": 600
-						}
-					}, guild.name), external_BdApi_React_default().createElement("div", {
-						style: {
-							"font-weight": 400
-						}
-					}, channel.name)];
+					text = [external_BdApi_React_default().createElement("h3", null, guild.name), external_BdApi_React_default().createElement("div", null, channel.name)];
 					viewButton = Strings.get("VIEW");
 					joinButton = inCurrentChannel ? Strings.get("JOIN_DISABLED") : Strings.get("JOIN");
 					Icon = Speaker;
 					channelPath = `/channels/${guild.id}/${channel.id}`;
 				} else {
 					headerText = Strings.get("HEADER_VOICE");
-					text = external_BdApi_React_default().createElement("div", {
-						style: {
-							"font-weight": 600
-						}
-					}, channel.name);
+					text = external_BdApi_React_default().createElement("h3", null, channel.name);
 					viewButton = Strings.get("VIEW_CALL");
 					joinButton = inCurrentChannel ? Strings.get("JOIN_DISABLED_CALL") : Strings.get("JOIN_CALL");
 					Icon = CallJoin;
@@ -732,11 +759,7 @@ function buildPlugin([BasePlugin, PluginApi]) {
 						break;
 					case 3:
 						headerText = Strings.get("HEADER_GROUP");
-						text = external_BdApi_React_default().createElement("div", {
-							style: {
-								"font-weight": 600
-							}
-						}, channel.name ?? groupDMName(channel.recipients));
+						text = external_BdApi_React_default().createElement("h3", null, channel.name ?? groupDMName(channel.recipients));
 						break;
 					case 13:
 						headerText = Strings.get("HEADER_STAGE");
@@ -753,7 +776,7 @@ function buildPlugin([BasePlugin, PluginApi]) {
 					channel,
 					channelPath
 				}), external_BdApi_React_default().createElement("div", {
-					className: guild ? voicepopoutsection.Z.text : `${voicepopoutsection.Z.text} ${voicepopoutsection.Z.textPrivate}`
+					className: voicepopoutsection.Z.text
 				}, text), external_BdApi_React_default().createElement(WrappedPartyAvatars, {
 					guild,
 					channel,
@@ -859,19 +882,175 @@ function buildPlugin([BasePlugin, PluginApi]) {
 					});
 				})));
 			}
+			var modalactivityitem = __webpack_require__(333);
+			const {
+				NavigationUtils: ModalActivityItem_NavigationUtils,
+				ChannelActions: ModalActivityItem_ChannelActions
+			} = external_PluginApi_namespaceObject.DiscordModules;
+			const ModalActivityItem_VoiceStates = external_PluginApi_namespaceObject.WebpackModules.getByProps("getVoiceStateForUser");
+			const {
+				TooltipContainer: ModalActivityItem_TooltipContainer
+			} = external_PluginApi_namespaceObject.WebpackModules.getByProps("TooltipContainer");
+			function ModalActivityItem(props) {
+				const ignoreEnabled = (0, flux_namespaceObject.useStateFromStores)([settings], (() => settings.get("ignoreEnabled", false)));
+				const ignoredChannels = (0, flux_namespaceObject.useStateFromStores)([settings], (() => settings.get("ignoredChannels", [])));
+				const ignoredGuilds = (0, flux_namespaceObject.useStateFromStores)([settings], (() => settings.get("ignoredGuilds", [])));
+				const voiceState = (0, flux_namespaceObject.useStateFromStores)([ModalActivityItem_VoiceStates], (() => ModalActivityItem_VoiceStates.getVoiceStateForUser(props.userId)));
+				const currentUserVoiceState = (0, flux_namespaceObject.useStateFromStores)([ModalActivityItem_VoiceStates], (() => ModalActivityItem_VoiceStates.getVoiceStateForUser(stores_namespaceObject.Users.getCurrentUser()?.id)));
+				if (!voiceState) return null;
+				const channel = stores_namespaceObject.Channels.getChannel(voiceState.channelId);
+				if (!channel) return null;
+				const guild = stores_namespaceObject.Guilds.getGuild(channel.guild_id);
+				if (guild && !checkPermissions(guild, channel)) return null;
+				if (ignoreEnabled && (ignoredChannels.includes(channel.id) || ignoredGuilds.includes(guild?.id))) return null;
+				let headerText, text, viewButton, joinButton, Icon, channelPath;
+				const members = Object.keys(ModalActivityItem_VoiceStates.getVoiceStatesForChannel(channel.id)).map((id => stores_namespaceObject.Users.getUser(id)));
+				const hasOverflow = members.length > 3;
+				const inCurrentChannel = channel.id === currentUserVoiceState?.channelId;
+				const isCurrentUser = props.userId === stores_namespaceObject.Users.getCurrentUser().id;
+				if (guild) {
+					headerText = Strings.get("HEADER");
+					text = [external_BdApi_React_default().createElement("h3", null, guild.name), external_BdApi_React_default().createElement("div", null, channel.name)];
+					viewButton = Strings.get("VIEW");
+					joinButton = inCurrentChannel ? Strings.get("JOIN_DISABLED") : Strings.get("JOIN");
+					Icon = Speaker;
+					channelPath = `/channels/${guild.id}/${channel.id}`;
+				} else {
+					headerText = Strings.get("HEADER_VOICE");
+					text = external_BdApi_React_default().createElement("h3", null, channel.name);
+					viewButton = Strings.get("VIEW_CALL");
+					joinButton = inCurrentChannel ? Strings.get("JOIN_DISABLED_CALL") : Strings.get("JOIN_CALL");
+					Icon = CallJoin;
+					channelPath = `/channels/@me/${channel.id}`;
+				}
+				switch (channel.type) {
+					case 1:
+						headerText = Strings.get("HEADER_PRIVATE");
+						break;
+					case 3:
+						headerText = Strings.get("HEADER_GROUP");
+						text = external_BdApi_React_default().createElement("h3", null, channel.name ?? groupDMName(channel.recipients));
+						break;
+					case 13:
+						headerText = Strings.get("HEADER_STAGE");
+						Icon = Stage;
+				}
+				return external_BdApi_React_default().createElement("div", {
+					className: modalactivityitem.Z.modalActivity
+				}, external_BdApi_React_default().createElement("h3", {
+					className: modalactivityitem.Z.header
+				}, headerText), external_BdApi_React_default().createElement("div", {
+					className: modalactivityitem.Z.body
+				}, !(1 === channel.type) && external_BdApi_React_default().createElement(external_BdApi_React_default().Fragment, null, external_BdApi_React_default().createElement(GuildImage, {
+					guild,
+					channel,
+					channelPath
+				}), external_BdApi_React_default().createElement("div", {
+					className: modalactivityitem.Z.text
+				}, text)), external_BdApi_React_default().createElement("div", {
+					className: modalactivityitem.Z.buttonContainer
+				}, external_BdApi_React_default().createElement("button", {
+					className: modalactivityitem.Z.button,
+					onClick: () => {
+						if (channelPath) {
+							ModalActivityItem_NavigationUtils.transitionTo(channelPath);
+							modules_namespaceObject.ComponentDispatcher.dispatch("MODAL_CLOSE");
+						}
+					}
+				}, viewButton), !isCurrentUser && external_BdApi_React_default().createElement(ModalActivityItem_TooltipContainer, {
+					text: joinButton,
+					position: "top",
+					className: inCurrentChannel ? `${modalactivityitem.Z.joinWrapper} ${modalactivityitem.Z.joinWrapperDisabled}` : modalactivityitem.Z.joinWrapper
+				}, external_BdApi_React_default().createElement("button", {
+					className: `${modalactivityitem.Z.button} ${modalactivityitem.Z.joinButton}`,
+					disabled: inCurrentChannel,
+					onClick: () => {
+						if (channel.id) ModalActivityItem_ChannelActions.selectVoiceChannel(channel.id);
+					},
+					onContextMenu: e => {
+						if (13 === channel.type) return;
+						external_PluginApi_namespaceObject.ContextMenu.openContextMenu(e, external_PluginApi_namespaceObject.ContextMenu.buildMenu([{
+							label: Strings.get("JOIN_VIDEO"),
+							id: "voice-activity-join-with-video",
+							action: () => {
+								if (channel.id) ModalActivityItem_ChannelActions.selectVoiceChannel(channel.id, true);
+							}
+						}]));
+					}
+				}, external_BdApi_React_default().createElement(Icon, {
+					width: "18",
+					height: "18"
+				}))))), !(1 === channel.type) && external_BdApi_React_default().createElement("div", {
+					className: hasOverflow ? `${modalactivityitem.Z.members} ${modalactivityitem.Z.hasOverflow}` : modalactivityitem.Z.members
+				}, external_BdApi_React_default().createElement(WrappedPartyAvatars, {
+					guild,
+					channel,
+					members
+				})));
+			}
 			const memberItemSelector = `.${external_PluginApi_namespaceObject.WebpackModules.getByProps("member", "activity").member}`;
 			const privateChannelSelector = `.${external_PluginApi_namespaceObject.WebpackModules.getByProps("channel", "activity").channel}`;
 			const peopleItemSelector = `.${external_PluginApi_namespaceObject.WebpackModules.getByProps("peopleListItem").peopleListItem}`;
+			const src_VoiceStates = external_PluginApi_namespaceObject.WebpackModules.getByProps("getVoiceStateForUser");
 			class VoiceActivity extends(external_BasePlugin_default()) {
 				onStart() {
 					external_StyleLoader_default().inject();
 					Strings.subscribe();
 					this.patchUserPopoutBody();
+					this.patchUserProfileModal();
 					this.patchMemberListItem();
 					this.patchPrivateChannel();
 					this.patchPeopleListItem();
 					this.patchContextMenu();
 					BdApi.injectCSS("VoiceActivity", `.${external_PluginApi_namespaceObject.WebpackModules.getByProps("avatar", "children").children}:empty{margin-left: 0}`);
+				}
+				patchUserPopoutBody() {
+					const UserPopoutBody = external_PluginApi_namespaceObject.WebpackModules.getModule((m => "UserPopoutBody" === m.default.displayName));
+					external_PluginApi_namespaceObject.Patcher.after(UserPopoutBody, "default", ((_, [props], ret) => {
+						ret?.props.children.splice(1, 0, external_BdApi_React_default().createElement(VoicePopoutSection, {
+							userId: props.user.id
+						}));
+					}));
+				}
+				async patchUserProfileModal() {
+					const UserProfileModal = await getLazyModule((m => "UserProfileModal" === m.default?.displayName));
+					const UserProfileBody = external_PluginApi_namespaceObject.WebpackModules.getModule((m => m.default?.toString()?.includes("case s.UserProfileSections")));
+					const UserProfileActivity = external_PluginApi_namespaceObject.WebpackModules.getModule((m => "UserProfileActivity" === m.default?.displayName));
+					const tabBarItem = external_PluginApi_namespaceObject.WebpackModules.getByProps("tabBarContainer").tabBarItem;
+					external_PluginApi_namespaceObject.Patcher.after(UserProfileModal, "default", ((_, [modalProps], modalRet) => {
+						if (modalProps.user.id !== stores_namespaceObject.Users.getCurrentUser().id) {
+							const tabBar = external_PluginApi_namespaceObject.Utilities.findInTree(modalRet, (e => e.props?.section && e.props?.user), {
+								walkable: ["props", "children"]
+							});
+							external_PluginApi_namespaceObject.Patcher.instead(tabBar, "type", ((_, [props], original) => {
+								const voiceState = (0, flux_namespaceObject.useStateFromStores)([src_VoiceStates], (() => src_VoiceStates.getVoiceStateForUser(props.user.id)));
+								const ret = original(props);
+								if (!props.hasActivity && voiceState) {
+									const items = external_PluginApi_namespaceObject.Utilities.findInTree(ret, (e => Array.isArray(e)), {
+										walkable: ["props", "children"]
+									});
+									const Item = items[0].type;
+									items[1] = external_BdApi_React_default().createElement(Item, {
+										className: tabBarItem,
+										id: "VOICE_ACTIVITY"
+									}, "Activity");
+								}
+								if (props.hasActivity && "VOICE_ACTIVITY" === props.section) props.setSection("ACTIVITY");
+								return ret;
+							}));
+						}
+					}));
+					external_PluginApi_namespaceObject.Patcher.instead(UserProfileBody, "default", ((_, [props], original) => {
+						if ("VOICE_ACTIVITY" === props.selectedSection) return external_BdApi_React_default().createElement(UserProfileActivity.default, {
+							user: props.user
+						});
+						return original(props);
+					}));
+					external_PluginApi_namespaceObject.Patcher.after(UserProfileActivity, "default", ((_, [props], ret) => {
+						ret.props.children[1].unshift(external_BdApi_React_default().createElement(ModalActivityItem, {
+							userId: props.user.id
+						}));
+					}));
 				}
 				async patchMemberListItem() {
 					const MemberListItem = await external_PluginApi_namespaceObject.ReactComponents.getComponentByName("MemberListItem", memberItemSelector);
@@ -932,14 +1111,6 @@ function buildPlugin([BasePlugin, PluginApi]) {
 						};
 					}));
 					forceUpdateAll(peopleItemSelector);
-				}
-				patchUserPopoutBody() {
-					const UserPopoutBody = external_PluginApi_namespaceObject.WebpackModules.getModule((m => "UserPopoutBody" === m.default.displayName));
-					external_PluginApi_namespaceObject.Patcher.after(UserPopoutBody, "default", ((_, [props], ret) => {
-						ret?.props.children.unshift(external_BdApi_React_default().createElement(VoicePopoutSection, {
-							userId: props.user.id
-						}));
-					}));
 				}
 				async patchContextMenu() {
 					const HideNamesItem = await external_PluginApi_namespaceObject.ContextMenu.getDiscordMenu("useChannelHideNamesItem");

@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-06-10T01:56:29.475-00:00",
+	"CreationDate" : "2022-07-17T01:41:17.173-00:00",
 	"Sources" : 
 	[
 		{
@@ -42,6 +42,9 @@
 		{
 			"Packages" : 
 			[
+				{
+					"PackageIdentifier" : "NexusMods.Vortex"
+				},
 				{
 					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
 				},
@@ -136,6 +139,9 @@
 					"PackageIdentifier" : "RubyInstallerTeam.Ruby"
 				},
 				{
+					"PackageIdentifier" : "Rustlang.Rustup"
+				},
+				{
 					"PackageIdentifier" : "Spotify.Spotify"
 				},
 				{
@@ -178,13 +184,19 @@
 					"PackageIdentifier" : "ItchIo.Itch"
 				},
 				{
+					"PackageIdentifier" : "Peppy.Osu!"
+				},
+				{
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				},
 				{
 					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
@@ -205,7 +217,7 @@
 					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.3_1"
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x64"
@@ -214,13 +226,13 @@
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.3_1"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "OpenJS.NodeJS"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
 				},
 				{
 					"PackageIdentifier" : "Nushell.Nushell"
@@ -229,10 +241,10 @@
 					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
+					"PackageIdentifier" : "Yarn.Yarn"
 				},
 				{
-					"PackageIdentifier" : "Yarn.Yarn"
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2005Redist-x86"
@@ -253,6 +265,9 @@
 					"PackageIdentifier" : "TechPowerUp.GPU-Z"
 				},
 				{
+					"PackageIdentifier" : "Inkscape.Inkscape"
+				},
+				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.16"
 				},
 				{
@@ -268,6 +283,9 @@
 					"PackageIdentifier" : "Peppy.Osu!"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.PowerShell"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x86"
 				},
 				{
@@ -275,6 +293,9 @@
 				},
 				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.17"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.PhysXLegacy"
 				},
 				{
 					"PackageIdentifier" : "GoLang.Go"
@@ -301,7 +322,7 @@
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
 				},
 				{
 					"PackageIdentifier" : "msys2.msys2"
@@ -314,9 +335,6 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.5"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
