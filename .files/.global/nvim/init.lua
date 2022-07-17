@@ -1,4 +1,4 @@
-local modules = { 'impatient', 'pynappo/plugins', 'pynappo/keymaps', 'pynappo/autocmd', 'pynappo/theme', 'pynappo/commands' }
+local modules = { "impatient", "pynappo/plugins", "pynappo/keymaps", "pynappo/autocmd", "pynappo/theme", "pynappo/commands" }
 
 for _, module in ipairs(modules) do
   local ok, err = pcall(require, module)
@@ -14,28 +14,31 @@ local wo = vim.wo
 local g = vim.g
 
 -- Status/windowline
-o.laststatus = 3
-wo.winbar = '%f'
-o.cmdheight = 0
+if vim.g.started_by_firenvim then
+  o.laststatus = 0
+  o.showtabline = 0
+  wo.winbar = ""
+  wo.signcolumn = "no"
+else
+  o.laststatus = 3
+  wo.winbar = "%f"
+  o.scrolloff = 8
+  wo.signcolumn = "yes"
+end
+g.cmdheight = 0
 
 -- Make line numbers default
 wo.relativenumber = true
 wo.number = true
-wo.signcolumn = 'yes'
 
 -- Enable mouse mode
-o.mouse = 'a'
+o.mouse = "a"
 
 -- Tabs
 opt.tabstop = 2
 opt.shiftwidth = 0
 opt.softtabstop = -1
 opt.expandtab = true
-
--- Number of screen lines to keep above and below the cursor
-o.scrolloff = 8
-
--- Better editor UI
 o.cursorline = true
 o.wrap = true
 
@@ -49,10 +52,11 @@ o.splitbelow = true
 
 -- Misc
 o.history = 50
-opt.whichwrap:append('<,>,h,l,[,]')
+opt.whichwrap:append("<,>,h,l,[,]")
 opt.fillchars:append("eob: ")
 g.do_filetype_lua = 1
-o.clipboard = 'unnamedplus'
+g.guifont = "Inconsolata LGC"
+o.clipboard = "unnamedplus"
 
 local disabled_built_ins = {
   "netrw",
