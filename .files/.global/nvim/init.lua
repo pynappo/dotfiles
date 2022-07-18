@@ -7,7 +7,6 @@ for _, module in ipairs(modules) do
   end
 end
 
-
 local opt = vim.opt
 local o = vim.o
 local wo = vim.wo
@@ -25,7 +24,7 @@ else
   o.scrolloff = 8
   wo.signcolumn = "yes"
 end
-g.cmdheight = 0
+opt.cmdheight = 0
 
 -- Make line numbers default
 wo.relativenumber = true
