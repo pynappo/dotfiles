@@ -14,48 +14,59 @@ local g = vim.g
 
 -- Status/windowline
 if vim.g.started_by_firenvim then
-  o.laststatus = 0
-  o.showtabline = 0
+  opt.laststatus = 0
+  opt.showtabline = 0
   wo.winbar = ""
   wo.signcolumn = "no"
 else
-  o.laststatus = 3
+  opt.laststatus = 3
   wo.winbar = "%f"
-  o.scrolloff = 8
+  opt.scrolloff = 8
   wo.signcolumn = "yes"
 end
 opt.cmdheight = 0
 
 -- Make line numbers default
-wo.relativenumber = true
-wo.number = true
+opt.relativenumber = true
+opt.number = true
 
 -- Enable mouse mode
-o.mouse = "a"
+opt.mouse = "a"
 
 -- Tabs
 opt.tabstop = 2
 opt.shiftwidth = 0
 opt.softtabstop = -1
 opt.expandtab = true
-o.cursorline = true
-o.wrap = true
+opt.cursorline = true
+opt.wrap = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-o.ignorecase = true
-o.smartcase = true
+opt.ignorecase = true
+opt.smartcase = true
 
 -- More intuitive splits
-o.splitright = true
-o.splitbelow = true
+opt.splitright = true
+opt.splitbelow = true
 
 -- Misc
-o.history = 50
+opt.history = 50
 opt.whichwrap:append("<,>,h,l,[,]")
-opt.fillchars:append("eob: ")
+opt.fillchars = {
+  horiz     = '━',
+  horizup   = '┻',
+  horizdown = '┳',
+  vert      = '┃',
+  vertleft  = '┫',
+  vertright = '┣',
+  verthoriz = '╋',
+  eob = " "
+}
 g.do_filetype_lua = 1
 g.guifont = "Inconsolata LGC"
 o.clipboard = "unnamedplus"
+opt.completeopt = { "menuone", "noselect" }
+g.neo_tree_remove_legacy_commands = 1
 
 local disabled_built_ins = {
   "netrw",
