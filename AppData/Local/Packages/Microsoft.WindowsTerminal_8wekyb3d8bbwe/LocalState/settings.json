@@ -45,7 +45,7 @@
             "experimental.retroTerminalEffect": false,
             "font": 
             {
-                "face": "InconsolataLGC NF",
+                "face": "CaskaydiaCove Nerd Font Mono",
                 "size": 12,
                 "weight": "normal"
             },

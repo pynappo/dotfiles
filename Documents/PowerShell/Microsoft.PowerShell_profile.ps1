@@ -37,53 +37,10 @@ Function Lazy-Dotfiles { lazygit --git-dir=$Home/.files/ --work-tree=$HOME @Args
 Set-Alias -Name ldf -Value Lazy-Dotfiles
 
 Function Pacup ([string]$Path = "$Home\.files\"){
-	scoop export > ($Path + 'scoop.txt')
-	scoop bucket list | Export-Csv ($Path + 'scoopBuckets.csv')
+	scoop export > ($Path + 'scoop.json')
 	winget export -o ($Path + 'winget.txt') --accept-source-agreements
 }
 
 Function New-Link ($Path, $Target) {
     New-Item -ItemType SymbolicLink -Path $Path -Value $Target 
-}
-
-Function Scoop-Import { 
-	<#
-	.SYNOPSIS
-	Imports scoop buckets and app lists.
-
-	.DESCRIPTION
-	Imports scoop buckets from a CSV made with: scoop bucket list | Export-Csv <file>.csv
-	Imports scoop apps from a text file made with: scoop export > <file>.txt
-
-	.PARAMETER  Buckets
-	Specifies the file that contains the bucket list exported using: scoop bucket list | Export-Csv <file>.csv
-
-	.PARAMETER  Apps
-	Specifies the file that contains the app list exported using: scoop export > <file>.txt
-	
-	.EXAMPLE
-	PS> scoop-import -buckets scoopBuckets.csv -apps scoop.txt
-
-	.EXAMPLE
-	PS> scoop-import scoopBuckets.csv scoop.txt
-
-	.EXAMPLE
-	PS> scoop-import -apps scoop.txt
-
-	.LINK
-	Online: https://gist.github.com/pynappo/ae3f5cf67aa2fea83dd8cc55219ef79e
-	#>
-
-	[CmdletBinding(HelpURI="https://gist.github.com/pynappo/ae3f5cf67aa2fea83dd8cc55219ef79e", PositionalBinding)]
-	param ([string]$Buckets, [string]$Apps)
-	if ( Test-Path $Buckets ) { Import-Csv -Path $Buckets | ForEach-Object { scoop bucket add $_.Name $_.Source } } 
-	else {"No valid bucket list supplied, continuing..."}
-	if ( Test-Path $Apps ) { 
-		foreach ($app in Get-Content $Apps) {
-			if ($app -match '(?<name>.*)\s\(.*\)\s(?:\*(?<global>.*)\*\s)?\[.*\](?:\s\{(?<arch>.*)\})?') { 
-				"scoop install " + $Matches.name + ($Matches.global ? ' -g' : '') + ($Matches.arch ? ' -a ' + $Matches.arch : '') | Invoke-Expression 
-			}
-		}
-	}
-	else {Write-Error("No valid apps list supplied, ending...")}
 }
