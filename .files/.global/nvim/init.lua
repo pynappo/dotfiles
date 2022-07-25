@@ -20,7 +20,7 @@ if vim.g.started_by_firenvim then
   wo.signcolumn = "no"
 else
   opt.laststatus = 3
-  wo.winbar = "%f"
+  wo.winbar = require("nvim-navic").get_location()
   opt.scrolloff = 8
   wo.signcolumn = "yes"
 end
