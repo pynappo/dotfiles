@@ -6,8 +6,10 @@ This is a set of dotfiles for my Windows machines. It's a bare repo stored in $H
 (assuming git, [scoop](https://github.com/ScoopInstaller/Scoop), and winget are installed):
 ```
 cd $HOME
-git clone
-
+git clone --bare git@github.com:pynappo/dotwindows.git $HOME\.files
+git --git-dir=$HOME/.files/ --work-tree=$HOME checkout --force
+. $PROFILE
+df config status.showUntrackedFiles no
 ```
 # Package lists: 
 - [scoop.txt](.files/scoop.txt)
@@ -15,7 +17,7 @@ git clone
 
 Import with:
 ```
-scoop install $HOME/.files/scoop.txt 
+scoop install $HOME/.files/scoop.csv 
 winget import -i $HOME/.files/winget.txt --accept-package-agreements --accept-source-agreements
 ```
 # Commands
