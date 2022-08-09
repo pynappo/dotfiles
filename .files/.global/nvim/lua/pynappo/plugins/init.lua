@@ -10,7 +10,6 @@ require('packer').startup({ function(use)
   use { 'tpope/vim-fugitive' }
   use { 'Shatur/neovim-ayu', config = [[require('pynappo/theme')]] }
   use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
-  use 'ludovicchabant/vim-gutentags'
   use({
     {
       'nvim-telescope/telescope.nvim',
@@ -64,7 +63,8 @@ require('packer').startup({ function(use)
     requires = {
       { 'nvim-treesitter/nvim-treesitter-textobjects' },
       { 'nvim-telescope/telescope-file-browser.nvim' },
-      { 'p00f/nvim-ts-rainbow' }
+      { 'p00f/nvim-ts-rainbow' },
+      { 'windwp/nvim-ts-autotag' }, 
     },
     config = [[require('pynappo/plugins/treesitter')]]
   }
@@ -151,10 +151,6 @@ require('packer').startup({ function(use)
     'windwp/nvim-autopairs',
     requires = 'hrsh7th/nvim-cmp',
     config = [[require('pynappo/plugins/autopairs')]]
-  }
-  use {
-    'windwp/nvim-ts-autotag',
-
   }
   use 'antoinemadec/FixCursorHold.nvim'
   use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }

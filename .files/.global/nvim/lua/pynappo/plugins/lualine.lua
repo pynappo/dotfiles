@@ -5,6 +5,7 @@ lualine.setup {
     theme = 'ayu',
     component_separators = '|',
     section_separators = { left = '', right = '' },
+    global_statusline = true,
     disabled_filetypes = {
       winbar = {'neo-tree'}
     }
