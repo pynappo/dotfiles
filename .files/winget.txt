@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-07-17T01:41:17.173-00:00",
+	"CreationDate" : "2022-08-09T02:01:37.599-00:00",
 	"Sources" : 
 	[
 		{
@@ -20,15 +20,6 @@
 				},
 				{
 					"PackageIdentifier" : "9NBLGGH5L9XT"
-				},
-				{
-					"PackageIdentifier" : "9P7QFQMJRFP7"
-				},
-				{
-					"PackageIdentifier" : "9P7QFQMJRFP7"
-				},
-				{
-					"PackageIdentifier" : "9P7QFQMJRFP7"
 				}
 			],
 			"SourceDetails" : 
@@ -109,6 +100,9 @@
 					"PackageIdentifier" : "Microsoft.EdgeWebView2Runtime"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.WingetCreate"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.WindowsTerminal"
 				},
 				{
@@ -136,7 +130,7 @@
 					"PackageIdentifier" : "Piriform.Recuva"
 				},
 				{
-					"PackageIdentifier" : "RubyInstallerTeam.Ruby"
+					"PackageIdentifier" : "RubyInstallerTeam.RubyWithDevKit.3.1"
 				},
 				{
 					"PackageIdentifier" : "Rustlang.Rustup"
@@ -155,6 +149,12 @@
 				},
 				{
 					"PackageIdentifier" : "Ultimaker.Cura"
+				},
+				{
+					"PackageIdentifier" : "Ultimaker.Cura"
+				},
+				{
+					"PackageIdentifier" : "Unigine.HeavenBenchmark"
 				},
 				{
 					"PackageIdentifier" : "Ubisoft.Connect"
@@ -220,10 +220,13 @@
 					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x64"
+					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VC++2015-2022Redist-x64"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.3_1"
@@ -259,16 +262,13 @@
 					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerToys"
-				},
-				{
 					"PackageIdentifier" : "TechPowerUp.GPU-Z"
 				},
 				{
 					"PackageIdentifier" : "Inkscape.Inkscape"
 				},
 				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.16"
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.16.JDK"
 				},
 				{
 					"PackageIdentifier" : "ElectronicArts.EADesktop"
@@ -292,13 +292,16 @@
 					"PackageIdentifier" : "RevoUninstaller.RevoUninstaller"
 				},
 				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.17"
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
+				},
+				{
+					"PackageIdentifier" : "Azul.Zulu.17.JDK"
 				},
 				{
 					"PackageIdentifier" : "Nvidia.PhysXLegacy"
 				},
 				{
-					"PackageIdentifier" : "GoLang.Go"
+					"PackageIdentifier" : "GoLang.Go.1.18"
 				},
 				{
 					"PackageIdentifier" : "wez.wezterm"
@@ -320,6 +323,9 @@
 				},
 				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
@@ -349,5 +355,5 @@
 			}
 		}
 	],
-	"WinGetVersion" : "1.3.1391-preview"
+	"WinGetVersion" : "1.4.2161-preview"
 }
