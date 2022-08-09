@@ -16,6 +16,7 @@
 	symlinks = true
 	fsmonitor = true
 	editor = nvim
+	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 [init]
 	defaultBranch = main
 [pull]
