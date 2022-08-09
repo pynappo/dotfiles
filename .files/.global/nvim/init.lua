@@ -1,4 +1,11 @@
-local modules = { "impatient", "pynappo/plugins", "pynappo/keymaps", "pynappo/autocmd", "pynappo/theme", "pynappo/commands" }
+local modules = {
+  "impatient",
+  "pynappo/theme",
+  "pynappo/plugins",
+  "pynappo/keymaps",
+  "pynappo/autocmd",
+  "pynappo/commands"
+}
 
 for _, module in ipairs(modules) do
   local ok, err = pcall(require, module)
@@ -7,52 +14,58 @@ for _, module in ipairs(modules) do
   end
 end
 
-local opt = vim.opt
-local o = vim.o
-local wo = vim.wo
+local o = vim.opt
 local g = vim.g
 
--- Status/windowline
+-- Firenvim
 if vim.g.started_by_firenvim then
-  opt.laststatus = 0
-  opt.showtabline = 0
-  wo.winbar = ""
-  wo.signcolumn = "no"
+  o.laststatus = 0
+  o.showtabline = 0
+  o.winbar = ""
 else
-  opt.laststatus = 3
-  wo.winbar = require("nvim-navic").get_location()
-  opt.scrolloff = 8
-  wo.signcolumn = "yes"
+  o.laststatus = 3
+  o.scrolloff = 4
 end
-opt.cmdheight = 0
+vim.g.firenvim_config = {
+  globalSettings = {
+    alt = 'all'
+  },
+  localSettings = {
+    ['.*'] = {
+      cmdline = 'neovim',
+      takeover = 'never',
+      priority = 0
+    }
+  }
+}
+o.signcolumn = "auto:9"
+o.cmdheight = 0
 
 -- Make line numbers default
-opt.relativenumber = true
-opt.number = true
+o.relativenumber = true
+o.number = true
 
 -- Enable mouse mode
-opt.mouse = "a"
+o.mouse = "a"
 
 -- Tabs
-opt.tabstop = 2
-opt.shiftwidth = 0
-opt.softtabstop = -1
-opt.expandtab = true
-opt.cursorline = true
-opt.wrap = true
+o.tabstop = 2
+o.shiftwidth = 0
+o.softtabstop = -1
+o.expandtab = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-opt.ignorecase = true
-opt.smartcase = true
+o.ignorecase = true
+o.smartcase = true
 
 -- More intuitive splits
-opt.splitright = true
-opt.splitbelow = true
+o.splitright = true
+o.splitbelow = true
 
 -- Misc
-opt.history = 50
-opt.whichwrap:append("<,>,h,l,[,]")
-opt.fillchars = {
+o.history = 50
+o.whichwrap:append("<,>,h,l,[,]")
+o.fillchars = {
   horiz     = '━',
   horizup   = '┻',
   horizdown = '┳',
@@ -60,13 +73,21 @@ opt.fillchars = {
   vertleft  = '┫',
   vertright = '┣',
   verthoriz = '╋',
-  eob = " "
+  eob       = " "
 }
 g.do_filetype_lua = 1
-g.guifont = "Inconsolata LGC"
+o.guifont = "InconsolataLGC_NF"
 o.clipboard = "unnamedplus"
-opt.completeopt = { "menuone", "noselect" }
-g.neo_tree_remove_legacy_commands = 1
+o.listchars = {
+  extends = '⟩',
+  precedes = '⟨',
+  trail = '·'
+}
+o.cursorline = true
+o.wrap = true
+
+-- Spell checking
+o.spelllang = 'en,cjk'
 
 local disabled_built_ins = {
   "netrw",

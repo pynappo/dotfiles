@@ -1,5 +1,5 @@
 [user]
-	email = git+lehtien.david@gmail.com
+	email = lehtien.david@gmail.com
 	name = pynappo
 [credential "helperselector"]
 	selected = manager-core
@@ -18,3 +18,5 @@
 	editor = nvim
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
