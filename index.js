@@ -5,8 +5,6 @@ const { Menu } = require('powercord/components');
 const { Plugin } = require('powercord/entities');
 const { clipboard } = require('electron');
 
-const SizeRegex = /(?:\?size=\d{3,4})?$/;
-
 module.exports = class PictureLink extends Plugin {
    startPlugin() {
       this.loadStylesheet('style.css');
@@ -51,10 +49,10 @@ module.exports = class PictureLink extends Plugin {
 
       inject('pfp-link-banner', Banner, 'default', (args, res) => {
          const handler = findInReactTree(res.props.children, p => p?.onClick);
-         const image = Banners.getUserBannerURL({
-            ...args[0].user,
+         const image = args[0].displayProfile?.getBannerURL({
+            size: 4096,
             canAnimate: true
-         })?.replace(SizeRegex, '?size=4096')?.replace('.webp', '.png');
+         })?.replace('.webp', '.png');
 
          if (!handler?.children && image) {
             res.props.onClick = () => {
