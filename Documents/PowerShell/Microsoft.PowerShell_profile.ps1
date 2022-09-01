@@ -4,6 +4,7 @@ oh-my-posh init pwsh --config $HOME/.files/.global/pynappo.omp.json | Invoke-Exp
 Import-Module posh-git
 Import-Module -Name Terminal-Icons
 Import-Module scoop-completion
+Import-Module cd-extras
 
 $env:POSH_GIT_ENABLED = $true
 
