@@ -8,6 +8,8 @@ end
 require('packer').startup({ function(use)
   use 'wbthomason/packer.nvim'
   use { 'tpope/vim-fugitive' }
+  use { 'ludovicchabant/vim-gutentags' }
+  use { "catppuccin/nvim", as = "catppuccin" }
   use { 'Shatur/neovim-ayu', config = [[require('pynappo/theme')]] }
   use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
   use({
@@ -64,7 +66,7 @@ require('packer').startup({ function(use)
       { 'nvim-treesitter/nvim-treesitter-textobjects' },
       { 'nvim-telescope/telescope-file-browser.nvim' },
       { 'p00f/nvim-ts-rainbow' },
-      { 'windwp/nvim-ts-autotag' }, 
+      { 'windwp/nvim-ts-autotag' },
     },
     config = [[require('pynappo/plugins/treesitter')]]
   }
@@ -89,7 +91,6 @@ require('packer').startup({ function(use)
       requires = { 'rafamadriz/friendly-snippets' }
     }
   })
-  use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' }
   use {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v2.x',
@@ -135,11 +136,6 @@ require('packer').startup({ function(use)
   --   config = function() vim.g.Hexokinase_highlighters = 'foreground' end,
   --   run = 'cd '.. fn.stdpath('data') .. [[\site\pack\packer\start\vim-hexokinase\ && make hexokinase]]
   -- }
-  use {
-    'mbbill/undotree',
-    cmd = 'UndotreeToggle',
-    config = [[vim.g.undotree_SetFocusWhenToggle = 1]],
-  }
   use 'andweeb/presence.nvim'
   use 'Djancyp/cheat-sheet'
   use { 'lukas-reineke/headlines.nvim', config = [[require('headlines').setup()]] }
@@ -178,7 +174,7 @@ require('packer').startup({ function(use)
     'rcarriga/nvim-notify',
     config = function()
       require('notify').setup({
-        background_color = '#000000',
+        background_colour = '#000000',
       })
       vim.notify = require('notify')
     end
@@ -207,25 +203,6 @@ require('packer').startup({ function(use)
   use {
     'jose-elias-alvarez/null-ls.nvim',
   }
-  -- Doesn't work with transparent bg
-  -- use {
-  --   'folke/twilight.nvim',
-  --   config = [[require('twilight').setup({})]]
-  -- }
-  -- use {
-  --   'sunjon/shade.nvim',
-  --   config = function()
-  --     require('shade').setup({
-  --       overlay_opacity = 50,
-  --       opacity_step = 1,
-  --       keys = {
-  --         brightness_up    = '<C-Up>',
-  --         brightness_down  = '<C-Down>',
-  --         toggle           = '<Leader>t',
-  --       }
-  --     })
-  --   end
-  -- }
   use {
     'neovim/nvim-lspconfig',
     requires = {
@@ -239,8 +216,8 @@ require('packer').startup({ function(use)
         automatic_installation = true;
       })
     end
-
   }
+
 end,
   config = {
     display = {

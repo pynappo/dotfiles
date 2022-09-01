@@ -1,8 +1,5 @@
 {
 	"all": {
-		"changeLogs": {
-			"ShowBadgesInChat": "1.9.0"
-		},
 		"choices": {
 			"toastPosition": "right"
 		},
@@ -13,7 +10,7 @@
 			"useChromium": false
 		},
 		"hashes": {
-			"0BDFDB.data.json": "2a1079d0818e8e795f7f920bb6a92ed293fc4516",
+			"0BDFDB.data.json": "5b45bcf78cf3ffb859d53d687ef7de27f82e3197",
 			"0BDFDB.raw.css": "96fb638350f77c79c3648050d58a0ea7a700ea1b"
 		}
 	}
