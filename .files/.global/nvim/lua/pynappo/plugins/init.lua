@@ -59,32 +59,31 @@ require('packer').startup({ function(use)
       }
     end
   }
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-    requires = {
-      { 'nvim-treesitter/nvim-treesitter-textobjects' },
-      { 'nvim-telescope/telescope-file-browser.nvim' },
-      { 'p00f/nvim-ts-rainbow' },
-      { 'windwp/nvim-ts-autotag' },
+  use (
+    {
+      'nvim-treesitter/nvim-treesitter',
+      run = ':TSUpdate',
+      config = [[require('pynappo/plugins/treesitter')]]
     },
-    config = [[require('pynappo/plugins/treesitter')]]
-  }
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    'nvim-telescope/telescope-file-browser.nvim',
+    'p00f/nvim-ts-rainbow',
+    'windwp/nvim-ts-autotag',
+    'nvim-treesitter/nvim-treesitter-context'
+  )
   use({
     {
       'hrsh7th/nvim-cmp',
-      requires = {
-        'hrsh7th/cmp-nvim-lsp',
-        'saadparwaiz1/cmp_luasnip',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-        'hrsh7th/cmp-cmdline',
-        'hrsh7th/cmp-nvim-lsp-signature-help',
-        'onsails/lspkind.nvim',
-        'dmitmel/cmp-cmdline-history'
-      },
       config = [[require('pynappo/plugins/cmp')]]
     },
+    'hrsh7th/cmp-nvim-lsp',
+    'saadparwaiz1/cmp_luasnip',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
+    'onsails/lspkind.nvim',
+    'dmitmel/cmp-cmdline-history',
     {
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
@@ -148,7 +147,6 @@ require('packer').startup({ function(use)
     requires = 'hrsh7th/nvim-cmp',
     config = [[require('pynappo/plugins/autopairs')]]
   }
-  use 'antoinemadec/FixCursorHold.nvim'
   use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
   use { 'glacambre/firenvim', run = [[vim.fn['firenvim#install'](0)]] }
   use {
@@ -201,23 +199,45 @@ require('packer').startup({ function(use)
     config = [[require('neoclip').setup()]]
   }
   use {
-    'jose-elias-alvarez/null-ls.nvim',
   }
-  use {
-    'neovim/nvim-lspconfig',
-    requires = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+  use (
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
+    {
+      'neovim/nvim-lspconfig',
+      requires = {
+        'folke/lua-dev.nvim',
+        'jose-elias-alvarez/null-ls.nvim'
+      },
+      config = function()
+        require('mason').setup()
+        require('mason-lspconfig').setup({
+          ensure_installed = { "sumneko_lua", "rust_analyzer" },
+          automatic_installation = true,
+        })
+        require('pynappo/plugins/lsp')
+      end 
+    }
+  )
+  use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
+  use (
+    {
+      "nvim-neotest/neotest",
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+        "antoinemadec/FixCursorHold.nvim",
+      },
     },
+    'rouge8/neotest-rust'
+  )
+  use {
+    "folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
     config = function()
-      require('pynappo/plugins/lsp')
-      require('mason').setup()
-      require('mason-lspconfig').setup({
-        automatic_installation = true;
-      })
+      require("todo-comments").setup({})
     end
   }
-
 end,
   config = {
     display = {
