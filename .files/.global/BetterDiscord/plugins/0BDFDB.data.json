@@ -1,5 +1,8 @@
 {
 	"PluginNameMap": {},
+	"PluginUrlMap": {
+		"BDFDB": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js"
+	},
 	"LibraryRequires": ["electron", "fs", "path", "process", "request"],
 	"DiscordObjects": {
 		"Channel": {"props": ["getRecipientId", "isManaged", "getGuildId"]},
@@ -692,7 +695,6 @@
 			"avatarDisabled": "disabled-6G33EE",
 			"badge": "badge-7R_W3s",
 			"badgeAvatar": "avatar-hF52Er",
-			"bdControlsCustom": "custom-L9FFs5",
 			"bdRepoEntry": "entry-9JnAPs",
 			"bdRepoFooterControls": "controls-p0SrvV",
 			"bdRepoHeaderControls": "controls-18FQsW",
@@ -702,6 +704,7 @@
 			"cardHorizontal": "horizontal-0ffRsT",
 			"cardInner": "inner-OP_8zd",
 			"cardWrapper": "card-rT4Wbb",
+			"changeLogButton": "changeLogButton-L9FFs5",
 			"charCounter": "counter-uAzbKp",
 			"changeLogModal": "changeLogModal-ny_dHC",
 			"collapseContainer": "container-fAVkOf",
@@ -1651,6 +1654,7 @@
 		"_repobutton": ["BD", "bdButton"],
 		"_repobuttondanger": ["BD", "bdButtonDanger"],
 		"_repocard": ["BD", "bdAddonCard"],
+		"_repochangelogbutton": ["BDFDB", "changeLogButton"],
 		"_repocheckbox": ["BD", "switchCheckbox"],
 		"_repocheckboxchecked": ["BD", "switchChecked"],
 		"_repocheckboxinner": ["BD", "switch"],
@@ -1658,7 +1662,6 @@
 		"_repocheckboxwrap": ["BD", "switchWrapper"],
 		"_repocontrols": ["BD", "bdControls"],
 		"_repocontrolsbutton": ["BD", "bdControlsButton"],
-		"_repocontrolscustom": ["BDFDB", "bdControlsCustom"],
 		"_repodescription": ["BD", "bdDescription"],
 		"_repodescriptionwrap": ["BD", "bdDescriptionWrap"],
 		"_repoentry": ["BDFDB", "bdRepoEntry"],

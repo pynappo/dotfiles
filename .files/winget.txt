@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-08-09T02:01:37.599-00:00",
+	"CreationDate" : "2022-09-03T04:14:24.766-00:00",
 	"Sources" : 
 	[
 		{
@@ -82,10 +82,16 @@
 					"PackageIdentifier" : "HearthSim.HearthstoneDeckTracker"
 				},
 				{
+					"PackageIdentifier" : "JetBrains.IntelliJIDEA.Ultimate"
+				},
+				{
 					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
 					"PackageIdentifier" : "KiCad.KiCad"
+				},
+				{
+					"PackageIdentifier" : "Resplendence.LatencyMon"
 				},
 				{
 					"PackageIdentifier" : "MKVToolNix.MKVToolNix"
@@ -145,6 +151,9 @@
 					"PackageIdentifier" : "StefanSundin.Superf4"
 				},
 				{
+					"PackageIdentifier" : "Unigine.SuperpositionBenchmark"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
@@ -158,9 +167,6 @@
 				},
 				{
 					"PackageIdentifier" : "Ubisoft.Connect"
-				},
-				{
-					"PackageIdentifier" : "VivaldiTechnologies.Vivaldi"
 				},
 				{
 					"PackageIdentifier" : "AntibodySoftware.WizTree"
@@ -190,13 +196,10 @@
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+					"PackageIdentifier" : "HottaStudio.TowerofFantasy"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x64"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				},
 				{
 					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
@@ -205,34 +208,19 @@
 					"PackageIdentifier" : "Zoom.Zoom"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.5"
-				},
-				{
 					"PackageIdentifier" : "Microsoft.VC++2010Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.5"
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.18.JDK"
 				},
 				{
 					"PackageIdentifier" : "DominikReichl.KeePass"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2015-2022Redist-x64"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.3_1"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "OpenJS.NodeJS"
@@ -244,10 +232,10 @@
 					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
 				},
 				{
-					"PackageIdentifier" : "Yarn.Yarn"
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
+					"PackageIdentifier" : "Yarn.Yarn"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2005Redist-x86"
@@ -283,9 +271,6 @@
 					"PackageIdentifier" : "Peppy.Osu!"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
-				},
-				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x86"
 				},
 				{
@@ -293,9 +278,6 @@
 				},
 				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
-				},
-				{
-					"PackageIdentifier" : "Azul.Zulu.17.JDK"
 				},
 				{
 					"PackageIdentifier" : "Nvidia.PhysXLegacy"
@@ -328,22 +310,13 @@
 					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
-				},
-				{
 					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2012Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.5"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.5"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				}
 			],
 			"SourceDetails" : 

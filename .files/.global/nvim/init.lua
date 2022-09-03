@@ -40,7 +40,7 @@ vim.g.firenvim_config = {
 }
 o.signcolumn = "auto:9"
 o.cmdheight = 0
-
+g.gutentags_enabled = 1
 -- Make line numbers default
 o.relativenumber = true
 o.number = true
