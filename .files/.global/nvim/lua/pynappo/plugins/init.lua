@@ -88,6 +88,11 @@ require('packer').startup({ function(use)
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
       requires = { 'rafamadriz/friendly-snippets' }
+    },
+    {
+      'windwp/nvim-autopairs',
+      requires = 'hrsh7th/nvim-cmp',
+      config = [[require('pynappo/plugins/autopairs')]]
     }
   })
   use {
@@ -105,10 +110,7 @@ require('packer').startup({ function(use)
   use 'lewis6991/impatient.nvim'
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
   use 'andymass/vim-matchup'
-  use {
-    'nmac427/guess-indent.nvim',
-    config = [[require('guess-indent').setup{}]],
-  }
+  use { 'nmac427/guess-indent.nvim', config = [[require('guess-indent').setup{}]], }
   use {
     'wfxr/minimap.vim',
     config = function()
@@ -142,11 +144,6 @@ require('packer').startup({ function(use)
   use 'stevearc/dressing.nvim'
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
-  use {
-    'windwp/nvim-autopairs',
-    requires = 'hrsh7th/nvim-cmp',
-    config = [[require('pynappo/plugins/autopairs')]]
-  }
   use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
   use { 'glacambre/firenvim', run = [[vim.fn['firenvim#install'](0)]] }
   use {
@@ -156,10 +153,7 @@ require('packer').startup({ function(use)
       vim.defer_fn(function() require('copilot').setup() end, 100)
     end,
   }
-  use {
-    'zbirenbaum/copilot-cmp',
-    module = 'copilot_cmp',
-  }
+  use { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp', }
   use {
     'akinsho/bufferline.nvim',
     tag = 'v2.*',
@@ -177,10 +171,7 @@ require('packer').startup({ function(use)
       vim.notify = require('notify')
     end
   }
-  use {
-    'SmiteshP/nvim-navic',
-    requires = 'neovim/nvim-lspconfig'
-  }
+  use { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig' }
   use {
     'nvim-neorg/neorg',
     -- tag = 'latest',
@@ -198,22 +189,17 @@ require('packer').startup({ function(use)
     requires = { 'nvim-telescope/telescope.nvim' },
     config = [[require('neoclip').setup()]]
   }
-  use {
-  }
   use (
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
+    'folke/lua-dev.nvim',
+    'jose-elias-alvarez/null-ls.nvim',
     {
       'neovim/nvim-lspconfig',
-      requires = {
-        'folke/lua-dev.nvim',
-        'jose-elias-alvarez/null-ls.nvim'
-      },
       config = function()
         require('mason').setup()
         require('mason-lspconfig').setup({
           ensure_installed = { "sumneko_lua", "rust_analyzer" },
-          automatic_installation = true,
         })
         require('pynappo/plugins/lsp')
       end 
@@ -234,10 +220,9 @@ require('packer').startup({ function(use)
   use {
     "folke/todo-comments.nvim",
     requires = "nvim-lua/plenary.nvim",
-    config = function()
-      require("todo-comments").setup({})
-    end
+    config = [[require("todo-comments").setup({})]]
   }
+  use { 'Akianonymus/nvim-colorizer.lua', config = [[require('colorizer').setup()]] }
 end,
   config = {
     display = {

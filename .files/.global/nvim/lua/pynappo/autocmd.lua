@@ -11,3 +11,4 @@ if vim.g.started_by_firenvim then
     group = pynappo
   })
 end
+

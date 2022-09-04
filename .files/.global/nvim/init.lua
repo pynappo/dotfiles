@@ -41,11 +41,11 @@ vim.g.firenvim_config = {
 o.signcolumn = "auto:9"
 o.cmdheight = 0
 g.gutentags_enabled = 1
--- Make line numbers default
+-- Line numbers
 o.relativenumber = true
 o.number = true
 
--- Enable mouse mode
+-- Enable mouse
 o.mouse = "a"
 
 -- Tabs
@@ -75,9 +75,7 @@ o.fillchars = {
   verthoriz = '╋',
   eob       = " "
 }
-g.do_filetype_lua = 1
 o.guifont = "InconsolataLGC_NF"
-o.clipboard = "unnamedplus"
 o.listchars = {
   extends = '⟩',
   precedes = '⟨',
@@ -85,9 +83,6 @@ o.listchars = {
 }
 o.cursorline = true
 o.wrap = true
-
--- Spell checking
-o.spelllang = 'en,cjk'
 
 local disabled_built_ins = {
   "netrw",
