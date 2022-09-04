@@ -37,6 +37,8 @@ local mappings = {
     { "<leader>m", ":MinimapToggle<CR>" },
     -- Better pasting
     { "p", "p=`]" },
+    -- Incremental rename
+    { "<leader>rn", ":IncRename" }
   }
 }
 

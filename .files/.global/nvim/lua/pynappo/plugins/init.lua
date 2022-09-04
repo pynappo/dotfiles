@@ -153,7 +153,7 @@ require('packer').startup({ function(use)
       vim.defer_fn(function() require('copilot').setup() end, 100)
     end,
   }
-  use { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp', }
+  use { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp' }
   use {
     'akinsho/bufferline.nvim',
     tag = 'v2.*',
@@ -202,7 +202,7 @@ require('packer').startup({ function(use)
           ensure_installed = { "sumneko_lua", "rust_analyzer" },
         })
         require('pynappo/plugins/lsp')
-      end 
+      end
     }
   )
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
