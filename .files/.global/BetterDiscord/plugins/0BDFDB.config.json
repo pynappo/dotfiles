@@ -1,17 +1,21 @@
 {
 	"all": {
+		"changeLogs": {
+			"ImageUtilities": "4.8.5",
+			"ShowHiddenChannels": "9.9.9"
+		},
 		"choices": {
 			"toastPosition": "right"
 		},
 		"general": {
 			"shareData": true,
 			"showToasts": true,
-			"showSupportBadges": true,
+			"showSupportBadges": false,
 			"useChromium": false
 		},
 		"hashes": {
-			"0BDFDB.data.json": "bc09e1aa1540ec71066f9062ac6528165675d793",
-			"0BDFDB.raw.css": "b32c66f2299ded73c11822b8e903883e1dc7daa8"
+			"0BDFDB.data.json": "ab73f458c535e804b3efc1a7fc7449ac6576d5f8",
+			"0BDFDB.raw.css": "98e9c027ef6e97326ac142859216e2f96c20ac4d"
 		}
 	}
 }
