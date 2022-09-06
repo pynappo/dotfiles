@@ -1,7 +1,8 @@
 {
 	"PluginNameMap": {},
 	"PluginUrlMap": {
-		"BDFDB": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js"
+		"BDFDB": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js",
+		"ShowHiddenChannels": "https://mwittrien.github.io/BetterDiscordAddons/_DEAD/ShowHiddenChannels.plugin.js"
 	},
 	"LibraryRequires": ["electron", "fs", "path", "process", "request"],
 	"DiscordObjects": {
@@ -221,6 +222,7 @@
 		"PatchMap": {
 			"AuditLogs": "GuildSettingsAuditLog",
 			"BannedCard": "BannedUser",
+			"ChannelList": "Channels",
 			"ChannelWindow": "Channel",
 			"InvitationCard": "InviteRow",
 			"InviteCard": "InviteRow",
@@ -247,7 +249,7 @@
 			"ChannelCategoryItem": {"strings": ["GUILD_CATEGORY", "CREATE_CHANNEL", "addButtonIcon"], "path": "default.DecoratedComponent"},
 			"ChannelMember": {"class": "member"},
 			"ChannelMembers": {"class": "members"},
-			"Channels": {"class": "guildchannels"},
+			"ChannelList": {"class": "guildchannels"},
 			"ChannelTextAreaForm": {"class": "chatform"},
 			"ChannelWindow": {"class": "chatcontent"},
 			"ChatMessage": {"strings": ["childrenMessageContent", "childrenRepliedMessage", "message.id"]},
@@ -314,13 +316,14 @@
 			"TypingUsers": {"class": "typing"},
 			"UnavailableGuildsButton": {"strings": ["className", ".default.guildsError"]},
 			"Upload": {"class": "uploadmodal"},
-			"UserHook": {"class": "auditloguserhook"},
 			"UserMention": {"strings": ["inlinePreview", "getAvatarURL", "userId", "default.getName"]},
 			"UserPopoutAvatar": {"props": ["UserPopoutAvatar"]},
 			"UserPopoutBody": {"strings": ["passportCaret", "setNote", "USER_POPOUT"]},
+			"UserPopoutBodySection": {"strings": [".customStatusActivity", ".canDM", ".hidePersonalInformation"]},
 			"UserProfileModal": {"lazyLoaded": true},
 			"UserProfileModalHeader": {"lazyLoaded": true},
-			"UserSettingsAppearance": {"class": "usersettingsappearancepreview"}
+			"UserSettingsAppearance": {"class": "usersettingsappearancepreview"},
+			"UserThemeBanner": {"strings": [".showPremiumBadgeUpsell", ".isPremiumAtLeast", "PremiumTypes"]}
 		},
 		"LoadedInComponents": {
 			"AutocompleteChannelResult": "LibraryComponents.AutocompleteItems.Channel",
@@ -387,6 +390,7 @@
 			}
 		},
 		"Header": {"props": ["Sizes", "Tags"]},
+		"Heading": {"name": "Heading"},
 		"HeaderBarComponents": {"name": "HeaderBarContainer"},
 		"Image": {"props": ["ImageReadyStates"]},
 		"ImageModal": {"name": "ImageModal"},
@@ -424,6 +428,7 @@
 		"UserBadgeKeys": {"props": ["BadgeKeys"], "value": "BadgeKeys"},
 		"UserBadges": {"props": ["BadgeSizes"]},
 		"UserPopout": {"name": "UserPopoutContainer"},
+		"UserPopoutSection": {"name": "UserPopoutSection"},
 		"UserSummaryItem": {"name": "UserSummaryItem"},
 		"VideoForwardRef": {"strings": ["displayName=\"Video\"", "\"video\"", "HTMLImageElement"], "value": "default"},
 		"VoiceSettingsConstants": {"props": ["MediaEngineContextTypes", "DEFAULT_VOLUME"]},
@@ -1092,10 +1097,6 @@
 			"connections": "connections-pPr4as",
 			"verifiedBadge": "verifiedBadge-mH2YpO"
 		},
-		"ShowHiddenChannels": {
-			"accessModal": "accessModal-w5HjsV",
-			"hiddenChannel": "hidden-9f2Dsa"
-		},
 		"SpotifyControls": {
 			"activityButton": "activityButton-5Fs4Aa",
 			"bar": "bar-g2ZMIm",
@@ -1261,7 +1262,6 @@
 		"ChatThreadSidebar": {"props": ["container", "floating", "resizeHandle"]},
 		"ChatWindow": {"props": ["chat", "channelTextArea", "chatContent"]},
 		"Checkbox": {"props": ["checkboxWrapper", "round"]},
-		"Clamped": {"props": ["clamped"]},
 		"ColorPicker": {"props": ["colorPickerCustom", "colorPickerDropper"]},
 		"ColorPickerInner": {"props": ["hue", "saturation"]},
 		"Combobox": {"props": ["combobox", "itemLabel"]},
@@ -1322,6 +1322,7 @@
 		"HeaderBarExtras": {"props": ["headerBarLoggedOut", "search"]},
 		"HeaderBarSearch": {"props": ["search", "searchBar", "open"]},
 		"HeaderBarTopic": {"props": ["topic", "expandable", "content"]},
+		"Heading": {"props": ["eyebrow", "code"]},
 		"HomeIcon": {"props": ["homeIcon"]},
 		"HotKeyRecorder": {"props": ["editIcon", "recording"]},
 		"HoverCard": {"props": ["card", "active"]},
@@ -1452,10 +1453,12 @@
 		"UserPopoutBody": {"props": ["rolesList", "note"]},
 		"UserPopoutFooter": {"props": ["wumpusTooltip", "footer"]},
 		"UserPopoutHeader": {"props": ["headerTop", "profileBadges", "aboutMeGuildIcon"]},
+		"UserPopoutSection": {"props": ["section", "lastSection"]},
+		"UserPopoutSectionTitle": {"props": ["title", "body"]},
 		"UserPopoutUsernameSection": {"props": ["userTagNoNickname", "nickname", "headerBotTag"]},
 		"UserProfile": {"props": ["root", "tabBarContainer"]},
 		"UserProfileHeader": {"props": ["header", "additionalActionsIcon"]},
-		"UserProfileInfoSection": {"props": ["userInfoSection", "connectedAccounts"]},
+		"UserProfileInfoSection": {"props": ["userInfoSection", "note"]},
 		"UserProfileList": {"props": ["listAvatar", "listRow"]},
 		"UserProfileListGuild": {"props": ["guildAvatar", "guildAvatarWithoutIcon"]},
 		"UserSettingsAppearancePreview": {"props": ["preview", "firstMessage"]},
@@ -1592,8 +1595,6 @@
 		"_showconnectionsconnections": ["ShowConnections", "connections"],
 		"_showconnectionsicon": ["ShowConnections", "connectionIcon"],
 		"_showconnectionsverifiedbadge": ["ShowConnections", "verifiedBadge"],
-		"_showhiddenchannelsaccessmodal": ["ShowHiddenChannels", "accessModal"],
-		"_showhiddenchannelshiddenchannel": ["ShowHiddenChannels", "hiddenChannel"],
 		"_spellcheckerror": ["SpellCheck", "error"],
 		"_spellcheckoverlay": ["SpellCheck", "overlay"],
 		"_spotifycontrolsactivitybutton": ["SpotifyControls", "activityButton"],
@@ -1959,7 +1960,6 @@
 		"checkboxround": ["Checkbox", "round"],
 		"checkboxwrapper": ["Checkbox", "checkboxWrapper"],
 		"checkboxwrapperdisabled": ["Checkbox", "checkboxWrapperDisabled"],
-		"clamped": ["Clamped", "clamped"],
 		"collapsecontainer": ["BDFDB", "collapseContainer"],
 		"collapsecontainercollapsed": ["BDFDB", "collapseContainerCollapsed"],
 		"collapsecontainerheader": ["BDFDB", "collapseContainerHeader"],
@@ -3236,6 +3236,9 @@
 		"userpopoutroleremovebutton": ["Role", "roleRemoveButton"],
 		"userpopoutroles": ["Role", "root"],
 		"userpopoutsetidentitylink": ["UserPopout", "setIdentityLink"],
+		"userpopoutsection": ["UserPopoutSection", "section"],
+		"userpopoutsectionlast": ["UserPopoutSection", "lastSection"],
+		"userpopoutsectiontitle": ["UserPopoutSectionTitle", "title"],
 		"userpopoutusernamebottag": ["UserPopoutUsernameSection", "headerBotTag"],
 		"userpopoutusernamebottagwithnickname": ["UserPopoutUsernameSection", "headerBotTagWithNickname"],
 		"userpopoutusernamenickname": ["UserPopoutUsernameSection", "nickname"],
@@ -5415,24 +5418,12 @@
 		}
 	},
 	"BDFDB_Patrons": {
-		"235552235570987013": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "dyllersen (DyWo)"},
-		"226444377482985473": 	{"active": true,	"tier": "t3",	"text": "xoxo",										"color": "",			"id": "seivag (zij)"},
-		"797199624992849960": 	{"active": true,	"tier": "t3",	"text": "",											"color": "",			"id": "blink (AhBo)"},
-		"384941155558752258": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "jack (j.bev)"},
-		"935758254858973224": 	{"active": true,	"tier": "t3",	"text": "",											"color": "",			"id": "SaneVR (rukin)"},
-		"870962330417102919": 	{"active": false,	"tier": "t2",	"text": "",											"color": "",			"id": "gobber (pobge)"},
-		"335997977938100226": 	{"active": true,	"tier": "t3",	"text": "Cloudy Hub Owner",							"color": "",			"id": "Synax (DaBa)"},
-		"558825053668507650": 	{"active": false,	"tier": "t2",	"text": "",											"color": "",			"id": "duh (AshAj)"},
-		"169931777371144192": 	{"active": false,	"tier": "t3",	"text": "",											"color": "",			"id": "DogGodLog (JHa)"},
-		"919272398832959598": 	{"active": false,	"tier": "t2",	"text": "",											"color": "",			"id": "w_da_woo (NosiGosi)"},
-		"622957773080100875": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "ying (KeCa)"},
-		"798499176220327966": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "void (JaUt)"},
 		"276137824460210178": 	{"active": true,	"tier": "t3",	"text": "FFXIV DRK Main for life!",					"color": "#1f0046",		"id": "werewolf (MaMa)"},
-		"824768928369606667": 	{"active": false,	"tier": "t2",	"text": "",											"color": "",			"id": "Kubox (HajJa)"},
 		"507464069100601363": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "Cracky (MiPo)"},
-		"264486632525135883": 	{"active": true,	"tier": "t3",	"text": "Mr. Morale",								"color": "",			"id": "strix (A1C)"},
+		"620397524494057513": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "FUSL"},
+		"798499176220327966": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "void (JaUt)"},
 		"363785301195358221": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "TRENT (KABEL)"},
-		"620397524494057513": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "FUSL"}
+		"264486632525135883": 	{"active": true,	"tier": "t3",	"text": "Mr. Morale",								"color": "",			"id": "strix (A1C)"}
 	},
 	"BDFDB_Patron_Tiers": {
 		"t1": {

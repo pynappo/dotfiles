@@ -41,6 +41,9 @@ local function save_profiles(threshold)
       results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
     end
   end
+  if threshold then
+    table.insert(results, '(Only showing plugins that took longer than ' .. threshold .. ' ms ' .. 'to load)')
+  end
 
   _G._packer.profile_output = results
 end
@@ -198,19 +201,13 @@ _G.packer_plugins = {
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\guess-indent.nvim",
     url = "https://github.com/nmac427/guess-indent.nvim"
   },
-  ["headlines.nvim"] = {
-    config = { "require('headlines').setup()" },
-    loaded = true,
-    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\headlines.nvim",
-    url = "https://github.com/lukas-reineke/headlines.nvim"
-  },
   ["impatient.nvim"] = {
     loaded = true,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\impatient.nvim",
     url = "https://github.com/lewis6991/impatient.nvim"
   },
   ["indent-blankline.nvim"] = {
-    config = { "\27LJ\2\nç\2\0\0\f\0\15\0\0314\0\0\0006\1\0\0005\3\1\0B\1\2\4H\4\16€'\6\2\0\18\a\4\0&\6\a\0066\a\3\0009\a\4\a9\a\5\a)\t\0\0\18\n\6\0005\v\6\0=\5\a\vB\a\4\0016\a\b\0009\a\t\a\18\t\0\0\18\n\6\0B\a\3\1F\4\3\3R\4î\1276\1\n\0'\3\v\0B\1\2\0029\1\f\0015\3\r\0=\0\14\3B\1\2\1K\0\1\0\24char_highlight_list\1\0\2\25space_char_blankline\6 #show_trailing_blankline_indent\1\nsetup\21indent_blankline\frequire\vinsert\ntable\afg\1\0\0\16nvim_set_hl\bapi\bvim\26IndentBlanklineIndent\1\a\0\0\f#662121\f#767621\f#216631\f#325a5e\f#324b7b\f#562155\npairs\0" },
+    config = { "\27LJ\2\nç\2\0\0\f\0\15\0\0314\0\0\0006\1\0\0005\3\1\0B\1\2\4H\4\16€'\6\2\0\18\a\4\0&\6\a\0066\a\3\0009\a\4\a9\a\5\a)\t\0\0\18\n\6\0005\v\6\0=\5\a\vB\a\4\0016\a\b\0009\a\t\a\18\t\0\0\18\n\6\0B\a\3\1F\4\3\3R\4î\1276\1\n\0'\3\v\0B\1\2\0029\1\f\0015\3\r\0=\0\14\3B\1\2\1K\0\1\0\24char_highlight_list\1\0\2#show_trailing_blankline_indent\1\25space_char_blankline\6 \nsetup\21indent_blankline\frequire\vinsert\ntable\afg\1\0\0\16nvim_set_hl\bapi\bvim\26IndentBlanklineIndent\1\a\0\0\f#662121\f#767621\f#216631\f#325a5e\f#324b7b\f#562155\npairs\0" },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -284,11 +281,6 @@ _G.packer_plugins = {
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\neotest",
     url = "https://github.com/nvim-neotest/neotest"
   },
-  ["neotest-rust"] = {
-    loaded = true,
-    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\neotest-rust",
-    url = "https://github.com/rouge8/neotest-rust"
-  },
   ["neovim-ayu"] = {
     config = { "require('pynappo/theme')" },
     loaded = true,
@@ -323,6 +315,12 @@ _G.packer_plugins = {
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
+  ["nvim-colorizer.lua"] = {
+    config = { "require('colorizer').setup()" },
+    loaded = true,
+    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-colorizer.lua",
+    url = "https://github.com/Akianonymus/nvim-colorizer.lua"
+  },
   ["nvim-hlslens"] = {
     config = { "require('pynappo/plugins/hlslens')" },
     loaded = true,
@@ -330,7 +328,7 @@ _G.packer_plugins = {
     url = "https://github.com/kevinhwang91/nvim-hlslens"
   },
   ["nvim-lspconfig"] = {
-    config = { "\27LJ\2\nÍ\1\0\0\4\0\b\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0005\2\5\0005\3\4\0=\3\6\2B\0\2\0016\0\0\0'\2\a\0B\0\2\1K\0\1\0\24pynappo/plugins/lsp\21ensure_installed\1\0\1\27automatic_installation\2\1\3\0\0\16sumneko_lua\18rust_analyzer\20mason-lspconfig\nsetup\nmason\frequire\0" },
+    config = { "\27LJ\2\nµ\1\0\0\4\0\b\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0005\2\5\0005\3\4\0=\3\6\2B\0\2\0016\0\0\0'\2\a\0B\0\2\1K\0\1\0\24pynappo/plugins/lsp\21ensure_installed\1\0\0\1\3\0\0\16sumneko_lua\18rust_analyzer\20mason-lspconfig\nsetup\nmason\frequire\0" },
     loaded = true,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
@@ -411,6 +409,12 @@ _G.packer_plugins = {
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\sqlite.lua",
     url = "https://github.com/tami5/sqlite.lua"
   },
+  ["symbols-outline.nvim"] = {
+    config = { 'require("symbols-outline").setup()' },
+    loaded = true,
+    path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\symbols-outline.nvim",
+    url = "https://github.com/simrat39/symbols-outline.nvim"
+  },
   ["telescope-file-browser.nvim"] = {
     loaded = true,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\telescope-file-browser.nvim",
@@ -448,7 +452,7 @@ _G.packer_plugins = {
     url = "https://github.com/levouh/tint.nvim"
   },
   ["todo-comments.nvim"] = {
-    config = { "\27LJ\2\n?\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\18todo-comments\frequire\0" },
+    config = { 'require("todo-comments").setup({})' },
     loaded = true,
     path = "C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\todo-comments.nvim",
     url = "https://github.com/folke/todo-comments.nvim"
@@ -528,78 +532,38 @@ if not vim.g.packer_custom_loader_enabled then
   vim.g.packer_custom_loader_enabled = true
 end
 
--- Config for: headlines.nvim
-time([[Config for headlines.nvim]], true)
-require('headlines').setup()
-time([[Config for headlines.nvim]], false)
--- Config for: nvim-hlslens
-time([[Config for nvim-hlslens]], true)
-require('pynappo/plugins/hlslens')
-time([[Config for nvim-hlslens]], false)
--- Config for: nvim-autopairs
-time([[Config for nvim-autopairs]], true)
-require('pynappo/plugins/autopairs')
-time([[Config for nvim-autopairs]], false)
--- Config for: guess-indent.nvim
-time([[Config for guess-indent.nvim]], true)
-require('guess-indent').setup{}
-time([[Config for guess-indent.nvim]], false)
 -- Config for: nvim-cmp
 time([[Config for nvim-cmp]], true)
 require('pynappo/plugins/cmp')
 time([[Config for nvim-cmp]], false)
--- Config for: nvim-surround
-time([[Config for nvim-surround]], true)
-require('nvim-surround').setup()
-time([[Config for nvim-surround]], false)
--- Config for: gitsigns.nvim
-time([[Config for gitsigns.nvim]], true)
-try_loadstring("\27LJ\2\nÛ\1\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\0\17changedelete\1\0\1\ttext\bâ–Ž\14topdelete\1\0\1\ttext\bï¤‰\vdelete\1\0\1\ttext\bâ–Ž\vchange\1\0\1\ttext\bâ–Ž\badd\1\0\0\1\0\1\ttext\bâ–Ž\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
-time([[Config for gitsigns.nvim]], false)
+-- Config for: todo-comments.nvim
+time([[Config for todo-comments.nvim]], true)
+require("todo-comments").setup({})
+time([[Config for todo-comments.nvim]], false)
+-- Config for: tint.nvim
+time([[Config for tint.nvim]], true)
+require('tint').setup()
+time([[Config for tint.nvim]], false)
+-- Config for: nvim-colorizer.lua
+time([[Config for nvim-colorizer.lua]], true)
+require('colorizer').setup()
+time([[Config for nvim-colorizer.lua]], false)
+-- Config for: nvim-autopairs
+time([[Config for nvim-autopairs]], true)
+require('pynappo/plugins/autopairs')
+time([[Config for nvim-autopairs]], false)
+-- Config for: nvim-hlslens
+time([[Config for nvim-hlslens]], true)
+require('pynappo/plugins/hlslens')
+time([[Config for nvim-hlslens]], false)
 -- Config for: numb.nvim
 time([[Config for numb.nvim]], true)
 require('numb').setup()
 time([[Config for numb.nvim]], false)
--- Config for: nvim-notify
-time([[Config for nvim-notify]], true)
-try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\0016\0\4\0006\1\0\0'\3\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\1\22background_colour\f#000000\nsetup\vnotify\frequire\0", "config", "nvim-notify")
-time([[Config for nvim-notify]], false)
--- Config for: lualine.nvim
-time([[Config for lualine.nvim]], true)
-require('pynappo/plugins/lualine')
-time([[Config for lualine.nvim]], false)
--- Config for: better-escape.nvim
-time([[Config for better-escape.nvim]], true)
-require('better_escape').setup()
-time([[Config for better-escape.nvim]], false)
--- Config for: alpha-nvim
-time([[Config for alpha-nvim]], true)
-require('alpha').setup(require('alpha.themes.startify').config)
-time([[Config for alpha-nvim]], false)
--- Config for: neovim-ayu
-time([[Config for neovim-ayu]], true)
-require('pynappo/theme')
-time([[Config for neovim-ayu]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\2\nÍ\1\0\0\4\0\b\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0005\2\5\0005\3\4\0=\3\6\2B\0\2\0016\0\0\0'\2\a\0B\0\2\1K\0\1\0\24pynappo/plugins/lsp\21ensure_installed\1\0\1\27automatic_installation\2\1\3\0\0\16sumneko_lua\18rust_analyzer\20mason-lspconfig\nsetup\nmason\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
--- Config for: LuaSnip
-time([[Config for LuaSnip]], true)
-require('luasnip.loaders.from_vscode').lazy_load()
-time([[Config for LuaSnip]], false)
 -- Config for: bufferline.nvim
 time([[Config for bufferline.nvim]], true)
 require('pynappo/plugins/bufferline')
 time([[Config for bufferline.nvim]], false)
--- Config for: leap.nvim
-time([[Config for leap.nvim]], true)
-require('leap').set_default_keymaps()
-time([[Config for leap.nvim]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-require('pynappo/plugins/telescope')
-time([[Config for telescope.nvim]], false)
 -- Config for: which-key.nvim
 time([[Config for which-key.nvim]], true)
 require('which-key').setup {} 
@@ -608,30 +572,74 @@ time([[Config for which-key.nvim]], false)
 time([[Config for nvim-treesitter]], true)
 require('pynappo/plugins/treesitter')
 time([[Config for nvim-treesitter]], false)
--- Config for: Comment.nvim
-time([[Config for Comment.nvim]], true)
-require('Comment').setup()
-time([[Config for Comment.nvim]], false)
--- Config for: neoscroll.nvim
-time([[Config for neoscroll.nvim]], true)
-require('pynappo/plugins/neoscroll')
-time([[Config for neoscroll.nvim]], false)
--- Config for: todo-comments.nvim
-time([[Config for todo-comments.nvim]], true)
-try_loadstring("\27LJ\2\n?\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\18todo-comments\frequire\0", "config", "todo-comments.nvim")
-time([[Config for todo-comments.nvim]], false)
--- Config for: neo-tree.nvim
-time([[Config for neo-tree.nvim]], true)
-vim.g.neo_tree_remove_legacy_commands = 1
-time([[Config for neo-tree.nvim]], false)
+-- Config for: better-escape.nvim
+time([[Config for better-escape.nvim]], true)
+require('better_escape').setup()
+time([[Config for better-escape.nvim]], false)
+-- Config for: neovim-ayu
+time([[Config for neovim-ayu]], true)
+require('pynappo/theme')
+time([[Config for neovim-ayu]], false)
+-- Config for: nvim-notify
+time([[Config for nvim-notify]], true)
+try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\0016\0\4\0006\1\0\0'\3\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\1\22background_colour\f#000000\nsetup\vnotify\frequire\0", "config", "nvim-notify")
+time([[Config for nvim-notify]], false)
+-- Config for: leap.nvim
+time([[Config for leap.nvim]], true)
+require('leap').set_default_keymaps()
+time([[Config for leap.nvim]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+require('pynappo/plugins/telescope')
+time([[Config for telescope.nvim]], false)
 -- Config for: nvim-neoclip.lua
 time([[Config for nvim-neoclip.lua]], true)
 require('neoclip').setup()
 time([[Config for nvim-neoclip.lua]], false)
--- Config for: tint.nvim
-time([[Config for tint.nvim]], true)
-require('tint').setup()
-time([[Config for tint.nvim]], false)
+-- Config for: LuaSnip
+time([[Config for LuaSnip]], true)
+require('luasnip.loaders.from_vscode').lazy_load()
+time([[Config for LuaSnip]], false)
+-- Config for: neoscroll.nvim
+time([[Config for neoscroll.nvim]], true)
+require('pynappo/plugins/neoscroll')
+time([[Config for neoscroll.nvim]], false)
+-- Config for: symbols-outline.nvim
+time([[Config for symbols-outline.nvim]], true)
+require("symbols-outline").setup()
+time([[Config for symbols-outline.nvim]], false)
+-- Config for: nvim-surround
+time([[Config for nvim-surround]], true)
+require('nvim-surround').setup()
+time([[Config for nvim-surround]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\2\nµ\1\0\0\4\0\b\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0005\2\5\0005\3\4\0=\3\6\2B\0\2\0016\0\0\0'\2\a\0B\0\2\1K\0\1\0\24pynappo/plugins/lsp\21ensure_installed\1\0\0\1\3\0\0\16sumneko_lua\18rust_analyzer\20mason-lspconfig\nsetup\nmason\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
+-- Config for: alpha-nvim
+time([[Config for alpha-nvim]], true)
+require('alpha').setup(require('alpha.themes.startify').config)
+time([[Config for alpha-nvim]], false)
+-- Config for: Comment.nvim
+time([[Config for Comment.nvim]], true)
+require('Comment').setup()
+time([[Config for Comment.nvim]], false)
+-- Config for: guess-indent.nvim
+time([[Config for guess-indent.nvim]], true)
+require('guess-indent').setup{}
+time([[Config for guess-indent.nvim]], false)
+-- Config for: lualine.nvim
+time([[Config for lualine.nvim]], true)
+require('pynappo/plugins/lualine')
+time([[Config for lualine.nvim]], false)
+-- Config for: neo-tree.nvim
+time([[Config for neo-tree.nvim]], true)
+vim.g.neo_tree_remove_legacy_commands = 1
+time([[Config for neo-tree.nvim]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\2\nÛ\1\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\0\17changedelete\1\0\1\ttext\bâ–Ž\14topdelete\1\0\1\ttext\bï¤‰\vdelete\1\0\1\ttext\bâ–Ž\vchange\1\0\1\ttext\bâ–Ž\badd\1\0\0\1\0\1\ttext\bâ–Ž\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd telescope-frecency.nvim ]]
@@ -639,9 +647,9 @@ time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MinimapToggle lua require("packer.load")({'minimap.vim'}, { cmd = "MinimapToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TroubleToggle lua require("packer.load")({'trouble.nvim'}, { cmd = "TroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MinimapToggle lua require("packer.load")({'minimap.vim'}, { cmd = "MinimapToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]

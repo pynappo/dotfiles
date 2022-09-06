@@ -4,7 +4,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
   Packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
     install_path })
 end
-
 require('packer').startup({ function(use)
   use 'wbthomason/packer.nvim'
   use { 'tpope/vim-fugitive' }
@@ -12,7 +11,7 @@ require('packer').startup({ function(use)
   use { "catppuccin/nvim", as = "catppuccin" }
   use { 'Shatur/neovim-ayu', config = [[require('pynappo/theme')]] }
   use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
-  use({
+  use ({
     {
       'nvim-telescope/telescope.nvim',
       requires = {
@@ -59,19 +58,19 @@ require('packer').startup({ function(use)
       }
     end
   }
-  use (
+  use ({
     {
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
       config = [[require('pynappo/plugins/treesitter')]]
     },
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    'nvim-telescope/telescope-file-browser.nvim',
-    'p00f/nvim-ts-rainbow',
-    'windwp/nvim-ts-autotag',
-    'nvim-treesitter/nvim-treesitter-context'
-  )
-  use({
+    { 'nvim-treesitter/nvim-treesitter-textobjects' },
+    { 'nvim-telescope/telescope-file-browser.nvim' },
+    { 'p00f/nvim-ts-rainbow' },
+    { 'windwp/nvim-ts-autotag' },
+    { 'nvim-treesitter/nvim-treesitter-context' }
+  })
+  use ({
     {
       'hrsh7th/nvim-cmp',
       config = [[require('pynappo/plugins/cmp')]]
@@ -84,6 +83,14 @@ require('packer').startup({ function(use)
     'hrsh7th/cmp-nvim-lsp-signature-help',
     'onsails/lspkind.nvim',
     'dmitmel/cmp-cmdline-history',
+    {
+      'zbirenbaum/copilot.lua',
+      event = { 'VimEnter' },
+      config = function()
+        vim.defer_fn(function() require('copilot').setup() end, 100)
+      end,
+    },
+    { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp' },
     {
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
@@ -139,21 +146,12 @@ require('packer').startup({ function(use)
   -- }
   use 'andweeb/presence.nvim'
   use 'Djancyp/cheat-sheet'
-  use { 'lukas-reineke/headlines.nvim', config = [[require('headlines').setup()]] }
   use { 'karb94/neoscroll.nvim', config = [[require('pynappo/plugins/neoscroll')]] }
   use 'stevearc/dressing.nvim'
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
   use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
   use { 'glacambre/firenvim', run = [[vim.fn['firenvim#install'](0)]] }
-  use {
-    'zbirenbaum/copilot.lua',
-    event = { 'VimEnter' },
-    config = function()
-      vim.defer_fn(function() require('copilot').setup() end, 100)
-    end,
-  }
-  use { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp' }
   use {
     'akinsho/bufferline.nvim',
     tag = 'v2.*',
@@ -189,11 +187,11 @@ require('packer').startup({ function(use)
     requires = { 'nvim-telescope/telescope.nvim' },
     config = [[require('neoclip').setup()]]
   }
-  use (
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
-    'folke/lua-dev.nvim',
-    'jose-elias-alvarez/null-ls.nvim',
+  use {
+    { 'williamboman/mason.nvim' },
+    { 'williamboman/mason-lspconfig.nvim' },
+    { 'folke/lua-dev.nvim' },
+    { 'jose-elias-alvarez/null-ls.nvim' },
     {
       'neovim/nvim-lspconfig',
       config = function()
@@ -204,7 +202,7 @@ require('packer').startup({ function(use)
         require('pynappo/plugins/lsp')
       end
     }
-  )
+  }
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
   use (
     {
@@ -223,6 +221,7 @@ require('packer').startup({ function(use)
     config = [[require("todo-comments").setup({})]]
   }
   use { 'Akianonymus/nvim-colorizer.lua', config = [[require('colorizer').setup()]] }
+  use { 'simrat39/symbols-outline.nvim', config = [[require("symbols-outline").setup()]] }
 end,
   config = {
     display = {
