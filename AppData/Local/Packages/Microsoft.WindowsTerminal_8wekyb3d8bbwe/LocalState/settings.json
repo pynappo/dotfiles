@@ -4,6 +4,9 @@
     "actions": 
     [
         {
+            "command": "paste"
+        },
+        {
             "command": 
             {
                 "action": "copy",
@@ -11,7 +14,8 @@
             }
         },
         {
-            "command": "paste"
+            "command": "find",
+            "keys": "ctrl+shift+f"
         },
         {
             "command": "unbound",
@@ -20,10 +24,6 @@
         {
             "command": "unbound",
             "keys": "ctrl+v"
-        },
-        {
-            "command": "find",
-            "keys": "ctrl+shift+f"
         },
         {
             "command": 
@@ -99,6 +99,24 @@
                 "hidden": false,
                 "icon": "https://www.nushell.sh/icon.png",
                 "name": "Nu Shell"
+            },
+            {
+                "guid": "{549ad03b-ecd6-52ee-b3aa-df32232ef8df}",
+                "hidden": false,
+                "name": "Developer Command Prompt for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{aed99821-d586-5e5b-8f42-7b067826be6d}",
+                "hidden": false,
+                "name": "Developer PowerShell for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{aab79973-318f-43b6-a9bc-b4096493753f}",
+                "hidden": false,
+                "name": "Nushell",
+                "source": "nu"
             }
         ]
     },

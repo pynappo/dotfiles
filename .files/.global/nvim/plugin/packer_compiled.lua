@@ -532,114 +532,114 @@ if not vim.g.packer_custom_loader_enabled then
   vim.g.packer_custom_loader_enabled = true
 end
 
--- Config for: nvim-cmp
-time([[Config for nvim-cmp]], true)
-require('pynappo/plugins/cmp')
-time([[Config for nvim-cmp]], false)
--- Config for: todo-comments.nvim
-time([[Config for todo-comments.nvim]], true)
-require("todo-comments").setup({})
-time([[Config for todo-comments.nvim]], false)
--- Config for: tint.nvim
-time([[Config for tint.nvim]], true)
-require('tint').setup()
-time([[Config for tint.nvim]], false)
--- Config for: nvim-colorizer.lua
-time([[Config for nvim-colorizer.lua]], true)
-require('colorizer').setup()
-time([[Config for nvim-colorizer.lua]], false)
--- Config for: nvim-autopairs
-time([[Config for nvim-autopairs]], true)
-require('pynappo/plugins/autopairs')
-time([[Config for nvim-autopairs]], false)
--- Config for: nvim-hlslens
-time([[Config for nvim-hlslens]], true)
-require('pynappo/plugins/hlslens')
-time([[Config for nvim-hlslens]], false)
--- Config for: numb.nvim
-time([[Config for numb.nvim]], true)
-require('numb').setup()
-time([[Config for numb.nvim]], false)
--- Config for: bufferline.nvim
-time([[Config for bufferline.nvim]], true)
-require('pynappo/plugins/bufferline')
-time([[Config for bufferline.nvim]], false)
--- Config for: which-key.nvim
-time([[Config for which-key.nvim]], true)
-require('which-key').setup {} 
-time([[Config for which-key.nvim]], false)
--- Config for: nvim-treesitter
-time([[Config for nvim-treesitter]], true)
-require('pynappo/plugins/treesitter')
-time([[Config for nvim-treesitter]], false)
 -- Config for: better-escape.nvim
 time([[Config for better-escape.nvim]], true)
 require('better_escape').setup()
 time([[Config for better-escape.nvim]], false)
--- Config for: neovim-ayu
-time([[Config for neovim-ayu]], true)
-require('pynappo/theme')
-time([[Config for neovim-ayu]], false)
--- Config for: nvim-notify
-time([[Config for nvim-notify]], true)
-try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\0016\0\4\0006\1\0\0'\3\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\1\22background_colour\f#000000\nsetup\vnotify\frequire\0", "config", "nvim-notify")
-time([[Config for nvim-notify]], false)
--- Config for: leap.nvim
-time([[Config for leap.nvim]], true)
-require('leap').set_default_keymaps()
-time([[Config for leap.nvim]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-require('pynappo/plugins/telescope')
-time([[Config for telescope.nvim]], false)
--- Config for: nvim-neoclip.lua
-time([[Config for nvim-neoclip.lua]], true)
-require('neoclip').setup()
-time([[Config for nvim-neoclip.lua]], false)
--- Config for: LuaSnip
-time([[Config for LuaSnip]], true)
-require('luasnip.loaders.from_vscode').lazy_load()
-time([[Config for LuaSnip]], false)
--- Config for: neoscroll.nvim
-time([[Config for neoscroll.nvim]], true)
-require('pynappo/plugins/neoscroll')
-time([[Config for neoscroll.nvim]], false)
--- Config for: symbols-outline.nvim
-time([[Config for symbols-outline.nvim]], true)
-require("symbols-outline").setup()
-time([[Config for symbols-outline.nvim]], false)
--- Config for: nvim-surround
-time([[Config for nvim-surround]], true)
-require('nvim-surround').setup()
-time([[Config for nvim-surround]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\2\nµ\1\0\0\4\0\b\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0005\2\5\0005\3\4\0=\3\6\2B\0\2\0016\0\0\0'\2\a\0B\0\2\1K\0\1\0\24pynappo/plugins/lsp\21ensure_installed\1\0\0\1\3\0\0\16sumneko_lua\18rust_analyzer\20mason-lspconfig\nsetup\nmason\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
+-- Config for: nvim-autopairs
+time([[Config for nvim-autopairs]], true)
+require('pynappo/plugins/autopairs')
+time([[Config for nvim-autopairs]], false)
+-- Config for: numb.nvim
+time([[Config for numb.nvim]], true)
+require('numb').setup()
+time([[Config for numb.nvim]], false)
 -- Config for: alpha-nvim
 time([[Config for alpha-nvim]], true)
 require('alpha').setup(require('alpha.themes.startify').config)
 time([[Config for alpha-nvim]], false)
--- Config for: Comment.nvim
-time([[Config for Comment.nvim]], true)
-require('Comment').setup()
-time([[Config for Comment.nvim]], false)
--- Config for: guess-indent.nvim
-time([[Config for guess-indent.nvim]], true)
-require('guess-indent').setup{}
-time([[Config for guess-indent.nvim]], false)
--- Config for: lualine.nvim
-time([[Config for lualine.nvim]], true)
-require('pynappo/plugins/lualine')
-time([[Config for lualine.nvim]], false)
 -- Config for: neo-tree.nvim
 time([[Config for neo-tree.nvim]], true)
 vim.g.neo_tree_remove_legacy_commands = 1
 time([[Config for neo-tree.nvim]], false)
+-- Config for: LuaSnip
+time([[Config for LuaSnip]], true)
+require('luasnip.loaders.from_vscode').lazy_load()
+time([[Config for LuaSnip]], false)
 -- Config for: gitsigns.nvim
 time([[Config for gitsigns.nvim]], true)
 try_loadstring("\27LJ\2\nÛ\1\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\0\17changedelete\1\0\1\ttext\bâ–Ž\14topdelete\1\0\1\ttext\bï¤‰\vdelete\1\0\1\ttext\bâ–Ž\vchange\1\0\1\ttext\bâ–Ž\badd\1\0\0\1\0\1\ttext\bâ–Ž\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
 time([[Config for gitsigns.nvim]], false)
+-- Config for: Comment.nvim
+time([[Config for Comment.nvim]], true)
+require('Comment').setup()
+time([[Config for Comment.nvim]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+require('pynappo/plugins/telescope')
+time([[Config for telescope.nvim]], false)
+-- Config for: tint.nvim
+time([[Config for tint.nvim]], true)
+require('tint').setup()
+time([[Config for tint.nvim]], false)
+-- Config for: nvim-neoclip.lua
+time([[Config for nvim-neoclip.lua]], true)
+require('neoclip').setup()
+time([[Config for nvim-neoclip.lua]], false)
+-- Config for: nvim-colorizer.lua
+time([[Config for nvim-colorizer.lua]], true)
+require('colorizer').setup()
+time([[Config for nvim-colorizer.lua]], false)
+-- Config for: lualine.nvim
+time([[Config for lualine.nvim]], true)
+require('pynappo/plugins/lualine')
+time([[Config for lualine.nvim]], false)
+-- Config for: guess-indent.nvim
+time([[Config for guess-indent.nvim]], true)
+require('guess-indent').setup{}
+time([[Config for guess-indent.nvim]], false)
+-- Config for: symbols-outline.nvim
+time([[Config for symbols-outline.nvim]], true)
+require("symbols-outline").setup()
+time([[Config for symbols-outline.nvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\2\nµ\1\0\0\4\0\b\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0005\2\5\0005\3\4\0=\3\6\2B\0\2\0016\0\0\0'\2\a\0B\0\2\1K\0\1\0\24pynappo/plugins/lsp\21ensure_installed\1\0\0\1\3\0\0\16sumneko_lua\18rust_analyzer\20mason-lspconfig\nsetup\nmason\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
+-- Config for: nvim-cmp
+time([[Config for nvim-cmp]], true)
+require('pynappo/plugins/cmp')
+time([[Config for nvim-cmp]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+require('pynappo/plugins/treesitter')
+time([[Config for nvim-treesitter]], false)
+-- Config for: nvim-hlslens
+time([[Config for nvim-hlslens]], true)
+require('pynappo/plugins/hlslens')
+time([[Config for nvim-hlslens]], false)
+-- Config for: neovim-ayu
+time([[Config for neovim-ayu]], true)
+require('pynappo/theme')
+time([[Config for neovim-ayu]], false)
+-- Config for: todo-comments.nvim
+time([[Config for todo-comments.nvim]], true)
+require("todo-comments").setup({})
+time([[Config for todo-comments.nvim]], false)
+-- Config for: leap.nvim
+time([[Config for leap.nvim]], true)
+require('leap').set_default_keymaps()
+time([[Config for leap.nvim]], false)
+-- Config for: which-key.nvim
+time([[Config for which-key.nvim]], true)
+require('which-key').setup {} 
+time([[Config for which-key.nvim]], false)
+-- Config for: nvim-notify
+time([[Config for nvim-notify]], true)
+try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\0016\0\4\0006\1\0\0'\3\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\1\22background_colour\f#000000\nsetup\vnotify\frequire\0", "config", "nvim-notify")
+time([[Config for nvim-notify]], false)
+-- Config for: bufferline.nvim
+time([[Config for bufferline.nvim]], true)
+require('pynappo/plugins/bufferline')
+time([[Config for bufferline.nvim]], false)
+-- Config for: neoscroll.nvim
+time([[Config for neoscroll.nvim]], true)
+require('pynappo/plugins/neoscroll')
+time([[Config for neoscroll.nvim]], false)
+-- Config for: nvim-surround
+time([[Config for nvim-surround]], true)
+require('nvim-surround').setup()
+time([[Config for nvim-surround]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd telescope-frecency.nvim ]]
@@ -647,9 +647,9 @@ time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MinimapToggle lua require("packer.load")({'minimap.vim'}, { cmd = "MinimapToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TroubleToggle lua require("packer.load")({'trouble.nvim'}, { cmd = "TroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MinimapToggle lua require("packer.load")({'minimap.vim'}, { cmd = "MinimapToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]
@@ -660,8 +660,8 @@ vim.cmd [[au FileType norg ++once lua require("packer.load")({'neorg'}, { ft = "
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
+vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'copilot.lua'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
 vim.cmd [[au BufEnter * ++once lua require("packer.load")({'indent-blankline.nvim'}, { event = "BufEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au VimEnter * ++once lua require("packer.load")({'copilot.lua'}, { event = "VimEnter *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]

@@ -83,12 +83,11 @@ require('packer').startup({ function(use)
     'hrsh7th/cmp-nvim-lsp-signature-help',
     'onsails/lspkind.nvim',
     'dmitmel/cmp-cmdline-history',
+    -- 'github/copilot.vim',
     {
       'zbirenbaum/copilot.lua',
-      event = { 'VimEnter' },
-      config = function()
-        vim.defer_fn(function() require('copilot').setup() end, 100)
-      end,
+      event = 'InsertEnter',
+      config = [[require('copilot').setup()]]
     },
     { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp' },
     {
@@ -139,11 +138,6 @@ require('packer').startup({ function(use)
     config = [[require('trouble').setup{}]],
     cmd = 'TroubleToggle'
   }
-  -- use {
-  --   'RRethy/vim-hexokinase',
-  --   config = function() vim.g.Hexokinase_highlighters = 'foreground' end,
-  --   run = 'cd '.. fn.stdpath('data') .. [[\site\pack\packer\start\vim-hexokinase\ && make hexokinase]]
-  -- }
   use 'andweeb/presence.nvim'
   use 'Djancyp/cheat-sheet'
   use { 'karb94/neoscroll.nvim', config = [[require('pynappo/plugins/neoscroll')]] }
@@ -187,7 +181,7 @@ require('packer').startup({ function(use)
     requires = { 'nvim-telescope/telescope.nvim' },
     config = [[require('neoclip').setup()]]
   }
-  use {
+  use ({
     { 'williamboman/mason.nvim' },
     { 'williamboman/mason-lspconfig.nvim' },
     { 'folke/lua-dev.nvim' },
@@ -196,15 +190,12 @@ require('packer').startup({ function(use)
       'neovim/nvim-lspconfig',
       config = function()
         require('mason').setup()
-        require('mason-lspconfig').setup({
-          ensure_installed = { "sumneko_lua", "rust_analyzer" },
-        })
         require('pynappo/plugins/lsp')
       end
     }
-  }
+  })
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
-  use (
+  use ({
     {
       "nvim-neotest/neotest",
       requires = {
@@ -214,7 +205,7 @@ require('packer').startup({ function(use)
       },
     },
     'rouge8/neotest-rust'
-  )
+  })
   use {
     "folke/todo-comments.nvim",
     requires = "nvim-lua/plenary.nvim",

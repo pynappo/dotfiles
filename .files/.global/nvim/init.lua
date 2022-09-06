@@ -1,8 +1,8 @@
 local modules = {
   "impatient",
-  "pynappo/theme",
   "pynappo/plugins",
   "pynappo/keymaps",
+  "pynappo/theme",
   "pynappo/autocmd",
   "pynappo/commands"
 }

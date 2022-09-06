@@ -1,3 +1,6 @@
+require('mason-lspconfig').setup({
+  ensure_installed = { "sumneko_lua", "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer" },
+})
 local navic = require("nvim-navic")
 local lspconfig = require('lspconfig')
 local map = vim.api.nvim_set_keymap
