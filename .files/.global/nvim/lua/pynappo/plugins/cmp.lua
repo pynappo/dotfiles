@@ -26,7 +26,7 @@ cmp.setup {
         luasnip = "[Snip]",
         copilot = "[GHub]"
       })
-    }) 
+    })
   },
   snippet = {
     expand = function(args)
@@ -49,7 +49,7 @@ cmp.setup {
       else
         fallback()
       end
-    end, { "i", "s" }),
+    end, { "i", "s", 'c' }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -58,7 +58,7 @@ cmp.setup {
       else
         fallback()
       end
-    end, { "i", "s" }),
+    end, { "i", "s", 'c' }),
   }),
   sources = {
     { name = "nvim_lsp" },
