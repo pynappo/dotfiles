@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-09-06T00:36:28.694-00:00",
+	"CreationDate" : "2022-09-07T23:08:31.476-00:00",
 	"Sources" : 
 	[
 		{
@@ -52,9 +52,6 @@
 					"PackageIdentifier" : "Audacity.Audacity"
 				},
 				{
-					"PackageIdentifier" : "CPUID.CPU-Z"
-				},
-				{
 					"PackageIdentifier" : "CrystalDewWorld.CrystalDiskMark"
 				},
 				{
@@ -76,22 +73,10 @@
 					"PackageIdentifier" : "HandBrake.HandBrake"
 				},
 				{
-					"PackageIdentifier" : "HearthSim.HearthstoneDeckTracker"
-				},
-				{
-					"PackageIdentifier" : "JetBrains.IntelliJIDEA.Ultimate"
-				},
-				{
 					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
-					"PackageIdentifier" : "KiCad.KiCad"
-				},
-				{
 					"PackageIdentifier" : "Resplendence.LatencyMon"
-				},
-				{
-					"PackageIdentifier" : "MKVToolNix.MKVToolNix"
 				},
 				{
 					"PackageIdentifier" : "rcmaehl.MSEdgeRedirect"
@@ -250,9 +235,6 @@
 					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
-					"PackageIdentifier" : "TechPowerUp.GPU-Z"
-				},
-				{
 					"PackageIdentifier" : "Inkscape.Inkscape"
 				},
 				{
@@ -272,9 +254,6 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x86"
-				},
-				{
-					"PackageIdentifier" : "RevoUninstaller.RevoUninstaller"
 				},
 				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
@@ -305,9 +284,6 @@
 				},
 				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "msys2.msys2"

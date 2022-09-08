@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 2.5.8
+ * @version 2.5.9
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -470,57 +470,37 @@ module.exports = (_ => {
 					}
 			};
 			BDFDB.BDUtils.isPluginEnabled = function (pluginName) {
-				if (!BdApi) return null;
-				else if (BdApi.Plugins && typeof BdApi.Plugins.isEnabled == "function") return BdApi.Plugins.isEnabled(pluginName);
-				else if (typeof BdApi.isPluginEnabled == "function") return BdApi.isPluginEnabled(pluginName);
+				if (BdApi && BdApi.Plugins && typeof BdApi.Plugins.isEnabled == "function") return BdApi.Plugins.isEnabled(pluginName);
 			};
 			BDFDB.BDUtils.reloadPlugin = function (pluginName) {
-				if (!BdApi) return;
-				else if (BdApi.Plugins && typeof BdApi.Plugins.reload == "function") BdApi.Plugins.reload(pluginName);
-				else if (window.pluginModule) window.pluginModule.reloadPlugin(pluginName);
+				if (BdApi && BdApi.Plugins && typeof BdApi.Plugins.reload == "function") BdApi.Plugins.reload(pluginName);
 			};
 			BDFDB.BDUtils.enablePlugin = function (pluginName) {
-				if (!BdApi) return;
-				else if (BdApi.Plugins && typeof BdApi.Plugins.enable == "function") BdApi.Plugins.enable(pluginName);
-				else if (window.pluginModule) window.pluginModule.startPlugin(pluginName);
+				if (BdApi && BdApi.Plugins && typeof BdApi.Plugins.enable == "function") BdApi.Plugins.enable(pluginName);
 			};
 			BDFDB.BDUtils.disablePlugin = function (pluginName) {
-				if (!BdApi) return;
-				else if (BdApi.Plugins && typeof BdApi.Plugins.disable == "function") BdApi.Plugins.disable(pluginName);
-				else if (window.pluginModule) window.pluginModule.stopPlugin(pluginName);
+				if (BdApi && BdApi.Plugins && typeof BdApi.Plugins.disable == "function") BdApi.Plugins.disable(pluginName);
 			};
 			BDFDB.BDUtils.getPlugin = function (pluginName, hasToBeEnabled = false, overHead = false) {
-				if (BdApi && !hasToBeEnabled || BDFDB.BDUtils.isPluginEnabled(pluginName)) {	
-					if (BdApi.Plugins && typeof BdApi.Plugins.get == "function") {
-						let plugin = BdApi.Plugins.get(pluginName);
-						if (!plugin) return null;
-						if (overHead) return plugin.filename && plugin.exports && plugin.instance ? plugin : {filename: Internal.LibraryRequires.fs.existsSync(Internal.LibraryRequires.path.join(BDFDB.BDUtils.getPluginsFolder(), `${pluginName}.plugin.js`)) ? `${pluginName}.plugin.js` : null, id: pluginName, name: pluginName, plugin: plugin};
-						else return plugin.filename && plugin.exports && plugin.instance ? plugin.instance : plugin;
-					}
-					else if (window.bdplugins) overHead ? window.bdplugins[pluginName] : (window.bdplugins[pluginName] || {}).plugin;
+				if (BdApi && !hasToBeEnabled || BDFDB.BDUtils.isPluginEnabled(pluginName) && BdApi.Plugins && typeof BdApi.Plugins.get == "function") {
+					let plugin = BdApi.Plugins.get(pluginName);
+					if (!plugin) return null;
+					if (overHead) return plugin.filename && plugin.exports && plugin.instance ? plugin : {filename: Internal.LibraryRequires.fs.existsSync(Internal.LibraryRequires.path.join(BDFDB.BDUtils.getPluginsFolder(), `${pluginName}.plugin.js`)) ? `${pluginName}.plugin.js` : null, id: pluginName, name: pluginName, plugin: plugin};
+					else return plugin.filename && plugin.exports && plugin.instance ? plugin.instance : plugin;
 				}
 				return null;
 			};
 			BDFDB.BDUtils.isThemeEnabled = function (themeName) {
-				if (!BdApi) return null;
-				else if (BdApi.Themes && typeof BdApi.Themes.isEnabled == "function") return BdApi.Themes.isEnabled(themeName);
-				else if (typeof BdApi.isThemeEnabled == "function") return BdApi.isThemeEnabled(themeName);
+				if (BdApi && BdApi.Themes && typeof BdApi.Themes.isEnabled == "function") return BdApi.Themes.isEnabled(themeName);
 			};
 			BDFDB.BDUtils.enableTheme = function (themeName) {
-				if (!BdApi) return;
-				else if (BdApi.Themes && typeof BdApi.Themes.enable == "function") BdApi.Themes.enable(themeName);
-				else if (window.themeModule) window.themeModule.enableTheme(themeName);
+				if (BdApi && BdApi.Themes && typeof BdApi.Themes.enable == "function") BdApi.Themes.enable(themeName);
 			};
 			BDFDB.BDUtils.disableTheme = function (themeName) {
-				if (!BdApi) return;
-				else if (BdApi.Themes && typeof BdApi.Themes.disable == "function") BdApi.Themes.disable(themeName);
-				else if (window.themeModule) window.themeModule.disableTheme(themeName);
+				if (BdApi && BdApi.Themes && typeof BdApi.Themes.disable == "function") BdApi.Themes.disable(themeName);
 			};
 			BDFDB.BDUtils.getTheme = function (themeName, hasToBeEnabled = false) {
-				if (BdApi && !hasToBeEnabled || BDFDB.BDUtils.isThemeEnabled(themeName)) {
-					if (BdApi.Themes && typeof BdApi.Themes.get == "function") return BdApi.Themes.get(themeName);
-					else if (window.bdthemes) window.bdthemes[themeName];
-				}
+				if (BdApi && !hasToBeEnabled || BDFDB.BDUtils.isThemeEnabled(themeName) && BdApi.Themes && typeof BdApi.Themes.get == "function") return BdApi.Themes.get(themeName);
 				return null;
 			};
 			BDFDB.BDUtils.settingsIds = {
@@ -569,7 +549,7 @@ module.exports = (_ => {
 					
 					BDFDB.PluginUtils.checkUpdate(plugin.name, url);
 					
-					if (plugin.changeLog && typeof plugin.getSettingsPanel != "function") plugin.getSettingsPanel = _ => BDFDB.PluginUtils.createSettingsPanel(plugin, {
+					if (plugin.changeLog && !BDFDB.ObjectUtils.isEmpty(plugin.changeLog) && typeof plugin.getSettingsPanel != "function") plugin.getSettingsPanel = _ => BDFDB.PluginUtils.createSettingsPanel(plugin, {
 						children: BDFDB.ReactUtils.createElement(Internal.LibraryComponents.MessagesPopoutComponents.EmptyStateBottom, {
 							msg: "No Settings available for this Plugin",
 							image: BDFDB.DiscordUtils.getTheme() == BDFDB.disCN.themelight ? "/assets/9b0d90147f7fab54f00dd193fe7f85cd.svg" : "/assets/308e587f3a68412f137f7317206e92c2.svg"
@@ -675,15 +655,7 @@ module.exports = (_ => {
 						let newName = (body.match(/"name"\s*:\s*"([^"]+)"/) || [])[1] || pluginName;
 						let newVersion = (body.match(/@version ([0-9]+\.[0-9]+\.[0-9]+)|['"]([0-9]+\.[0-9]+\.[0-9]+)['"]/i) || []).filter(n => n)[1];
 						if (!newVersion) return callback(null);
-						if (pluginName == newName && BDFDB.NumberUtils.getVersionDifference(newVersion, PluginStores.updateData.plugins[url].version) > 0.2) {
-							BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStringsFormat("toast_plugin_force_updated", pluginName), {
-								type: "warning",
-								disableInteractions: true
-							});
-							BDFDB.PluginUtils.downloadUpdate(pluginName, url);
-							return callback(2);
-						}
-						else if (BDFDB.NumberUtils.compareVersions(newVersion, PluginStores.updateData.plugins[url].version)) {
+						if (BDFDB.NumberUtils.compareVersions(newVersion, PluginStores.updateData.plugins[url].version)) {
 							if (PluginStores.updateData.plugins[url]) PluginStores.updateData.plugins[url].outdated = true;
 							BDFDB.PluginUtils.showUpdateNotice(pluginName, url);
 							return callback(1);
@@ -1204,14 +1176,14 @@ module.exports = (_ => {
 					else return "";
 				};
 				
-				Internal.findModule = function (type, cacheString, filter, useExport, noWarnings = false) {
+				Internal.findModule = function (type, cacheString, filter, defaultExport, noWarnings = false) {
 					if (!BDFDB.ObjectUtils.is(Cache.modules[type])) Cache.modules[type] = {module: {}, export: {}};
-					if (useExport && Cache.modules[type].export[cacheString]) return Cache.modules[type].export[cacheString];
-					else if (!useExport && Cache.modules[type].module[cacheString]) return Cache.modules[type].module[cacheString];
+					if (defaultExport && Cache.modules[type].export[cacheString]) return Cache.modules[type].export[cacheString];
+					else if (!defaultExport && Cache.modules[type].module[cacheString]) return Cache.modules[type].module[cacheString];
 					else {
-						let m = BDFDB.ModuleUtils.find(filter, {useExport: useExport});
+						let m = BDFDB.ModuleUtils.find(filter, {defaultExport: defaultExport});
 						if (m) {
-							if (useExport) Cache.modules[type].export[cacheString] = m;
+							if (defaultExport) Cache.modules[type].export[cacheString] = m;
 							else Cache.modules[type].module[cacheString] = m;
 							return m;
 						}
@@ -1225,7 +1197,7 @@ module.exports = (_ => {
 				};
 				
 				Internal.getModuleString = function (module) {
-					const id = (BDFDB.ModuleUtils.find(m => m == module && m, {useExport: false}) || {}).id;
+					const id = (BDFDB.ModuleUtils.find(m => m == module && m, {defaultExport: false}) || {}).id;
 					if (!id) return "";
 					const req = Internal.getWebModuleReq();
 					return (req.m[id] || "").toString();
@@ -1259,7 +1231,7 @@ module.exports = (_ => {
 				
 				BDFDB.ModuleUtils = {};
 				BDFDB.ModuleUtils.find = function (filter, config = {}) {
-					let useExport = typeof config.useExport != "boolean" ? true : config.useExport;
+					let defaultExport = typeof config.defaultExport != "boolean" ? true : config.defaultExport;
 					let onlySearchUnloaded = typeof config.onlySearchUnloaded != "boolean" ? false : config.onlySearchUnloaded;
 					let all = typeof config.all != "boolean" ? false : config.all;
 					const req = Internal.getWebModuleReq();
@@ -1267,17 +1239,17 @@ module.exports = (_ => {
 					if (!onlySearchUnloaded) for (let i in req.c) if (req.c.hasOwnProperty(i)) {
 						let m = req.c[i].exports, r = null;
 						if (m && (typeof m == "object" || typeof m == "function") && !!(r = filter(m))) {
-							if (all) found.push(useExport ? r : req.c[i]);
-							else return useExport ? r : req.c[i];
+							if (all) found.push(defaultExport ? r : req.c[i]);
+							else return defaultExport ? r : req.c[i];
 						}
 						if (m && m.__esModule && m.default && (typeof m.default == "object" || typeof m.default == "function")) {
 							if (!!(r = filter(m.default))) {
-								if (all) found.push(useExport ? r : req.c[i]);
-								else return useExport ? r : req.c[i];
+								if (all) found.push(defaultExport ? r : req.c[i]);
+								else return defaultExport ? r : req.c[i];
 							}
 							else if (m.default.type && (typeof m.default.type == "object" || typeof m.default.type == "function") && !!(r = filter(m.default.type))) {
-								if (all) found.push(useExport ? r : req.c[i]);
-								else return useExport ? r : req.c[i];
+								if (all) found.push(defaultExport ? r : req.c[i]);
+								else return defaultExport ? r : req.c[i];
 							}
 						}
 					}
@@ -1285,15 +1257,15 @@ module.exports = (_ => {
 						let m = req.m[i];
 						if (m && typeof m == "function") {
 							if (req.c[i] && !onlySearchUnloaded && filter(m)) {
-								if (all) found.push(useExport ? req.c[i].exports : req.c[i]);
-								else return useExport ? req.c[i].exports : req.c[i];
+								if (all) found.push(defaultExport ? req.c[i].exports : req.c[i]);
+								else return defaultExport ? req.c[i].exports : req.c[i];
 							}
 							if (!req.c[i] && onlySearchUnloaded && filter(m)) {
 								const resolved = {}, resolved2 = {};
 								m(resolved, resolved2, req);
 								const trueResolved = resolved2 && BDFDB.ObjectUtils.isEmpty(resolved2) ? resolved : resolved2;
-								if (all) found.push(useExport ? trueResolved.exports : trueResolved);
-								else return useExport ? trueResolved.exports : trueResolved;
+								if (all) found.push(defaultExport ? trueResolved.exports : trueResolved);
+								else return defaultExport ? trueResolved.exports : trueResolved;
 							}
 						}
 					}
@@ -1303,64 +1275,64 @@ module.exports = (_ => {
 					properties = properties.flat(10);
 					let arg2 = properties.pop();
 					let arg1 = properties.pop();
-					let useExport = true, noWarnings = false;
+					let defaultExport = true, noWarnings = false;
 					if (typeof arg2 != "boolean") properties.push(...[arg1, arg2].filter(n => n));
 					else {
 						if (typeof arg1 != "boolean") {
 							if (arg1) properties.push(arg1);
-							useExport = arg2;
+							defaultExport = arg2;
 						}
 						else {
-							useExport = arg1;
+							defaultExport = arg1;
 							noWarnings = arg2;
 						}
 					}
 					return Internal.findModule("prop", JSON.stringify(properties), m => properties.every(prop => {
 						const value = m[prop];
 						return value !== undefined && !(typeof value == "string" && !value);
-					}) && m, useExport, noWarnings);
+					}) && m, defaultExport, noWarnings);
 				};
-				BDFDB.ModuleUtils.findByName = function (name, useExport, noWarnings = false) {
-					return Internal.findModule("name", JSON.stringify(name), m => m.displayName === name && m || m.render && m.render.displayName === name && m || m.constructor && m.constructor.displayName === name && m || m[name] && m[name].displayName === name && m[name], typeof useExport != "boolean" ? true : useExport, noWarnings);
+				BDFDB.ModuleUtils.findByName = function (name, defaultExport, noWarnings = false) {
+					return Internal.findModule("name", JSON.stringify(name), m => m.displayName === name && m || m.render && m.render.displayName === name && m || m.constructor && m.constructor.displayName === name && m || m[name] && m[name].displayName === name && m[name] || typeof m.getName == "function" && m.getName() == name && m, typeof defaultExport != "boolean" ? true : defaultExport, noWarnings);
 				};
 				BDFDB.ModuleUtils.findByString = function (...strings) {
 					strings = strings.flat(10);
 					let arg2 = strings.pop();
 					let arg1 = strings.pop();
-					let useExport = true, noWarnings = false;
+					let defaultExport = true, noWarnings = false;
 					if (typeof arg2 != "boolean") strings.push(...[arg1, arg2].filter(n => n));
 					else {
 						if (typeof arg1 != "boolean") {
 							if (arg1) strings.push(arg1);
-							useExport = arg2;
+							defaultExport = arg2;
 						}
 						else {
-							useExport = arg1;
+							defaultExport = arg1;
 							noWarnings = arg2;
 						}
 					}
-					return Internal.findModule("string", JSON.stringify(strings), m => Internal.hasModuleStrings(m, strings) && m, useExport, noWarnings);
+					return Internal.findModule("string", JSON.stringify(strings), m => Internal.hasModuleStrings(m, strings) && m, defaultExport, noWarnings);
 				};
 				BDFDB.ModuleUtils.findByPrototypes = function (...protoProps) {
 					protoProps = protoProps.flat(10);
 					let arg2 = protoProps.pop();
 					let arg1 = protoProps.pop();
-					let useExport = true, noWarnings = false;
+					let defaultExport = true, noWarnings = false;
 					if (typeof arg2 != "boolean") protoProps.push(...[arg1, arg2].filter(n => n));
 					else {
 						if (typeof arg1 != "boolean") {
 							if (arg1) protoProps.push(arg1);
-							useExport = arg2;
+							defaultExport = arg2;
 						}
 						else {
-							useExport = arg1;
+							defaultExport = arg1;
 							noWarnings = arg2;
 						}
 					}
 					return Internal.findModule("proto", JSON.stringify(protoProps), m => m.prototype && protoProps.every(prop => {
 						const value = m.prototype[prop];
 						return value !== undefined && !(typeof value == "string" && !value);
-					}) && m, useExport, noWarnings);
+					}) && m, defaultExport, noWarnings);
 				};
 				BDFDB.ModuleUtils.findStringObject = function (props, config = {}) {
 					return BDFDB.ModuleUtils.find(m => {
@@ -2231,7 +2203,7 @@ module.exports = (_ => {
 						config.name = config.subComponent && config.subComponent.name || config.mappedType.split(" _ _ ")[0];
 						
 						let component = InternalData.ModuleUtilsConfig.LoadedInComponents[type] && BDFDB.ObjectUtils.get(Internal, InternalData.ModuleUtilsConfig.LoadedInComponents[type]);
-						if (component) Internal.patchComponent(pluginData, config.nonRender ? (BDFDB.ModuleUtils.find(m => m == component && m, {useExport: config.exported}) || {}).exports : component, config);
+						if (component) Internal.patchComponent(pluginData, config.nonRender ? (BDFDB.ModuleUtils.find(m => m == component && m, {defaultExport: config.exported}) || {}).exports : component, config);
 						else {
 							if (config.mapped) for (let patchType in plugin.patchedModules) if (plugin.patchedModules[patchType][type]) {
 								plugin.patchedModules[patchType][config.mappedType] = plugin.patchedModules[patchType][type];
@@ -2315,7 +2287,7 @@ module.exports = (_ => {
 						let component = config.specialFilter(ins);
 						if (component) {
 							if (config.nonRender) {
-								let exports = (BDFDB.ModuleUtils.find(m => m == component && m, {useExport: false}) || {}).exports;
+								let exports = (BDFDB.ModuleUtils.find(m => m == component && m, {defaultExport: false}) || {}).exports;
 								Internal.patchComponent(pluginDataObjs, Internal.isMemoOrForwardRef(exports) ? exports.default : exports, config);
 							}
 							else Internal.patchComponent(pluginDataObjs, component, config);
@@ -2571,8 +2543,10 @@ module.exports = (_ => {
 					get: function (_, item) {
 						if (DiscordObjects[item]) return DiscordObjects[item];
 						if (!InternalData.DiscordObjects[item]) return (function () {});
-						if (InternalData.DiscordObjects[item].props) DiscordObjects[item] = BDFDB.ModuleUtils.findByPrototypes(InternalData.DiscordObjects[item].props);
-						else if (InternalData.DiscordObjects[item].strings) DiscordObjects[item] = BDFDB.ModuleUtils.findByString(InternalData.DiscordObjects[item].strings);
+						let defaultExport = InternalData.DiscordObjects[item].exported == undefined ? true : InternalData.DiscordObjects[item].exported;
+						if (InternalData.DiscordObjects[item].name) DiscordObjects[item] = BDFDB.ModuleUtils.findByName(InternalData.DiscordObjects[item].name, defaultExport);
+						else if (InternalData.DiscordObjects[item].props) DiscordObjects[item] = BDFDB.ModuleUtils.findByPrototypes(InternalData.DiscordObjects[item].props, defaultExport);
+						else if (InternalData.DiscordObjects[item].strings) DiscordObjects[item] = BDFDB.ModuleUtils.findByString(InternalData.DiscordObjects[item].strings, defaultExport);
 						if (InternalData.DiscordObjects[item].value) DiscordObjects[item] = (DiscordObjects[item] || {})[InternalData.DiscordObjects[item].value];
 						return DiscordObjects[item] ? DiscordObjects[item] : (function () {});
 					}
@@ -8570,7 +8544,7 @@ module.exports = (_ => {
 									}
 								}
 							};
-							PluginStores.contextChunkObserver[type].modules = BDFDB.ModuleUtils.find(PluginStores.contextChunkObserver[type].filter, {useExport: false, all: true}).map(m => m.exports).filter(n => n);
+							PluginStores.contextChunkObserver[type].modules = BDFDB.ModuleUtils.find(PluginStores.contextChunkObserver[type].filter, {defaultExport: false, all: true}).map(m => m.exports).filter(n => n);
 						}
 					}
 					
@@ -8894,8 +8868,6 @@ module.exports = (_ => {
 						window.BDFDB = BDFDB;
 					}
 					
-					window.BDFDB = BDFDB;
-					
 					if (libraryCSS) BDFDB.DOMUtils.appendLocalStyle("BDFDB", libraryCSS.replace(/[\n\t\r]/g, "").replace(/\[REPLACE_CLASS_([A-z0-9_]+?)\]/g, (a, b) => BDFDB.dotCN[b]));
 				
 					BDFDB.LogUtils.log("Finished loading Library");
@@ -8923,7 +8895,7 @@ module.exports = (_ => {
 					for (let name in InternalData.ForceLoadedComponents) {
 						let parentModule;
 						if (InternalData.ForceLoadedComponents[name].name) {
-							if (InternalData.ForceLoadedComponents[name].protos) parentModule = BDFDB.ModuleUtils.find(m => m && m.displayName == InternalData.ForceLoadedComponents[name].name && m.prototype && InternalData.ForceLoadedComponents[name].protos.every(proto => m.prototype[proto]) && m, {useExport: false});
+							if (InternalData.ForceLoadedComponents[name].protos) parentModule = BDFDB.ModuleUtils.find(m => m && m.displayName == InternalData.ForceLoadedComponents[name].name && m.prototype && InternalData.ForceLoadedComponents[name].protos.every(proto => m.prototype[proto]) && m, {defaultExport: false});
 							else parentModule = BDFDB.ModuleUtils.findByName(InternalData.ForceLoadedComponents[name].name, false, true);
 						}
 						else if (InternalData.ForceLoadedComponents[name].props) parentModule = BDFDB.ModuleUtils.findByProperties(InternalData.ForceLoadedComponents[name].props, false, true);

@@ -8,9 +8,10 @@ vim.g.maplocalleader = " "
 
 local mappings = {
   ["n"] = {
-    -- Telescope
+    { "x", "_x" },
     { "j", "gj" },
     { "k", "gk" },
+    -- Telescope
     { "<leader><space>", ts.buffers},
     { "<leader>ff", [[ts.find_files { previewer = false }]]},
     { "<leader>fb", ts.current_buffer_fuzzy_find},
