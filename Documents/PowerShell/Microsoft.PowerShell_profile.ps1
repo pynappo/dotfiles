@@ -40,7 +40,7 @@ Set-Alias -Name ldf -Value Lazy-Dotfiles
 
 Function Pacup ([string]$Path = "$Home\.files\"){
 	scoop export > ($Path + 'scoop.json')
-	winget export -o ($Path + 'winget.txt') --accept-source-agreements
+	winget export -o ($Path + 'winget.json') --accept-source-agreements
 }
 
 Function New-Link ($Path, $Target) {

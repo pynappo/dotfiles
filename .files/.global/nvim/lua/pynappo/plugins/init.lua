@@ -128,9 +128,7 @@ require('packer').startup({ function(use)
     end,
     cmd = 'MinimapToggle'
   }
-  use {
-    'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]]
-  }
+  use { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] }
   use 'tpope/vim-repeat'
   use {
     'folke/trouble.nvim',
@@ -157,9 +155,7 @@ require('packer').startup({ function(use)
   use {
     'rcarriga/nvim-notify',
     config = function()
-      require('notify').setup({
-        background_colour = '#000000',
-      })
+      require('notify').setup({ background_colour = '#000000' })
       vim.notify = require('notify')
     end
   }
