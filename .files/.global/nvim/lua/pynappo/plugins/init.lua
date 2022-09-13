@@ -1,15 +1,23 @@
 local fn = vim.fn
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
+if fn.glob(install_path) == '' then
   Packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
     install_path })
 end
 require('packer').startup({ function(use)
   use 'wbthomason/packer.nvim'
-  use { 'tpope/vim-fugitive' }
+  use {
+    { 'tpope/vim-fugitive' },
+    {
+      'lewis6991/gitsigns.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+      config = [[require('pynappo/plugins/gitsigns')]]
+    },
+    { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+  }
   use { 'ludovicchabant/vim-gutentags' }
-  use { "catppuccin/nvim", as = "catppuccin" }
-  use { 'Shatur/neovim-ayu', config = [[require('pynappo/theme')]] }
+  use { 'catppuccin/nvim', as = 'catppuccin' }
+  use { 'Shatur/neovim-ayu' }
   use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
   use ({
     {
@@ -43,32 +51,17 @@ require('packer').startup({ function(use)
       }
     end
   }
-  use {
-    'lewis6991/gitsigns.nvim',
-    requires = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('gitsigns').setup {
-        signs = {
-          add = { text = '▎' },
-          change = { text = '▎' },
-          delete = { text = '▎' },
-          topdelete = { text = '契' },
-          changedelete = { text = '▎' },
-        },
-      }
-    end
-  }
   use ({
     {
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
       config = [[require('pynappo/plugins/treesitter')]]
     },
-    { 'nvim-treesitter/nvim-treesitter-textobjects' },
-    { 'nvim-telescope/telescope-file-browser.nvim' },
-    { 'p00f/nvim-ts-rainbow' },
-    { 'windwp/nvim-ts-autotag' },
-    { 'nvim-treesitter/nvim-treesitter-context' }
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    'nvim-telescope/telescope-file-browser.nvim',
+    'p00f/nvim-ts-rainbow',
+    'windwp/nvim-ts-autotag',
+    'nvim-treesitter/nvim-treesitter-context'
   })
   use ({
     {
@@ -108,8 +101,9 @@ require('packer').startup({ function(use)
       'nvim-lua/plenary.nvim',
       'kyazdani42/nvim-web-devicons',
       'MunifTanjim/nui.nvim',
+      { 's1n7ax/nvim-window-picker', tag = "v1.*" }
     },
-    config = [[vim.g.neo_tree_remove_legacy_commands = 1]]
+    config = [[require('pynappo/plugins/neo-tree')]]
   }
   use { 'folke/which-key.nvim', config = [[require('which-key').setup {} ]] }
   use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
@@ -117,24 +111,12 @@ require('packer').startup({ function(use)
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
   use 'andymass/vim-matchup'
   use { 'nmac427/guess-indent.nvim', config = [[require('guess-indent').setup{}]], }
-  use {
-    'wfxr/minimap.vim',
-    config = function()
-      vim.g.minimap_width = 10
-      vim.g.minimap_highlight_range = 1
-      vim.g.minimap_git_colors = 1
-      vim.g.minimap_block_filetypes = { 'fugitive', 'neotree', 'tagbar', 'fzf', 'vista' }
-      vim.g.minimap_highlight_search = 1
-    end,
-    cmd = 'MinimapToggle'
-  }
   use { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] }
   use 'tpope/vim-repeat'
   use {
     'folke/trouble.nvim',
     requires = 'kyazdani42/nvim-web-devicons',
     config = [[require('trouble').setup{}]],
-    cmd = 'TroubleToggle'
   }
   use 'andweeb/presence.nvim'
   use 'Djancyp/cheat-sheet'
@@ -150,7 +132,7 @@ require('packer').startup({ function(use)
     requires = 'kyazdani42/nvim-web-devicons',
     config = [[require('pynappo/plugins/bufferline')]]
   }
-  use { 'max397574/better-escape.nvim', config = [[require('better_escape').setup()]] }
+  use { 'max397574/better-escape.nvim', config = [[require('better_escape').setup({mapping = {"jk", "kj"}})]] }
   use { 'kevinhwang91/nvim-hlslens', config = [[require('pynappo/plugins/hlslens')]] }
   use {
     'rcarriga/nvim-notify',
@@ -178,10 +160,10 @@ require('packer').startup({ function(use)
     config = [[require('neoclip').setup()]]
   }
   use ({
-    { 'williamboman/mason.nvim' },
-    { 'williamboman/mason-lspconfig.nvim' },
-    { 'folke/lua-dev.nvim' },
-    { 'jose-elias-alvarez/null-ls.nvim' },
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
+    'folke/lua-dev.nvim',
+    'jose-elias-alvarez/null-ls.nvim',
     {
       'neovim/nvim-lspconfig',
       config = function()
@@ -193,22 +175,44 @@ require('packer').startup({ function(use)
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
   use ({
     {
-      "nvim-neotest/neotest",
+      'nvim-neotest/neotest',
       requires = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-        "antoinemadec/FixCursorHold.nvim",
+        'nvim-lua/plenary.nvim',
+        'nvim-treesitter/nvim-treesitter',
+        'antoinemadec/FixCursorHold.nvim',
       },
     },
     'rouge8/neotest-rust'
   })
   use {
-    "folke/todo-comments.nvim",
-    requires = "nvim-lua/plenary.nvim",
-    config = [[require("todo-comments").setup({})]]
+    'folke/todo-comments.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+    config = [[require('todo-comments').setup({})]]
   }
   use { 'Akianonymus/nvim-colorizer.lua', config = [[require('colorizer').setup()]] }
-  use { 'simrat39/symbols-outline.nvim', config = [[require("symbols-outline").setup()]] }
+  use { 'simrat39/symbols-outline.nvim', config = [[require('symbols-outline').setup()]] }
+  use {
+    'akinsho/toggleterm.nvim',
+    tag = '*',
+    config = function()
+      require("toggleterm").setup()
+    end
+  }
+  use ({
+    {
+      "rcarriga/nvim-dap-ui",
+      requires = {"mfussenegger/nvim-dap"},
+      config = [[require("dapui").setup()]]
+    },
+    {
+      "mfussenegger/nvim-dap",
+    },
+    {
+      'theHamsta/nvim-dap-virtual-text',
+      requires = {"mfussenegger/nvim-dap"},
+      config = [[require("nvim-dap-virtual-text").setup()]]
+    }
+  })
 end,
   config = {
     display = {

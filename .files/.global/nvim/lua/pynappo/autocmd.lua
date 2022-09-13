@@ -12,3 +12,14 @@ if vim.g.started_by_firenvim then
   })
 end
 
+autocmd ('TextYankPost',{
+  callback = function () vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
+  group = pynappo
+})
+
+autocmd({ "BufWritePre" }, {
+  command = [[%s/\s\+$//e]],
+  group = pynappo
+})
+
+
