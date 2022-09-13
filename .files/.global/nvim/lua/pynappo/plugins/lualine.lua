@@ -2,8 +2,7 @@ local navic = require("nvim-navic")
 local lualine = require("lualine")
 lualine.setup {
   options = {
-    theme = 'ayu',
-    component_separators = '|',
+    component_separators = { left = "|", right = "|" },
     section_separators = { left = '', right = '' },
     global_statusline = true,
     disabled_filetypes = {
@@ -14,27 +13,19 @@ lualine.setup {
     lualine_a = {
       { 'mode', separator = { left = '' }, right_padding = 2 },
     },
-    lualine_b = { 'filename', 'branch' },
-    lualine_c = { 'fileformat' },
-    lualine_x = {},
-    lualine_y = { 'filetype', 'progress' },
+    lualine_b = { 'filename', 'branch', 'diagnostics' },
+    lualine_c = {{ navic.get_location, cond = navic.is_available }},
+    lualine_x = { 'fileformat' },
+    lualine_y = { 'filetype' },
     lualine_z = {
-      { 'location', separator = { right = '' }, left_padding = 2 },
+      { 'progress', separator = { right = '' }, left_padding = 1 },
     },
-  },
-  inactive_sections = {
-    lualine_a = { 'filename' },
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = { 'location' },
   },
   tabline = {},
   winbar = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {{ navic.get_location, cond = navic.is_available }},
+    lualine_c = {},
     lualine_x = {'%f'},
     lualine_y = {},
     lualine_z = {}
@@ -43,9 +34,9 @@ lualine.setup {
     lualine_a = {},
     lualine_b = {},
     lualine_c = {},
-    lualine_x = {'%f'},
-    lualine_y = {},
+    lualine_x = {'%f', 'filetype'},
+    lualine_y = {'progress'},
     lualine_z = {}
   },
-  extensions = {'neo-tree'},
+  extensions = {'neo-tree', 'symbols-outline', 'quickfix'},
 }

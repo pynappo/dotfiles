@@ -73,13 +73,17 @@ o.fillchars = {
   vertleft  = '┫',
   vertright = '┣',
   verthoriz = '╋',
-  eob       = " "
+  eob       = ' ',
+  fold      = ' ',
 }
 o.guifont = "InconsolataLGC_NF"
+o.list = true
 o.listchars = {
   extends = '⟩',
   precedes = '⟨',
-  trail = '·'
+  trail = '·',
+  tab = '» ',
+  nbsp = '␣',
 }
 o.cursorline = true
 o.wrap = true

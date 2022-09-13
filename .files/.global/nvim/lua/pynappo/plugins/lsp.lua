@@ -37,8 +37,7 @@ local on_attach = function(client, bufnr)
   navic.attach(client, bufnr)
 end
 local flags = {
-  allow_incremental_sync = false,
-  debounce_text_changes = 300
+  debounce_text_changes = 200
 }
 
 -- Use a loop to conveniently call "setup" on multiple servers and
@@ -58,11 +57,15 @@ local luadev = require("lua-dev").setup({
   },
 })
 lspconfig['sumneko_lua'].setup(luadev)
-local nullls = require('null-ls')
-nullls.setup({
+local null_ls = require('null-ls')
+null_ls.setup({
   sources = {
-    nullls.builtins.formatting.stylua,
-    nullls.builtins.diagnostics.eslint,
-    nullls.builtins.completion.spell,
+    null_ls.builtins.completion.spell.with({
+      filetypes = { 'markdown', 'text' },
+    }),
+    null_ls.builtins.code_actions.gitsigns,
+    null_ls.builtins.hover.dictionary,
+    null_ls.builtins.hover.printenv,
+    null_ls.builtins.formatting.codespell
   },
 })
