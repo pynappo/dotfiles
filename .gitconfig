@@ -17,6 +17,7 @@
 	fsmonitor = true
 	editor = nvim
 	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+	protectNTFS = false
 [init]
 	defaultBranch = main
 [pull]
