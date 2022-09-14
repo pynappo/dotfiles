@@ -12,8 +12,8 @@ Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
 
 
-Function Notepad { Notepads @Args } 
-Function Dotfiles { 
+Function Notepad { Notepads @Args }
+Function Dotfiles {
 	if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
 		if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
 		else {
@@ -24,8 +24,8 @@ Function Dotfiles {
 			if (!(Test-Path $Args[2])) { Return Write-Error("Target invalid.")}
 			$Path = (Resolve-Path $Args[1]).ToString()
 			$Target = (Resolve-Path $Args[2]).ToString()
-			
-			Move-Item $Path $Target
+
+			Move-Item $Path $Target -Force
 			$Path = $Path.TrimEnd('\/')
 			New-Item -ItemType SymbolicLink -Path $Path -Value ($Target + (Split-Path $Path -Leaf).ToString())
 			Dotfiles add $Path
@@ -44,7 +44,7 @@ Function Pacup ([string]$Path = "$Home\.files\"){
 }
 
 Function New-Link ($Path, $Target) {
-    New-Item -ItemType SymbolicLink -Path $Path -Value $Target 
+    New-Item -ItemType SymbolicLink -Path $Path -Value $Target
 }
 
 Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
