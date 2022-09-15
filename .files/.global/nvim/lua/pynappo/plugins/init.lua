@@ -211,6 +211,10 @@ require('packer').startup({ function(use)
       'theHamsta/nvim-dap-virtual-text',
       requires = {"mfussenegger/nvim-dap"},
       config = [[require("nvim-dap-virtual-text").setup()]]
+    },
+    {
+      'j-hui/fidget.nvim',
+      config = [[require("fidget").setup()]]
     }
   })
 end,

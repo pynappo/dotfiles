@@ -1,5 +1,5 @@
 require('mason-lspconfig').setup({
-  ensure_installed = { "sumneko_lua", "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer" },
+  ensure_installed = { "sumneko_lua", "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer", "gopls"},
 })
 local navic = require("nvim-navic")
 local lspconfig = require('lspconfig')
@@ -11,7 +11,6 @@ map("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 map("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local bufmap = vim.api.nvim_buf_set_keymap
@@ -43,8 +42,11 @@ local flags = {
 -- Use a loop to conveniently call "setup" on multiple servers and
 -- map buffer local keybindings when the language server attaches
 
-for _, dir in pairs({ "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer" }) do
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+for _, dir in pairs({ "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer", "gopls" }) do
   lspconfig[dir].setup ({
+    capabilities = capabilities,
     on_attach = on_attach,
     flags = flags
   })
