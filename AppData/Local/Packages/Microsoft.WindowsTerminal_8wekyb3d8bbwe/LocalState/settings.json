@@ -48,8 +48,8 @@
             "experimental.retroTerminalEffect": false,
             "font": 
             {
-                "face": "InconsolataLGC NF",
-                "size": 11,
+                "face": "Inconsolata NFM",
+                "size": 13,
                 "weight": "normal"
             },
             "intenseTextStyle": "bright",
