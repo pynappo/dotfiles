@@ -1,0 +1,85 @@
+.shc-guild-settings {
+   width: auto !important;
+   margin-bottom: 32px;
+}
+
+.shc-guild-item.selectableItem-1MP3MQ.selected-31soGA {
+   cursor: pointer !important;
+}
+
+.shc-guild-scroller {
+   max-height: 500px;
+}
+
+.shc-lock-icon-clickable {
+   margin-left: 0;
+}
+
+.shc-guild-item {
+   padding: 6px;
+   padding-left: 18px;
+   margin-top: 4px;
+   margin-bottom: 4px;
+   height: auto;
+}
+
+.shc-guild {
+   margin: 6px;
+   width: 32px;
+   height: 32px;
+   float: left;
+   border-radius: 360px;
+}
+
+.shc-guild-name {
+   color: white;
+   float: left;
+   font-family: 'Whitney', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+   font-weight: 700;
+   margin-left: 8px;
+   font-size: 20px;
+}
+
+.shc-guild-name {
+   margin-top: 8px;
+}
+
+.shc-locked-notice {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   margin: auto;
+   text-align: center;
+}
+
+.shc-additional-info-text {
+   margin-top: 10px;
+}
+
+.shc-locked-notice > div[class^="divider"] {
+   display: none
+}
+
+.shc-locked-notice > div[class^="topic"] {
+   background-color: var(--background-secondary);
+   padding: 5px;
+   max-width: 50vh;
+   text-overflow: ellipsis;
+   border-radius: 5px;
+   margin: 10px auto;
+}
+
+.shc-notice-lock {
+   -webkit-user-drag: none;
+   max-height: 128px;
+}
+
+.shc-locked-channel-text {
+   margin-top: 20px;
+   font-weight: bold;
+}
+
+.shc-no-access-text {
+   margin-top: 10px;
+}
