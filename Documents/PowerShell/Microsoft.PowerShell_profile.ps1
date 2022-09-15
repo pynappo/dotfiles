@@ -17,13 +17,13 @@ Function Dotfiles {
 	if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
 		if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
 		else {
-			if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-				Return Write-Error("Run as administrator please.")
-			}
 			if (!(Test-Path $Args[1])) { Return Write-Error("Path invalid.")}
 			if (!(Test-Path $Args[2])) { Return Write-Error("Target invalid.")}
 			$Path = (Resolve-Path $Args[1]).ToString()
 			$Target = (Resolve-Path $Args[2]).ToString()
+			$Path
+			$Target
+			return
 
 			Move-Item $Path $Target -Force
 			$Path = $Path.TrimEnd('\/')
