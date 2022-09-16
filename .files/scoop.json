@@ -1,471 +1,28 @@
 {
-    "apps": [
-        {
-            "Version": "22.01",
-            "Updated": "2022-09-06T00:43:26.7347424-07:00",
-            "Name": "7zip",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "33.0.3",
-            "Updated": "2022-09-06T01:30:17.4984327-07:00",
-            "Name": "adb",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "22.3.18.0",
-            "Updated": "2022-09-06T10:49:27.5508904-07:00",
-            "Name": "archwsl",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.36.0-1",
-            "Updated": "2022-09-06T01:30:19.694397-07:00",
-            "Name": "aria2",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "2022-07-19",
-            "Updated": "2022-09-06T01:30:23.3770399-07:00",
-            "Name": "cacert",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:30:41.0117606-07:00",
-            "Name": "cascadiacode-nf",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "0.6.4",
-            "Updated": "2022-09-06T10:49:29.4723835-07:00",
-            "Name": "code-minimap",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.5.2",
-            "Updated": "2022-09-06T10:49:31.1478688-07:00",
-            "Name": "cru",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "3.11.2",
-            "Updated": "2022-09-06T01:30:42.8736653-07:00",
-            "Name": "dark",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "18.0.5.4",
-            "Updated": "2022-09-06T10:49:34.0709789-07:00",
-            "Name": "ddu",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "2022-06",
-            "Updated": "2022-09-06T10:51:01.9158402-07:00",
-            "Name": "eclipse-java",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": null,
-            "Updated": "2022-09-06T10:51:02.3366464-07:00",
-            "Name": "equalizer-apo-np",
-            "Source": null,
-            "Info": "Install failed"
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:31:06.23574-07:00",
-            "Name": "fantasquesansmono-nf-mono",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "8.4.0",
-            "Updated": "2022-09-06T01:31:08.3528787-07:00",
-            "Name": "fd",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "5.1.1",
-            "Updated": "2022-09-06T01:31:43.2648805-07:00",
-            "Name": "ffmpeg",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "0.33.0",
-            "Updated": "2022-09-06T01:31:45.764465-07:00",
-            "Name": "fzf",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "11.2.0",
-            "Updated": "2022-09-06T01:32:31.5772119-07:00",
-            "Name": "gcc",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "1.4.1",
-            "Updated": "2022-09-06T01:32:34.5997415-07:00",
-            "Name": "glow",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "3.5",
-            "Updated": "2022-09-06T10:51:10.7116753-07:00",
-            "Name": "godot",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.3.12",
-            "Updated": "2022-09-06T01:32:39.6045197-07:00",
-            "Name": "gzip",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": null,
-            "Updated": "2022-09-06T10:51:11.0465881-07:00",
-            "Name": "handle",
-            "Source": null,
-            "Info": "Install failed"
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:32:46.1845434-07:00",
-            "Name": "inconsolata-NF-Mono",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:32:50.9755799-07:00",
-            "Name": "inconsolataLGC-NF-Mono",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "22.08.0",
-            "Updated": "2022-09-06T10:52:31.7446534-07:00",
-            "Name": "kdenlive",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "0.35",
-            "Updated": "2022-09-06T10:52:33.8198263-07:00",
-            "Name": "lazygit",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.4.1",
-            "Updated": "2022-09-06T10:52:36.6216129-07:00",
-            "Name": "libgen-desktop",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "14.0.6",
-            "Updated": "2022-09-06T01:34:08.9467826-07:00",
-            "Name": "llvm",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "3.46.2",
-            "Updated": "2022-09-06T10:52:53.4713878-07:00",
-            "Name": "losslesscut",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "4.3",
-            "Updated": "2022-09-06T01:34:10.8492517-07:00",
-            "Name": "make",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:34:13.3805173-07:00",
-            "Name": "monofur-nf",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:34:16.0871838-07:00",
-            "Name": "Mononoki-NF-mono",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "0.34.0",
-            "Updated": "2022-09-06T10:53:02.2661879-07:00",
-            "Name": "mpv",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "4.6.4",
-            "Updated": "2022-09-09T23:15:00.7714727-07:00",
-            "Name": "msiafterburner",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "0.10.1",
-            "Updated": "2022-09-06T10:53:04.6769858-07:00",
-            "Name": "neovide",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "0.8.0-dev-1025-gfb39bba5a",
-            "Updated": "2022-09-06T01:34:31.4303111-07:00",
-            "Name": "neovim-nightly",
-            "Source": "versions",
-            "Info": ""
-        },
-        {
-            "Version": "7.93",
-            "Updated": "2022-09-06T01:34:41.9305306-07:00",
-            "Name": "nmap",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:36:35.1594681-07:00",
-            "Name": "Noto-NF",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "1.32",
-            "Updated": "2022-09-06T01:36:36.3411082-07:00",
-            "Name": "NTFSLinksView",
-            "Source": "nirsoft",
-            "Info": ""
-        },
-        {
-            "Version": "0.7",
-            "Updated": "2022-09-06T10:53:10.0637041-07:00",
-            "Name": "openrgb",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "0.6.0.4",
-            "Updated": "2022-09-06T10:53:12.5114176-07:00",
-            "Name": "opentabletdriver",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "4.3.12",
-            "Updated": "2022-09-06T10:53:27.3093429-07:00",
-            "Name": "paint.net",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "30.8b16",
-            "Updated": "2022-09-06T10:53:40.3502582-07:00",
-            "Name": "prime95",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "0.2020.02.27",
-            "Updated": "2022-09-06T01:36:37.8877795-07:00",
-            "Name": "psutils",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "3.10.6",
-            "Updated": "2022-09-06T01:38:43.9896616-07:00",
-            "Name": "python",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "13.0.0",
-            "Updated": "2022-09-06T01:38:45.3606198-07:00",
-            "Name": "ripgrep",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "7.3.3",
-            "Updated": "2022-09-08T12:29:56.0806207-07:00",
-            "Name": "rtss",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.25.1",
-            "Updated": "2022-09-06T01:39:41.2912202-07:00",
-            "Name": "rustup",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "0.2.3",
-            "Updated": "2022-09-06T10:53:48.4671474-07:00",
-            "Name": "scoop-completion",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.24",
-            "Updated": "2022-09-06T01:39:49.7703783-07:00",
-            "Name": "scrcpy",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "1.12.7.747",
-            "Updated": "2022-09-06T10:54:28.898927-07:00",
-            "Name": "snappy-driver-installer-origin",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:39:52.7724996-07:00",
-            "Name": "SpaceMono-NF-mono",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "1660762488",
-            "Updated": "2022-09-06T10:54:30.5109408-07:00",
-            "Name": "steamcmd",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "9.5",
-            "Updated": "2022-09-08T01:21:20.3410349-07:00",
-            "Name": "throttlestop",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "2020-10-11",
-            "Updated": "2022-09-06T10:54:32.8672517-07:00",
-            "Name": "universal-ctags",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.9.0",
-            "Updated": "2022-09-06T10:54:34.1648604-07:00",
-            "Name": "unlocker",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "10.0.40219.473",
-            "Updated": "2022-09-06T10:55:11.6410974-07:00",
-            "Name": "vcredist2010",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.0.79",
-            "Updated": "2022-09-06T10:55:17.2129644-07:00",
-            "Name": "ventoy",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "2.2.1",
-            "Updated": "2022-09-06T01:40:04.17207-07:00",
-            "Name": "victormono-nf-mono",
-            "Source": "nerd-fonts",
-            "Info": ""
-        },
-        {
-            "Version": "5.4.2753.47",
-            "Updated": "2022-09-09T01:56:40.1871292-07:00",
-            "Name": "vivaldi",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "20220905-102802-7d4b8249",
-            "Updated": "2022-09-06T10:55:28.8901248-07:00",
-            "Name": "wezterm",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "1.21.3",
-            "Updated": "2022-09-06T01:40:19.012085-07:00",
-            "Name": "wget",
-            "Source": "main",
-            "Info": ""
-        },
-        {
-            "Version": "1.40.0.0",
-            "Updated": "2022-09-06T10:55:52.727791-07:00",
-            "Name": "winaero-tweaker",
-            "Source": "extras",
-            "Info": ""
-        },
-        {
-            "Version": "2022.09.01",
-            "Updated": "2022-09-06T01:40:22.6627295-07:00",
-            "Name": "yt-dlp",
-            "Source": "main",
-            "Info": ""
-        }
-    ],
     "buckets": [
         {
             "Name": "extras",
-            "Source": "https://github.com/ScoopInstaller/Extras",
-            "Updated": "2022-09-09T22:57:04-07:00",
-            "Manifests": 1682
+            "Source": "https://github.com/lukesampson/scoop-extras",
+            "Updated": "2022-09-13T17:33:14-07:00",
+            "Manifests": 1688
         },
         {
             "Name": "games",
             "Source": "https://github.com/Calinou/scoop-games",
-            "Updated": "2022-09-09T21:52:57-07:00",
+            "Updated": "2022-09-13T17:33:50-07:00",
             "Manifests": 236
         },
         {
             "Name": "java",
             "Source": "https://github.com/ScoopInstaller/Java",
-            "Updated": "2022-09-09T22:09:10-07:00",
+            "Updated": "2022-09-13T05:01:10-07:00",
             "Manifests": 226
         },
         {
             "Name": "main",
             "Source": "https://github.com/ScoopInstaller/Main",
-            "Updated": "2022-09-09T21:51:58-07:00",
-            "Manifests": 1073
+            "Updated": "2022-09-13T17:33:56-07:00",
+            "Manifests": 1078
         },
         {
             "Name": "nerd-fonts",
@@ -482,7 +39,7 @@
         {
             "Name": "nonportable",
             "Source": "https://github.com/TheRandomLabs/scoop-nonportable",
-            "Updated": "2022-09-08T08:08:42-07:00",
+            "Updated": "2022-09-12T14:08:27-07:00",
             "Manifests": 80
         },
         {
@@ -494,8 +51,451 @@
         {
             "Name": "versions",
             "Source": "https://github.com/ScoopInstaller/Versions",
-            "Updated": "2022-09-09T22:30:11-07:00",
+            "Updated": "2022-09-13T13:39:15-07:00",
             "Manifests": 358
+        }
+    ],
+    "apps": [
+        {
+            "Updated": "2022-07-24T02:12:33.022517-07:00",
+            "Source": "main",
+            "Name": "7zip",
+            "Info": "",
+            "Version": "22.01"
+        },
+        {
+            "Updated": "2022-09-06T01:51:25.5583934-07:00",
+            "Source": "main",
+            "Name": "adb",
+            "Info": "",
+            "Version": "33.0.3"
+        },
+        {
+            "Updated": "2022-03-26T14:34:52.2933863-07:00",
+            "Source": "extras",
+            "Name": "archwsl",
+            "Info": "",
+            "Version": "22.3.18.0"
+        },
+        {
+            "Updated": "2022-03-30T16:50:54.1196251-07:00",
+            "Source": "main",
+            "Name": "aria2",
+            "Info": "",
+            "Version": "1.36.0-1"
+        },
+        {
+            "Updated": "2022-07-24T02:12:35.051249-07:00",
+            "Source": "main",
+            "Name": "cacert",
+            "Info": "",
+            "Version": "2022-07-19"
+        },
+        {
+            "Updated": "2022-09-06T01:54:59.3925956-07:00",
+            "Source": "nerd-fonts",
+            "Name": "cascadiacode-nf",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-05-15T16:38:03.7138737-07:00",
+            "Source": "extras",
+            "Name": "code-minimap",
+            "Info": "",
+            "Version": "0.6.4"
+        },
+        {
+            "Updated": "2022-09-06T01:41:15.8751806-07:00",
+            "Source": "extras",
+            "Name": "cpu-z",
+            "Info": "",
+            "Version": "2.02"
+        },
+        {
+            "Updated": "2022-09-06T01:55:07.9605236-07:00",
+            "Source": "extras",
+            "Name": "cru",
+            "Info": "",
+            "Version": "1.5.2"
+        },
+        {
+            "Updated": "2022-07-18T04:32:34.7517988-07:00",
+            "Source": "main",
+            "Name": "dark",
+            "Info": "",
+            "Version": "3.11.2"
+        },
+        {
+            "Updated": "2022-08-04T21:25:19.2937659-07:00",
+            "Source": "extras",
+            "Name": "ddu",
+            "Info": "",
+            "Version": "18.0.5.4"
+        },
+        {
+            "Updated": "2022-08-24T02:53:11.4861595-07:00",
+            "Source": "extras",
+            "Name": "eclipse-java",
+            "Info": "",
+            "Version": "2022-06"
+        },
+        {
+            "Updated": "2022-05-26T17:27:14.01508-07:00",
+            "Source": "nonportable",
+            "Name": "equalizer-apo-np",
+            "Info": "",
+            "Version": "1.3"
+        },
+        {
+            "Updated": "2022-09-06T01:55:57.0424798-07:00",
+            "Source": "nerd-fonts",
+            "Name": "fantasquesansmono-nf-mono",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-06-06T00:05:36.1748277-07:00",
+            "Source": "main",
+            "Name": "fd",
+            "Info": "",
+            "Version": "8.4.0"
+        },
+        {
+            "Updated": "2022-09-06T01:58:14.5842637-07:00",
+            "Source": "main",
+            "Name": "ffmpeg",
+            "Info": "",
+            "Version": "5.1.1"
+        },
+        {
+            "Updated": "2022-09-06T01:58:21.9329179-07:00",
+            "Source": "main",
+            "Name": "fzf",
+            "Info": "",
+            "Version": "0.33.0"
+        },
+        {
+            "Updated": "2022-03-21T23:53:12.2484498-07:00",
+            "Source": "main",
+            "Name": "gcc",
+            "Info": "",
+            "Version": "11.2.0"
+        },
+        {
+            "Updated": "2022-09-05T23:53:53.086381-07:00",
+            "Source": "main",
+            "Name": "glow",
+            "Info": "",
+            "Version": "1.4.1"
+        },
+        {
+            "Updated": "2022-08-31T21:19:55.1486982-07:00",
+            "Source": "extras",
+            "Name": "godot",
+            "Info": "",
+            "Version": "3.5"
+        },
+        {
+            "Updated": "2022-09-06T01:41:55.3093294-07:00",
+            "Source": "extras",
+            "Name": "gpu-z",
+            "Info": "",
+            "Version": "2.47.0"
+        },
+        {
+            "Updated": "2022-06-01T01:38:10.9351715-07:00",
+            "Source": "main",
+            "Name": "gzip",
+            "Info": "",
+            "Version": "1.3.12"
+        },
+        {
+            "Updated": "2022-09-06T02:00:40.8849025-07:00",
+            "Source": "nerd-fonts",
+            "Name": "inconsolata-NF-Mono",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-09-06T02:00:52.0384129-07:00",
+            "Source": "nerd-fonts",
+            "Name": "inconsolataLGC-NF-Mono",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-09-06T01:57:24.3668677-07:00",
+            "Source": "extras",
+            "Name": "jetbrains-toolbox",
+            "Info": "",
+            "Version": "1.25.12627"
+        },
+        {
+            "Updated": "2022-09-06T02:02:53.384727-07:00",
+            "Source": "extras",
+            "Name": "kdenlive",
+            "Info": "",
+            "Version": "22.08.0"
+        },
+        {
+            "Updated": "2022-09-06T01:59:44.8793289-07:00",
+            "Source": null,
+            "Name": "kicad",
+            "Info": "Install failed",
+            "Version": null
+        },
+        {
+            "Updated": "2022-07-24T02:12:39.6983685-07:00",
+            "Source": "extras",
+            "Name": "lazygit",
+            "Info": "",
+            "Version": "0.35"
+        },
+        {
+            "Updated": "2022-08-29T17:05:32.7246185-07:00",
+            "Source": "extras",
+            "Name": "libgen-desktop",
+            "Info": "",
+            "Version": "1.4.1"
+        },
+        {
+            "Updated": "2022-07-16T01:02:09.071897-07:00",
+            "Source": "main",
+            "Name": "llvm",
+            "Info": "",
+            "Version": "14.0.6"
+        },
+        {
+            "Updated": "2022-08-04T03:05:08.6328891-07:00",
+            "Source": "extras",
+            "Name": "losslesscut",
+            "Info": "",
+            "Version": "3.46.2"
+        },
+        {
+            "Updated": "2022-03-21T23:53:13.3301984-07:00",
+            "Source": "main",
+            "Name": "make",
+            "Info": "",
+            "Version": "4.3"
+        },
+        {
+            "Updated": "2022-09-06T02:03:37.4142657-07:00",
+            "Source": "nerd-fonts",
+            "Name": "monofur-nf",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-09-06T02:05:00.6319974-07:00",
+            "Source": "nerd-fonts",
+            "Name": "Mononoki-NF-mono",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-03-06T22:19:58.6245235-08:00",
+            "Source": "extras",
+            "Name": "mpv",
+            "Info": "",
+            "Version": "0.34.0"
+        },
+        {
+            "Updated": "2022-09-06T02:05:10.778281-07:00",
+            "Source": "extras",
+            "Name": "neovide",
+            "Info": "",
+            "Version": "0.10.1"
+        },
+        {
+            "Updated": "2022-09-06T23:36:46.4511995-07:00",
+            "Source": "versions",
+            "Name": "neovim-nightly",
+            "Info": "",
+            "Version": "0.8.0-dev-1025-gfb39bba5a"
+        },
+        {
+            "Updated": "2022-09-06T02:07:05.6588505-07:00",
+            "Source": "main",
+            "Name": "nmap",
+            "Info": "",
+            "Version": "7.93"
+        },
+        {
+            "Updated": "2022-09-06T02:21:30.7211831-07:00",
+            "Source": "nerd-fonts",
+            "Name": "Noto-NF",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-03-15T23:53:39.1285119-07:00",
+            "Source": "nirsoft",
+            "Name": "NTFSLinksView",
+            "Info": "",
+            "Version": "1.32"
+        },
+        {
+            "Updated": "2022-07-27T16:18:52.2881224-07:00",
+            "Source": "extras",
+            "Name": "openrgb",
+            "Info": "",
+            "Version": "0.7"
+        },
+        {
+            "Updated": "2022-08-04T21:29:43.3378216-07:00",
+            "Source": "extras",
+            "Name": "opentabletdriver",
+            "Info": "",
+            "Version": "0.6.0.4"
+        },
+        {
+            "Updated": "2022-09-06T01:54:39.0271271-07:00",
+            "Source": "extras",
+            "Name": "paint.net",
+            "Info": "",
+            "Version": "4.3.12"
+        },
+        {
+            "Updated": "2022-09-06T02:21:53.4813061-07:00",
+            "Source": "extras",
+            "Name": "prime95",
+            "Info": "",
+            "Version": "30.8b16"
+        },
+        {
+            "Updated": "2022-06-09T18:57:36.4610331-07:00",
+            "Source": "main",
+            "Name": "psutils",
+            "Info": "",
+            "Version": "0.2020.02.27"
+        },
+        {
+            "Updated": "2022-08-04T21:26:46.731459-07:00",
+            "Source": "main",
+            "Name": "python",
+            "Info": "",
+            "Version": "3.10.6"
+        },
+        {
+            "Updated": "2022-05-09T16:46:27.2251474-07:00",
+            "Source": "main",
+            "Name": "ripgrep",
+            "Info": "",
+            "Version": "13.0.0"
+        },
+        {
+            "Updated": "2022-09-13T19:40:25.7112819-07:00",
+            "Source": "extras",
+            "Name": "rtss",
+            "Info": "",
+            "Version": "7.3.3"
+        },
+        {
+            "Updated": "2022-08-04T21:28:13.3019146-07:00",
+            "Source": "main",
+            "Name": "rustup",
+            "Info": "",
+            "Version": "1.25.1"
+        },
+        {
+            "Updated": "2022-08-04T02:31:32.7266433-07:00",
+            "Source": "extras",
+            "Name": "scoop-completion",
+            "Info": "",
+            "Version": "0.2.3"
+        },
+        {
+            "Updated": "2022-05-05T22:09:08.6031993-07:00",
+            "Source": "main",
+            "Name": "scrcpy",
+            "Info": "",
+            "Version": "1.24"
+        },
+        {
+            "Updated": "2022-09-06T02:22:09.0998215-07:00",
+            "Source": "extras",
+            "Name": "snappy-driver-installer-origin",
+            "Info": "",
+            "Version": "1.12.7.747"
+        },
+        {
+            "Updated": "2022-09-06T02:23:07.6460002-07:00",
+            "Source": "nerd-fonts",
+            "Name": "SpaceMono-NF-mono",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-09-06T02:23:09.1923482-07:00",
+            "Source": "extras",
+            "Name": "steamcmd",
+            "Info": "",
+            "Version": "1660762488"
+        },
+        {
+            "Updated": "2022-09-06T02:11:29.766689-07:00",
+            "Source": "extras",
+            "Name": "throttlestop",
+            "Info": "",
+            "Version": "9.5"
+        },
+        {
+            "Updated": "2022-09-03T03:52:04.8995926-07:00",
+            "Source": "extras",
+            "Name": "universal-ctags",
+            "Info": "",
+            "Version": "2020-10-11"
+        },
+        {
+            "Updated": "2022-06-21T01:34:10.3802574-07:00",
+            "Source": "extras",
+            "Name": "unlocker",
+            "Info": "",
+            "Version": "1.9.0"
+        },
+        {
+            "Updated": "2022-08-22T01:51:32.9495841-07:00",
+            "Source": "extras",
+            "Name": "ventoy",
+            "Info": "",
+            "Version": "1.0.79"
+        },
+        {
+            "Updated": "2022-09-06T02:23:59.2401286-07:00",
+            "Source": "nerd-fonts",
+            "Name": "victormono-nf-mono",
+            "Info": "",
+            "Version": "2.2.1"
+        },
+        {
+            "Updated": "2022-09-09T02:03:25.9055963-07:00",
+            "Source": "extras",
+            "Name": "vivaldi",
+            "Info": "",
+            "Version": "5.4.2753.47"
+        },
+        {
+            "Updated": "2022-06-01T01:37:20.0780048-07:00",
+            "Source": "main",
+            "Name": "wget",
+            "Info": "",
+            "Version": "1.21.3"
+        },
+        {
+            "Updated": "2022-08-04T21:28:42.2425538-07:00",
+            "Source": "extras",
+            "Name": "winaero-tweaker",
+            "Info": "",
+            "Version": "1.40.0.0"
+        },
+        {
+            "Updated": "2022-09-06T02:25:52.7296748-07:00",
+            "Source": "main",
+            "Name": "yt-dlp",
+            "Info": "",
+            "Version": "2022.09.01"
         }
     ]
 }

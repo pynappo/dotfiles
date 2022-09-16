@@ -1,0 +1,293 @@
+{
+	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
+	"CreationDate" : "2022-09-16T00:30:19.833-00:00",
+	"Sources" : 
+	[
+		{
+			"Packages" : 
+			[
+				{
+					"PackageIdentifier" : "9NTM2QC6QWS7"
+				},
+				{
+					"PackageIdentifier" : "9NHL4NSC67WM"
+				},
+				{
+					"PackageIdentifier" : "9PC3H3V7Q9CH"
+				},
+				{
+					"PackageIdentifier" : "9N64SQZTB3LM"
+				},
+				{
+					"PackageIdentifier" : "9NBLGGH5L9XT"
+				}
+			],
+			"SourceDetails" : 
+			{
+				"Argument" : "https://storeedgefd.dsx.mp.microsoft.com/v9.0",
+				"Identifier" : "StoreEdgeFD",
+				"Name" : "msstore",
+				"Type" : "Microsoft.Rest"
+			}
+		},
+		{
+			"Packages" : 
+			[
+				{
+					"PackageIdentifier" : "NexusMods.Vortex"
+				},
+				{
+					"PackageIdentifier" : "7zip.7zip"
+				},
+				{
+					"PackageIdentifier" : "ShareX.ShareX"
+				},
+				{
+					"PackageIdentifier" : "FinalWire.AIDA64.Extreme"
+				},
+				{
+					"PackageIdentifier" : "Audacity.Audacity"
+				},
+				{
+					"PackageIdentifier" : "CrystalDewWorld.CrystalDiskMark"
+				},
+				{
+					"PackageIdentifier" : "Discord.Discord"
+				},
+				{
+					"PackageIdentifier" : "DiskInternals.LinuxReader"
+				},
+				{
+					"PackageIdentifier" : "GitHub.GitHubDesktop"
+				},
+				{
+					"PackageIdentifier" : "Git.Git"
+				},
+				{
+					"PackageIdentifier" : "REALiX.HWiNFO"
+				},
+				{
+					"PackageIdentifier" : "HandBrake.HandBrake"
+				},
+				{
+					"PackageIdentifier" : "KDE.KDEConnect"
+				},
+				{
+					"PackageIdentifier" : "DominikReichl.KeePass"
+				},
+				{
+					"PackageIdentifier" : "Resplendence.LatencyMon"
+				},
+				{
+					"PackageIdentifier" : "rcmaehl.MSEdgeRedirect"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Edge"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.EdgeWebView2Runtime"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.WingetCreate"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.WindowsTerminal"
+				},
+				{
+					"PackageIdentifier" : "Mozilla.Firefox"
+				},
+				{
+					"PackageIdentifier" : "Notepad++.Notepad++"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Office"
+				},
+				{
+					"PackageIdentifier" : "OBSProject.OBSStudio"
+				},
+				{
+					"PackageIdentifier" : "JanDeDobbeleer.OhMyPosh"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.OneDrive"
+				},
+				{
+					"PackageIdentifier" : "Playnite.Playnite"
+				},
+				{
+					"PackageIdentifier" : "Piriform.Recuva"
+				},
+				{
+					"PackageIdentifier" : "RubyInstallerTeam.RubyWithDevKit.3.1"
+				},
+				{
+					"PackageIdentifier" : "Rustlang.Rustup"
+				},
+				{
+					"PackageIdentifier" : "Spotify.Spotify"
+				},
+				{
+					"PackageIdentifier" : "Valve.Steam"
+				},
+				{
+					"PackageIdentifier" : "StefanSundin.Superf4"
+				},
+				{
+					"PackageIdentifier" : "Unigine.SuperpositionBenchmark"
+				},
+				{
+					"PackageIdentifier" : "Ultimaker.Cura"
+				},
+				{
+					"PackageIdentifier" : "Unigine.HeavenBenchmark"
+				},
+				{
+					"PackageIdentifier" : "Ubisoft.Connect"
+				},
+				{
+					"PackageIdentifier" : "AntibodySoftware.WizTree"
+				},
+				{
+					"PackageIdentifier" : "Ytmdesktop.Ytmdesktop"
+				},
+				{
+					"PackageIdentifier" : "Twilio.Authy"
+				},
+				{
+					"PackageIdentifier" : "Obsidian.Obsidian"
+				},
+				{
+					"PackageIdentifier" : "code52.Carnac"
+				},
+				{
+					"PackageIdentifier" : "chrisant996.Clink"
+				},
+				{
+					"PackageIdentifier" : "ItchIo.Itch"
+				},
+				{
+					"PackageIdentifier" : "Peppy.Osu!"
+				},
+				{
+					"PackageIdentifier" : "qBittorrent.qBittorrent"
+				},
+				{
+					"PackageIdentifier" : "HottaStudio.TowerofFantasy"
+				},
+				{
+					"PackageIdentifier" : "Zoom.Zoom"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+				},
+				{
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.18.JDK"
+				},
+				{
+					"PackageIdentifier" : "DominikReichl.KeePass"
+				},
+				{
+					"PackageIdentifier" : "GitHub.cli"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.PowerToys"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
+				},
+				{
+					"PackageIdentifier" : "OpenJS.NodeJS"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
+				},
+				{
+					"PackageIdentifier" : "Nushell.Nushell"
+				},
+				{
+					"PackageIdentifier" : "Yarn.Yarn"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VC++2005Redist-x86"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VisualStudioCode"
+				},
+				{
+					"PackageIdentifier" : "msys2.msys2"
+				},
+				{
+					"PackageIdentifier" : "Tyrrrz.LightBulb"
+				},
+				{
+					"PackageIdentifier" : "Inkscape.Inkscape"
+				},
+				{
+					"PackageIdentifier" : "ElectronicArts.EADesktop"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x86"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
+				},
+				{
+					"PackageIdentifier" : "Peppy.Osu!"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.PhysXLegacy"
+				},
+				{
+					"PackageIdentifier" : "GoLang.Go.1.18"
+				},
+				{
+					"PackageIdentifier" : "wez.wezterm"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.XNARedist"
+				},
+				{
+					"PackageIdentifier" : "Google.EarthPro"
+				},
+				{
+					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
+				},
+				{
+					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
+				},
+				{
+					"PackageIdentifier" : "msys2.msys2"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.3_1"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.PowerShell"
+				}
+			],
+			"SourceDetails" : 
+			{
+				"Argument" : "https://cdn.winget.microsoft.com/cache",
+				"Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
+				"Name" : "winget",
+				"Type" : "Microsoft.PreIndexed.Package"
+			}
+		}
+	],
+	"WinGetVersion" : "1.4.2161-preview"
+}
