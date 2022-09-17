@@ -1,19 +1,4 @@
-local modules = {
-  "impatient",
-  "pynappo/plugins",
-  "pynappo/keymaps",
-  "pynappo/theme",
-  "pynappo/autocmd",
-  "pynappo/commands"
-}
-
-for _, module in ipairs(modules) do
-  local ok, err = pcall(require, module)
-  if not ok then
-    error("Error loading " .. module .. "\n\n" .. err)
-  end
-end
-
+require("impatient").enable_profile()
 local o = vim.opt
 local g = vim.g
 
@@ -110,3 +95,10 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
   vim.g["loaded_" .. plugin] = 1
 end
+require("pynappo/plugins")
+require("pynappo/keymaps").setup()
+require("pynappo/theme")
+require("pynappo/autocmds")
+require("pynappo/commands")
+
+

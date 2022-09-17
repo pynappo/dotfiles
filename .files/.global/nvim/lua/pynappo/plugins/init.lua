@@ -1,9 +1,3 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.glob(install_path) == '' then
-  Packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
-    install_path })
-end
 require('packer').startup({ function(use)
   use 'wbthomason/packer.nvim'
   use {
@@ -103,7 +97,10 @@ require('packer').startup({ function(use)
       'MunifTanjim/nui.nvim',
       { 's1n7ax/nvim-window-picker', tag = "v1.*" }
     },
-    config = [[require('pynappo/plugins/neo-tree')]]
+    config = function()
+      require('window-picker').setup()
+      require('pynappo/plugins/neo-tree')
+    end
   }
   use { 'folke/which-key.nvim', config = [[require('which-key').setup {} ]] }
   use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
@@ -194,9 +191,7 @@ require('packer').startup({ function(use)
   use {
     'akinsho/toggleterm.nvim',
     tag = '*',
-    config = function()
-      require("toggleterm").setup()
-    end
+    config = [[require('pynappo/plugins/toggleterm')]]
   }
   use ({
     {
@@ -226,6 +221,3 @@ end,
     }
   }
 })
-if Packer_bootstrap then
-  require('packer').sync()
-end
