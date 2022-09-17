@@ -5,6 +5,7 @@ vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSi
 vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
 vim.fn.sign_define("DiagnosticSignInfo", {text = " ", texthl = "DiagnosticSignInfo"})
 vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
+local neotree_keymaps = require("pynappo/keymaps").neo_tree
 
 require("neo-tree").setup({
   close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
@@ -60,7 +61,7 @@ require("neo-tree").setup({
         ignored   = "",
         unstaged  = "",
         staged    = "",
-        conflict  = "",
+  conflict  = "",
       }
     },
   },
@@ -71,42 +72,7 @@ require("neo-tree").setup({
       noremap = true,
       nowait = true,
     },
-    mappings = {
-      ["<space>"] = {
-        "toggle_node",
-        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
-      },
-      ["<2-LeftMouse>"] = "open",
-      ["<cr>"] = "open",
-      ["S"] = "split_with_window_picker",
-      ["s"] = "vsplit_with_window_picker",
-      ["t"] = "open_tabnew",
-      ["w"] = "open_with_window_picker",
-      ["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
-      ["C"] = "close_node",
-      ["z"] = "close_all_nodes",
-      ["Z"] = "expand_all_nodes",
-      ["a"] = {
-        "add",
-        -- some commands may take optional config options, see `:h neo-tree-mappings` for details
-        config = {
-          show_path = "none" -- "none", "relative", "absolute"
-        }
-      },
-      ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add".
-      ["d"] = "delete",
-      ["r"] = "rename",
-      ["y"] = "copy_to_clipboard",
-      ["x"] = "cut_to_clipboard",
-      ["p"] = "paste_from_clipboard",
-      ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
-      ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
-      ["q"] = "close_window",
-      ["R"] = "refresh",
-      ["?"] = "show_help",
-      ["<"] = "prev_source",
-      [">"] = "next_source",
-    }
+    mappings = neotree_keymaps.default
   },
   nesting_rules = {},
   filesystem = {
@@ -132,25 +98,11 @@ require("neo-tree").setup({
     },
     follow_current_file = true,
     group_empty_dirs = false, -- when true, empty folders will be grouped together
-    hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
-    -- in whatever position is specified in window.position
-    -- "open_current",  -- netrw disabled, opening a directory opens within the
-    -- window like netrw would, regardless of window.position
-    -- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
+    hijack_netrw_behavior = "disabled",
     use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
     -- instead of relying on nvim autocmd events.
     window = {
-      mappings = {
-        ["<bs>"] = "navigate_up",
-        ["."] = "set_root",
-        ["H"] = "toggle_hidden",
-        ["/"] = "fuzzy_finder",
-        ["D"] = "fuzzy_finder_directory",
-        ["f"] = "filter_on_submit",
-        ["<c-x>"] = "clear_filter",
-        ["[g"] = "prev_git_modified",
-        ["]g"] = "next_git_modified",
-      }
+      mappings = neotree_keymaps.filesystem
     }
   },
   buffers = {
@@ -159,27 +111,13 @@ require("neo-tree").setup({
     group_empty_dirs = true, -- when true, empty folders will be grouped together
     show_unloaded = true,
     window = {
-      mappings = {
-        ["bd"] = "buffer_delete",
-        ["<bs>"] = "navigate_up",
-        ["."] = "set_root",
-      }
+      mappings = neotree_keymaps.buffers
     },
   },
   git_status = {
     window = {
       position = "float",
-      mappings = {
-        ["A"]  = "git_add_all",
-        ["gu"] = "git_unstage_file",
-        ["ga"] = "git_add_file",
-        ["gr"] = "git_revert_file",
-        ["gc"] = "git_commit",
-        ["gp"] = "git_push",
-        ["gg"] = "git_commit_and_push",
-      }
+      mappings = neotree_keymaps.git_status
     }
   }
 })
-
-vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
