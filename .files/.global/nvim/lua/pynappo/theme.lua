@@ -1,17 +1,30 @@
-vim.o.termguicolors = true
-require("ayu").setup({
-  mirage = true,
-  overrides = {
-    Comment = { fg = "gray", italic = true, bg = "none" },
-    Normal = { bg = "none" },
-    NonText = { fg = "gray", bg = "none" },
-    SpecialKey = { bg = "none" },
-    VertSplit = { fg = "gray", bg = "none" },
-    SignColumn = { bg = "none" },
-    EndOfBuffer = { fg = "gray", bg = "none" },
-    Folded = { bg = "none" },
-    LineNr = { fg = "gray" },
+local M = {}
+M.ayu = function ()
+  vim.o.termguicolors = true
+  local colors = require("ayu.colors")
+  require("ayu").setup({
+    mirage = true,
+    overrides = {
+      Wildmenu = { bg = colors.bg , fg = colors.markup },
+      Comment = { fg = 'gray', italic = true, },
+      LineNr = { fg = 'gray' }
+    }
+  })
+  require("ayu").colorscheme()
+end
+M.transparent_override = function ()
+  local highlights = {
+    "Normal",
+    "LineNr",
+    "Folded",
+    "NonText",
+    "SpecialKey",
+    "VertSplit",
+    "SignColumn",
+    "EndOfBuffer",
   }
-})
-require("ayu").colorscheme()
-return("ayu").colors;
+  for _, highlight in pairs(highlights) do
+    vim.cmd.highlight(highlight .. ' guibg=none ctermbg=none')
+  end
+end
+return M
