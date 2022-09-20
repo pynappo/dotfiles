@@ -28,9 +28,11 @@ require('packer').startup({ function(use)
       after = 'telescope.nvim',
       requires = 'tami5/sqlite.lua',
     },
+    'nvim-telescope/telescope-file-browser.nvim',
   })
   use { 'lukas-reineke/indent-blankline.nvim',
     event = 'BufEnter',
+    requires = 'nvim-treesitter/nvim-treesitter',
     config = function()
       local hl_list = {}
       for i, color in pairs({ '#662121', '#767621', '#216631', '#325a5e', '#324b7b', '#562155' }) do
@@ -41,7 +43,11 @@ require('packer').startup({ function(use)
       require('indent_blankline').setup {
         show_trailing_blankline_indent = false,
         space_char_blankline = ' ',
-        char_highlight_list = hl_list
+        char_highlight_list = hl_list,
+        use_treesitter = true,
+        use_treesitter_scope = true,
+        show_current_context = true,
+        show_current_context_start = true,
       }
     end
   }
@@ -52,7 +58,6 @@ require('packer').startup({ function(use)
       config = [[require('pynappo/plugins/treesitter')]]
     },
     'nvim-treesitter/nvim-treesitter-textobjects',
-    'nvim-telescope/telescope-file-browser.nvim',
     'p00f/nvim-ts-rainbow',
     'windwp/nvim-ts-autotag',
     'nvim-treesitter/nvim-treesitter-context'
@@ -70,6 +75,7 @@ require('packer').startup({ function(use)
     'hrsh7th/cmp-nvim-lsp-signature-help',
     'onsails/lspkind.nvim',
     'dmitmel/cmp-cmdline-history',
+    {"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim"},
     -- 'github/copilot.vim',
     {
       'zbirenbaum/copilot.lua',
@@ -85,7 +91,12 @@ require('packer').startup({ function(use)
     {
       'windwp/nvim-autopairs',
       requires = 'hrsh7th/nvim-cmp',
-      config = [[require('pynappo/plugins/autopairs')]]
+    },
+    {
+      'saecki/crates.nvim',
+      event = { "BufRead Cargo.toml" },
+      requires = { { 'nvim-lua/plenary.nvim' } },
+      config = [[require('crates').setup()]]
     }
   })
   use {
@@ -117,8 +128,25 @@ require('packer').startup({ function(use)
   }
   use 'andweeb/presence.nvim'
   use 'Djancyp/cheat-sheet'
-  use { 'karb94/neoscroll.nvim', config = [[require('pynappo/plugins/neoscroll')]] }
-  use 'stevearc/dressing.nvim'
+  use {
+    'karb94/neoscroll.nvim',
+    config = function ()
+      require("neoscroll").setup({ easing_function = "quadratic"})
+      require("neoscroll.config").set_mappings(require("pynappo/keymaps").neoscroll)
+    end
+  }
+  use {
+    'stevearc/dressing.nvim',
+    config = require("dressing").setup{
+      input = {
+        override = function(conf)
+          conf.col = -1
+          conf.row = 0
+          return conf
+        end,
+      },
+    }
+  }
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
   use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
@@ -199,19 +227,18 @@ require('packer').startup({ function(use)
       requires = {"mfussenegger/nvim-dap"},
       config = [[require("dapui").setup()]]
     },
-    {
-      "mfussenegger/nvim-dap",
-    },
+    "mfussenegger/nvim-dap",
     {
       'theHamsta/nvim-dap-virtual-text',
       requires = {"mfussenegger/nvim-dap"},
       config = [[require("nvim-dap-virtual-text").setup()]]
     },
-    {
-      'j-hui/fidget.nvim',
-      config = [[require("fidget").setup()]]
-    }
+    { 'j-hui/fidget.nvim', config = [[require("fidget").setup { window = { blend = 0 }}]] }
   })
+  use {
+    "smjonas/inc-rename.nvim",
+    config = [[require("inc_rename").setup { input_buffer_type = "dressing" }]]
+  }
 end,
   config = {
     display = {

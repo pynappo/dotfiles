@@ -1,7 +1,7 @@
 local M = {}
 function M.setup()
   local map = vim.keymap.set
-  local ts = require('telescope.builtin')
+  local ts_builtin = require('telescope.builtin')
 
   map({'n', 'v'}, '<Space>', '<Nop>', { silent = true })
   vim.g.mapleader = ' '
@@ -26,15 +26,16 @@ function M.setup()
     },
     telescope = {
       ['n'] = {
-        { '<leader><space>', ts.buffers, {desc = '(TS) Buffers'}},
-        { '<leader>ff', ts.find_files, {desc = '(TS) Find files'}},
-        { '<leader>fb', ts.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
-        { '<leader>fh', ts.help_tags, {desc = '(TS) Neovim help'}},
-        { '<leader>ft', ts.tags , {desc = '(TS) Tags'}},
-        { '<leader>fd', ts.grep_string, {desc = '(TS) grep a string'}},
-        { '<leader>fp', ts.live_grep, {desc = '(TS) live grep a string'}},
-        { '<leader>fo', [[ts.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
-        { '<leader>?', ts.oldfiles, {desc = '(TS) Oldfiles'}},
+        { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
+        { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
+        { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
+        { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
+        { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
+        { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep a string'}},
+        { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
+        { '<leader>fo', [[ts_builtin.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
+        { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
+        { '<leader>fb', ":Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
       }
     },
     diagnostics = {
@@ -54,8 +55,40 @@ function M.setup()
     },
     incremental_rename = {
       ['n'] = {
-        { '<leader>rn', ':IncRename', {desc = 'Rename (incrementally)'}},
+        {
+          '<leader>rn',
+          function()
+            return ":IncRename " .. vim.fn.expand("<cword>")
+          end,
+          {expr = true, desc = 'Rename (incrementally)'}
+        },
         { 'gb', ':BufferLinePick<CR>', {desc = 'Pick from bufferline'}}
+      }
+    },
+    hlslens = {
+      ['n'] = {
+        {
+          'n',
+          [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+          {desc = "hlslens next"}
+        },
+        {
+          'N',
+          [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+          {desc = "hlslens prev"}
+        },
+        {
+          '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
+        },
+        {
+          '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
+        },
+        {
+          'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
+        },
+        {
+          'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
+        }
       }
     }
   }
@@ -160,4 +193,17 @@ M.lsp = {
     { "n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>" }
   }
 }
+
+M.neoscroll = {
+  ["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "200", [["sine"]] } },
+  ["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "200", [["sine"]] } },
+  ["<C-b>"] = { "scroll", { "-vim.api.nvim_win_get_height(0)", "true", "200", [["circular"]] } },
+  ["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "200", [["circular"]] } },
+  ["<C-y>"] = { "scroll", { "-0.10", "false", "200", nil } },
+  ["<C-e>"] = { "scroll", { "0.10", "false", "200", nil } },
+  ["zt"]    = { "zt", { "200" } },
+  ["zz"]    = { "zz", { "200" } },
+  ["zb"]    = { "zb", { "200" } }
+}
+
 return M

@@ -1,13 +1,23 @@
-require("telescope").setup {
+local ts = require('telescope')
+ts.setup {
   extensions = {
     ["ui-select"] = {
       require("telescope.themes").get_dropdown {
       }
     },
     file_browser = {
-      theme = "ayu",
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+          -- your custom insert mode mappings
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+        },
+      },
     }
   }
 }
-require("telescope").load_extension("fzf")
-require("telescope").load_extension("ui-select")
+ts.load_extension("fzf")
+ts.load_extension("ui-select")
+ts.load_extension("file_browser")

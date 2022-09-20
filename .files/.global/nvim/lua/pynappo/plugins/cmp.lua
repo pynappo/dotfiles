@@ -2,6 +2,24 @@ local luasnip = require("luasnip")
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local cmp = require("cmp")
 local lspkind = require("lspkind")
+
+
+-- put this to setup function and press <a-e> to use fast_wrap
+require("nvim-autopairs").setup({
+  enable_check_bracket_line = false,
+  check_ts = true,
+  ignored_next_char = "[%w%.]",
+  fast_wrap = {
+    map = "<M-e>",
+    chars = { "{", "[", "(", "\"", "'" },
+    pattern = [=[[%"%"%)%>%]%)%}%,]]=],
+    end_key = "$",
+    keys = "qwertyuiopzxcvbnmasdfghjkl",
+    check_comma = true,
+    highlight = "Search",
+    highlight_grey = "Comment"
+  },
+})
 cmp.setup {
   window = {
     completion = {
@@ -66,11 +84,20 @@ cmp.setup {
     { name = "nvim_lsp" },
     { name = "copilot" },
     { name = "luasnip" },
-    { name = "nvim_lsp_signature_help" }
+    { name = "nvim_lsp_signature_help" },
+    { name = "crates" },
+    { name = "path"}
   },
   view = { entries = { name = "custom", selection_order = "near_cursor" } },
 }
 
+cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources(
+    {{ name = 'git' }},
+    {{ name = 'buffer' }}
+  )
+})
+require("cmp_git").setup()
 cmp.event:on(
   'confirm_done',
   cmp_autopairs.on_confirm_done()
@@ -79,7 +106,8 @@ cmp.setup.cmdline(':', {
   confirmation = { completeopt = 'menu,menuone,noinsert' },
   sources = {
     { name = 'cmdline' },
-    { name = 'cmdline_history' }
+    { name = 'cmdline_history' },
+    { name = 'path'}
   }
 })
 cmp.setup.cmdline('/', {

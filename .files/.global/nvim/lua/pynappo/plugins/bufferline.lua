@@ -1,10 +1,10 @@
 require('bufferline').setup {
   options = {
-    mode = "buffers", -- set to "tabs" to only show tabpages instead
+    mode = "tabs", -- set to "tabs" to only show tabpages instead
       close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
       right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
       left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-      middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions" 
+      middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
       --- name_formatter can be used to change the buffer's label in the bufferline.
       --- Please note some names can/will break the
       --- bufferline so use this at your discretion knowing that it has

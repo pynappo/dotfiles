@@ -1,15 +1,15 @@
 require("impatient").enable_profile()
-local o = vim.opt
+local opt = vim.opt
 local g = vim.g
 
 -- Firenvim
 if vim.g.started_by_firenvim then
-  o.laststatus = 0
-  o.showtabline = 0
-  o.winbar = ""
+  opt.laststatus = 0
+  opt.showtabline = 0
+  opt.winbar = ""
 else
-  o.laststatus = 3
-  o.scrolloff = 4
+  opt.laststatus = 3
+  opt.scrolloff = 4
 end
 vim.g.firenvim_config = {
   globalSettings = {
@@ -23,34 +23,34 @@ vim.g.firenvim_config = {
     }
   }
 }
-o.signcolumn = "auto:9"
-o.cmdheight = 0
+opt.signcolumn = "auto:9"
+opt.cmdheight = 0
 g.gutentags_enabled = 1
 -- Line numbers
-o.relativenumber = true
-o.number = true
+opt.relativenumber = true
+opt.number = true
 
 -- Enable mouse
-o.mouse = "a"
+opt.mouse = "a"
 
 -- Tabs
-o.tabstop = 2
-o.shiftwidth = 0
-o.softtabstop = -1
-o.expandtab = true
+opt.tabstop = 2
+opt.shiftwidth = 0
+opt.softtabstop = -1
+opt.expandtab = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-o.ignorecase = true
-o.smartcase = true
+opt.ignorecase = true
+opt.smartcase = true
 
 -- More intuitive splits
-o.splitright = true
-o.splitbelow = true
+opt.splitright = true
+opt.splitbelow = true
 
 -- Misc
-o.history = 50
-o.whichwrap:append("<,>,h,l,[,]")
-o.fillchars = {
+opt.history = 50
+opt.whichwrap:append("<,>,h,l,[,]")
+opt.fillchars = {
   horiz     = '━',
   horizup   = '┻',
   horizdown = '┳',
@@ -61,17 +61,17 @@ o.fillchars = {
   eob       = ' ',
   fold      = ' ',
 }
-o.guifont = "InconsolataLGC_NF"
-o.list = true
-o.listchars = {
+opt.guifont = "InconsolataLGC_NF"
+opt.list = true
+opt.listchars = {
   extends = '⟩',
   precedes = '⟨',
   trail = '·',
   tab = '» ',
   nbsp = '␣',
 }
-o.cursorline = true
-o.wrap = true
+opt.cursorline = true
+opt.wrap = true
 
 local disabled_built_ins = {
   "netrw",
@@ -95,9 +95,11 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
   vim.g["loaded_" .. plugin] = 1
 end
+local theme = require("pynappo/theme")
+theme.ayu()
+theme.transparent_override()
 require("pynappo/plugins")
 require("pynappo/keymaps").setup()
-require("pynappo/theme")
 require("pynappo/autocmds")
 require("pynappo/commands")
 
