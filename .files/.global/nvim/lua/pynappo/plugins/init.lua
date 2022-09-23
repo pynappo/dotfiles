@@ -157,7 +157,13 @@ require('packer').startup({ function(use)
     requires = 'kyazdani42/nvim-web-devicons',
     config = [[require('pynappo/plugins/bufferline')]]
   }
-  use { 'max397574/better-escape.nvim', config = [[require('better_escape').setup({mapping = {"jk", "kj"}})]] }
+  use { 'max397574/better-escape.nvim', config = function()
+    require('better_escape').setup({mapping = {"jk", "kj"},
+      keys = function ()
+        return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>'
+      end
+    })
+  end }
   use { 'kevinhwang91/nvim-hlslens', config = [[require('pynappo/plugins/hlslens')]] }
   use {
     'rcarriga/nvim-notify',

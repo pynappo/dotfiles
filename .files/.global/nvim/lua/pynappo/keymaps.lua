@@ -31,7 +31,7 @@ function M.setup()
         { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
         { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
         { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
-        { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep a string'}},
+        { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
         { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
         { '<leader>fo', [[ts_builtin.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
         { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
@@ -77,18 +77,10 @@ function M.setup()
           [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
           {desc = "hlslens prev"}
         },
-        {
-          '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
-        },
-        {
-          '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
-        },
-        {
-          'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
-        },
-        {
-          'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"}
-        }
+        { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
+        { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
+        { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
+        { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} }
       }
     }
   }
