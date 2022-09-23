@@ -1,4 +1,6 @@
+
 local ts = require('telescope')
+local ts_actions = require('telescope.actions')
 ts.setup {
   extensions = {
     ["ui-select"] = {
@@ -9,7 +11,7 @@ ts.setup {
       hijack_netrw = true,
       mappings = {
         ["i"] = {
-          -- your custom insert mode mappings
+          ["<esc>"] = ts_actions.close,
         },
         ["n"] = {
           -- your custom normal mode mappings
