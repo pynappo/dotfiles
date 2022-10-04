@@ -1,15 +1,16 @@
 require("impatient").enable_profile()
+local o = vim.o
 local opt = vim.opt
 local g = vim.g
 
 -- Firenvim
 if vim.g.started_by_firenvim then
-  opt.laststatus = 0
-  opt.showtabline = 0
-  opt.winbar = ""
+  o.laststatus = 0
+  o.showtabline = 0
+  o.winbar = ""
 else
-  opt.laststatus = 3
-  opt.scrolloff = 4
+  o.laststatus = 3
+  o.scrolloff = 4
 end
 vim.g.firenvim_config = {
   globalSettings = {
@@ -23,32 +24,32 @@ vim.g.firenvim_config = {
     }
   }
 }
-opt.signcolumn = "auto:9"
-opt.cmdheight = 0
+o.signcolumn = "auto:9"
+o.cmdheight = 0
 g.gutentags_enabled = 1
 -- Line numbers
-opt.relativenumber = true
-opt.number = true
+o.relativenumber = true
+o.number = true
 
 -- Enable mouse
-opt.mouse = "a"
+o.mouse = "a"
 
 -- Tabs
-opt.tabstop = 2
-opt.shiftwidth = 0
-opt.softtabstop = -1
-opt.expandtab = true
+o.tabstop = 2
+o.shiftwidth = 0
+o.softtabstop = -1
+o.expandtab = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-opt.ignorecase = true
-opt.smartcase = true
+o.ignorecase = true
+o.smartcase = true
 
 -- More intuitive splits
-opt.splitright = true
-opt.splitbelow = true
+o.splitright = true
+o.splitbelow = true
 
 -- Misc
-opt.history = 50
+o.history = 50
 opt.whichwrap:append("<,>,h,l,[,]")
 opt.fillchars = {
   horiz     = '━',
@@ -61,8 +62,8 @@ opt.fillchars = {
   eob       = ' ',
   fold      = ' ',
 }
-opt.guifont = "InconsolataLGC_NF"
-opt.list = true
+o.guifont = "InconsolataLGC_NF"
+o.list = true
 opt.listchars = {
   extends = '⟩',
   precedes = '⟨',
@@ -70,8 +71,8 @@ opt.listchars = {
   tab = '» ',
   nbsp = '␣',
 }
-opt.cursorline = true
-opt.wrap = true
+o.cursorline = true
+o.wrap = true
 
 local disabled_built_ins = {
   "netrw",
