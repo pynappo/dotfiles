@@ -65,24 +65,24 @@ function M.setup()
         { 'gb', ':BufferLinePick<CR>', {desc = 'Pick from bufferline'}}
       }
     },
-    hlslens = {
-      ['n'] = {
-        {
-          'n',
-          [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-          {desc = "hlslens next"}
-        },
-        {
-          'N',
-          [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-          {desc = "hlslens prev"}
-        },
-        { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
-        { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
-        { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
-        { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} }
-      }
-    }
+    -- hlslens = {
+    --   ['n'] = {
+    --     {
+    --       'n',
+    --       [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    --       {desc = "hlslens next"}
+    --     },
+    --     {
+    --       'N',
+    --       [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    --       {desc = "hlslens prev"}
+    --     },
+    --     { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
+    --     { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
+    --     { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
+    --     { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} }
+    --   }
+    -- }
   }
 
   for _, type in pairs(mappings) do
@@ -187,15 +187,15 @@ M.lsp = {
 }
 
 M.neoscroll = {
-  ["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "200", [["sine"]] } },
-  ["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "200", [["sine"]] } },
-  ["<C-b>"] = { "scroll", { "-vim.api.nvim_win_get_height(0)", "true", "200", [["circular"]] } },
-  ["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "200", [["circular"]] } },
-  ["<C-y>"] = { "scroll", { "-0.10", "false", "200", nil } },
-  ["<C-e>"] = { "scroll", { "0.10", "false", "200", nil } },
-  ["zt"]    = { "zt", { "200" } },
-  ["zz"]    = { "zz", { "200" } },
-  ["zb"]    = { "zb", { "200" } }
+  ["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "150", [["sine"]] } },
+  ["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "150", [["sine"]] } },
+  ["<C-b>"] = { "scroll", { "-vim.api.nvim_win_get_height(0)", "true", "250", [["circular"]] } },
+  ["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "250", [["circular"]] } },
+  ["<C-y>"] = { "scroll", { "-0.10", "false", "100", nil } },
+  ["<C-e>"] = { "scroll", { "0.10", "false", "100", nil } },
+  ["zt"]    = { "zt", { "100" } },
+  ["zz"]    = { "zz", { "100" } },
+  ["zb"]    = { "zb", { "100" } }
 }
 
 return M

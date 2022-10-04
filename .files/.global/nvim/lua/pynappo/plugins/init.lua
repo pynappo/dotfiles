@@ -106,7 +106,7 @@ require('packer').startup({ function(use)
       'nvim-lua/plenary.nvim',
       'kyazdani42/nvim-web-devicons',
       'MunifTanjim/nui.nvim',
-      { 's1n7ax/nvim-window-picker', tag = "v1.*" }
+     { 's1n7ax/nvim-window-picker', tag = "v1.*" }
     },
     config = function()
       require('window-picker').setup()
@@ -158,7 +158,8 @@ require('packer').startup({ function(use)
     config = [[require('pynappo/plugins/bufferline')]]
   }
   use { 'max397574/better-escape.nvim', config = function()
-    require('better_escape').setup({mapping = {"jk", "kj"},
+    require('better_escape').setup({
+      mapping = {"jk", "kj"},
       keys = function ()
         return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>'
       end
@@ -172,6 +173,24 @@ require('packer').startup({ function(use)
       vim.notify = require('notify')
     end
   }
+  -- use({
+  --   "folke/noice.nvim",
+  --   event = "VimEnter",
+  --   config = function()
+  --     require("noice").setup({
+  --       cmdline = { view = "cmdline", },
+  --       popupmenu = {
+  --         enabled = false,
+  --       }
+  --     })
+  --   end,
+  --   requires = {
+  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --     "MunifTanjim/nui.nvim",
+  --     "rcarriga/nvim-notify",
+  --     "hrsh7th/nvim-cmp",
+  --   }
+  -- })
   use { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig' }
   use {
     'nvim-neorg/neorg',

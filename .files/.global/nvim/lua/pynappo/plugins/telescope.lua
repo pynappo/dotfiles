@@ -2,6 +2,9 @@
 local ts = require('telescope')
 local ts_actions = require('telescope.actions')
 ts.setup {
+  defaults = {
+    path_display = {"smart"}
+  },
   extensions = {
     ["ui-select"] = {
       require("telescope.themes").get_dropdown {
