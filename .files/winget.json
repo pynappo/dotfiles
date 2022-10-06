@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-09-16T00:30:19.833-00:00",
+	"CreationDate" : "2022-10-06T02:32:24.998-00:00",
 	"Sources" : 
 	[
 		{
@@ -20,6 +20,9 @@
 				},
 				{
 					"PackageIdentifier" : "9NBLGGH5L9XT"
+				},
+				{
+					"PackageIdentifier" : "9PJPW5LDXLZ5"
 				}
 			],
 			"SourceDetails" : 
@@ -92,6 +95,12 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.WindowsTerminal"
+				},
+				{
+					"PackageIdentifier" : "Anaconda.Miniconda3"
+				},
+				{
+					"PackageIdentifier" : "Anaconda.Miniconda3"
 				},
 				{
 					"PackageIdentifier" : "Mozilla.Firefox"
@@ -193,7 +202,13 @@
 					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2012Redist-x86"
+					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
@@ -217,10 +232,7 @@
 					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2005Redist-x86"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VisualStudioCode"
+					"PackageIdentifier" : "Microsoft.VCRedist.2005.x86"
 				},
 				{
 					"PackageIdentifier" : "msys2.msys2"
@@ -233,12 +245,6 @@
 				},
 				{
 					"PackageIdentifier" : "ElectronicArts.EADesktop"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2015-2019Redist-x86"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
 				},
 				{
 					"PackageIdentifier" : "Peppy.Osu!"

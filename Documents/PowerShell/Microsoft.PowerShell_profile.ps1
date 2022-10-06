@@ -2,15 +2,16 @@ Unblock-File $profile
 
 oh-my-posh init pwsh --config $HOME/.files/.global/pynappo.omp.json | Invoke-Expression
 Import-Module posh-git
+$env:POSH_GIT_ENABLED = $true
 Import-Module -Name Terminal-Icons
 Import-Module scoop-completion
 Import-Module cd-extras
 
-$env:POSH_GIT_ENABLED = $true
-
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
 
+$env:FZF_DEFAULT_COMMAND="fd --hidden --exclude .git"
+$env:FZF_DEFAULT_OPTS = "--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
 Function Notepad { Notepads @Args }
 Function Dotfiles {
