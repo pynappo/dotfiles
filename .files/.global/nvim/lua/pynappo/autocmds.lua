@@ -22,6 +22,14 @@ autocmd({ "BufWritePre" }, {
   group = pynappo
 })
 
+autocmd( {"VimEnter"} , {
+  callback = function()
+    if string.find(vim.fn.getcwd(), '.files') then
+      vim.env.GIT_WORK_TREE = vim.fn.expand("~")
+      vim.env.GIT_DIR = vim.fn.expand("~/.files")
+    end
+  end
+})
 autocmd({ "DirChanged" }, {
   callback = function ()
     if string.find(vim.v.event.cwd, '.files') then

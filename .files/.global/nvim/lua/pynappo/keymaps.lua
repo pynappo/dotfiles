@@ -1,102 +1,120 @@
 local M = {}
-function M.setup()
-  local map = vim.keymap.set
-  local ts_builtin = require('telescope.builtin')
 
-  map({'n', 'v'}, '<Space>', '<Nop>', { silent = true })
-  vim.g.mapleader = ' '
-  vim.g.maplocalleader = ' '
+local set = vim.keymap.set
 
-  local mappings = {
-    regular = {
-      ['n'] = {
-        { 'x', '"_x', { silent = true }},
-        { 'j', 'gj' , { silent = true }},
-        { 'k', 'gk' , { silent = true }},
-        -- Better pasting
-        { 'p', 'p=`]', { silent = true } },
-        { 'P', 'P=`]', { silent = true } },
-        { '<leader>p', '"+p=`]', { silent = true } },
-        -- Better window navigation
-        { '<C-j>', '<C-w>j', { silent = true } },
-        { '<C-k>', '<C-w>k', { silent = true } },
-        { '<C-h>', '<C-w>h', { silent = true } },
-        { '<C-l>', '<C-w>l', { silent = true } },
-      },
-    },
-    telescope = {
-      ['n'] = {
-        { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
-        { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
-        { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
-        { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
-        { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
-        { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
-        { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
-        { '<leader>fo', [[ts_builtin.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
-        { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
-        { '<leader>fb', ":Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
-      }
-    },
-    diagnostics = {
-      ['n'] = {
-        { '<leader>e', vim.diagnostic.open_float, {desc = 'Floating Diagnostics'}},
-        { '[d', vim.diagnostic.goto_prev, {desc = 'Previous diagnostic'}},
-        { ']d', vim.diagnostic.goto_next, {desc = 'Next diagnostic'}},
-        { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
-      }
-    },
-    neo_tree = {
-      ['n'] = {
-        { '<leader>n', ':Neotree toggle left reveal_force_cwd<CR>', {desc = '(NT) CWD file tree (left) '}},
-        { '<leader>b', ':Neotree toggle show buffers right<CR>', {desc = '(NT) Buffers (right)'}},
-        { '<leader>g', ':Neotree float git_status<CR>', {desc = '(NT) Floating git status'} },
-      }
-    },
-    incremental_rename = {
-      ['n'] = {
-        {
-          '<leader>rn',
-          function()
-            return ":IncRename " .. vim.fn.expand("<cword>")
-          end,
-          {expr = true, desc = 'Rename (incrementally)'}
-        },
-        { 'gb', ':BufferLinePick<CR>', {desc = 'Pick from bufferline'}}
-      }
-    },
-    -- hlslens = {
-    --   ['n'] = {
-    --     {
-    --       'n',
-    --       [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-    --       {desc = "hlslens next"}
-    --     },
-    --     {
-    --       'N',
-    --       [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-    --       {desc = "hlslens prev"}
-    --     },
-    --     { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
-    --     { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
-    --     { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} },
-    --     { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {desc = "search word closest to cursor"} }
-    --   }
-    -- }
-  }
-
-  for _, type in pairs(mappings) do
-    for mode, mapping_table in pairs(type) do
-      for _, mapping in pairs(mapping_table) do
-        local key = mapping[1]
-        local cmd = mapping[2]
-        local opts = mapping[3]
-        map(mode, key, cmd, opts)
-      end
+local function map(mappings)
+  for mode, mapping_table in pairs(mappings) do
+    for _, mapping in pairs(mapping_table) do
+      local key = mapping[1]
+      local cmd = mapping[2]
+      local opts = mapping[3]
+      set(mode, key, cmd, opts)
     end
   end
 end
 
+local ts_builtin = require('telescope.builtin')
+local mappings = {
+  regular = {
+    [{'n'}] = {
+      { 'x', '"_x', { silent = true }},
+      { 'j', 'gj' , { silent = true }},
+      { 'k', 'gk' , { silent = true }},
+      -- Better pasting
+      { 'p', 'p=`]', { silent = true } },
+      { 'P', 'P=`]', { silent = true } },
+      -- Yank and paste from clipboard
+      { '<leader>p', '"+p=`]', { silent = true } },
+      { '<leader>y', '"+y"', { silent = true }},
+      -- Better window navigation
+      { '<C-j>', '<C-w>j', { silent = true } },
+      { '<C-k>', '<C-w>k', { silent = true } },
+      { '<C-h>', '<C-w>h', { silent = true } },
+      { '<C-l>', '<C-w>l', { silent = true } },
+    },
+    [{'n', 'v'}] = {
+      {'<Space>', '<Nop>', { silent = true }},
+    }
+  },
+  telescope = {
+    [{ 'n' }] = {
+      { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
+      { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
+      { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
+      { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
+      { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
+      { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
+      { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
+      { '<leader>fo', [[ts_builtin.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
+      { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
+      { '<leader>fb', ":Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
+    }
+  },
+  diagnostics = {
+    [{ 'n' }] = {
+      { '<leader>e', vim.diagnostic.open_float, {desc = 'Floating Diagnostics'}},
+      { '[d', vim.diagnostic.goto_prev, {desc = 'Previous diagnostic'}},
+      { ']d', vim.diagnostic.goto_next, {desc = 'Next diagnostic'}},
+      { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
+    }
+  },
+  neo_tree_window = {
+    [{ 'n' }] = {
+      { '<leader>n', ':Neotree toggle left reveal_force_cwd<CR>', {desc = '(NT) CWD file tree (left) '}},
+      { '<leader>b', ':Neotree toggle show buffers right<CR>', {desc = '(NT) Buffers (right)'}},
+      { '<leader>g', ':Neotree float git_status<CR>', {desc = '(NT) Floating git status'} },
+    }
+  },
+  incremental_rename = {
+    [{ 'n' }] = {
+      {
+        '<leader>rn',
+        function() return ":IncRename " .. vim.fn.expand("<cword>") end,
+        {expr = true, desc = 'Rename (incrementally)'}
+      },
+    }
+  },
+  bufferline = {
+    [{ 'n' }] = {
+      { 'gb', ':BufferLinePick<CR>', {desc = 'Pick from bufferline'}}
+    }
+  },
+  hlslens = {
+    [{'n'}] = {
+      { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+      { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+      { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+      { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+      { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+      { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+      { '<Leader>l', ':noh<CR>', {noremap = true, silent = true} },
+    }
+  },
+  dial = {
+    [{'n'}] = {
+      { "<C-a>", require("dial.map").inc_normal(), {noremap = true} },
+      { "<C-x>", require("dial.map").dec_normal(), {noremap = true} },
+    },
+    [{'v'}] = {
+      { "<C-a>", require("dial.map").inc_visual(), {noremap = true} },
+      { "<C-x>", require("dial.map").dec_visual(), {noremap = true} },
+      { "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true} },
+      { "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true} },
+    }
+  }
+}
+
+function M.setup(purpose)
+  map(mappings[purpose])
+end
+
+function M.init()
+  vim.g.mapleader = ' '
+  vim.g.maplocalleader = ' '
+  M.setup("regular")
+end
+
+-- For other plugins
 
 M.toggleterm = {
   open_mapping = [[<C-\>]]
@@ -165,10 +183,6 @@ M.neo_tree = {
   }
 }
 M.lsp = {
-  -- Mappings.
-  -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-  -- Use an on_attach function to only map the following keys
-  -- after the language server attaches to the current buffer
   on_attach = {
     { "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>" },
     { "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>" },
@@ -182,10 +196,9 @@ M.lsp = {
     { "n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>" },
     { "n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>" },
     { "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>" },
-    { "n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>" }
+    { "n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR>" }
   }
 }
-
 M.neoscroll = {
   ["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "150", [["sine"]] } },
   ["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "150", [["sine"]] } },

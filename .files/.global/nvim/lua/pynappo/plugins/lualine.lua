@@ -14,7 +14,7 @@ lualine.setup {
       { 'mode', separator = { left = '' }, right_padding = 2 },
     },
     lualine_b = { 'filename', 'branch', 'diagnostics' },
-    lualine_c = {{ navic.get_location, cond = navic.is_available }},
+    lualine_c = {},
     lualine_x = { 'fileformat' },
     lualine_y = { 'filetype' },
     lualine_z = {
@@ -25,7 +25,7 @@ lualine.setup {
   winbar = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {},
+    lualine_c = {{ navic.get_location, cond = navic.is_available }},
     lualine_x = {'%f'},
     lualine_y = {},
     lualine_z = {}

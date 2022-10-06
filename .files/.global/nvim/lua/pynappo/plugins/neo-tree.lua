@@ -5,7 +5,9 @@ vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSi
 vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
 vim.fn.sign_define("DiagnosticSignInfo", {text = " ", texthl = "DiagnosticSignInfo"})
 vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
-local neotree_keymaps = require("pynappo/keymaps").neo_tree
+local keymaps = require("pynappo/keymaps")
+local neotree_keymaps = keymaps.neo_tree
+keymaps.setup('neo_tree_window')
 
 require("neo-tree").setup({
   close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
@@ -61,7 +63,7 @@ require("neo-tree").setup({
         ignored   = "",
         unstaged  = "",
         staged    = "",
-  conflict  = "",
+        conflict  = "",
       }
     },
   },
@@ -97,7 +99,7 @@ require("neo-tree").setup({
       },
     },
     follow_current_file = true,
-    group_empty_dirs = false, -- when true, empty folders will be grouped together
+    group_empty_dirs = true, -- when true, empty folders will be grouped together
     hijack_netrw_behavior = "disabled",
     use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
     -- instead of relying on nvim autocmd events.
