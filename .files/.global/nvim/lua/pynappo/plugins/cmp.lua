@@ -42,7 +42,9 @@ cmp.setup {
         nvim_lsp = "[LSP]",
         nvim_lua =  "[Lua]",
         luasnip = "[Snip]",
-        copilot = "[GHub]"
+        copilot = "[GHub]",
+        crates = "[Crate]",
+        path = "[Path]",
       })
     })
   },

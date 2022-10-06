@@ -12,6 +12,8 @@
 	directory = c:/Users/lehti/AppData/Local/nvim-data/site/pack/packer/start/nvim-treesitter
 	directory = C:\\Users\\lehti\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-treesitter\\
 	directory = *
+	directory = C:\\Users\\lehti\\.files\\
+	directory = C:/Users/lehti/.files
 [core]
 	symlinks = true
 	fsmonitor = true

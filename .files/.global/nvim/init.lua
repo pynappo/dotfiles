@@ -24,10 +24,10 @@ vim.g.firenvim_config = {
     }
   }
 }
-o.signcolumn = "auto:9"
+-- Line numbers
+o.signcolumn = "auto:2"
 o.cmdheight = 0
 g.gutentags_enabled = 1
--- Line numbers
 o.relativenumber = true
 o.number = true
 
@@ -100,8 +100,6 @@ local theme = require("pynappo/theme")
 theme.ayu()
 theme.transparent_override()
 require("pynappo/plugins")
-require("pynappo/keymaps").setup()
+require("pynappo/keymaps").init()
 require("pynappo/autocmds")
 require("pynappo/commands")
-
-

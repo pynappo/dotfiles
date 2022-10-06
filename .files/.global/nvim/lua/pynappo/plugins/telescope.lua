@@ -1,6 +1,5 @@
-
+require('pynappo.keymaps').setup('telescope')
 local ts = require('telescope')
-local ts_actions = require('telescope.actions')
 ts.setup {
   defaults = {
     path_display = {"smart"}
@@ -12,14 +11,6 @@ ts.setup {
     },
     file_browser = {
       hijack_netrw = true,
-      mappings = {
-        ["i"] = {
-          ["<esc>"] = ts_actions.close,
-        },
-        ["n"] = {
-          -- your custom normal mode mappings
-        },
-      },
     }
   }
 }

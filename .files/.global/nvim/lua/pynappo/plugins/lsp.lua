@@ -3,10 +3,8 @@ require('mason-lspconfig').setup({
 })
 local navic = require("nvim-navic")
 local lspconfig = require('lspconfig')
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
+
+require('pynappo/keymaps').setup('diagnostics')
 local on_attach_keymaps = require('pynappo/keymaps').lsp.on_attach
 local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
