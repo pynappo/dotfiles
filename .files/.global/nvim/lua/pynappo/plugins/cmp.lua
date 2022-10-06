@@ -1,25 +1,7 @@
 local luasnip = require("luasnip")
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 
-
--- put this to setup function and press <a-e> to use fast_wrap
-require("nvim-autopairs").setup({
-  enable_check_bracket_line = false,
-  check_ts = true,
-  ignored_next_char = "[%w%.]",
-  fast_wrap = {
-    map = "<M-e>",
-    chars = { "{", "[", "(", "\"", "'" },
-    pattern = [=[[%"%"%)%>%]%)%}%,]]=],
-    end_key = "$",
-    keys = "qwertyuiopzxcvbnmasdfghjkl",
-    check_comma = true,
-    highlight = "Search",
-    highlight_grey = "Comment"
-  },
-})
 cmp.setup {
   window = {
     completion = {
@@ -99,7 +81,7 @@ cmp.setup.filetype('gitcommit', {
     {{ name = 'buffer' }}
   )
 })
-require("cmp_git").setup()
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on(
   'confirm_done',
   cmp_autopairs.on_confirm_done()

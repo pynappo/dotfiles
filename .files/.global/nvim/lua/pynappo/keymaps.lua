@@ -101,6 +101,11 @@ local mappings = {
       { "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true} },
       { "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true} },
     }
+  },
+  matchup = {
+    [{'n'}] = {
+      { "<c-s-k>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} }
+    }
   }
 }
 
