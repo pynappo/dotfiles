@@ -52,31 +52,43 @@ require('packer').startup({ function(use)
     'nvim-treesitter/nvim-treesitter-context'
   })
   use ({
-    { 'hrsh7th/nvim-cmp', config = [[require('pynappo/plugins/cmp')]] },
-    'hrsh7th/cmp-nvim-lsp',
-    'saadparwaiz1/cmp_luasnip',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-path',
-    'hrsh7th/cmp-cmdline',
-    'hrsh7th/cmp-nvim-lsp-signature-help',
-    'onsails/lspkind.nvim',
-    'dmitmel/cmp-cmdline-history',
-    {"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim"},
-    -- 'github/copilot.vim',
     { 'zbirenbaum/copilot.lua', event = 'InsertEnter', config = [[require('copilot').setup()]] },
-    { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp' },
     {
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
-      requires = { 'rafamadriz/friendly-snippets' }
+      event = { 'InsertEnter', 'CmdlineEnter' },
+      requires = { 'rafamadriz/friendly-snippets', event = 'InsertEnter' }
     },
-    { 'windwp/nvim-autopairs', requires = 'hrsh7th/nvim-cmp', },
     {
-      'saecki/crates.nvim',
-      event = { "BufRead Cargo.toml" },
-      requires = { 'nvim-lua/plenary.nvim' },
-      config = [[require('crates').setup()]]
-    }
+      'hrsh7th/nvim-cmp',
+      config = [[require('pynappo/plugins/cmp')]],
+      after = 'LuaSnip',
+      requires = {
+        { 'onsails/lspkind.nvim'},
+        { "hrsh7th/cmp-buffer", after = "nvim-cmp", opt = true },
+        { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt = true },
+        { "hrsh7th/cmp-calc", after = "nvim-cmp", opt = true },
+        { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
+        { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
+        { 'dmitmel/cmp-cmdline-history', after = "nvim-cmp" },
+        { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp', opt = true },
+        { "hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true },
+        { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
+        { "f3fora/cmp-spell", after = "nvim-cmp", opt = true },
+        { "octaltree/cmp-look", after = "nvim-cmp", opt = true },
+        { "saadparwaiz1/cmp_luasnip", after = { "nvim-cmp", "LuaSnip" } },
+        { 'hrsh7th/cmp-nvim-lsp-signature-help', after = "nvim-cmp"},
+        {
+          'saecki/crates.nvim',
+          after = 'nvim-cmp',
+          event = "BufRead Cargo.toml",
+          requires = 'nvim-lua/plenary.nvim',
+          config = [[require('crates').setup()]]
+        },
+        { "petertriho/cmp-git", after = "nvim-cmp", requires = "nvim-lua/plenary.nvim", config = [[require("cmp_git").setup()]] },
+      },
+    },
+    { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = [[require('pynappo/plugins/autopairs')]]},
   })
   use {
     'nvim-neo-tree/neo-tree.nvim',
@@ -96,17 +108,29 @@ require('packer').startup({ function(use)
   use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
   use 'lewis6991/impatient.nvim'
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
-  use 'andymass/vim-matchup'
+  use {
+    'andymass/vim-matchup',
+    opt = true,
+    event = { "CursorHold", "CursorHoldI" },
+    cmd = { "MatchupWhereAmI?" },
+    config = function()
+      vim.g.matchup_enabled = 1
+      vim.g.matchup_surround_enabled = 1
+      vim.g.matchup_transmute_enabled = 1
+      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      require('pynappo/keymaps').setup('matchup')
+    end,
+  }
   use { 'nmac427/guess-indent.nvim', config = [[require('guess-indent').setup{}]], }
   use { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] }
   use 'tpope/vim-repeat'
   use {
     'folke/trouble.nvim',
+    cmd = {'Trouble', 'TroubleEnter'},
     requires = 'kyazdani42/nvim-web-devicons',
     config = [[require('trouble').setup{}]],
   }
-  use 'andweeb/presence.nvim'
-  use 'Djancyp/cheat-sheet'
   use {
     'karb94/neoscroll.nvim',
     config = function ()
