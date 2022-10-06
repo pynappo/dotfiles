@@ -153,7 +153,7 @@ require('packer').startup({ function(use)
   }
   use {
     "kevinhwang91/nvim-hlslens",
-    config = [[require(pynappo/keymaps).setup('hlslens')]]
+    config = [[require('pynappo/keymaps').setup('hlslens')]]
   }
   -- use({
   --   "folke/noice.nvim",
