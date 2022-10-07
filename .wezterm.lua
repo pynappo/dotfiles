@@ -1,1 +1,1 @@
-C:/Users/lehti/.files/.wezterm.lua
+./.files/.global/.wezterm.lua
