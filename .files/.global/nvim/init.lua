@@ -1,4 +1,4 @@
-require("impatient").enable_profile()
+require("impatient")
 local o = vim.o
 local opt = vim.opt
 local g = vim.g

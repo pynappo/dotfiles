@@ -1,5 +1,6 @@
 require('mason-lspconfig').setup({
   ensure_installed = { "sumneko_lua", "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer", "gopls"},
+  automatic_installation = true
 })
 local navic = require("nvim-navic")
 local lspconfig = require('lspconfig')
@@ -38,6 +39,7 @@ local luadev = require("lua-dev").setup({
     flags = flags,
   },
 })
+
 lspconfig['sumneko_lua'].setup(luadev)
 local null_ls = require('null-ls')
 null_ls.setup({
