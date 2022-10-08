@@ -26,7 +26,7 @@ autocmd( {"VimEnter"} , {
   callback = function()
     if string.find(vim.fn.getcwd(), '.files') then
       vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-      vim.env.GIT_DIR = vim.fn.expand("~/.files")
+      vim.env.GIT_DIR = vim.fn.expand("~/.dotwindows.git/")
     end
   end
 })
@@ -34,7 +34,7 @@ autocmd({ "DirChanged" }, {
   callback = function ()
     if string.find(vim.v.event.cwd, '.files') then
       vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-      vim.env.GIT_DIR = vim.fn.expand("~/.files")
+      vim.env.GIT_DIR = vim.fn.expand("~/.dotwindows.git/")
     else
       vim.env.GIT_WORK_TREE = nil
       vim.env.GIT_DIR = nil

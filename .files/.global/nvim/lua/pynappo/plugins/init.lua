@@ -1,3 +1,17 @@
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
+
 require('packer').startup({ function(use)
   use 'wbthomason/packer.nvim'
   use {
@@ -11,7 +25,7 @@ require('packer').startup({ function(use)
   }
   use { 'ludovicchabant/vim-gutentags' }
   use { 'catppuccin/nvim', as = 'catppuccin' }
-  use { 'Shatur/neovim-ayu' }
+  use 'Shatur/neovim-ayu'
   use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
   use ({
     {
@@ -56,26 +70,24 @@ require('packer').startup({ function(use)
     {
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
-      event = { 'InsertEnter', 'CmdlineEnter' },
-      requires = { 'rafamadriz/friendly-snippets', event = 'InsertEnter' }
+      requires = { 'rafamadriz/friendly-snippets' }
     },
     {
       'hrsh7th/nvim-cmp',
       config = [[require('pynappo/plugins/cmp')]],
-      after = 'LuaSnip',
       requires = {
-        { 'onsails/lspkind.nvim'},
-        { "hrsh7th/cmp-buffer", after = "nvim-cmp", opt = true },
-        { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt = true },
-        { "hrsh7th/cmp-calc", after = "nvim-cmp", opt = true },
-        { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
-        { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
+        'onsails/lspkind.nvim',
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-nvim-lua",
+        "hrsh7th/cmp-calc",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
         { 'dmitmel/cmp-cmdline-history', after = "nvim-cmp" },
-        { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp', opt = true },
-        { "hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true },
-        { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
-        { "f3fora/cmp-spell", after = "nvim-cmp", opt = true },
-        { "octaltree/cmp-look", after = "nvim-cmp", opt = true },
+        { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp'},
+        "hrsh7th/cmp-emoji",
+        "hrsh7th/cmp-nvim-lsp",
+        "f3fora/cmp-spell",
+        "octaltree/cmp-look",
         { "saadparwaiz1/cmp_luasnip", after = { "nvim-cmp", "LuaSnip" } },
         { 'hrsh7th/cmp-nvim-lsp-signature-help', after = "nvim-cmp"},
         {
@@ -85,10 +97,10 @@ require('packer').startup({ function(use)
           requires = 'nvim-lua/plenary.nvim',
           config = [[require('crates').setup()]]
         },
-        { "petertriho/cmp-git", after = "nvim-cmp", requires = "nvim-lua/plenary.nvim", config = [[require("cmp_git").setup()]] },
+        { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", config = [[require("cmp_git").setup()]] },
       },
     },
-    { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = [[require('pynappo/plugins/autopairs')]]},
+    { 'windwp/nvim-autopairs', config = [[require('pynappo/plugins/autopairs')]]},
   })
   use {
     'nvim-neo-tree/neo-tree.nvim',
@@ -140,20 +152,21 @@ require('packer').startup({ function(use)
   }
   use {
     'stevearc/dressing.nvim',
-    config = require("dressing").setup{
-      input = {
-        override = function(conf)
-          conf.col = -1
-          conf.row = 0
-          return conf
-        end,
-      },
-    }
+    config = function()
+      require("dressing").setup{
+        input = {
+          override = function(conf)
+            conf.col = -1
+            conf.row = 0
+            return conf
+          end,
+        },
+      }
+    end
   }
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
   use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
-  use { 'glacambre/firenvim', run = [[vim.fn['firenvim#install'](0)]] }
   use {
     'akinsho/bufferline.nvim',
     tag = 'v2.*',
@@ -262,7 +275,8 @@ require('packer').startup({ function(use)
     config = function()
       require("inc_rename").setup { input_buffer_type = "dressing" }
       require("pynappo/keymaps").setup('incremental_rename')
-    end
+    end,
+    requires = "stevearc/dressing.nvim"
   }
   use { "monaqa/dial.nvim", config = [[require("pynappo/plugins/dial")]] }
   use {

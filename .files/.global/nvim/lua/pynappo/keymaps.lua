@@ -13,8 +13,7 @@ local function map(mappings)
   end
 end
 
-local ts_builtin = require('telescope.builtin')
-local mappings = {
+local keymaps = {
   regular = {
     [{'n'}] = {
       { 'x', '"_x', { silent = true }},
@@ -36,20 +35,6 @@ local mappings = {
       {'<Space>', '<Nop>', { silent = true }},
     }
   },
-  telescope = {
-    [{ 'n' }] = {
-      { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
-      { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
-      { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
-      { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
-      { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
-      { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
-      { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
-      { '<leader>fo', [[ts_builtin.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
-      { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
-      { '<leader>fb', ":Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
-    }
-  },
   diagnostics = {
     [{ 'n' }] = {
       { '<leader>e', vim.diagnostic.open_float, {desc = 'Floating Diagnostics'}},
@@ -67,16 +52,12 @@ local mappings = {
   },
   incremental_rename = {
     [{ 'n' }] = {
-      {
-        '<leader>rn',
-        function() return ":IncRename " .. vim.fn.expand("<cword>") end,
-        {expr = true, desc = 'Rename (incrementally)'}
-      },
+      { '<leader>rn', function() return ":IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} },
     }
   },
   bufferline = {
     [{ 'n' }] = {
-      { 'gb', ':BufferLinePick<CR>', {desc = 'Pick from bufferline'}}
+      { 'gb', '<Cmd>BufferLinePick<CR>', {desc = 'Pick from bufferline'}}
     }
   },
   hlslens = {
@@ -90,18 +71,6 @@ local mappings = {
       { '<Leader>l', ':noh<CR>', {noremap = true, silent = true} },
     }
   },
-  dial = {
-    [{'n'}] = {
-      { "<C-a>", require("dial.map").inc_normal(), {noremap = true} },
-      { "<C-x>", require("dial.map").dec_normal(), {noremap = true} },
-    },
-    [{'v'}] = {
-      { "<C-a>", require("dial.map").inc_visual(), {noremap = true} },
-      { "<C-x>", require("dial.map").dec_visual(), {noremap = true} },
-      { "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true} },
-      { "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true} },
-    }
-  },
   matchup = {
     [{'n'}] = {
       { "<c-s-k>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} }
@@ -109,8 +78,42 @@ local mappings = {
   }
 }
 
+local dial_loaded, dial = pcall(require, 'dial.map')
+if dial_loaded then 
+  keymaps['dial'] = {
+    [{'n'}] = {
+      { "<c-a>", dial.inc_normal(), {noremap = true} },
+      { "<c-x>", dial.dec_normal(), {noremap = true} },
+    },
+    [{'v'}] = {
+      { "<c-a>", dial.inc_visual(), {noremap = true} },
+      { "<c-x>", dial.dec_visual(), {noremap = true} },
+      { "g<c-a>", dial.inc_gvisual(), {noremap = true} },
+      { "g<c-x>", dial.dec_gvisual(), {noremap = true} },
+    }
+  }
+end
+
+local ts_loaded, ts_builtin = pcall(require, 'telescope.builtin')
+if ts_loaded then
+  keymaps['telescope'] = {
+    [{ 'n' }] = {
+      { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
+      { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
+      { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
+      { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
+      { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
+      { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
+      { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
+      { '<leader>fo', [[ts_builtin.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
+      { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
+      { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
+    }
+  }
+end
+
 function M.setup(purpose)
-  map(mappings[purpose])
+  map(keymaps[purpose])
 end
 
 function M.init()

@@ -1,4 +1,4 @@
-require("impatient")
+-- require("impatient")
 local o = vim.o
 local opt = vim.opt
 local g = vim.g
@@ -96,10 +96,10 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
   vim.g["loaded_" .. plugin] = 1
 end
+require("pynappo/plugins")
 local theme = require("pynappo/theme")
 theme.ayu()
 theme.transparent_override()
-require("pynappo/plugins")
 require("pynappo/keymaps").init()
 require("pynappo/autocmds")
 require("pynappo/commands")
