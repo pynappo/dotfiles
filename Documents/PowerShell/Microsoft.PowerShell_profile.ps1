@@ -33,10 +33,10 @@ Function Dotfiles {
 			Dotfiles add $Target
 		}
 	}
-	else { git --git-dir=$Home/.files/ --work-tree=$HOME @Args }
+	else { git --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
 }
 Set-Alias -Name df -Value Dotfiles
-Function Lazy-Dotfiles { lazygit --git-dir=$Home/.files/ --work-tree=$HOME @Args }
+Function Lazy-Dotfiles { lazygit --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
 Set-Alias -Name ldf -Value Lazy-Dotfiles
 
 Function Pacup ([string]$Path = "$Home\.files\"){

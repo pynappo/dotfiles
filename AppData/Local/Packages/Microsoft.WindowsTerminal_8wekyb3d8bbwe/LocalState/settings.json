@@ -4,7 +4,8 @@
     "actions": 
     [
         {
-            "command": "paste"
+            "command": "find",
+            "keys": "ctrl+shift+f"
         },
         {
             "command": 
@@ -14,8 +15,7 @@
             }
         },
         {
-            "command": "find",
-            "keys": "ctrl+shift+f"
+            "command": "paste"
         },
         {
             "command": "unbound",
@@ -88,17 +88,17 @@
                 "source": "Windows.Terminal.Azure"
             },
             {
-                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
-                "hidden": false,
-                "name": "Git Bash",
-                "source": "Git"
-            },
-            {
                 "commandline": "nu.exe",
                 "guid": "{9bce5a65-ca2c-4389-bb22-3e34f81f7b9a}",
                 "hidden": false,
                 "icon": "https://www.nushell.sh/icon.png",
                 "name": "Nu Shell"
+            },
+            {
+                "guid": "{aab79973-318f-43b6-a9bc-b4096493753f}",
+                "hidden": false,
+                "name": "Nushell",
+                "source": "nu"
             }
         ]
     },
