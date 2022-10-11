@@ -43,17 +43,9 @@ local keymaps = {
       { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
     }
   },
-  neo_tree_window = {
-    [{ 'n' }] = {
-      { '<leader>n', ':Neotree toggle left reveal_force_cwd<CR>', {desc = '(NT) CWD file tree (left) '}},
-      { '<leader>b', ':Neotree toggle show buffers right<CR>', {desc = '(NT) Buffers (right)'}},
-      { '<leader>g', ':Neotree float git_status<CR>', {desc = '(NT) Floating git status'} },
-    }
-  },
+  neo_tree_window = { [{ 'n' }] = { { '<leader>n', ':Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}}, } },
   incremental_rename = {
-    [{ 'n' }] = {
-      { '<leader>rn', function() return ":IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} },
-    }
+    [{ 'n' }] = { { '<leader>rn', function() return ":IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, }
   },
   bufferline = {
     [{ 'n' }] = {
@@ -79,7 +71,7 @@ local keymaps = {
 }
 
 local dial_loaded, dial = pcall(require, 'dial.map')
-if dial_loaded then 
+if dial_loaded then
   keymaps['dial'] = {
     [{'n'}] = {
       { "<c-a>", dial.inc_normal(), {noremap = true} },

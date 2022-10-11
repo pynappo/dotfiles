@@ -12,7 +12,7 @@ M.ayu = function ()
   })
   require("ayu").colorscheme()
 end
-M.transparent_override = function ()
+function M.transparent_override()
   local highlights = {
     "Normal",
     "LineNr",
@@ -24,7 +24,14 @@ M.transparent_override = function ()
     "EndOfBuffer",
   }
   for _, highlight in pairs(highlights) do
-    vim.cmd.highlight(highlight .. ' guibg=none ctermbg=none')
+    vim.cmd.highlight(highlight .. ' guibg=none ctermbg=none') --
+  end
+end
+function M.link_highlights()
+  local links = {
+  }
+  for source, destination in pairs(links) do
+    vim.api.nvim_set_hl(0, source, {link = destination})
   end
 end
 return M

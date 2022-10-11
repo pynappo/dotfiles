@@ -11,7 +11,6 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-
 require('packer').startup({ function(use)
   use 'wbthomason/packer.nvim'
   use {
@@ -66,7 +65,7 @@ require('packer').startup({ function(use)
     'nvim-treesitter/nvim-treesitter-context'
   })
   use ({
-    { 'zbirenbaum/copilot.lua', event = 'InsertEnter', config = [[require('copilot').setup()]] },
+    { 'zbirenbaum/copilot.lua', config = [[require('copilot').setup()]] },
     {
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
@@ -82,17 +81,16 @@ require('packer').startup({ function(use)
         "hrsh7th/cmp-calc",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
-        { 'dmitmel/cmp-cmdline-history', after = "nvim-cmp" },
-        { 'zbirenbaum/copilot-cmp', module = 'copilot_cmp'},
+        'dmitmel/cmp-cmdline-history',
+        'zbirenbaum/copilot-cmp',
         "hrsh7th/cmp-emoji",
         "hrsh7th/cmp-nvim-lsp",
         "f3fora/cmp-spell",
         "octaltree/cmp-look",
-        { "saadparwaiz1/cmp_luasnip", after = { "nvim-cmp", "LuaSnip" } },
-        { 'hrsh7th/cmp-nvim-lsp-signature-help', after = "nvim-cmp"},
+        "saadparwaiz1/cmp_luasnip",
+        'hrsh7th/cmp-nvim-lsp-signature-help',
         {
           'saecki/crates.nvim',
-          after = 'nvim-cmp',
           event = "BufRead Cargo.toml",
           requires = 'nvim-lua/plenary.nvim',
           config = [[require('crates').setup()]]
@@ -167,12 +165,12 @@ require('packer').startup({ function(use)
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
   use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
-  use {
-    'akinsho/bufferline.nvim',
-    tag = 'v2.*',
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = [[require('pynappo/plugins/bufferline')]]
-  }
+  -- use {
+  --   'akinsho/bufferline.nvim',
+  --   tag = 'v2.*',
+  --   requires = 'kyazdani42/nvim-web-devicons',
+  --   config = [[require('pynappo/plugins/bufferline')]]
+  -- }
   use { 'max397574/better-escape.nvim', config = function()
     require('better_escape').setup({
       mapping = {"jk", "kj"},
@@ -210,7 +208,7 @@ require('packer').startup({ function(use)
   --     "hrsh7th/nvim-cmp",
   --   }
   -- })
-  use { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig' }
+  use { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = [[require('pynappo/plugins/navic')]] }
   use {
     'nvim-neorg/neorg',
     -- tag = 'latest',
@@ -242,6 +240,7 @@ require('packer').startup({ function(use)
     }
   })
   use { 'j-hui/fidget.nvim', config = [[require("fidget").setup { window = { blend = 0 }}]] }
+  use 'arkav/lualine-lsp-progress'
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
   use ({
     {
@@ -253,7 +252,11 @@ require('packer').startup({ function(use)
     },
     'rouge8/neotest-rust'
   })
-  use { 'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim', config = [[require('todo-comments').setup({})]] }
+  use {
+    'folke/todo-comments.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+    config = [[require('todo-comments').setup{highlight = {keyword = "fg"}}]]
+  }
   use { 'Akianonymus/nvim-colorizer.lua', config = [[require('colorizer').setup()]] }
   use { 'simrat39/symbols-outline.nvim', config = [[require('symbols-outline').setup()]] }
   use { 'akinsho/toggleterm.nvim', tag = '*', config = [[require('pynappo/plugins/toggleterm')]] }
@@ -292,6 +295,11 @@ require('packer').startup({ function(use)
       })
     end
   }
+  use { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = [[vim.g.mkdp_filetypes = "markdown"]], ft = "markdown" }
+  use { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end,
   config = {
     display = {
