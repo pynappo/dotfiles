@@ -218,7 +218,7 @@ require('packer').startup({ function(use)
   }
   use {
     'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+    requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim'},
     config = [[require('pynappo/plugins/lualine')]]
   }
   use {
@@ -239,8 +239,7 @@ require('packer').startup({ function(use)
       end
     }
   })
-  use { 'j-hui/fidget.nvim', config = [[require("fidget").setup { window = { blend = 0 }}]] }
-  use 'arkav/lualine-lsp-progress'
+  -- use { 'j-hui/fidget.nvim', config = [[require("fidget").setup { window = { blend = 0 }}]] }
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
   use ({
     {
