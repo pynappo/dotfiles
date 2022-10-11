@@ -1,6 +1,6 @@
-# dotwindows
+# Dotfiles
 
-This is a set of dotfiles for my Windows machines. It's a bare repo stored in $HOME (C:/Users/{insert name here}) that is managed through the powershell alias/function ```dotfiles``` (in the [powershell profile](Documents/PowerShell/Microsoft.PowerShell_profile.ps1)).
+I am figuring out how to do this stuff but here's my vim config and stuff
 
 # Setup 
 (assuming git, [scoop](https://github.com/ScoopInstaller/Scoop), and winget are installed):

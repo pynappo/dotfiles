@@ -3,27 +3,6 @@ local o = vim.o
 local opt = vim.opt
 local g = vim.g
 
--- Firenvim
-if vim.g.started_by_firenvim then
-  o.laststatus = 0
-  o.showtabline = 0
-  o.winbar = ""
-else
-  o.laststatus = 3
-  o.scrolloff = 4
-end
-vim.g.firenvim_config = {
-  globalSettings = {
-    alt = 'all'
-  },
-  localSettings = {
-    ['.*'] = {
-      cmdline = 'neovim',
-      takeover = 'never',
-      priority = 0
-    }
-  }
-}
 -- Line numbers
 o.signcolumn = "auto:2"
 o.cmdheight = 1

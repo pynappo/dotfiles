@@ -1,0 +1,10 @@
+{
+  "aria2-enabled": true,
+  "aria2-warning-enabled": false,
+  "test": true,
+  "last_update": "2022-09-23T12:27:08.814335-07:00",
+  "check_nightly_outdated": true,
+  "scoop_branch": "master",
+  "scoop_repo": "https://github.com/ScoopInstaller/Scoop",
+  "lastupdate": "2022-10-11T12:13:23.6684588-07:00"
+}

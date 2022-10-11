@@ -1,6 +1,6 @@
 Unblock-File $profile
 
-oh-my-posh init pwsh --config $HOME/.files/.global/pynappo.omp.json | Invoke-Expression
+oh-my-posh init pwsh --config $HOME/.files/pynappo.omp.json | Invoke-Expression
 Import-Module posh-git
 $env:POSH_GIT_ENABLED = $true
 Import-Module -Name Terminal-Icons
@@ -15,28 +15,29 @@ $env:FZF_DEFAULT_OPTS = "--preview 'bat --color=always --style=numbers --line-ra
 
 Function Notepad { Notepads @Args }
 Function Dotfiles {
-	if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
-		if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
-		else {
-			if (!(Test-Path $Args[1])) { Return Write-Error("Path invalid.")}
-			if (!(Test-Path $Args[2])) { Return Write-Error("Target invalid.")}
-			$Path = (Resolve-Path $Args[1]).ToString()
-			$Target = (Resolve-Path $Args[2]).ToString()
-			$Path
-			$Target
-			return
-
-			Move-Item $Path $Target -Force
-			$Path = $Path.TrimEnd('\/')
-			New-Item -ItemType SymbolicLink -Path $Path -Value ($Target + (Split-Path $Path -Leaf).ToString())
-			Dotfiles add $Path
-			Dotfiles add $Target
-		}
-	}
-	else { git --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
+    git --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args
 }
 Set-Alias -Name df -Value Dotfiles
-Function Lazy-Dotfiles { lazygit --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
+Function Dotwindows {
+    if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
+        if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
+        else {
+            if (!(Test-Path $Args[1])) { Return Write-Error("Path invalid.")}
+            if (!(Test-Path $Args[2])) { Return Write-Error("Target invalid.")}
+            $Path = (Resolve-Path $Args[1]).ToString()
+            $Target = (Resolve-Path $Args[2]).ToString()
+
+            Move-Item $Path $Target -Force
+            $Path = $Path.TrimEnd('\/')
+            New-Item -ItemType SymbolicLink -Path $Path -Value ($Target + (Split-Path $Path -Leaf).ToString())
+            Dotwindows add $Path
+            Dotfiles add $Target
+        }
+    }
+    else { git --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
+}
+Set-Alias -Name dw -Value Dotwindows
+Function Lazy-Dotfiles { lazygit --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args }
 Set-Alias -Name ldf -Value Lazy-Dotfiles
 
 Function Pacup ([string]$Path = "$Home\.files\"){
