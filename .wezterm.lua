@@ -1,1 +1,0 @@
-./.files/.global/.wezterm.lua
