@@ -1,6 +1,7 @@
 [user]
 	email = lehtien.david@gmail.com
 	name = pynappo
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHzsuQCom2hXDqY25R//BRyQuW8IGVYNbMvbA0AW44HR lehtien.david@gmail.com
 [credential "helperselector"]
 	selected = manager-core
 [credential]
@@ -26,3 +27,5 @@
 	rebase = true
 [push]
 	autoSetupRemote = true
+[gpg]
+	format = ssh
