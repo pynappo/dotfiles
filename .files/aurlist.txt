@@ -1,0 +1,12 @@
+appimagelauncher-git
+authy
+go-tuner-git
+googler
+jdk-jetbrains
+jetbrains-toolbox
+noisetorch-bin
+opentabletdriver
+paru
+ttf-ms-win10-auto
+visual-studio-code-bin
+youtube-viewer

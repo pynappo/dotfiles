@@ -1,1 +1,0 @@
-C:/Users/lehti/.files/.wezterm.lua
