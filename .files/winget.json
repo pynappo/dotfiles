@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-10-06T02:32:24.998-00:00",
+	"CreationDate" : "2022-10-12T02:06:08.179-00:00",
 	"Sources" : 
 	[
 		{
@@ -22,7 +22,7 @@
 					"PackageIdentifier" : "9NBLGGH5L9XT"
 				},
 				{
-					"PackageIdentifier" : "9PJPW5LDXLZ5"
+					"PackageIdentifier" : "9PGZKJC81Q7J"
 				}
 			],
 			"SourceDetails" : 
@@ -43,7 +43,7 @@
 					"PackageIdentifier" : "7zip.7zip"
 				},
 				{
-					"PackageIdentifier" : "ShareX.ShareX"
+					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
 				},
 				{
 					"PackageIdentifier" : "FinalWire.AIDA64.Extreme"
@@ -52,13 +52,13 @@
 					"PackageIdentifier" : "Audacity.Audacity"
 				},
 				{
+					"PackageIdentifier" : "Lexikos.AutoHotkey"
+				},
+				{
 					"PackageIdentifier" : "CrystalDewWorld.CrystalDiskMark"
 				},
 				{
 					"PackageIdentifier" : "Discord.Discord"
-				},
-				{
-					"PackageIdentifier" : "DiskInternals.LinuxReader"
 				},
 				{
 					"PackageIdentifier" : "GitHub.GitHubDesktop"
@@ -71,12 +71,6 @@
 				},
 				{
 					"PackageIdentifier" : "HandBrake.HandBrake"
-				},
-				{
-					"PackageIdentifier" : "KDE.KDEConnect"
-				},
-				{
-					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
 					"PackageIdentifier" : "Resplendence.LatencyMon"
@@ -97,19 +91,7 @@
 					"PackageIdentifier" : "Microsoft.WindowsTerminal"
 				},
 				{
-					"PackageIdentifier" : "Anaconda.Miniconda3"
-				},
-				{
-					"PackageIdentifier" : "Anaconda.Miniconda3"
-				},
-				{
 					"PackageIdentifier" : "Mozilla.Firefox"
-				},
-				{
-					"PackageIdentifier" : "Notepad++.Notepad++"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.Office"
 				},
 				{
 					"PackageIdentifier" : "OBSProject.OBSStudio"
@@ -124,16 +106,10 @@
 					"PackageIdentifier" : "Playnite.Playnite"
 				},
 				{
-					"PackageIdentifier" : "Piriform.Recuva"
-				},
-				{
 					"PackageIdentifier" : "RubyInstallerTeam.RubyWithDevKit.3.1"
 				},
 				{
 					"PackageIdentifier" : "Rustlang.Rustup"
-				},
-				{
-					"PackageIdentifier" : "Spotify.Spotify"
 				},
 				{
 					"PackageIdentifier" : "Valve.Steam"
@@ -142,7 +118,7 @@
 					"PackageIdentifier" : "StefanSundin.Superf4"
 				},
 				{
-					"PackageIdentifier" : "Unigine.SuperpositionBenchmark"
+					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
 					"PackageIdentifier" : "Ultimaker.Cura"
@@ -152,9 +128,6 @@
 				},
 				{
 					"PackageIdentifier" : "Ubisoft.Connect"
-				},
-				{
-					"PackageIdentifier" : "AntibodySoftware.WizTree"
 				},
 				{
 					"PackageIdentifier" : "Ytmdesktop.Ytmdesktop"
@@ -184,22 +157,19 @@
 					"PackageIdentifier" : "HottaStudio.TowerofFantasy"
 				},
 				{
-					"PackageIdentifier" : "Zoom.Zoom"
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
 				},
 				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.18.JDK"
-				},
-				{
-					"PackageIdentifier" : "DominikReichl.KeePass"
+					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
 				},
 				{
 					"PackageIdentifier" : "GitHub.cli"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerToys"
+					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
@@ -208,55 +178,73 @@
 					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
-				},
-				{
-					"PackageIdentifier" : "OpenJS.NodeJS"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
-				},
-				{
-					"PackageIdentifier" : "Nushell.Nushell"
-				},
-				{
-					"PackageIdentifier" : "Yarn.Yarn"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.3_1"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2005.x86"
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
 					"PackageIdentifier" : "msys2.msys2"
 				},
 				{
-					"PackageIdentifier" : "Tyrrrz.LightBulb"
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
-					"PackageIdentifier" : "Inkscape.Inkscape"
+					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
 				},
 				{
-					"PackageIdentifier" : "ElectronicArts.EADesktop"
+					"PackageIdentifier" : "Microsoft.VC++2008Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Peppy.Osu!"
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				},
 				{
-					"PackageIdentifier" : "Nvidia.PhysXLegacy"
+					"PackageIdentifier" : "Microsoft.PowerToys"
+				},
+				{
+					"PackageIdentifier" : "Hirschmann.NotebookFanControl"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2005.x86"
 				},
 				{
 					"PackageIdentifier" : "GoLang.Go.1.18"
 				},
 				{
+					"PackageIdentifier" : "SomePythonThings.WingetUIStore"
+				},
+				{
+					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
+				},
+				{
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.16.JDK"
+				},
+				{
+					"PackageIdentifier" : "Nushell.Nushell"
+				},
+				{
+					"PackageIdentifier" : "Intel.IntelDriverAndSupportAssistant"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.GeForceExperience"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.PhysX"
+				},
+				{
 					"PackageIdentifier" : "wez.wezterm"
+				},
+				{
+					"PackageIdentifier" : "Zoom.Zoom"
+				},
+				{
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.18.JDK"
+				},
+				{
+					"PackageIdentifier" : "Yarn.Yarn"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.XNARedist"
@@ -265,25 +253,31 @@
 					"PackageIdentifier" : "Google.EarthPro"
 				},
 				{
-					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
+					"PackageIdentifier" : "Inkscape.Inkscape"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
+				},
+				{
+					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
 				},
 				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
 				},
 				{
-					"PackageIdentifier" : "msys2.msys2"
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+					"PackageIdentifier" : "ElectronicArts.EADesktop"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.3_1"
+					"PackageIdentifier" : "Microsoft.VCRedist.2012.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Microsoft.DotNet.Runtime.3_1"
 				}
 			],
 			"SourceDetails" : 
