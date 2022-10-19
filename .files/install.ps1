@@ -1,4 +1,4 @@
-
+# To run from new win11 install: irm https://raw.githubusercontent.com/pynappo/dotfiles/main/.files/install.ps1 | iex
 
 function Reload-Path {
   $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
