@@ -8,9 +8,9 @@ require('tabby.tabline').use_preset('active_wins_at_tail', {
     tail = 'TabLine', -- tail element highlight
   },
   tab_name = {
-    name_fallback = 'function({tabid}), return a string',
-    },
-    buf_name = {
-      mode = "'unique'|'relative'|'tail'|'shorten'",
-    },
-  })
+    name_fallback = nil,
+  },
+  buf_name = {
+    mode = "unique",
+  },
+})

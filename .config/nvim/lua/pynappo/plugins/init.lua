@@ -3,7 +3,7 @@ local ensure_packer = function()
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
     fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
+    vim.cmd([[packadd packer.nvim]])
     return true
   end
   return false
@@ -11,7 +11,7 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-require('packer').startup({ function(use)
+require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
   use {
     { 'tpope/vim-fugitive' },
@@ -120,9 +120,6 @@ require('packer').startup({ function(use)
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
   use {
     'andymass/vim-matchup',
-    opt = true,
-    event = { "CursorHold", "CursorHoldI" },
-    cmd = { "MatchupWhereAmI?" },
     config = function()
       vim.g.matchup_enabled = 1
       vim.g.matchup_surround_enabled = 1
@@ -186,10 +183,7 @@ require('packer').startup({ function(use)
       vim.notify = require('notify')
     end
   }
-  use {
-    "kevinhwang91/nvim-hlslens",
-    config = [[require('pynappo/keymaps').setup('hlslens')]]
-  }
+  use { "kevinhwang91/nvim-hlslens", config = [[require('pynappo/keymaps').setup('hlslens')]] }
   -- use({
   --   "folke/noice.nvim",
   --   event = "VimEnter",
@@ -221,15 +215,12 @@ require('packer').startup({ function(use)
     requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim'},
     config = [[require('pynappo/plugins/lualine')]]
   }
-  use {
-    'AckslD/nvim-neoclip.lua',
-    requires = { 'nvim-telescope/telescope.nvim' },
-    config = [[require('neoclip').setup()]]
-  }
+  use { 'AckslD/nvim-neoclip.lua', requires = { 'nvim-telescope/telescope.nvim' }, config = [[require('neoclip').setup()]] }
   use ({
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'folke/lua-dev.nvim',
+    'folke/neodev.nvim',
+    'simrat39/rust-tools.nvim',
     'jose-elias-alvarez/null-ls.nvim',
     {
       'neovim/nvim-lspconfig',
@@ -263,12 +254,12 @@ require('packer').startup({ function(use)
     "mfussenegger/nvim-dap",
     {
       "rcarriga/nvim-dap-ui",
-      requires = {"mfussenegger/nvim-dap"},
+      requires = "mfussenegger/nvim-dap",
       config = [[require("dapui").setup()]]
     },
     {
       'theHamsta/nvim-dap-virtual-text',
-      requires = {"mfussenegger/nvim-dap"},
+      requires = "mfussenegger/nvim-dap",
       config = [[require("nvim-dap-virtual-text").setup()]]
     },
   })
@@ -294,8 +285,13 @@ require('packer').startup({ function(use)
       })
     end
   }
-  use { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = [[vim.g.mkdp_filetypes = "markdown"]], ft = "markdown" }
   use { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
+  use { 'toppair/peek.nvim', run = 'deno task --quiet build:fast' }
+  use { 'echasnovski/mini.nvim', config = [[require('pynappo/plugins/mini')]] }
+  use {
+    'glacambre/firenvim',
+    run = function() vim.fn['firenvim#install'](0) end
+  }
   if packer_bootstrap then
     require('packer').sync()
   end

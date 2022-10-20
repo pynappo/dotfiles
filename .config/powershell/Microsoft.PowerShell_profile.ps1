@@ -13,6 +13,9 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 $env:FZF_DEFAULT_COMMAND="fd --hidden --exclude .git"
 $env:FZF_DEFAULT_OPTS = "--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
+Function Reload-Path {
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+}
 Function Notepad { Notepads @Args }
 Function Dotfiles {
     git --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args
@@ -286,3 +289,5 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
 
     }
 }
+
+Import-Module "C:\Users\lehti\scoop\apps\gsudo\current\gsudoModule.psd1"

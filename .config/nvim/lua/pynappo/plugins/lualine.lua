@@ -15,6 +15,7 @@ lualine.setup {
     },
     lualine_b = { 'filename', 'branch', 'diagnostics' },
     lualine_c = {
+      { navic.get_location, cond = navic.is_available },
       {
         'lsp_progress',
         separators = {
@@ -33,28 +34,54 @@ lualine.setup {
         max_message_length = 30,
       }
     },
-    lualine_x = { 'fileformat' },
+    lualine_x = { 'encoding', 'fileformat' },
     lualine_y = { 'filetype' },
     lualine_z = {
-      { 'progress', separator = { right = '' }, left_padding = 1 },
+      { 'progress', separator = { right = '' }, left_padding = 0 },
     },
   },
   tabline = {},
   winbar = {
     lualine_a = {},
-    lualine_b = {},
-    lualine_c = {{ navic.get_location, cond = navic.is_available }},
+    lualine_b = {
+      {
+        'diff',
+        colored = true, -- Displays a colored diff status if set to true
+        diff_color = {
+          -- Same color values as the general color option can be used here.
+          added    = 'DiffAdd',    -- Changes the diff's added color
+          modified = 'DiffChange', -- Changes the diff's modified color
+          removed  = 'DiffDelete', -- Changes the diff's removed color you
+        },
+        symbols = {added = '+', modified = '~', removed = '-'}, -- Changes the symbols used by the diff.
+        source = 'b:gitsigns_status_dict',
+      }
+    },
+    lualine_c = {},
     lualine_x = {'%f'},
-    lualine_y = {},
+    lualine_y = {'progress'},
     lualine_z = {}
   },
   inactive_winbar = {
     lualine_a = {},
-    lualine_b = {},
+    lualine_b = {
+      {
+        'diff',
+        colored = true, -- Displays a colored diff status if set to true
+        diff_color = {
+          -- Same color values as the general color option can be used here.
+          added    = 'DiffAdd',    -- Changes the diff's added color
+          modified = 'DiffChange', -- Changes the diff's modified color
+          removed  = 'DiffDelete', -- Changes the diff's removed color you
+        },
+        symbols = {added = '+', modified = '~', removed = '-'}, -- Changes the symbols used by the diff.
+        source = 'b:gitsigns_status_dict',
+      }
+    },
     lualine_c = {},
-    lualine_x = {'%f', 'filetype'},
+    lualine_x = {'%f'},
     lualine_y = {'progress'},
     lualine_z = {}
   },
-  extensions = {'neo-tree', 'symbols-outline', 'quickfix'},
+  extensions = {'neo-tree', 'symbols-outline', 'quickfix', 'nvim-dap-ui', 'fugitive'},
 }
