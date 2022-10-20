@@ -30,10 +30,23 @@ local keymaps = {
       { '<C-k>', '<C-w>k', { silent = true } },
       { '<C-h>', '<C-w>h', { silent = true } },
       { '<C-l>', '<C-w>l', { silent = true } },
+      -- Better tabs
+      { '<C-S-h>', '<Cmd>:tabprev<CR>', { silent = true } },
+      { '<C-S-l>', '<Cmd>:tabnext<CR>', { silent = true } },
+      { '<leader>1', '1gt', { silent = true } },
+      { '<leader>2', '2gt', { silent = true } },
+      { '<leader>3', '3gt', { silent = true } },
+      { '<leader>4', '4gt', { silent = true } },
+      { '<leader>5', '5gt', { silent = true } },
+      { '<leader>6', '6gt', { silent = true } },
+      { '<leader>7', '7gt', { silent = true } },
+      { '<leader>8', '8gt', { silent = true } },
+      { '<leader>9', '9gt', { silent = true } },
+      { '<leader>0', '10gt', { silent = true } },
     },
     [{'n', 'v'}] = {
       {'<Space>', '<Nop>', { silent = true }},
-    }
+    },
   },
   diagnostics = {
     [{ 'n' }] = {
@@ -43,14 +56,12 @@ local keymaps = {
       { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
     }
   },
-  neo_tree_window = { [{ 'n' }] = { { '<leader>n', ':Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}}, } },
+  neo_tree_window = { [{ 'n' }] = { { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}}, } },
   incremental_rename = {
-    [{ 'n' }] = { { '<leader>rn', function() return ":IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, }
+    [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, }
   },
   bufferline = {
-    [{ 'n' }] = {
-      { 'gb', '<Cmd>BufferLinePick<CR>', {desc = 'Pick from bufferline'}}
-    }
+    [{ 'n' }] = { { 'gb', '<Cmd>BufferLinePick<CR>', {desc = 'Pick from bufferline'}} }
   },
   hlslens = {
     [{'n'}] = {
@@ -63,15 +74,15 @@ local keymaps = {
       { '<Leader>l', ':noh<CR>', {noremap = true, silent = true} },
     }
   },
-  matchup = {
-    [{'n'}] = {
-      { "<c-s-k>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} }
-    }
-  }
+  matchup = { [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } },
 }
 
-local dial_loaded, dial = pcall(require, 'dial.map')
-if dial_loaded then
+function M.setup(purpose)
+  map(keymaps[purpose])
+end
+
+function M.setup_dial()
+  local dial = require('dial.map')
   keymaps['dial'] = {
     [{'n'}] = {
       { "<c-a>", dial.inc_normal(), {noremap = true} },
@@ -84,10 +95,11 @@ if dial_loaded then
       { "g<c-x>", dial.dec_gvisual(), {noremap = true} },
     }
   }
+  M.setup('dial')
 end
 
-local ts_loaded, ts_builtin = pcall(require, 'telescope.builtin')
-if ts_loaded then
+function M.setup_telescope()
+  local ts_builtin = require('telescope.builtin')
   keymaps['telescope'] = {
     [{ 'n' }] = {
       { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
@@ -97,15 +109,22 @@ if ts_loaded then
       { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
       { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
       { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
-      { '<leader>fo', [[ts_builtin.tags { only_current_buffer = true }]], {desc = '(TS) Tags in buffer'}},
+      { '<leader>fo', function() ts_builtin.tags { only_current_buffer = true } end, {desc = '(TS) Tags in buffer'}},
       { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
       { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
     }
   }
+  M.setup('telescope')
 end
 
-function M.setup(purpose)
-  map(keymaps[purpose])
+function M.setup_mini()
+  local minimap = require('mini.map')
+  keymaps['mini'] = {
+    [{'n'}] = {
+      {'<leader>m', function() minimap.toggle() end, {desc = 'Toggle mini.map'}}
+    }
+  }
+  M.setup('mini')
 end
 
 function M.init()

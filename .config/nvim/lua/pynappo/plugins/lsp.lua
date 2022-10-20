@@ -23,8 +23,8 @@ local flags = {
 -- map buffer local keybindings when the language server attaches
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-for _, dir in pairs({ "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer", "gopls" }) do
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+for _, dir in pairs({ "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "gopls" }) do
   lspconfig[dir].setup ({
     capabilities = capabilities,
     on_attach = on_attach,
@@ -32,15 +32,18 @@ for _, dir in pairs({ "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp
   })
 end
 
-local luadev = require("lua-dev").setup({
-  lspconfig = {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    flags = flags,
-  },
+lspconfig.sumneko_lua.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = flags,
+  settings = {
+    Lua = {
+      completion = {
+        callSnippet = "Replace"
+      }
+    }
+  }
 })
-
-lspconfig['sumneko_lua'].setup(luadev)
 local null_ls = require('null-ls')
 null_ls.setup({
   sources = {

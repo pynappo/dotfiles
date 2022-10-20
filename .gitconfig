@@ -1,7 +1,7 @@
 [user]
 	email = lehtien.david@gmail.com
 	name = pynappo
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHzsuQCom2hXDqY25R//BRyQuW8IGVYNbMvbA0AW44HR lehtien.david@gmail.com
+	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHzsuQCom2hXDqY25R//BRyQuW8IGVYNbMvbA0AW44HR lehtien.david@gmail.com
 [credential "helperselector"]
 	selected = manager-core
 [credential]
@@ -19,7 +19,7 @@
 	symlinks = true
 	fsmonitor = true
 	editor = nvim
-	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+	sshCommand = C:\\Users\\lehti\\scoop\\apps\\openssh\\current\\ssh.exe
 	protectNTFS = false
 [init]
 	defaultBranch = main
@@ -29,3 +29,10 @@
 	autoSetupRemote = true
 [gpg]
 	format = ssh
+[tag]
+	gpgsign = true
+[commit]
+	gpgsign = true
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+	program = C:\\Users\\lehti\\scoop\\apps\\openssh\\current\\ssh-keygen.exe

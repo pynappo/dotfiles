@@ -1,12 +1,35 @@
 require("impatient")
+
 local o = vim.o
 local opt = vim.opt
 local g = vim.g
 
+vim.g.firenvim_config = {
+  globalSettings = {
+    alt = 'all',
+  },
+  localSettings = {
+    ['.*'] = {
+      cmdline = 'neovim',
+      content = 'md',
+      priority = 0,
+      selector = 'textarea',
+      takeover = 'never',
+    },
+  }
+}
+if vim.g.started_by_firenvim then
+  o.laststatus = 0
+  o.cmdheight = 0
+  o.showtabline = 0
+else
+  o.cmdheight = 1
+  o.showtabline = 2
+  o.laststatus = 3
+end
+
 -- Line numbers
 o.signcolumn = "auto:2"
-o.cmdheight = 1
-g.gutentags_enabled = 1
 o.relativenumber = true
 o.number = true
 
@@ -29,6 +52,7 @@ o.splitright = true
 o.splitbelow = true
 
 -- Misc
+g.gutentags_enabled = 1
 o.history = 1000
 opt.whichwrap:append("<,>,h,l,[,]")
 opt.fillchars = {
@@ -52,7 +76,7 @@ opt.listchars = {
   nbsp = '␣',
 }
 o.cursorline = true
-o.wrap = true
+o.wrap = false
 
 local disabled_built_ins = {
   "netrw",

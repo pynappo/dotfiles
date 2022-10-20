@@ -4,7 +4,6 @@ local pynappo = api.nvim_create_augroup("Pynappo", { clear = true })
 if vim.g.started_by_firenvim then
   autocmd('BufEnter', {
     callback = function()
-      vim.wo.spell = true
       vim.cmd('startinsert')
     end,
     group = pynappo
@@ -12,7 +11,7 @@ if vim.g.started_by_firenvim then
 end
 
 autocmd ('TextYankPost',{
-  callback = function () vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
+  callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
   group = pynappo
 })
 
@@ -23,17 +22,20 @@ autocmd({ "BufWritePre" }, {
 
 autocmd( {"VimEnter"} , {
   callback = function()
-    if string.find(vim.fn.getcwd(), '.files') then
+    local cwd = vim.fn.getcwd()
+    if string.find(cwd, '.files') or string.find(cwd, '.config') then
       vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-      vim.env.GIT_DIR = vim.fn.expand("~/.dotwindows.git/")
+      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
     end
   end
 })
-autocmd({ "DirChanged" }, {
+
+autocmd({"DirChanged"}, {
   callback = function ()
-    if string.find(vim.v.event.cwd, '.files') then
+    local cwd = vim.v.event.cwd
+    if string.find(cwd, '.files') or string.find(cwd, '.config') then
       vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-      vim.env.GIT_DIR = vim.fn.expand("~/.dotwindows.git/")
+      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
     else
       vim.env.GIT_WORK_TREE = nil
       vim.env.GIT_DIR = nil
@@ -41,5 +43,3 @@ autocmd({ "DirChanged" }, {
   end,
   group = pynappo
 })
-
-

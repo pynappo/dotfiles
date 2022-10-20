@@ -1,4 +1,4 @@
-require('pynappo.keymaps').setup('telescope')
+require('pynappo.keymaps').setup_telescope()
 local ts = require('telescope')
 ts.setup {
   defaults = {
