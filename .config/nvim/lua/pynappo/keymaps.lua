@@ -119,10 +119,8 @@ end
 
 function M.setup_mini()
   local minimap = require('mini.map')
-  keymaps['mini'] = {
-    [{'n'}] = {
-      {'<leader>m', function() minimap.toggle() end, {desc = 'Toggle mini.map'}}
-    }
+  keymaps.mini = {
+    [{'n'}] = { {'<leader>m', function() minimap.toggle() end, {desc = 'Toggle mini.map'}} }
   }
   M.setup('mini')
 end
@@ -208,14 +206,13 @@ M.lsp = {
     { "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>" },
     { "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>" },
     { "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>" },
-    { "n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
-    { "n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" },
-    { "n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
-    { "n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>" },
-    { "n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>" },
-    { "n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>" },
+    { "n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
+    { "n", "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" },
+    { "n", "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
+    { "n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>" },
+    { "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>" },
     { "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>" },
-    { "n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR>" }
+    { "n", "<leader>f", "<cmd>lua vim.lsp.buf.format()<CR>" }
   }
 }
 M.neoscroll = {

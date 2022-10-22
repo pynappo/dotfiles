@@ -62,7 +62,8 @@ require('packer').startup({function(use)
     'nvim-treesitter/nvim-treesitter-textobjects',
     'p00f/nvim-ts-rainbow',
     'windwp/nvim-ts-autotag',
-    'nvim-treesitter/nvim-treesitter-context'
+    'nvim-treesitter/nvim-treesitter-context',
+    'nvim-treesitter/playground'
   })
   use ({
     { 'zbirenbaum/copilot.lua', config = [[require('copilot').setup()]] },
@@ -98,7 +99,7 @@ require('packer').startup({function(use)
         { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", config = [[require("cmp_git").setup()]] },
       },
     },
-    { 'windwp/nvim-autopairs', config = [[require('pynappo/plugins/autopairs')]]},
+    { 'windwp/nvim-autopairs', config = [[require('pynappo/plugins/autopairs')]] },
   })
   use {
     'nvim-neo-tree/neo-tree.nvim',
@@ -114,17 +115,16 @@ require('packer').startup({function(use)
       require('pynappo/plugins/neo-tree')
     end
   }
-  use { 'folke/which-key.nvim', config = [[require('which-key').setup {} ]] }
+  use { 'folke/which-key.nvim', config = [[require('which-key').setup({window = {border = "shadow"}})]] }
   use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
   use 'lewis6991/impatient.nvim'
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
   use {
     'andymass/vim-matchup',
     config = function()
-      vim.g.matchup_enabled = 1
-      vim.g.matchup_surround_enabled = 1
-      vim.g.matchup_transmute_enabled = 1
-      vim.g.matchup_matchparen_deferred = 1
+      for _, option in pairs({'enabled', 'surround_enabled', 'transmute_enabled', 'matchparen_deferred'}) do
+        vim.g['matchup_' .. option] = 1
+      end
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
       require('pynappo/keymaps').setup('matchup')
     end,
@@ -135,7 +135,7 @@ require('packer').startup({function(use)
   use {
     'folke/trouble.nvim',
     cmd = {'Trouble', 'TroubleEnter'},
-    requires = 'kyazdani42/nvim-web-devicons',
+    requires = 'kyazdani4/nvim-web-devicons',
     config = [[require('trouble').setup{}]],
   }
   use {
@@ -161,10 +161,10 @@ require('packer').startup({function(use)
   }
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
-  use { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
+  use { 'kylechui/nvim-surround', config = [[require('pynappo/plugins/nvim-surround')]] }
   -- use {
   --   'akinsho/bufferline.nvim',
-  --   tag = 'v2.*',
+  --   tag = 'v.*',
   --   requires = 'kyazdani42/nvim-web-devicons',
   --   config = [[require('pynappo/plugins/bufferline')]]
   -- }
@@ -183,7 +183,13 @@ require('packer').startup({function(use)
       vim.notify = require('notify')
     end
   }
-  use { "kevinhwang91/nvim-hlslens", config = [[require('pynappo/keymaps').setup('hlslens')]] }
+  use {
+    "kevinhwang91/nvim-hlslens",
+    config = function()
+      require('hlslens').setup()
+      require('pynappo/keymaps').setup('hlslens')
+    end
+  }
   -- use({
   --   "folke/noice.nvim",
   --   event = "VimEnter",
@@ -211,10 +217,11 @@ require('packer').startup({function(use)
     config = [[require('neorg').setup {['core.defaults'] = {}}]]
   }
   use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim'},
-    config = [[require('pynappo/plugins/lualine')]]
+      'nvim-lualine/lualine.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim'},
+      config = [[require('pynappo/plugins/lualine')]]
   }
+  use { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
   use { 'AckslD/nvim-neoclip.lua', requires = { 'nvim-telescope/telescope.nvim' }, config = [[require('neoclip').setup()]] }
   use ({
     'williamboman/mason.nvim',
@@ -285,12 +292,15 @@ require('packer').startup({function(use)
       })
     end
   }
-  use { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
   use { 'toppair/peek.nvim', run = 'deno task --quiet build:fast' }
   use { 'echasnovski/mini.nvim', config = [[require('pynappo/plugins/mini')]] }
   use {
     'glacambre/firenvim',
     run = function() vim.fn['firenvim#install'](0) end
+  }
+  use {
+    'simnalamburt/vim-mundo',
+
   }
   if packer_bootstrap then
     require('packer').sync()
