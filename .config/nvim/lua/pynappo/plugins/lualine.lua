@@ -1,5 +1,9 @@
 local navic = require("nvim-navic")
 local lualine = require("lualine")
+
+local function modified()
+  if vim.bo.modified then return '[+]' end
+end
 lualine.setup {
   options = {
     component_separators = { left = "|", right = "|" },
@@ -58,7 +62,7 @@ lualine.setup {
       }
     },
     lualine_c = {},
-    lualine_x = {'%f'},
+    lualine_x = {{'%f', color = {gui = vim.bo.modified and 'italic' or ''}}},
     lualine_y = {'progress'},
     lualine_z = {}
   },
@@ -79,7 +83,7 @@ lualine.setup {
       }
     },
     lualine_c = {},
-    lualine_x = {'%f'},
+    lualine_x = {{'%f', color = {gui = vim.bo.modified and 'italic' or ''}}},
     lualine_y = {'progress'},
     lualine_z = {}
   },

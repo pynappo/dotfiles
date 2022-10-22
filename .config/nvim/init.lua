@@ -105,6 +105,7 @@ local theme = require("pynappo/theme")
 theme.ayu()
 theme.transparent_override()
 theme.link_highlights()
+require("pynappo/commands")
 require("pynappo/keymaps").init()
 require("pynappo/autocmds")
-require("pynappo/commands")
+
