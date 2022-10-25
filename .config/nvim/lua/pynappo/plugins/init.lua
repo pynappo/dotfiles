@@ -26,12 +26,9 @@ require('packer').startup({function(use)
   use { 'catppuccin/nvim', as = 'catppuccin' }
   use 'Shatur/neovim-ayu'
   use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
+  use { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] }
   use ({
-    {
-      'nvim-telescope/telescope.nvim',
-      requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-ui-select.nvim' },
-      config = [[require('pynappo/plugins/telescope')]],
-    },
+    { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-ui-select.nvim' }, config = [[require('pynappo/plugins/telescope')]], },
     { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     { 'nvim-telescope/telescope-frecency.nvim', after = 'telescope.nvim', requires = 'tami5/sqlite.lua' },
     'nvim-telescope/telescope-file-browser.nvim',
@@ -130,14 +127,8 @@ require('packer').startup({function(use)
     end,
   }
   use { 'nmac427/guess-indent.nvim', config = [[require('guess-indent').setup{}]], }
-  use { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] }
   use 'tpope/vim-repeat'
-  use {
-    'folke/trouble.nvim',
-    cmd = {'Trouble', 'TroubleEnter'},
-    requires = 'kyazdani4/nvim-web-devicons',
-    config = [[require('trouble').setup{}]],
-  }
+  use { 'folke/trouble.nvim', requires = 'kyazdani4/nvim-web-devicons', config = [[require('trouble').setup{}]], }
   use {
     'karb94/neoscroll.nvim',
     config = function ()
@@ -259,16 +250,8 @@ require('packer').startup({function(use)
   use { 'akinsho/toggleterm.nvim', tag = '*', config = [[require('pynappo/plugins/toggleterm')]] }
   use ({
     "mfussenegger/nvim-dap",
-    {
-      "rcarriga/nvim-dap-ui",
-      requires = "mfussenegger/nvim-dap",
-      config = [[require("dapui").setup()]]
-    },
-    {
-      'theHamsta/nvim-dap-virtual-text',
-      requires = "mfussenegger/nvim-dap",
-      config = [[require("nvim-dap-virtual-text").setup()]]
-    },
+    { "rcarriga/nvim-dap-ui", requires = "mfussenegger/nvim-dap", config = [[require("dapui").setup()]] },
+    { 'theHamsta/nvim-dap-virtual-text', requires = "mfussenegger/nvim-dap", config = [[require("nvim-dap-virtual-text").setup()]] },
   })
   use {
     "smjonas/inc-rename.nvim",
@@ -294,23 +277,11 @@ require('packer').startup({function(use)
   }
   use { 'toppair/peek.nvim', run = 'deno task --quiet build:fast' }
   use { 'echasnovski/mini.nvim', config = [[require('pynappo/plugins/mini')]] }
-  use {
-    'glacambre/firenvim',
-    run = function() vim.fn['firenvim#install'](0) end
-  }
-  use {
-    'simnalamburt/vim-mundo',
-
-  }
+  use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
+  use 'simnalamburt/vim-mundo'
   if packer_bootstrap then
     require('packer').sync()
   end
 end,
-  config = {
-    display = {
-      open_fn = function()
-        return require('packer.util').float({ border = 'single' })
-      end
-    }
-  }
+  config = {}
 })
