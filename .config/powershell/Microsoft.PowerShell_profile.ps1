@@ -12,7 +12,9 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 
 $env:FZF_DEFAULT_COMMAND="fd --hidden --exclude .git"
 $env:FZF_DEFAULT_OPTS = "--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+$env:PYTHONIOENCODING="utf-8"
 
+Invoke-Expression "$(thefuck --alias)"
 Function Reload-Path {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 }
@@ -46,6 +48,7 @@ Set-Alias -Name ldf -Value Lazy-Dotfiles
 Function Pacup ([string]$Path = "$Home\.files\"){
 	scoop export > ($Path + 'scoop.json')
 	winget export -o ($Path + 'winget.json') --accept-source-agreements
+    pip freeze > ($Path + 'requirements.txt')
 }
 
 Function New-Link ($Path, $Target) {

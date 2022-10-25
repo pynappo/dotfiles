@@ -43,6 +43,8 @@ local keymaps = {
       { '<leader>8', '8gt', { silent = true } },
       { '<leader>9', '9gt', { silent = true } },
       { '<leader>0', '10gt', { silent = true } },
+      -- Autoindent on insert
+      { 'i', function () return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end, {expr=true, silent = true}},
     },
     [{'n', 'v'}] = {
       {'<Space>', '<Nop>', { silent = true }},
@@ -57,9 +59,7 @@ local keymaps = {
     }
   },
   neo_tree_window = { [{ 'n' }] = { { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}}, } },
-  incremental_rename = {
-    [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, }
-  },
+  incremental_rename = { [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, } },
   bufferline = {
     [{ 'n' }] = { { 'gb', '<Cmd>BufferLinePick<CR>', {desc = 'Pick from bufferline'}} }
   },
