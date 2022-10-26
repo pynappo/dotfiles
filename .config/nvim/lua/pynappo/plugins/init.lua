@@ -55,7 +55,7 @@ require('packer').startup({function(use)
     end
   }
   use ({
-    { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = [[require('pynappo/plugins/treesitter')]] },
+    { 'nvim-treesitter/nvim-treesitter', config = [[require('pynappo/plugins/treesitter')]] },
     'nvim-treesitter/nvim-treesitter-textobjects',
     'p00f/nvim-ts-rainbow',
     'windwp/nvim-ts-autotag',
@@ -63,7 +63,11 @@ require('packer').startup({function(use)
     'nvim-treesitter/playground'
   })
   use ({
-    { 'zbirenbaum/copilot.lua', config = [[require('copilot').setup()]] },
+    {
+      'zbirenbaum/copilot.lua',
+      event = "InsertEnter",
+      config = [[vim.schedule(function() require("copilot").setup() end)]]
+    },
     {
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
@@ -80,7 +84,11 @@ require('packer').startup({function(use)
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         'dmitmel/cmp-cmdline-history',
-        'zbirenbaum/copilot-cmp',
+        {
+          "zbirenbaum/copilot-cmp",
+          after = "copilot.lua",
+          config = [[require("copilot_cmp").setup()]]
+        },
         "hrsh7th/cmp-emoji",
         "hrsh7th/cmp-nvim-lsp",
         "f3fora/cmp-spell",
@@ -112,7 +120,7 @@ require('packer').startup({function(use)
       require('pynappo/plugins/neo-tree')
     end
   }
-  use { 'folke/which-key.nvim', config = [[require('which-key').setup({window = {border = "shadow"}})]] }
+  use { 'folke/which-key.nvim', config = [[require('which-key').setup({window = {border = "single"}})]] }
   use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
   use 'lewis6991/impatient.nvim'
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
@@ -208,9 +216,9 @@ require('packer').startup({function(use)
     config = [[require('neorg').setup {['core.defaults'] = {}}]]
   }
   use {
-      'nvim-lualine/lualine.nvim',
-      requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim'},
-      config = [[require('pynappo/plugins/lualine')]]
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim'},
+    config = [[require('pynappo/plugins/lualine')]]
   }
   use { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
   use { 'AckslD/nvim-neoclip.lua', requires = { 'nvim-telescope/telescope.nvim' }, config = [[require('neoclip').setup()]] }

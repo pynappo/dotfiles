@@ -1,34 +1,54 @@
 local luasnip = require("luasnip")
 local cmp = require("cmp")
 local lspkind = require("lspkind")
-
+lspkind.init({
+  symbol_map = {
+    Copilot = "",
+  },
+})
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
+end
 cmp.setup {
   window = {
     completion = {
       winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
       col_offset = -3,
       side_padding = 0,
-      border = 'rounded',
+      border = nil,
       scrollbar = '║'
     },
     documentation = { -- no border; native-style scrollbar
-      border = nil,
+      border = 'rounded',
       scrollbar = '',
     },
   },
   formatting = {
-    format = lspkind.cmp_format({
-      mode = "symbol_text",
-      menu = ({
-        buffer = "[Buf]",
-        nvim_lsp = "[LSP]",
-        nvim_lua =  "[Lua]",
-        luasnip = "[Snip]",
-        copilot = "[GHub]",
-        crates = "[Crate]",
-        path = "[Path]",
-      })
-    })
+    fields = { "kind", "abbr", "menu" },
+    format = function (entry, vim_item)
+      local kind = lspkind.cmp_format({
+        mode = "symbol_text",
+        menu = {
+          luasnip = "[Snip]",
+          nvim_lsp = "[LSP]",
+          nvim_lua =  "[Lua]",
+          buffer = "[Buf]",
+          copilot = "[GHub]",
+          crates = "[Crate]",
+          path = "[Path]",
+          cmdline = "[Cmd]",
+          cmdline_history = "[Hist]",
+          git = "[Git]",
+        },
+        symbol_map = { Copilot = "" }
+      })(entry, vim_item)
+      local strings = vim.split(kind.kind, "%s", { trimempty = true })
+      kind.kind = " " .. strings[1] .. " "
+
+      return kind
+    end
   },
   snippet = {
     expand = function(args)
@@ -39,14 +59,10 @@ cmp.setup {
   mapping = cmp.mapping.preset.insert({
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete({
-      reason = cmp.ContextReason.Auto,
-    }),
-    ["<CR>"] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-    },
+    ["<C-Space>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto, }),
+    ["<CR>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, },
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then cmp.select_next_item()
+      if cmp.visible() and has_words_before() then cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
       else fallback() end
     end, { "i", "s", 'c' }),
@@ -58,6 +74,7 @@ cmp.setup {
   }),
   sources = {
     { name = "nvim_lsp" },
+    { name = "nvim_lua"},
     { name = "copilot" },
     { name = "luasnip" },
     { name = "nvim_lsp_signature_help" },
