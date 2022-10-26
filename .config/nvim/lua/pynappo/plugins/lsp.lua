@@ -4,7 +4,7 @@ require('mason-lspconfig').setup({
 })
 local navic = require("nvim-navic")
 local lspconfig = require('lspconfig')
-
+require("neodev").setup()
 require('pynappo/keymaps').setup('diagnostics')
 local on_attach_keymaps = require('pynappo/keymaps').lsp.on_attach
 local on_attach = function(client, bufnr)

@@ -54,6 +54,7 @@ o.splitbelow = true
 -- Misc
 g.gutentags_enabled = 1
 o.history = 1000
+o.scrolloff = 4
 opt.whichwrap:append("<,>,h,l,[,]")
 opt.fillchars = {
   horiz     = '━',
@@ -77,7 +78,6 @@ opt.listchars = {
 }
 o.cursorline = true
 o.wrap = false
-
 local disabled_built_ins = {
   "netrw",
   "netrwPlugin",
