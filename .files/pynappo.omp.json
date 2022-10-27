@@ -4,7 +4,7 @@
     {
       "alignment": "left",
       "segments": [
-          
+
         {
           "type": "os",
           "style": "diamond",
@@ -16,7 +16,7 @@
             "macos": "mac"
           }
         },
-        {   
+        {
           "type": "session",
           "style": "powerline",
           "foreground": "#ffffff",
@@ -48,7 +48,7 @@
             "fetch_upstream_icon": true
           },
           "style": "powerline",
-          "template": " {{.UpstreamIcon}}{{ url .Upstream .UpstreamURL }} {{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }}\uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }}|{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}}\uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }}",
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uF692 {{ .StashCount }}{{ end }}",
           "type": "git"
         },
         {
