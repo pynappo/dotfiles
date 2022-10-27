@@ -13,3 +13,7 @@ command("Trim", function() -- yoinked from mini.trailspace because I don't like 
   local last_nonblank = vim.fn.prevnonblank(n_lines)
   if last_nonblank < n_lines then vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, {}) end
 end, {})
+command("DotfilesGit", function()
+  vim.env.GIT_WORK_TREE = vim.fn.expand("~")
+  vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
+end, {})

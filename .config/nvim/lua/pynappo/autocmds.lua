@@ -19,27 +19,3 @@ autocmd({ "BufWritePre" }, {
   command = [[%s/\s\+$//e]],
   group = pynappo
 })
-
-autocmd( {"VimEnter"} , {
-  callback = function()
-    local cwd = vim.fn.getcwd()
-    if string.find(cwd, '.files') or string.find(cwd, '.config') then
-      vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
-    end
-  end
-})
-
-autocmd({"DirChanged"}, {
-  callback = function ()
-    local cwd = vim.v.event.cwd
-    if string.find(cwd, '.files') or string.find(cwd, '.config') then
-      vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
-    else
-      vim.env.GIT_WORK_TREE = nil
-      vim.env.GIT_DIR = nil
-    end
-  end,
-  group = pynappo
-})
