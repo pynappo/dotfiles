@@ -7,9 +7,6 @@ require('tabby.tabline').use_preset('active_wins_at_tail', {
     win = 'TabLine', -- window highlight
     tail = 'TabLine', -- tail element highlight
   },
-  tab_name = {
-    name_fallback = nil,
-  },
   buf_name = {
     mode = "unique",
   },

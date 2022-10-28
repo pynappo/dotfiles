@@ -231,7 +231,7 @@ require('packer').startup({function(use)
     {
       'neovim/nvim-lspconfig',
       config = function()
-        require('mason').setup()
+        require('mason').setup({ ui = { border = "single" }})
         require('pynappo/plugins/lsp')
       end
     }
@@ -287,9 +287,19 @@ require('packer').startup({function(use)
   use { 'echasnovski/mini.nvim', config = [[require('pynappo/plugins/mini')]] }
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
   use 'simnalamburt/vim-mundo'
+  use { 'AckslD/nvim-FeMaco.lua', config = [[require("femaco").setup()]] }
+  use {
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = [[require("octo").setup()]]
+  }
   if packer_bootstrap then
     require('packer').sync()
   end
 end,
-  config = {}
+  config = { max_jobs = 12 }
 })

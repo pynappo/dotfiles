@@ -23,8 +23,8 @@ function M.transparent_override()
     "SignColumn",
     "EndOfBuffer",
   }
-  for _, highlight in pairs(highlights) do
-    vim.cmd.highlight(highlight .. ' guibg=none ctermbg=none') --
+  for _, name in pairs(highlights) do
+    vim.cmd.highlight(name .. ' guibg=none ctermbg=none') --
   end
 end
 function M.link_highlights()

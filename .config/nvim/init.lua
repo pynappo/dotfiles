@@ -66,6 +66,7 @@ opt.fillchars = {
   verthoriz = '╋',
   eob       = ' ',
   fold      = ' ',
+  diff      = '╱'
 }
 o.guifont = "InconsolataLGC_NF"
 o.list = true
