@@ -38,13 +38,7 @@ require('packer').startup({function(use)
     requires = 'nvim-treesitter/nvim-treesitter',
     config = function()
       local hl_list = {}
-<<<<<<< HEAD
       for i, color in pairs({ '#862121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#562155' }) do
-||||||| parent of ef772a6 (added neovide config)
-      for i, color in pairs({ '#662121', '#767621', '#216631', '#325a5e', '#324b7b', '#562155' }) do
-=======
-      for i, color in pairs({ '#662121', '#767621', '#216631', '#2d5f5f', '#324b7b', '#562155' }) do
->>>>>>> ef772a6 (added neovide config)
         local name = 'IndentBlanklineIndent' .. i
         vim.api.nvim_set_hl(0, name, { fg = color })
         table.insert(hl_list, name);
@@ -285,24 +279,8 @@ require('packer').startup({function(use)
     requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim', 'kyazdani42/nvim-web-devicons', },
     config = [[require("octo").setup()]]
   }
-<<<<<<< HEAD
-  -- use {
-  --   'nvim-tree/nvim-tree.lua',
-  --   config = function()
-  --     require("nvim-tree").setup({
-  --       actions = {
-  --         change_dir = {
-  --           global = true
-  --         }
-  --       }
-  --     })
-  --   end
-  -- }
-||||||| parent of ef772a6 (added neovide config)
-=======
   -- use { "nvim-zh/colorful-winsep.nvim", config = [[require('colorful-winsep').setup({highlight = { guifg = '#999999'}})]] },
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
->>>>>>> ef772a6 (added neovide config)
   if packer_bootstrap then
     require('packer').sync()
   end
