@@ -18,7 +18,7 @@ vim.g.firenvim_config = {
     },
   }
 }
-if vim.g.started_by_firenvim then
+if g.started_by_firenvim then
   o.laststatus = 0
   o.cmdheight = 0
   o.showtabline = 0
@@ -27,7 +27,14 @@ else
   o.showtabline = 2
   o.laststatus = 3
 end
-
+if g.neovide then
+  g.neovide_transparency = 0.8
+  g.neovide_refresh_rate = 165
+  g.neovide_cursor_vfx_mode = 'ripple'
+  g.neovide_cursor_animation_length = 0.03
+  g.neovide_cursor_trail_size = 0.9
+  g.neovide_remember_window_size = true
+end
 -- Line numbers
 o.signcolumn = "auto:2"
 o.relativenumber = true
@@ -52,6 +59,7 @@ o.splitright = true
 o.splitbelow = true
 
 -- Misc
+o.termguicolors = true
 g.gutentags_enabled = 1
 o.history = 1000
 o.scrolloff = 4
@@ -68,7 +76,7 @@ opt.fillchars = {
   fold      = ' ',
   diff      = '╱'
 }
-o.guifont = "InconsolataLGC_NF"
+o.guifont = "InconsolataLGC_NF:h8:#e-subpixelantialias"
 o.list = true
 opt.listchars = {
   extends = '⟩',
@@ -79,6 +87,7 @@ opt.listchars = {
 }
 o.cursorline = true
 o.wrap = false
+o.formatoptions = "jcrql"
 local disabled_built_ins = {
   "netrw",
   "netrwPlugin",
@@ -98,13 +107,11 @@ local disabled_built_ins = {
   "rrhelper",
   "matchit"
 }
-for _, plugin in pairs(disabled_built_ins) do
-  vim.g["loaded_" .. plugin] = 1
-end
+for _, plugin in pairs(disabled_built_ins) do vim.g["loaded_" .. plugin] = 1 end
 require("pynappo/plugins")
 local theme = require("pynappo/theme")
 theme.ayu()
-theme.transparent_override()
+if not g.neovide then theme.transparent_override() end
 theme.link_highlights()
 require("pynappo/commands")
 require("pynappo/keymaps").init()

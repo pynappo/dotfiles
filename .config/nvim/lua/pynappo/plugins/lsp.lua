@@ -56,3 +56,4 @@ null_ls.setup({
     null_ls.builtins.formatting.codespell
   },
 })
+vim.diagnostic.config({virtual_text = false})
