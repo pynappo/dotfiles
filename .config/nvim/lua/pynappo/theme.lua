@@ -1,6 +1,5 @@
 local M = {}
 M.ayu = function ()
-  vim.o.termguicolors = true
   local colors = require("ayu.colors")
   require("ayu").setup({
     mirage = true,
@@ -24,7 +23,7 @@ function M.transparent_override()
     "EndOfBuffer",
   }
   for _, name in pairs(highlights) do
-    vim.cmd.highlight(name .. ' guibg=none ctermbg=none') --
+    vim.cmd.highlight(name .. ' guibg=none ctermbg=none')
   end
 end
 function M.link_highlights()

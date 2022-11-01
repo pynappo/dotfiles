@@ -15,11 +15,7 @@ require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
   use {
     { 'tpope/vim-fugitive' },
-    {
-      'lewis6991/gitsigns.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-      config = [[require('pynappo/plugins/gitsigns')]]
-    },
+    { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, config = [[require('pynappo/plugins/gitsigns')]] },
     { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
   }
   use { 'ludovicchabant/vim-gutentags' }
@@ -28,7 +24,11 @@ require('packer').startup({function(use)
   use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
   use { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] }
   use ({
-    { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-ui-select.nvim' }, config = [[require('pynappo/plugins/telescope')]], },
+    {
+      'nvim-telescope/telescope.nvim',
+      requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-ui-select.nvim' },
+      config = [[require('pynappo/plugins/telescope')]],
+    },
     { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     { 'nvim-telescope/telescope-frecency.nvim', after = 'telescope.nvim', requires = 'tami5/sqlite.lua' },
     'nvim-telescope/telescope-file-browser.nvim',
@@ -38,7 +38,13 @@ require('packer').startup({function(use)
     requires = 'nvim-treesitter/nvim-treesitter',
     config = function()
       local hl_list = {}
+<<<<<<< HEAD
       for i, color in pairs({ '#862121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#562155' }) do
+||||||| parent of ef772a6 (added neovide config)
+      for i, color in pairs({ '#662121', '#767621', '#216631', '#325a5e', '#324b7b', '#562155' }) do
+=======
+      for i, color in pairs({ '#662121', '#767621', '#216631', '#2d5f5f', '#324b7b', '#562155' }) do
+>>>>>>> ef772a6 (added neovide config)
         local name = 'IndentBlanklineIndent' .. i
         vim.api.nvim_set_hl(0, name, { fg = color })
         table.insert(hl_list, name);
@@ -50,8 +56,8 @@ require('packer').startup({function(use)
         use_treesitter = true,
         use_treesitter_scope = true,
         show_current_context = true,
-        show_current_context_start = true,
       }
+      vim.cmd.highlight('IndentBlanklineContextChar guifg=#999999 gui=bold')
     end
   }
   use ({
@@ -65,8 +71,10 @@ require('packer').startup({function(use)
   use ({
     {
       'zbirenbaum/copilot.lua',
-      event = "InsertEnter",
-      config = [[vim.schedule(function() require("copilot").setup() end)]]
+      event = "VimEnter",
+      config = function()
+        vim.defer_fn(function() require("copilot").setup() end, 100)
+      end,
     },
     {
       'L3MON4D3/LuaSnip',
@@ -84,23 +92,14 @@ require('packer').startup({function(use)
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         'dmitmel/cmp-cmdline-history',
-        {
-          "zbirenbaum/copilot-cmp",
-          after = "copilot.lua",
-          config = [[require("copilot_cmp").setup()]]
-        },
+        { "zbirenbaum/copilot-cmp", after = "copilot.lua", config = [[require("copilot_cmp").setup()]] },
         "hrsh7th/cmp-emoji",
         "hrsh7th/cmp-nvim-lsp",
         "f3fora/cmp-spell",
         "octaltree/cmp-look",
         "saadparwaiz1/cmp_luasnip",
         'hrsh7th/cmp-nvim-lsp-signature-help',
-        {
-          'saecki/crates.nvim',
-          event = "BufRead Cargo.toml",
-          requires = 'nvim-lua/plenary.nvim',
-          config = [[require('crates').setup()]]
-        },
+        { 'saecki/crates.nvim', event = "BufRead Cargo.toml", requires = 'nvim-lua/plenary.nvim', config = [[require('crates').setup()]] },
         { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", config = [[require("cmp_git").setup()]] },
       },
     },
@@ -170,18 +169,10 @@ require('packer').startup({function(use)
   use { 'max397574/better-escape.nvim', config = function()
     require('better_escape').setup({
       mapping = {"jk", "kj"},
-      keys = function ()
-        return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>'
-      end
+      keys = function () return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end
     })
   end }
-  use {
-    'rcarriga/nvim-notify',
-    config = function()
-      require('notify').setup({ background_colour = '#000000' })
-      vim.notify = require('notify')
-    end
-  }
+  use { 'rcarriga/nvim-notify', config = [[require("notify").setup({background_colour = '#000000'})]] }
   use {
     "kevinhwang91/nvim-hlslens",
     config = function()
@@ -189,24 +180,31 @@ require('packer').startup({function(use)
       require('pynappo/keymaps').setup('hlslens')
     end
   }
-  -- use({
-  --   "folke/noice.nvim",
-  --   event = "VimEnter",
-  --   config = function()
-  --     require("noice").setup({
-  --       cmdline = { view = "cmdline", },
-  --       popupmenu = {
-  --         enabled = false,
-  --       }
-  --     })
-  --   end,
-  --   requires = {
-  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --     "MunifTanjim/nui.nvim",
-  --     "rcarriga/nvim-notify",
-  --     "hrsh7th/nvim-cmp",
-  --   }
-  -- })
+  -- use { 'j-hui/fidget.nvim', config = [[require("fidget").setup { window = { blend = 0 }}]] }
+  use({
+    "folke/noice.nvim",
+    config = function()
+      require("noice").setup({
+        cmdline = { enabled = false },
+        messages = { enabled = false },
+        lsp = {
+          progress = { enabled = false, },
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
+          },
+        },
+        views = {
+          hover = {
+            border = { style = "rounded" },
+            position = { row = 2 }
+          },
+        }
+      })
+    end,
+    requires = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" }
+  })
   use { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = [[require('pynappo/plugins/navic')]] }
   use {
     'nvim-neorg/neorg',
@@ -217,11 +215,14 @@ require('packer').startup({function(use)
   }
   use {
     'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim'},
+    requires = {
+      'kyazdani42/nvim-web-devicons',
+      'WhoIsSethDaniel/lualine-lsp-progress.nvim'
+    },
     config = [[require('pynappo/plugins/lualine')]]
   }
   use { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
-  use { 'AckslD/nvim-neoclip.lua', requires = { 'nvim-telescope/telescope.nvim' }, config = [[require('neoclip').setup()]] }
+  use { 'AckslD/nvim-neoclip.lua', requires = 'nvim-telescope/telescope.nvim', config = [[require('neoclip').setup()]] }
   use ({
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
@@ -236,15 +237,10 @@ require('packer').startup({function(use)
       end
     }
   })
-  -- use { 'j-hui/fidget.nvim', config = [[require("fidget").setup { window = { blend = 0 }}]] }
-  use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
   use ({
     {
       'nvim-neotest/neotest',
-      requires = {
-        'nvim-lua/plenary.nvim',
-        'nvim-treesitter/nvim-treesitter',
-      },
+      requires = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', },
     },
     'rouge8/neotest-rust'
   })
@@ -275,11 +271,7 @@ require('packer').startup({function(use)
     config = function ()
       require('nvim-lightbulb').setup({
         sign = { enabled = false },
-        virtual_text = {
-          enabled = true,
-          text = "💡",
-          hl_mode = "replace",
-        },
+        virtual_text = { enabled = true, text = "💡", hl_mode = "replace", },
       })
     end
   }
@@ -290,13 +282,10 @@ require('packer').startup({function(use)
   use { 'AckslD/nvim-FeMaco.lua', config = [[require("femaco").setup()]] }
   use {
     'pwntester/octo.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-      'kyazdani42/nvim-web-devicons',
-    },
+    requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim', 'kyazdani42/nvim-web-devicons', },
     config = [[require("octo").setup()]]
   }
+<<<<<<< HEAD
   -- use {
   --   'nvim-tree/nvim-tree.lua',
   --   config = function()
@@ -309,6 +298,11 @@ require('packer').startup({function(use)
   --     })
   --   end
   -- }
+||||||| parent of ef772a6 (added neovide config)
+=======
+  -- use { "nvim-zh/colorful-winsep.nvim", config = [[require('colorful-winsep').setup({highlight = { guifg = '#999999'}})]] },
+  use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
+>>>>>>> ef772a6 (added neovide config)
   if packer_bootstrap then
     require('packer').sync()
   end
@@ -320,3 +314,4 @@ end,
     },
   }
 })
+
