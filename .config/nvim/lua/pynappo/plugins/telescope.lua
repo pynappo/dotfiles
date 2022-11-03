@@ -6,8 +6,7 @@ ts.setup {
   },
   extensions = {
     ["ui-select"] = {
-      require("telescope.themes").get_dropdown {
-      }
+      require("telescope.themes").get_dropdown { }
     },
     file_browser = {
       hijack_netrw = true,

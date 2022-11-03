@@ -1,5 +1,4 @@
 local M = {}
-
 local set = vim.keymap.set
 
 local function map(mappings)
@@ -19,12 +18,6 @@ local keymaps = {
       { 'x', '"_x', { silent = true }},
       { 'j', 'gj' , { silent = true }},
       { 'k', 'gk' , { silent = true }},
-      -- Better pasting
-      { 'p', 'p=`]', { silent = true } },
-      { 'P', 'P=`]', { silent = true } },
-      -- Yank and paste from clipboard
-      { '<leader>p', '"+p=`]', { silent = true } },
-      { '<leader>y', '"+y"', { silent = true }},
       -- Better window navigation
       { '<C-j>', '<C-w>j', { silent = true } },
       { '<C-k>', '<C-w>k', { silent = true } },
@@ -47,7 +40,12 @@ local keymaps = {
       { 'i', function () return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end, {expr=true, silent = true}},
     },
     [{'n', 'v'}] = {
+      -- Better pasting
+      { 'p', 'p=`]', { silent = true } },
+      { 'P', 'P=`]', { silent = true } },
       {'<Space>', '<Nop>', { silent = true }},
+      { '<leader>p', '"+p=`]', { silent = true } },
+      { '<leader>y', '"+y"', { silent = true }},
     },
   },
   diagnostics = {
@@ -58,11 +56,14 @@ local keymaps = {
       { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
     }
   },
-  neo_tree_window = { [{ 'n' }] = { { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}}, } },
-  incremental_rename = { [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, } },
-  bufferline = {
-    [{ 'n' }] = { { 'gb', '<Cmd>BufferLinePick<CR>', {desc = 'Pick from bufferline'}} }
+  neo_tree_window = {
+    [{ 'n' }] = {
+      { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}},
+      { 'gd', ':Neotree float reveal_file=<cfile> reveal_force_cwd<cr>', {desc = 'Popup Neo-tree for file under cursor'} }
+    }
   },
+  incremental_rename = { [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, } },
+  bufferline = { [{ 'n' }] = { { 'gb', '<Cmd>BufferLinePick<CR>', {desc = 'Pick from bufferline'}} } },
   hlslens = {
     [{'n'}] = {
       { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
@@ -110,7 +111,7 @@ function M.setup_telescope()
       { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
       { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
       { '<leader>fo', function() ts_builtin.tags { only_current_buffer = true } end, {desc = '(TS) Tags in buffer'}},
-      { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
+      { '<leader>?', ts_builtin.live_grep, {desc = '(TS) Oldfiles'}},
       { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
     }
   }

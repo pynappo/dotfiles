@@ -4,7 +4,7 @@ local o = vim.o
 local opt = vim.opt
 local g = vim.g
 
-vim.g.firenvim_config = {
+g.firenvim_config = {
   globalSettings = {
     alt = 'all',
   },

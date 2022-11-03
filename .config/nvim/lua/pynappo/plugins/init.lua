@@ -16,13 +16,21 @@ require('packer').startup({function(use)
   use {
     { 'tpope/vim-fugitive' },
     { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, config = [[require('pynappo/plugins/gitsigns')]] },
-    { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+    { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' },
+    {
+      'pwntester/octo.nvim',
+      requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim', 'kyazdani42/nvim-web-devicons', },
+      config = [[require("octo").setup()]]
+    }
   }
   use { 'ludovicchabant/vim-gutentags' }
   use { 'catppuccin/nvim', as = 'catppuccin' }
   use 'Shatur/neovim-ayu'
-  use { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] }
-  use { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] }
+  use {
+    { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] },
+    { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] },
+    { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
+  }
   use ({
     {
       'nvim-telescope/telescope.nvim',
@@ -30,12 +38,10 @@ require('packer').startup({function(use)
       config = [[require('pynappo/plugins/telescope')]],
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-    { 'nvim-telescope/telescope-frecency.nvim', after = 'telescope.nvim', requires = 'tami5/sqlite.lua' },
     'nvim-telescope/telescope-file-browser.nvim',
   })
   use { 'lukas-reineke/indent-blankline.nvim',
     event = 'BufEnter',
-    requires = 'nvim-treesitter/nvim-treesitter',
     config = function()
       local hl_list = {}
       for i, color in pairs({ '#862121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#562155' }) do
@@ -113,7 +119,15 @@ require('packer').startup({function(use)
       require('pynappo/plugins/neo-tree')
     end
   }
-  use { 'folke/which-key.nvim', config = [[require('which-key').setup({window = {border = "single"}})]] }
+  use {
+    { 'folke/which-key.nvim', config = [[require('which-key').setup({window = {border = "single"}})]] },
+    { 'folke/trouble.nvim', requires = 'kyazdani4/nvim-web-devicons', config = [[require('trouble').setup{}]], },
+    {
+      'folke/todo-comments.nvim',
+      requires = 'nvim-lua/plenary.nvim',
+      config = [[require('todo-comments').setup{highlight = {keyword = "fg"}}]]
+    }
+  }
   use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
   use 'lewis6991/impatient.nvim'
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
@@ -129,7 +143,6 @@ require('packer').startup({function(use)
   }
   use { 'nmac427/guess-indent.nvim', config = [[require('guess-indent').setup{}]], }
   use 'tpope/vim-repeat'
-  use { 'folke/trouble.nvim', requires = 'kyazdani4/nvim-web-devicons', config = [[require('trouble').setup{}]], }
   use {
     'karb94/neoscroll.nvim',
     config = function ()
@@ -153,7 +166,7 @@ require('packer').startup({function(use)
   }
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
-  use { 'kylechui/nvim-surround', config = [[require('pynappo/plugins/nvim-surround')]] }
+
   -- use {
   --   'akinsho/bufferline.nvim',
   --   tag = 'v.*',
@@ -166,7 +179,6 @@ require('packer').startup({function(use)
       keys = function () return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end
     })
   end }
-  use { 'rcarriga/nvim-notify', config = [[require("notify").setup({background_colour = '#000000'})]] }
   use {
     "kevinhwang91/nvim-hlslens",
     config = function()
@@ -178,6 +190,7 @@ require('packer').startup({function(use)
   use({
     "folke/noice.nvim",
     config = function()
+      require("notify").setup({background_colour = '#000000'})
       require("noice").setup({
         cmdline = { enabled = false },
         messages = { enabled = false },
@@ -209,10 +222,7 @@ require('packer').startup({function(use)
   }
   use {
     'nvim-lualine/lualine.nvim',
-    requires = {
-      'kyazdani42/nvim-web-devicons',
-      'WhoIsSethDaniel/lualine-lsp-progress.nvim'
-    },
+    requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim' },
     config = [[require('pynappo/plugins/lualine')]]
   }
   use { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
@@ -238,11 +248,6 @@ require('packer').startup({function(use)
     },
     'rouge8/neotest-rust'
   })
-  use {
-    'folke/todo-comments.nvim',
-    requires = 'nvim-lua/plenary.nvim',
-    config = [[require('todo-comments').setup{highlight = {keyword = "fg"}}]]
-  }
   use { 'Akianonymus/nvim-colorizer.lua', config = [[require('colorizer').setup()]] }
   use { 'simrat39/symbols-outline.nvim', config = [[require('symbols-outline').setup()]] }
   use { 'akinsho/toggleterm.nvim', tag = '*', config = [[require('pynappo/plugins/toggleterm')]] }
@@ -274,11 +279,6 @@ require('packer').startup({function(use)
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
   use 'simnalamburt/vim-mundo'
   use { 'AckslD/nvim-FeMaco.lua', config = [[require("femaco").setup()]] }
-  use {
-    'pwntester/octo.nvim',
-    requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim', 'kyazdani42/nvim-web-devicons', },
-    config = [[require("octo").setup()]]
-  }
   -- use { "nvim-zh/colorful-winsep.nvim", config = [[require('colorful-winsep').setup({highlight = { guifg = '#999999'}})]] },
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
   if packer_bootstrap then
