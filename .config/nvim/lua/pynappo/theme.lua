@@ -1,5 +1,5 @@
 local M = {}
-M.ayu = function ()
+function M.ayu()
   local colors = require("ayu.colors")
   require("ayu").setup({
     mirage = true,

@@ -281,6 +281,7 @@ require('packer').startup({function(use)
   use { 'AckslD/nvim-FeMaco.lua', config = [[require("femaco").setup()]] }
   -- use { "nvim-zh/colorful-winsep.nvim", config = [[require('colorful-winsep').setup({highlight = { guifg = '#999999'}})]] },
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
+  use { 'xeluxee/competitest.nvim', config = [[require('competitest').setup({runner_ui = {interface = "popup"}})]]}
   if packer_bootstrap then
     require('packer').sync()
   end
