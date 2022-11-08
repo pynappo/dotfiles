@@ -1,19 +1,31 @@
 local command = vim.api.nvim_create_user_command
--- cd to current file
-command("CDhere", "cd %:p:h", {})
-command("Trim", function() -- yoinked from mini.trailspace because I don't like highlights
-  -- Save cursor position to later restore
-  local curpos = vim.api.nvim_win_get_cursor(0)
-  -- Search and replace trailing whitespace
-  vim.cmd([[keeppatterns %s/\s\+$//e]])
-  vim.api.nvim_win_set_cursor(0, curpos)
+local commands = {
+  {"CDhere", "cd %:p:h", {}},
+  {
+    "Trim",
+    function() -- yoinked from mini.trailspace because I don't like highlights
+      -- Save cursor position to later restore
+      local curpos = vim.api.nvim_win_get_cursor(0)
+      -- Search and replace trailing whitespace
+      vim.cmd([[keeppatterns %s/\s\+$//e]])
+      vim.api.nvim_win_set_cursor(0, curpos)
 
-  --- Trim last blank lines
-  local n_lines = vim.api.nvim_buf_line_count(0)
-  local last_nonblank = vim.fn.prevnonblank(n_lines)
-  if last_nonblank < n_lines then vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, {}) end
-end, {})
-command("DotfilesGit", function()
-  vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-  vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
-end, {})
+      --- Trim last blank lines
+      local n_lines = vim.api.nvim_buf_line_count(0)
+      local last_nonblank = vim.fn.prevnonblank(n_lines)
+      if last_nonblank < n_lines then vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, {}) end
+    end,
+    {}
+  },
+  {
+    "DotfilesGit",
+    function()
+      vim.env.GIT_WORK_TREE = vim.fn.expand("~")
+      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
+    end,
+    {}
+  },
+}
+for _, cmd in ipairs(commands) do
+  command(cmd[1], cmd[2], cmd[3])
+end

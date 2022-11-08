@@ -3,7 +3,6 @@ require("impatient")
 local o = vim.o
 local opt = vim.opt
 local g = vim.g
-
 g.firenvim_config = {
   globalSettings = {
     alt = 'all',
@@ -18,6 +17,14 @@ g.firenvim_config = {
     },
   }
 }
+if vim.fn.has('win32') then
+  vim.o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
+  vim.o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+  vim.o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  vim.o.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  vim.o.shellquote = ''
+  vim.o.shellxquote = ''
+end
 if g.started_by_firenvim then
   o.laststatus = 0
   o.cmdheight = 0
@@ -88,6 +95,7 @@ opt.listchars = {
 o.cursorline = true
 o.wrap = false
 o.formatoptions = "jcrql"
+
 local disabled_built_ins = {
   "netrw",
   "netrwPlugin",
