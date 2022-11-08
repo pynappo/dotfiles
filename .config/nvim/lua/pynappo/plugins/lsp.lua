@@ -24,7 +24,7 @@ local flags = {
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-for _, dir in pairs({ "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "gopls" }) do
+for _, dir in pairs({ "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "gopls", "nimls" }) do
   lspconfig[dir].setup ({
     capabilities = capabilities,
     on_attach = on_attach,
@@ -50,6 +50,7 @@ null_ls.setup({
     null_ls.builtins.completion.spell.with({
       filetypes = { 'markdown', 'text' },
     }),
+    null_ls.builtins.formatting.stylua,
     null_ls.builtins.code_actions.gitsigns,
     null_ls.builtins.hover.dictionary,
     null_ls.builtins.hover.printenv,

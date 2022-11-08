@@ -111,7 +111,7 @@ function M.setup_telescope()
       { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
       { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
       { '<leader>fo', function() ts_builtin.tags { only_current_buffer = true } end, {desc = '(TS) Tags in buffer'}},
-      { '<leader>?', ts_builtin.live_grep, {desc = '(TS) Oldfiles'}},
+      { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
       { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
     }
   }
