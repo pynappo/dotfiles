@@ -35,22 +35,27 @@ require('packer').startup({function(use)
   use ({
     {
       'nvim-telescope/telescope.nvim',
-      requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-ui-select.nvim' },
+      requires = 'nvim-lua/plenary.nvim',
       config = [[require('pynappo/plugins/telescope')]],
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     'nvim-telescope/telescope-file-browser.nvim',
   })
+  -- use ({
+  --   '~/code/nvim/fzf-lua',
+  --   requires = { 'kyazdani42/nvim-web-devicons' },
+  --   config = [[require('pynappo/plugins/fzf')]]
+  -- })
   use {
     'lukas-reineke/indent-blankline.nvim',
-    event = 'BufEnter',
     config = function()
       local hl_list = {}
-      for i, color in pairs({ '#862121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#562155' }) do
+      for i, color in pairs({ '#782121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#562155' }) do
         local name = 'IndentBlanklineIndent' .. i
-        vim.api.nvim_set_hl(0, name, { fg = color })
+        vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
         table.insert(hl_list, name);
       end
+      vim.cmd.highlight('IndentBlanklineContextChar guifg=#999999 gui=bold,nocombine')
       require('indent_blankline').setup {
         show_trailing_blankline_indent = false,
         space_char_blankline = ' ',
@@ -59,7 +64,6 @@ require('packer').startup({function(use)
         use_treesitter_scope = true,
         show_current_context = true,
       }
-      vim.cmd.highlight('IndentBlanklineContextChar guifg=#999999 gui=bold')
     end
   }
   use ({
@@ -71,12 +75,7 @@ require('packer').startup({function(use)
     'nvim-treesitter/playground'
   })
   use ({
-    {
-      'zbirenbaum/copilot.lua', event = "VimEnter",
-      config = function()
-        vim.defer_fn(function() require("copilot").setup() end, 100)
-      end,
-    },
+    { 'zbirenbaum/copilot.lua', event = "InsertEnter", config = require("copilot").setup() },
     {
       'L3MON4D3/LuaSnip',
       config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
@@ -102,6 +101,7 @@ require('packer').startup({function(use)
         'hrsh7th/cmp-nvim-lsp-signature-help',
         { 'saecki/crates.nvim', event = "BufRead Cargo.toml", requires = 'nvim-lua/plenary.nvim', config = [[require('crates').setup()]] },
         { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", config = [[require("cmp_git").setup()]] },
+        'davidsierradz/cmp-conventionalcommits',
       },
     },
     { 'windwp/nvim-autopairs', config = [[require('pynappo/plugins/autopairs')]] },
@@ -284,9 +284,8 @@ require('packer').startup({function(use)
     end
   }
   use { 'toppair/peek.nvim', run = 'deno task --quiet build:fast' }
-  use { 'echasnovski/mini.nvim', config = [[require('pynappo/plugins/mini')]] }
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
-
+  use 'RRethy/vim-illuminate'
   use { 'AckslD/nvim-FeMaco.lua', config = [[require("femaco").setup()]] }
   -- use { "nvim-zh/colorful-winsep.nvim", config = [[require('colorful-winsep').setup({highlight = { guifg = '#999999'}})]] },
   use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
@@ -295,6 +294,11 @@ require('packer').startup({function(use)
     requires = 'MunifTanjim/nui.nvim',
     config = [[require('competitest').setup({runner_ui = {interface = "popup"}})]]
   }
+  use {
+    'anuvyklack/hydra.nvim',
+    config = [[require('pynappo/plugins/hydra')]]
+  }
+  use { 'ggandor/flit.nvim', config = [[require('flit').setup({labeled_modes = 'nvo'})]] }
   if packer_bootstrap then
     require('packer').sync()
   end
@@ -306,4 +310,3 @@ end,
     },
   }
 })
-

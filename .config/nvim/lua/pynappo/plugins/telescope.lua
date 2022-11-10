@@ -14,6 +14,5 @@ ts.setup {
   }
 }
 ts.load_extension("fzf")
-ts.load_extension("ui-select")
 ts.load_extension("file_browser")
 ts.load_extension("notify")
