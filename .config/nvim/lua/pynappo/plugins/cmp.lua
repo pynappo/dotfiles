@@ -83,7 +83,8 @@ cmp.setup {
 cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources(
     {{ name = 'git' }},
-    {{ name = 'buffer' }}
+    {{ name = 'buffer' }},
+    {{ name = 'conventionalcommits' }}
   )
 })
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")

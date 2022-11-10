@@ -107,10 +107,10 @@ function M.setup_telescope()
       { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
       { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
       { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
-      { '<leader>ft', ts_builtin.tags , {desc = '(TS) Tags'}},
+      { '<leader>ft', ts_builtin.tags, {desc = '(TS) Tags'}},
       { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
       { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
-      { '<leader>fo', function() ts_builtin.tags { only_current_buffer = true } end, {desc = '(TS) Tags in buffer'}},
+      { '<leader>fo', function() ts_builtin.tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
       { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
       { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
     }
@@ -118,13 +118,21 @@ function M.setup_telescope()
   M.setup('telescope')
 end
 
-function M.setup_mini()
-  local minimap = require('mini.map')
-  keymaps.mini = {
-    [{'n'}] = { {'<leader>m', function() minimap.toggle() end, {desc = 'Toggle mini.map'}} }
-  }
-  M.setup('mini')
-end
+-- function M.setup_fzf()
+--   local fzf = require('fzf-lua')
+--   keymaps['fzf'] = {
+--     { '<leader><space>', fzf.buffers(), {desc = '(FZF) Buffers'}},
+--     { '<leader>ff', fzf.find_files(), {desc = '(FZF) Find files'}},
+--     { '<leader>f/', fzf.lgrep_curbuf(), {desc = '(FZF) Fuzzy find in buffer'}},
+--     { '<leader>fh', fzf.help_tags(), {desc = '(FZF) Neovim help'}},
+--     { '<leader>ft', fzf.tags(), {desc = '(FZF) Tags'}},
+--     { '<leader>fd', fzf.grep_cWORD(), {desc = '(FZF) grep current string'}},
+--     { '<leader>fp', fzf.live_grep(), {desc = '(FZF) live grep a string'}},
+--     { '<leader>?', fzf.oldfiles(), {desc = '(FZF) Oldfiles'}},
+--     { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(FZF) Browse files'}},
+--   }
+--   M.setup('fzf')
+-- end
 
 function M.init()
   vim.g.mapleader = ' '
