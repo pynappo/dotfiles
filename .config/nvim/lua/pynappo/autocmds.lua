@@ -19,3 +19,15 @@ autocmd({ "BufWritePre" }, {
   command = [[%s/\s\+$//e]],
   group = pynappo
 })
+autocmd('BufReadPost',  {
+  group    = pynappo,
+  pattern  = '*',
+  callback = function()
+    local fn = vim.fn
+    if fn.line("'\"") > 0 and fn.line("'\"") <= fn.line("$") then
+      fn.setpos('.', fn.getpos("'\""))
+      vim.cmd('normal zz')
+      vim.cmd('silent! foldopen')
+    end
+  end
+})

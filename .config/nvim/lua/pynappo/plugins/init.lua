@@ -15,12 +15,13 @@ require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
   use ({
     { 'tpope/vim-fugitive' },
-    { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, config = [[require('pynappo/plugins/gitsigns')]] },
+    { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, config = function() require('pynappo/plugins/gitsigns') end },
     { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' },
     {
       'pwntester/octo.nvim',
       requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim', 'kyazdani42/nvim-web-devicons', },
-      config = [[require("octo").setup()]]
+      cmd = 'Octo',
+      config = function() require("octo").setup() end
     }
   })
   use ({
@@ -28,15 +29,16 @@ require('packer').startup({function(use)
     'Shatur/neovim-ayu'
   })
   use ({
-    { 'numToStr/Comment.nvim', config = [[require('Comment').setup()]] },
-    { 'ggandor/leap.nvim', config = [[require('leap').set_default_keymaps()]] },
-    { 'kylechui/nvim-surround', config = [[require('nvim-surround').setup()]] }
+    { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
+    { 'ggandor/leap.nvim', config = function() require('leap').set_default_keymaps() end },
+    { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end }
   })
   use ({
     {
       'nvim-telescope/telescope.nvim',
       requires = 'nvim-lua/plenary.nvim',
-      config = [[require('pynappo/plugins/telescope')]],
+      config = function() require('pynappo/plugins/telescope') end,
+      cmd = 'Telescope'
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     'nvim-telescope/telescope-file-browser.nvim',
@@ -44,13 +46,13 @@ require('packer').startup({function(use)
   -- use ({
   --   '~/code/nvim/fzf-lua',
   --   requires = { 'kyazdani42/nvim-web-devicons' },
-  --   config = [[require('pynappo/plugins/fzf')]]
+  --   config = function() require('pynappo/plugins/fzf') end
   -- })
   use {
     'lukas-reineke/indent-blankline.nvim',
     config = function()
       local hl_list = {}
-      for i, color in pairs({ '#782121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#562155' }) do
+      for i, color in pairs({ '#782121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#563155' }) do
         local name = 'IndentBlanklineIndent' .. i
         vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
         table.insert(hl_list, name);
@@ -67,7 +69,7 @@ require('packer').startup({function(use)
     end
   }
   use ({
-    { 'nvim-treesitter/nvim-treesitter', config = [[require('pynappo/plugins/treesitter')]] },
+    { 'nvim-treesitter/nvim-treesitter', config = function() require('pynappo/plugins/treesitter') end },
     'nvim-treesitter/nvim-treesitter-textobjects',
     'p00f/nvim-ts-rainbow',
     'windwp/nvim-ts-autotag',
@@ -78,12 +80,12 @@ require('packer').startup({function(use)
     { 'zbirenbaum/copilot.lua', event = "InsertEnter", config = require("copilot").setup() },
     {
       'L3MON4D3/LuaSnip',
-      config = [[require('luasnip.loaders.from_vscode').lazy_load()]],
+      config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
       requires = 'rafamadriz/friendly-snippets'
     },
     {
       'hrsh7th/nvim-cmp',
-      config = [[require('pynappo/plugins/cmp')]],
+      config = function() require('pynappo/plugins/cmp') end,
       requires = {
         'onsails/lspkind.nvim',
         "hrsh7th/cmp-buffer",
@@ -92,19 +94,19 @@ require('packer').startup({function(use)
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         'dmitmel/cmp-cmdline-history',
-        { "zbirenbaum/copilot-cmp", after = "copilot.lua", config = [[require("copilot_cmp").setup()]] },
+        { "zbirenbaum/copilot-cmp", after = "copilot.lua", config = function() require("copilot_cmp").setup() end },
         "hrsh7th/cmp-emoji",
         "hrsh7th/cmp-nvim-lsp",
         "f3fora/cmp-spell",
         "octaltree/cmp-look",
         "saadparwaiz1/cmp_luasnip",
         'hrsh7th/cmp-nvim-lsp-signature-help',
-        { 'saecki/crates.nvim', event = "BufRead Cargo.toml", requires = 'nvim-lua/plenary.nvim', config = [[require('crates').setup()]] },
-        { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", config = [[require("cmp_git").setup()]] },
+        { 'saecki/crates.nvim', event = "BufRead Cargo.toml", requires = 'nvim-lua/plenary.nvim', config = function() require('crates').setup() end },
+        { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", config = function() require('cmp_git').setup() end},
         'davidsierradz/cmp-conventionalcommits',
       },
     },
-    { 'windwp/nvim-autopairs', config = [[require('pynappo/plugins/autopairs')]] },
+    { 'windwp/nvim-autopairs', config = function() require('pynappo/plugins/autopairs') end },
   })
   use {
     'nvim-neo-tree/neo-tree.nvim',
@@ -121,12 +123,12 @@ require('packer').startup({function(use)
     end
   }
   use ({
-    { 'folke/which-key.nvim', config = [[require('which-key').setup({window = {border = "single"}})]] },
-    { 'folke/trouble.nvim', requires = 'kyazdani4/nvim-web-devicons', config = [[require('trouble').setup{}]], },
+    { 'folke/which-key.nvim', config = function() require('which-key').setup({window = {border = "single"}}) end },
+    { 'folke/trouble.nvim', requires = 'kyazdani4/nvim-web-devicons', config = function() require('trouble').setup{} end, },
     {
       'folke/todo-comments.nvim',
       requires = 'nvim-lua/plenary.nvim',
-      config = [[require('todo-comments').setup{highlight = {keyword = "fg"}}]]
+      config = function() require('todo-comments').setup{highlight = {keyword = "fg"}} end
     },
     {
       "folke/noice.nvim",
@@ -154,10 +156,10 @@ require('packer').startup({function(use)
       requires = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" }
     }
   })
-  use { 'goolord/alpha-nvim', config = [[require('alpha').setup(require('alpha.themes.startify').config)]] }
+  use { 'goolord/alpha-nvim', config = function() require('alpha').setup(require('alpha.themes.startify').config) end }
   use ({
     {'lewis6991/impatient.nvim'},
-    { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 3]] }
+    { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = function() vim.g.startuptime_tries = 3 end }
   })
   use {
     'andymass/vim-matchup',
@@ -169,12 +171,12 @@ require('packer').startup({function(use)
       require('pynappo/keymaps').setup('matchup')
     end,
   }
-  use { 'nmac427/guess-indent.nvim', config = [[require('guess-indent').setup{}]], }
+  use { 'nmac427/guess-indent.nvim', config = function() require('guess-indent').setup{} end, }
   use 'tpope/vim-repeat'
-  use { 'Akianonymus/nvim-colorizer.lua', config = [[require('colorizer').setup()]] }
+  use { 'Akianonymus/nvim-colorizer.lua', config = function() require('colorizer').setup() end }
   use ({
-    'simrat39/symbols-outline.nvim', config = [[require('symbols-outline').setup()]],
-    'ludovicchabant/vim-gutentags', config = [[require('pynappo/plugins/gutentags')]]
+    'simrat39/symbols-outline.nvim', config = function() require('symbols-outline').setup() end,
+    'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end
   })
   use {
     'karb94/neoscroll.nvim',
@@ -211,7 +213,7 @@ require('packer').startup({function(use)
     { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' },
     'simnalamburt/vim-mundo'
   })
-  use { 'nacro90/numb.nvim', config = [[require('numb').setup()]] }
+  use { 'nacro90/numb.nvim', config = function() require('numb').setup() end }
 
   use {
     'max397574/better-escape.nvim', config = function()
@@ -228,24 +230,24 @@ require('packer').startup({function(use)
       require('pynappo/keymaps').setup('hlslens')
     end
   }
-  -- use { 'j-hui/fidget.nvim', config = [[require("fidget").setup { window = { blend = 0 }}]] }
+  -- use { 'j-hui/fidget.nvim', config = function() require("fidget").setup({ window = { blend = 0 }}) end }
   use {
     'nvim-neorg/neorg',
     -- tag = 'latest',
     ft = 'norg',
     after = 'nvim-treesitter', -- You may want to specify Telescope here as well
-    config = [[require('neorg').setup {['core.defaults'] = {}}]]
+    config = function() require('neorg').setup {['core.defaults'] = {}} end
   }
   use ({
     {
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim' },
-      config = [[require('pynappo/plugins/lualine')]]
+      config = function() require('pynappo/plugins/lualine') end
     },
-    { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = [[require('pynappo/plugins/navic')]] },
-    { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = [[require('pynappo/plugins/tabby')]] }
+    { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function() require('pynappo/plugins/navic') end },
+    { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = function() require('pynappo/plugins/tabby') end }
   })
-  use { 'AckslD/nvim-neoclip.lua', requires = 'nvim-telescope/telescope.nvim', config = [[require('neoclip').setup()]] }
+  use { 'AckslD/nvim-neoclip.lua', requires = 'nvim-telescope/telescope.nvim', config = function() require('neoclip').setup() end }
   use ({
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
@@ -267,13 +269,13 @@ require('packer').startup({function(use)
     },
     'rouge8/neotest-rust'
   })
-  use { 'akinsho/toggleterm.nvim', tag = '*', config = [[require('pynappo/plugins/toggleterm')]] }
+  use { 'akinsho/toggleterm.nvim', tag = '*', config = function() require('pynappo/plugins/toggleterm') end }
   use ({
     "mfussenegger/nvim-dap",
-    { "rcarriga/nvim-dap-ui", config = [[require("dapui").setup()]] },
-    { 'theHamsta/nvim-dap-virtual-text', config = [[require("nvim-dap-virtual-text").setup()]] },
+    { "rcarriga/nvim-dap-ui", config = function() require("dapui").setup() end },
+    { 'theHamsta/nvim-dap-virtual-text', config = function() require("nvim-dap-virtual-text").setup() end },
   })
-  use { "monaqa/dial.nvim", config = [[require("pynappo/plugins/dial")]] }
+  use { "monaqa/dial.nvim", config = function() require("pynappo/plugins/dial") end }
   use {
     'kosayoda/nvim-lightbulb',
     config = function ()
@@ -286,19 +288,19 @@ require('packer').startup({function(use)
   use { 'toppair/peek.nvim', run = 'deno task --quiet build:fast' }
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
   use 'RRethy/vim-illuminate'
-  use { 'AckslD/nvim-FeMaco.lua', config = [[require("femaco").setup()]] }
-  -- use { "nvim-zh/colorful-winsep.nvim", config = [[require('colorful-winsep').setup({highlight = { guifg = '#999999'}})]] },
-  use { 'levouh/tint.nvim', config = [[require('tint').setup()]] }
+  use { 'AckslD/nvim-FeMaco.lua', config = function() require("femaco").setup() end }
+  -- use { "nvim-zh/colorful-winsep.nvim", config = function() require('colorful-winsep').setup({highlight = { guifg = '#999999'}}) end },
+  use { 'levouh/tint.nvim', config = function() require('tint').setup() end }
   use {
     'xeluxee/competitest.nvim',
     requires = 'MunifTanjim/nui.nvim',
-    config = [[require('competitest').setup({runner_ui = {interface = "popup"}})]]
+    config = function() require('competitest').setup({runner_ui = {interface = "popup"}}) end
   }
   use {
     'anuvyklack/hydra.nvim',
-    config = [[require('pynappo/plugins/hydra')]]
+    config = function() require('pynappo/plugins/hydra') end
   }
-  use { 'ggandor/flit.nvim', config = [[require('flit').setup({labeled_modes = 'nvo'})]] }
+  use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'nvo'}) end }
   if packer_bootstrap then
     require('packer').sync()
   end
