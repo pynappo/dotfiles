@@ -1,10 +1,7 @@
-local navic = require("nvim-navic")
-local lualine = require("lualine")
-
 local function modified()
   if vim.bo.modified then return '[+]' end
 end
-lualine.setup {
+require('lualine').setup {
   options = {
     component_separators = { left = "|", right = "|" },
     section_separators = { left = '', right = '' },
@@ -19,7 +16,7 @@ lualine.setup {
     },
     lualine_b = { 'filename', 'branch', 'diagnostics' },
     lualine_c = {
-      { navic.get_location, cond = navic.is_available },
+      -- { navic.get_location, cond = navic.is_available },
       -- {
       --   'lsp_progress',
       --   separators = {
