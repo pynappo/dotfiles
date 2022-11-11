@@ -74,7 +74,9 @@ cmp.setup {
     { name = "luasnip" },
     { name = "nvim_lsp_signature_help" },
     { name = "crates" },
-    { name = "path"}
+    { name = "path"},
+    {name = 'emoji'}
+
   },
   view = { entries = { name = "custom", selection_order = "near_cursor" } },
 }
@@ -83,7 +85,8 @@ cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources(
     {{ name = 'git' }},
     {{ name = 'buffer' }},
-    {{ name = 'conventionalcommits' }}
+    {{ name = 'conventionalcommits' }},
+    {{ name = 'luasnip' }}
   )
 })
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")

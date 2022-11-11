@@ -244,6 +244,7 @@ require('packer').startup({function(use)
       requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim' },
       config = function() require('pynappo/plugins/lualine') end
     },
+    -- { 'rebelot/heirline.nvim', config = function() require('pynappo/plugins/heirline') end },
     { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function() require('pynappo/plugins/navic') end },
     { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = function() require('pynappo/plugins/tabby') end }
   })
@@ -301,6 +302,10 @@ require('packer').startup({function(use)
     config = function() require('pynappo/plugins/hydra') end
   }
   use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'nvo'}) end }
+  use {'echasnovski/mini.map', config = function()
+    require('mini.map').setup()
+    require('pynappo/keymaps').setup('mini.map')
+  end}
   if packer_bootstrap then
     require('packer').sync()
   end
