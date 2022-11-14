@@ -1,0 +1,1 @@
+-- require('pynappo/keymaps').setup_fzf()

@@ -4,7 +4,7 @@ mason_lspconfig.setup({
   ensure_installed = { "sumneko_lua", "html", "jdtls", "jsonls", "ltex", "powershell_es", "pylsp", "theme_check", "zls", "csharp_ls", "rust_analyzer", "gopls"},
   automatic_installation = true
 })
-require('pynappo/keymaps').setup('diagnostics')
+require('pynappo/keymaps').setup.diagnostics()
 
 mason_lspconfig.setup_handlers {
   function(ls)

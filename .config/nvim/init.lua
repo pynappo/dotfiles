@@ -122,6 +122,6 @@ theme.ayu()
 if not g.neovide then theme.transparent_override() end
 theme.link_highlights()
 require("pynappo/commands")
-require("pynappo/keymaps").init()
+require("pynappo/keymaps").setup.regular()
 require("pynappo/autocmds")
 

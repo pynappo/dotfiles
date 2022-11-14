@@ -31,6 +31,7 @@ require('packer').startup({function(use)
   use ({
     { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
     { 'ggandor/leap.nvim', config = function() require('leap').set_default_keymaps() end },
+    { 'ggandor/leap-spooky.nvim', config = function() require('leap-spooky').setup() end },
     { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end }
   })
   use ({
@@ -77,7 +78,7 @@ require('packer').startup({function(use)
     'nvim-treesitter/playground'
   })
   use ({
-    { 'zbirenbaum/copilot.lua', event = "InsertEnter", config = require("copilot").setup() },
+    { 'zbirenbaum/copilot.lua', config = require("copilot").setup() },
     {
       'L3MON4D3/LuaSnip',
       config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
@@ -168,7 +169,7 @@ require('packer').startup({function(use)
         vim.g['matchup_' .. option] = 1
       end
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
-      require('pynappo/keymaps').setup('matchup')
+      require('pynappo/keymaps').setup.matchup()
     end,
   }
   use { 'nmac427/guess-indent.nvim', config = function() require('guess-indent').setup{} end, }
@@ -190,7 +191,7 @@ require('packer').startup({function(use)
       "smjonas/inc-rename.nvim",
       config = function()
         require("inc_rename").setup { input_buffer_type = "dressing" }
-        require("pynappo/keymaps").setup('incremental_rename')
+        require("pynappo/keymaps").setup.incremental_rename()
       end,
       requires = "stevearc/dressing.nvim"
     },
@@ -227,7 +228,7 @@ require('packer').startup({function(use)
     "kevinhwang91/nvim-hlslens",
     config = function()
       require('hlslens').setup()
-      require('pynappo/keymaps').setup('hlslens')
+      require('pynappo/keymaps').setup.hlslens()
     end
   }
   -- use { 'j-hui/fidget.nvim', config = function() require("fidget").setup({ window = { blend = 0 }}) end }
@@ -244,9 +245,9 @@ require('packer').startup({function(use)
       requires = { 'kyazdani42/nvim-web-devicons', 'WhoIsSethDaniel/lualine-lsp-progress.nvim' },
       config = function() require('pynappo/plugins/lualine') end
     },
-    -- { 'rebelot/heirline.nvim', config = function() require('pynappo/plugins/heirline') end },
+    { 'rebelot/heirline.nvim', config = function() require('pynappo/plugins/heirline') end },
     { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function() require('pynappo/plugins/navic') end },
-    { 'nanozuki/tabby.nvim', after = 'lualine.nvim', config = function() require('pynappo/plugins/tabby') end }
+    { 'nanozuki/tabby.nvim', config = function() require('pynappo/plugins/tabby') end }
   })
   use { 'AckslD/nvim-neoclip.lua', requires = 'nvim-telescope/telescope.nvim', config = function() require('neoclip').setup() end }
   use ({
@@ -290,8 +291,10 @@ require('packer').startup({function(use)
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
   use 'RRethy/vim-illuminate'
   use { 'AckslD/nvim-FeMaco.lua', config = function() require("femaco").setup() end }
-  -- use { "nvim-zh/colorful-winsep.nvim", config = function() require('colorful-winsep').setup({highlight = { guifg = '#999999'}}) end },
-  use { 'levouh/tint.nvim', config = function() require('tint').setup() end }
+  use (
+    { 'levouh/tint.nvim', config = function() require('tint').setup() end },
+    { 'nvim-zh/colorful-winsep.nvim', config = function() require('colorful-winsep').setup() end}
+  )
   use {
     'xeluxee/competitest.nvim',
     requires = 'MunifTanjim/nui.nvim',
@@ -304,14 +307,14 @@ require('packer').startup({function(use)
   use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'nvo'}) end }
   use {'echasnovski/mini.map', config = function()
     require('mini.map').setup()
-    require('pynappo/keymaps').setup('mini.map')
+    require('pynappo/keymaps').setup.mini()
   end}
   if packer_bootstrap then
     require('packer').sync()
   end
 end,
   config = {
-    max_jobs = 12,
+    max_jobs = 10,
     display = {
       prompt_border = 'single',
     },
