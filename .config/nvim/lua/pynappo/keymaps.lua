@@ -1,5 +1,4 @@
 local M = {}
-local set = vim.keymap.set
 
 local function map(mappings)
   for mode, mapping_table in pairs(mappings) do
@@ -7,138 +6,118 @@ local function map(mappings)
       local key = mapping[1]
       local cmd = mapping[2]
       local opts = mapping[3]
-      set(mode, key, cmd, opts)
+      vim.keymap.set(mode, key, cmd, opts)
     end
   end
 end
 
-local keymaps = {
-  regular = {
-    [{'n'}] = {
-      { 'x', '"_x', { silent = true }},
-      { 'j', 'gj' , { silent = true }},
-      { 'k', 'gk' , { silent = true }},
-      -- Better window navigation
-      { '<C-j>', '<C-w>j', { silent = true } },
-      { '<C-k>', '<C-w>k', { silent = true } },
-      { '<C-h>', '<C-w>h', { silent = true } },
-      { '<C-l>', '<C-w>l', { silent = true } },
-      -- Better tabs
-      { '<C-S-h>', '<Cmd>:tabprev<CR>', { silent = true } },
-      { '<C-S-l>', '<Cmd>:tabnext<CR>', { silent = true } },
-      { '<leader>1', '1gt', { silent = true } },
-      { '<leader>2', '2gt', { silent = true } },
-      { '<leader>3', '3gt', { silent = true } },
-      { '<leader>4', '4gt', { silent = true } },
-      { '<leader>5', '5gt', { silent = true } },
-      { '<leader>6', '6gt', { silent = true } },
-      { '<leader>7', '7gt', { silent = true } },
-      { '<leader>8', '8gt', { silent = true } },
-      { '<leader>9', '9gt', { silent = true } },
-      { '<leader>0', '10gt', { silent = true } },
-      -- Autoindent on insert
-      { 'i', function () return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end, {expr=true, silent = true}},
-    },
-    [{'n', 'v'}] = {
-      -- Better pasting
-      { 'p', 'p=`]', { silent = true } },
-      { 'P', 'P=`]', { silent = true } },
-      {'<Space>', '<Nop>', { silent = true }},
-      { '<leader>p', '"+p=`]', { silent = true } },
-      { '<leader>y', '"+y"', { silent = true }},
-    },
-  },
-  diagnostics = {
-    [{ 'n' }] = {
-      { '<leader>e', vim.diagnostic.open_float, {desc = 'Floating Diagnostics'}},
-      { '[d', vim.diagnostic.goto_prev, {desc = 'Previous diagnostic'}},
-      { ']d', vim.diagnostic.goto_next, {desc = 'Next diagnostic'}},
-      { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
-    }
-  },
-  neo_tree_window = {
-    [{ 'n' }] = {
-      { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}},
-      { 'gd', '<Cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>', {desc = 'Popup Neo-tree for file under cursor'} }
-    }
-  },
-  incremental_rename = { [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, } },
-  bufferline = { [{ 'n' }] = { { 'gb', '<Cmd>BufferLinePick<CR>', {desc = 'Pick from bufferline'}} } },
-  hlslens = {
-    [{'n'}] = {
-      { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-      { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-      { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-      { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-      { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-      { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-      { '<Leader>l', ':noh<CR>', {noremap = true, silent = true} },
-    }
-  },
-  matchup = { [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } },
+M.setup = {
+  regular = function()
+    vim.g.mapleader = ' '
+    vim.g.maplocalleader = ' '
+    map({
+      [{'n'}] = {
+        { 'x', '"_x', { silent = true }},
+        { 'j', 'gj' , { silent = true }},
+        { 'k', 'gk' , { silent = true }},
+        -- Better window navigation
+        { '<C-j>', '<C-w>j', { silent = true } },
+        { '<C-k>', '<C-w>k', { silent = true } },
+        { '<C-h>', '<C-w>h', { silent = true } },
+        { '<C-l>', '<C-w>l', { silent = true } },
+        -- Better tabs
+        { '<C-S-h>', '<Cmd>:tabprev<CR>', { silent = true } },
+        { '<C-S-l>', '<Cmd>:tabnext<CR>', { silent = true } },
+        { '<leader>1', '1gt', { silent = true } },
+        { '<leader>2', '2gt', { silent = true } },
+        { '<leader>3', '3gt', { silent = true } },
+        { '<leader>4', '4gt', { silent = true } },
+        { '<leader>5', '5gt', { silent = true } },
+        { '<leader>6', '6gt', { silent = true } },
+        { '<leader>7', '7gt', { silent = true } },
+        { '<leader>8', '8gt', { silent = true } },
+        { '<leader>9', '9gt', { silent = true } },
+        { '<leader>0', '10gt', { silent = true } },
+        -- Autoindent on insert
+        { 'i', function () return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end, {expr=true, silent = true}},
+      },
+      [{'n', 'v'}] = {
+        -- Better pasting
+        { 'p', 'p=`]', { silent = true } },
+        { 'P', 'P=`]', { silent = true } },
+        {'<Space>', '<Nop>', { silent = true }},
+        { '<leader>p', '"+p=`]', { silent = true } },
+        { '<leader>y', '"+y"', { silent = true }},
+      },
+    })
+  end,
+  diagnostics = function()
+    map({
+      [{ 'n' }] = {
+        { '<leader>e', vim.diagnostic.open_float, {desc = 'Floating Diagnostics'}},
+        { '[d', vim.diagnostic.goto_prev, {desc = 'Previous diagnostic'}},
+        { ']d', vim.diagnostic.goto_next, {desc = 'Next diagnostic'}},
+        { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
+      }
+    })
+  end,
+  neotree_window = function()
+    map({
+      [{ 'n' }] = {
+        { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', {desc = 'Toggle Neo-tree (left) '}},
+        { 'gd', '<Cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>', {desc = 'Popup Neo-tree for file under cursor'} }
+      }
+    })
+  end,
+  incremental_rename = function() map ({ [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") .. "<CR>" end, {expr = true, desc = 'Rename (incrementally)'} }, } })end,
+  hlslens = function()
+    map({
+      [{'n'}] = {
+        { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+        { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+        { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+        { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+        { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+        { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
+        { '<Leader>l', ':noh<CR>', {noremap = true, silent = true} },
+      }
+    })
+  end,
+  matchup = function() map({ [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } }) end,
+  mini = function() map({ [{ 'n' }] = { { '<leader>m', function() require('mini.map').toggle() end, {desc = 'Toggle mini.map'}}}}) end,
+  dial = function()
+    local dial = require('dial.map')
+    map({
+      [{'n'}] = {
+        { "<c-a>", dial.inc_normal(), {noremap = true} },
+        { "<c-x>", dial.dec_normal(), {noremap = true} },
+      },
+      [{'v'}] = {
+        { "<c-a>", dial.inc_visual(), {noremap = true} },
+        { "<c-x>", dial.dec_visual(), {noremap = true} },
+        { "g<c-a>", dial.inc_gvisual(), {noremap = true} },
+        { "g<c-x>", dial.dec_gvisual(), {noremap = true} },
+      }
+    })
+  end,
+  telescope = function()
+    local ts_builtin = require('telescope.builtin')
+    map({
+      [{ 'n' }] = {
+        { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
+        { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
+        { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
+        { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
+        { '<leader>ft', ts_builtin.tags, {desc = '(TS) Tags'}},
+        { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
+        { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
+        { '<leader>fo', function() ts_builtin.tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
+        { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
+        { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
+      }
+    })
+  end
 }
-
-function M.setup(purpose)
-  map(keymaps[purpose])
-end
-
-function M.setup_dial()
-  local dial = require('dial.map')
-  keymaps['dial'] = {
-    [{'n'}] = {
-      { "<c-a>", dial.inc_normal(), {noremap = true} },
-      { "<c-x>", dial.dec_normal(), {noremap = true} },
-    },
-    [{'v'}] = {
-      { "<c-a>", dial.inc_visual(), {noremap = true} },
-      { "<c-x>", dial.dec_visual(), {noremap = true} },
-      { "g<c-a>", dial.inc_gvisual(), {noremap = true} },
-      { "g<c-x>", dial.dec_gvisual(), {noremap = true} },
-    }
-  }
-  M.setup('dial')
-end
-
-function M.setup_telescope()
-  local ts_builtin = require('telescope.builtin')
-  keymaps['telescope'] = {
-    [{ 'n' }] = {
-      { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
-      { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
-      { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
-      { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
-      { '<leader>ft', ts_builtin.tags, {desc = '(TS) Tags'}},
-      { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
-      { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
-      { '<leader>fo', function() ts_builtin.tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
-      { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
-      { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
-    }
-  }
-  M.setup('telescope')
-end
-
--- function M.setup_fzf()
---   local fzf = require('fzf-lua')
---   keymaps['fzf'] = {
---     { '<leader><space>', fzf.buffers(), {desc = '(FZF) Buffers'}},
---     { '<leader>ff', fzf.find_files(), {desc = '(FZF) Find files'}},
---     { '<leader>f/', fzf.lgrep_curbuf(), {desc = '(FZF) Fuzzy find in buffer'}},
---     { '<leader>fh', fzf.help_tags(), {desc = '(FZF) Neovim help'}},
---     { '<leader>ft', fzf.tags(), {desc = '(FZF) Tags'}},
---     { '<leader>fd', fzf.grep_cWORD(), {desc = '(FZF) grep current string'}},
---     { '<leader>fp', fzf.live_grep(), {desc = '(FZF) live grep a string'}},
---     { '<leader>?', fzf.oldfiles(), {desc = '(FZF) Oldfiles'}},
---     { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(FZF) Browse files'}},
---   }
---   M.setup('fzf')
--- end
-
-function M.init()
-  vim.g.mapleader = ' '
-  vim.g.maplocalleader = ' '
-  M.setup("regular")
-end
 
 -- For other plugins
 

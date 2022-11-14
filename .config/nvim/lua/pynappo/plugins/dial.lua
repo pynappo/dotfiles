@@ -1,4 +1,4 @@
-require("pynappo/keymaps").setup_dial()
+require("pynappo/keymaps").setup.dial()
 local augend = require("dial.augend")
 require("dial.config").augends:register_group{
   default = {

@@ -1,70 +1,75 @@
-local navic = require('nvim-navic')
-local gitsigns = {
-  'diff',
-  colored = true, -- Displays a colored diff status if set to true
-  diff_color = {
-    -- Same color values as the general color option can be used here.
-    added    = 'DiffAdd',    -- Changes the diff's added color
-    modified = 'DiffChange', -- Changes the diff's modified color
-    removed  = 'DiffDelete', -- Changes the diff's removed color you
-  },
-  symbols = {added = '+', modified = '~', removed = '-'}, -- Changes the symbols used by the diff.
-  source = 'b:gitsigns_status_dict',
-}
-
-local ls_icons = {
-  copilot = '',
-  ['null-ls'] = 'ﳠ'
-}
-local language_servers = function()
-  local status = ''
-  for _, v in ipairs(vim.lsp.get_active_clients()) do
-    if ls_icons[v.name] then
-      status = status .. ' ' .. ls_icons[v.name]
-    else
-      local devicons = require('nvim-web-devicons')
-      local icon, _ = devicons.get_icon_by_filetype(v.filetypes[1])
-      status = status .. ' ' .. icon
-    end
-  end
-  return status
-end
-
-require('lualine').setup {
-  options = {
-    component_separators = { left = "", right = "" },
-    section_separators = { left = '', right = '' },
-    global_statusline = true,
-    disabled_filetypes = {
-      winbar = {'neo-tree'}
-    }
-  },
-  sections = {
-    lualine_a = {
-      { 'mode', separator = { left = '' }, right_padding = 2 },
-    },
-    lualine_b = { 'branch' },
-    lualine_c = {{ navic.get_location, cond = navic.is_available }},
-    lualine_x = { 'encoding', 'fileformat' },
-    lualine_y = { language_servers },
-    lualine_z = { { 'progress', separator = { right = '' }, left_padding = 0 }, },
-  },
-  tabline = {},
-  winbar = {
-    lualine_a = {},
-    lualine_b = { gitsigns },
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {'diagnostics', 'progress'},
-    lualine_z = {}
-  },
-  inactive_winbar = {
-    lualine_a = {},
-    lualine_b = { gitsigns },
-    lualine_c = {},
-    lualine_x = {'%=', {'%f', color = {gui = vim.bo.modified and 'italic' or ''}}},
-    lualine_y = {'progress'},
-    lualine_z = {}
-  },
-  extensions = {'neo-tree', 'symbols-outline', 'quickfix', 'nvim-dap-ui', 'fugitive'},
-}
+-- local navic = require('nvim-navic')
+-- local gitsigns = {
+--   'diff',
+--   colored = true, -- Displays a colored diff status if set to true
+--   diff_color = {
+--     -- Same color values as the general color option can be used here.
+--     added    = 'DiffAdd',    -- Changes the diff's added color
+--     modified = 'DiffChange', -- Changes the diff's modified color
+--     removed  = 'DiffDelete', -- Changes the diff's removed color you
+--   },
+--   symbols = {added = '+', modified = '~', removed = '-'}, -- Changes the symbols used by the diff.
+--   source = 'b:gitsigns_status_dict',
+-- }
+--
+-- local ls_icons = {
+--   copilot = '',
+--   ['null-ls'] = 'ﳠ'
+-- }
+-- local language_servers = function()
+--   local status = ''
+--   for _, v in ipairs(vim.lsp.get_active_clients()) do
+--     if ls_icons[v.name] then
+--       status = status .. ' ' .. ls_icons[v.name]
+--     else
+--       local devicons = require('nvim-web-devicons')
+--       local icon, _ = devicons.get_icon_by_filetype(v.filetypes[1])
+--       status = status .. ' ' .. icon
+--     end
+--   end
+--   return status
+-- end
+--
+-- require('lualine').setup {
+--   theme = 'ayu',
+--   options = {
+--     component_separators = { left = "", right = "" },
+--     section_separators = { left = '', right = '' },
+--     global_statusline = true,
+--     disabled_filetypes = {
+--       winbar = {'neo-tree'}
+--     }
+--   },
+--   sections = {
+--     lualine_a = {
+--       { 'mode', separator = { left = '' }, right_padding = 2 },
+--     },
+--     lualine_b = {
+--       { 'filename', newfile_status = true, path = 1, shorting_target = 200 },
+--       { 'filetype', icon_only = true },
+--       'branch'
+--     },
+--     lualine_c = {{ navic.get_location, cond = navic.is_available }},
+--     lualine_x = { 'encoding', 'fileformat' },
+--     lualine_y = { language_servers },
+--     lualine_z = { { 'progress', separator = { right = '' }, left_padding = 0 }, },
+--   },
+--   tabline = {},
+--   winbar = {
+--     lualine_a = {},
+--     lualine_b = { gitsigns },
+--     lualine_c = {},
+--     lualine_x = {},
+--     lualine_y = {'diagnostics', 'progress'},
+--     lualine_z = {}
+--   },
+--   inactive_winbar = {
+--     lualine_a = {},
+--     lualine_b = { gitsigns },
+--     lualine_c = {},
+--     lualine_x = {'%=', {'%f', color = {gui = vim.bo.modified and 'italic' or ''}}},
+--     lualine_y = {'progress'},
+--     lualine_z = {}
+--   },
+--   extensions = {'neo-tree', 'symbols-outline', 'quickfix', 'nvim-dap-ui', 'fugitive'},
+-- }

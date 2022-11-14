@@ -6,8 +6,8 @@ vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSig
 vim.fn.sign_define("DiagnosticSignInfo", {text = " ", texthl = "DiagnosticSignInfo"})
 vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
 local keymaps = require("pynappo/keymaps")
+keymaps.setup.neotree_window()
 local neotree_keymaps = keymaps.neo_tree
-keymaps.setup('neo_tree_window')
 
 require("neo-tree").setup({
   sources = {

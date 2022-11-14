@@ -9,6 +9,7 @@ function M.ayu()
       LineNr = { fg = 'gray' }
     }
   })
+  vim.g.ayucolor = "mirage"
   require("ayu").colorscheme()
 end
 function M.transparent_override()
