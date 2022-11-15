@@ -1,6 +1,7 @@
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
 
+local space = { provider = " " }
 local M = {
   vimode = {
     init = function(self)
@@ -68,9 +69,7 @@ local M = {
         t =  "red",
       }
     },
-    provider = function(self)
-      return " %2("..self.mode_names[self.mode].."%)"
-    end,
+    provider = function(self) return " %2("..self.mode_names[self.mode].."%)" end,
     hl = function(self)
       local mode = self.mode:sub(1, 1) -- get only the first mode character
       return { fg = self.mode_colors[mode], bold = true, }
@@ -92,9 +91,7 @@ local M = {
     },
     -- You could handle delimiters, icons and counts similar to Diagnostics
     {
-      condition = function(self)
-        return self.has_changes
-      end,
+      condition = function(self) return self.has_changes end,
       provider = "("
     },
     {
@@ -119,9 +116,7 @@ local M = {
       hl = { fg = "git_change" },
     },
     {
-      condition = function(self)
-        return self.has_changes
-      end,
+      condition = function(self) return self.has_changes end,
       provider = ")",
     },
   },
@@ -158,9 +153,7 @@ local M = {
         TypeParameter = "@type",
       },
       -- bit operation dark magic, see below...
-      enc = function(line, col, winnr)
-        return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
-      end,
+      enc = function(line, col, winnr) return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr) end,
       -- line: 16 bit (65535); col: 10 bit (1023); winnr: 6 bit (63)
       dec = function(c)
         local line = bit.rshift(c, 16)
@@ -177,21 +170,13 @@ local M = {
         -- encode line and column numbers into a single integer
         local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
         local child = {
+          { provider = d.icon, hl = self.type_hl[d.type], },
           {
-            provider = d.icon,
-            hl = self.type_hl[d.type],
-          },
-          {
-            -- escape `%`s (elixir) and buggy default separators
             provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ''),
-            -- highlight icon only or location name as well
-            -- hl = self.type_hl[d.type],
-
             on_click = {
               -- pass the encoded position through minwid
               minwid = pos,
               callback = function(_, minwid)
-                -- decode
                 local line, col, winnr = self.dec(minwid)
                 vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), {line, col})
               end,
@@ -199,11 +184,10 @@ local M = {
             },
           },
         }
-        -- add a separator only if needed
         if #data > 1 and i < #data then
           table.insert(child, {
             provider = " > ",
-            hl = { fg = 'bright_fg' },
+            hl = { fg = 'normal' },
           })
         end
         table.insert(children, child)
@@ -212,65 +196,45 @@ local M = {
       self.child = self:new(children, 1)
     end,
     -- evaluate the children containing navic components
-    provider = function(self)
-      return self.child:eval()
-    end,
-    hl = { fg = "gray" },
+    provider = function(self) return self.child:eval() end,
+    hl = { fg = "normal" },
     update = 'CursorMoved'
   },
   diagnostics = {
     condition = conditions.has_diagnostics,
-
-
     init = function(self)
       self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
       self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
       self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
       self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
+      self.getsign = vim.fn.sign_getdefined
     end,
-
     update = { "DiagnosticChanged", "BufEnter" },
-
+    { provider = "[", },
     {
-      provider = "![",
-    },
-    {
-      provider = function(self)
-        -- 0 is just another output, we can decide to print it or not!
-        return self.errors > 0 and (vim.fn.sign_getdefined("DiagnosticSignError")[1].text .. self.errors .. " ")
-      end,
+      provider = function(self) return self.errors > 0 and (self.getsign("DiagnosticSignError")[1].text .. self.errors) end,
       hl = { fg = "diag_error" },
     },
     {
-      provider = function(self)
-        return self.warnings > 0 and (vim.fn.sign_getdefined("DiagnosticSignWarn")[1].text .. self.warnings .. " ")
-      end,
+      provider = function(self) return self.warnings > 0 and (self.getsign("DiagnosticSignWarn")[1].text .. self.warnings) end,
       hl = { fg = "diag_warn" },
     },
     {
-      provider = function(self)
-        return self.info > 0 and (vim.fn.sign_getdefined("DiagnosticSignInfo")[1].text .. self.info .. " ")
-      end,
+      provider = function(self) return self.info > 0 and (self.getsign("DiagnosticSignInfo")[1].text .. self.info) end,
       hl = { fg = "diag_info" },
     },
     {
-      provider = function(self)
-        return self.hints > 0 and (vim.fn.sign_getdefined("DiagnosticSignHint")[1].text .. self.hints)
-      end,
+      provider = function(self) return self.hints > 0 and (self.getsign("DiagnosticSignHint")[1].text .. self.hints) end,
       hl = { fg = "diag_hint" },
     },
-    {
-      provider = "]",
-    },
+    { provider = "]", },
   },
   dap = {
     condition = function()
       local session = require("dap").session()
       return session ~= nil
     end,
-    provider = function()
-      return " " .. require("dap").status()
-    end,
+    provider = function() return " " .. require("dap").status() end,
     hl = "Debug"
     -- see Click-it! section for clickable actions
   },
@@ -294,12 +258,9 @@ local M = {
     hl = { fg = 'blue' },
   },
   -- I take no credits for this! :lion:
-  scrollbar ={
-    static = {
-      sbar = { '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' }
-      -- Another variant, because the more choice the better.
-      -- sbar = { '🭶', '🭷', '🭸', '🭹', '🭺', '🭻' }
-    },
+  ruler = { provide = "%7(%l/%3L%):%2c %P" },
+  scrollbar = {
+    static = { sbar = { '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' } },
     provider = function(self)
       local curr_line = vim.api.nvim_win_get_cursor(0)[1]
       local lines = vim.api.nvim_buf_line_count(0)
@@ -310,91 +271,82 @@ local M = {
   },
 
   spell = {
-    condition = function()
-      return vim.wo.spell
-    end,
+    condition = function() return vim.wo.spell end,
     provider = 'SPELL ',
     hl = { bold = true, fg = "orange"}
   },
   filetype = {
-    provider = function()
-      return string.upper(vim.bo.filetype)
-    end,
+    provider = function() return string.upper(vim.bo.filetype) end,
     hl = { fg = utils.get_highlight("Type").fg, bold = true },
   },
   lsps = {
     condition = conditions.lsp_attached,
     update = {'LspAttach', 'LspDetach'},
-
-    -- You can keep it simple,
-    -- provider = " [LSP]",
-
-    -- Or complicate things a bit and get the servers names
+    init = function(self)
+      self.servers = vim.lsp.get_active_clients()
+    end,
     static = {
       ls_icons = {
         copilot = '',
         ['null-ls'] = 'ﳠ'
       }
     },
-    provider  = function()
+    provider = function(self)
       local status = ''
-      for _, v in ipairs(vim.lsp.get_active_clients()) do
-        if self.ls_icons[v.name] then
-          status = status .. ' ' .. self.ls_icons[v.name]
+      for _, s in ipairs(self.servers) do
+        if self.ls_icons[s.name] then
+          status = status .. ' ' .. self.ls_icons[s.name]
         else
-          local icon, _ = require('nvim-web-devicons').get_icon_by_filetype(v.filetypes[1])
-          status = status .. ' ' .. icon
+          if s.config then
+            local icon, _ = require('nvim-web-devicons').get_icon_by_filetype(s.config.filetypes[1])
+            status = status .. ' ' .. icon
+          end
         end
       end
       return status
     end,
     hl = { fg = "green", bold = true },
   },
-
-
-  fileicon = {
+  fileinfo = {
     init = function(self)
-      local filename = self.filename
-      local extension = vim.fn.fnamemodify(filename, ":e")
-      self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+      self.filename = vim.fn.expand("%:t")
+      self.extension = vim.fn.expand("%:e")
+      self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(self.filename, self.extension, { default = true })
     end,
-    provider = function(self) return self.icon and (self.icon .. " ") end,
-    hl = function(self)
-      return { fg = self.icon_color }
-    end
-  },
-
-  filename = {
-    provider = function(self)
-      -- first, trim the pattern relative to the current directory. For other
-      -- options, see :h filename-modifers
-      local filename = vim.fn.fnamemodify(self.filename, ":.")
-      if filename == "" then return "[No Name]" end
-      -- now, if the filename would occupy more than 1/4th of the available
-      -- space, we trim the file path to its initials
-      -- See Flexible Components section below for dynamic truncation
-      if not conditions.width_percent_below(#filename, 0.25) then
-        filename = vim.fn.pathshorten(filename)
-      end
-      return filename
-    end,
-    hl = { fg = utils.get_highlight("Directory").fg },
-  },
-  fileflags = {
     {
-      condition = function()
-        return vim.bo.modified
+      provider = function(self) return self.icon and (self.icon .. " ") end,
+      hl = function(self) return { fg = self.icon_color } end
+    },
+    {
+      {
+        provider = function(self)
+          local filename = vim.fn.fnamemodify(self.filename, ":.")
+          if filename == "" then return "[No Name]" end
+          if not conditions.width_percent_below(#filename, 0.25) then
+            filename = vim.fn.pathshorten(filename)
+          end
+          return filename
+        end,
+        hl = { fg = utils.get_highlight("Directory").fg },
+      },
+      hl = function()
+        if vim.bo.modified then
+          return { italic = true, bold = true, force=true }
+        end
       end,
+
+    },
+    {
+      condition = function() return vim.bo.modified end,
       provider = "[+]",
       hl = { fg = "green" },
     },
     {
-      condition = function()
-        return not vim.bo.modifiable or vim.bo.readonly
-      end,
+      condition = function() return not vim.bo.modifiable or vim.bo.readonly end,
       provider = "",
       hl = { fg = "orange" },
     },
-  }
+  },
 }
+
 return M
