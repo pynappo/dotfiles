@@ -5,6 +5,7 @@ local function setup_colors()
   return {
     bright_bg = get_hl("StatusLine").bg,
     bright_fg = get_hl("StatusLineNC").fg,
+    normal = get_hl("Normal").fg,
     red = get_hl("DiagnosticError").fg,
     dark_red = get_hl("DiffDelete").bg,
     green = get_hl("String").fg,
@@ -54,13 +55,9 @@ local align = { provider = "%=" }
 local space = { provider = " " }
 c.vimode = utils.surround({ "", "" }, "bright_bg", { c.vimode })
 local DefaultStatusline = {
-  c.vimode, space, c.filename, space, c.gitsigns, space, c.diagnostics, align,
-  c.Navic, c.dap, align,
-  c.lsps, space, c.filetype, space, c.ruler, space, c.scrollbar
-}
-local InactiveStatusline = {
-  condition = conditions.is_not_active,
-  c.filetype, space, c.filename, align,
+  c.vimode, space, c.gitsigns, space, c.diagnostics, align,
+  c.fileinfo, align,
+  c.dap, c.lsps, space, c.ruler, space, c.scrollbar
 }
 local TerminalStatusline = {
 
@@ -71,7 +68,7 @@ local TerminalStatusline = {
   hl = { bg = "dark_red" },
 
   -- Quickly add a condition to the ViMode to only show it when buffer is active!
-  { condition = conditions.is_active, c.vimode, space }, c.filetype, space, c.termname, align,
+  { condition = conditions.is_active, c.vimode, space }, c.fileicon, space, c.termname, align,
 }
 local SpecialStatusline = {
   condition = function()
@@ -83,13 +80,12 @@ local SpecialStatusline = {
 
   c.filetype, space, c.helpfilename, align
 }
+
 local StatusLines = {
 
   hl = function()
-    if conditions.is_active() then
-      return "StatusLine"
-    else
-      return "StatusLineNC"
+    if conditions.is_active() then return "StatusLine"
+    else return "StatusLineNC"
     end
   end,
 
@@ -97,7 +93,7 @@ local StatusLines = {
   -- think of it as a switch case with breaks to stop fallthrough.
   fallthrough = false,
 
-  SpecialStatusline, TerminalStatusline, InactiveStatusline, DefaultStatusline,
+  SpecialStatusline, TerminalStatusline, DefaultStatusline,
 }
 local WinBars = {
   fallthrough = false,
@@ -112,7 +108,7 @@ local WinBars = {
       vim.opt_local.winbar = nil
     end
   },
-  c.filename,
+  { c.navic, align, c.fileinfo }
 }
 require("heirline").setup(StatusLines, WinBars)
 
