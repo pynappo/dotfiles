@@ -54,19 +54,19 @@ local M = {
         t = "T",
       },
       mode_colors = {
-        n = "red" ,
-        i = "green",
-        v = "cyan",
-        V =  "cyan",
-        ["\22"] =  "cyan",
-        c =  "orange",
-        s =  "purple",
-        S =  "purple",
-        ["\19"] =  "purple",
-        R =  "orange",
-        r =  "orange",
-        ["!"] =  "red",
-        t =  "red",
+        n = "diag_error" ,
+        i = "string",
+        v = "special",
+        V =  "special",
+        ["\22"] =  "special",
+        c =  "constant",
+        s =  "statement",
+        S =  "statement",
+        ["\19"] =  "statement",
+        R =  "constant",
+        r =  "constant",
+        ["!"] =  "diag_error",
+        t =  "diag_error",
       }
     },
     provider = function(self) return " %2("..self.mode_names[self.mode].."%)" end,
@@ -82,7 +82,7 @@ local M = {
       self.status_dict = vim.b.gitsigns_status_dict
       self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
     end,
-    hl = { fg = "orange" },
+    hl = { fg = "constant" },
     {   -- git branch name
       provider = function(self)
         return " " .. self.status_dict.head
@@ -198,7 +198,7 @@ local M = {
     -- evaluate the children containing navic components
     provider = function(self) return self.child:eval() end,
     hl = { fg = "normal" },
-    update = 'CursorMoved'
+    update = 'CursorHold'
   },
   diagnostics = {
     condition = conditions.has_diagnostics,
@@ -245,7 +245,7 @@ local M = {
       local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
       return " " .. tname
     end,
-    hl = { fg = "blue", bold = true },
+    hl = { fg = "function", bold = true },
   },
   helpfilename = {
     condition = function()
@@ -255,7 +255,7 @@ local M = {
       local filename = vim.api.nvim_buf_get_name(0)
       return vim.fn.fnamemodify(filename, ":t")
     end,
-    hl = { fg = 'blue' },
+    hl = { fg = 'function' },
   },
   -- I take no credits for this! :lion:
   ruler = { provide = "%7(%l/%3L%):%2c %P" },
@@ -267,13 +267,13 @@ local M = {
       local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
       return string.rep(self.sbar[i], 2)
     end,
-    hl = { fg = "blue", bg = "bright_bg" },
+    hl = { fg = "function", bg = "bright_bg" },
   },
 
   spell = {
     condition = function() return vim.wo.spell end,
     provider = 'SPELL ',
-    hl = { bold = true, fg = "orange"}
+    hl = { bold = true, fg = "constant"}
   },
   filetype = {
     provider = function() return string.upper(vim.bo.filetype) end,
@@ -305,7 +305,7 @@ local M = {
       end
       return status
     end,
-    hl = { fg = "green", bold = true },
+    hl = { fg = "string", bold = true },
   },
   fileinfo = {
     init = function(self)
@@ -338,13 +338,13 @@ local M = {
     },
     {
       condition = function() return vim.bo.modified end,
-      provider = "[+]",
-      hl = { fg = "green" },
+      provider = " [+]",
+      hl = { fg = "string" },
     },
     {
       condition = function() return not vim.bo.modifiable or vim.bo.readonly end,
-      provider = "",
-      hl = { fg = "orange" },
+      provider = " ",
+      hl = { fg = "constant" },
     },
   },
 }

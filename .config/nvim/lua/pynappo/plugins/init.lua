@@ -165,7 +165,7 @@ require('packer').startup({function(use)
   use {
     'andymass/vim-matchup',
     config = function()
-      for _, option in pairs({'enabled', 'surround_enabled', 'transmute_enabled', 'matchparen_deferred'}) do
+      for _, option in pairs({'enabled', 'surround_enabled', 'transmute_enabled', 'matchparen_deferdiag_error'}) do
         vim.g['matchup_' .. option] = 1
       end
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
@@ -176,8 +176,8 @@ require('packer').startup({function(use)
   use 'tpope/vim-repeat'
   use { 'Akianonymus/nvim-colorizer.lua', config = function() require('colorizer').setup() end }
   use ({
-    'simrat39/symbols-outline.nvim', config = function() require('symbols-outline').setup() end,
-    'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end
+    { 'simrat39/symbols-outline.nvim', config = function() require('symbols-outline').setup() end },
+    { 'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end }
   })
   use {
     'karb94/neoscroll.nvim',
@@ -231,7 +231,6 @@ require('packer').startup({function(use)
       require('pynappo/keymaps').setup.hlslens()
     end
   }
-  -- use { 'j-hui/fidget.nvim', config = function() require("fidget").setup({ window = { blend = 0 }}) end }
   use {
     'nvim-neorg/neorg',
     -- tag = 'latest',
@@ -305,10 +304,16 @@ require('packer').startup({function(use)
     config = function() require('pynappo/plugins/hydra') end
   }
   use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'nvo'}) end }
-  use {'echasnovski/mini.map', config = function()
-    require('mini.map').setup()
-    require('pynappo/keymaps').setup.mini()
-  end}
+  use {
+    'dstein64/nvim-scrollview',
+    config = function() require('scrollview').setup({
+      excluded_filetypes = {'neo-tree'},
+      winblend = 75,
+      base = 'right',
+    })
+    end
+  }
+  use 'mrjones2014/smart-splits.nvim'
   if packer_bootstrap then
     require('packer').sync()
   end

@@ -3,17 +3,16 @@ local conditions = require("heirline.conditions")
 local function setup_colors()
   local get_hl = utils.get_highlight
   return {
+    panel_border = get_hl("CursorLineNr").fg,
+    string = get_hl("String").fg,
     bright_bg = get_hl("StatusLine").bg,
     bright_fg = get_hl("StatusLineNC").fg,
     normal = get_hl("Normal").fg,
-    red = get_hl("DiagnosticError").fg,
-    dark_red = get_hl("DiffDelete").bg,
-    green = get_hl("String").fg,
-    blue = get_hl("Function").fg,
-    gray = get_hl("NonText").fg,
-    orange = get_hl("Constant").fg,
-    purple = get_hl("Statement").fg,
-    cyan = get_hl("Special").fg,
+    ['function'] = get_hl("Function").fg,
+    comment = get_hl("NonText").fg,
+    constant = get_hl("Constant").fg,
+    statement = get_hl("Statement").fg,
+    special = get_hl("Special").fg,
     diag_warn = get_hl("DiagnosticWarn").fg,
     diag_error = get_hl("DiagnosticError").fg,
     diag_hint = get_hl("DiagnosticHint").fg,
@@ -64,8 +63,6 @@ local TerminalStatusline = {
   condition = function()
     return conditions.buffer_matches({ buftype = { "terminal" } })
   end,
-
-  hl = { bg = "dark_red" },
 
   -- Quickly add a condition to the ViMode to only show it when buffer is active!
   { condition = conditions.is_active, c.vimode, space }, c.fileicon, space, c.termname, align,
