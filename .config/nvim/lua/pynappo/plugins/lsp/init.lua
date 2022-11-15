@@ -6,6 +6,23 @@ mason_lspconfig.setup({
 })
 require('pynappo/keymaps').setup.diagnostics()
 
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  float = {
+    border = "single",
+    format = function(diagnostic)
+      return string.format(
+        "%s (%s) [%s]",
+        diagnostic.message,
+        diagnostic.source,
+        diagnostic.code or diagnostic.user_data.lsp.code
+      )
+    end,
+  },
+})
+
+
 mason_lspconfig.setup_handlers {
   function(ls)
     local config = require('pynappo/plugins/lsp/config/defaults')

@@ -52,12 +52,13 @@ M.setup = {
     })
   end,
   diagnostics = function()
+    local diag = vim.diagnostic
     map({
       [{ 'n' }] = {
-        { '<leader>e', vim.diagnostic.open_float, {desc = 'Floating Diagnostics'}},
-        { '[d', vim.diagnostic.goto_prev, {desc = 'Previous diagnostic'}},
-        { ']d', vim.diagnostic.goto_next, {desc = 'Next diagnostic'}},
-        { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
+        { '<leader>e', diag.open_float, {desc = 'Floating Diagnostics'}},
+        { '[d', diag.goto_prev, {desc = 'Previous diagnostic'}},
+        { ']d', diag.goto_next, {desc = 'Next diagnostic'}},
+        { '<leader>q', diag.setloclist, {desc = 'Add diagnostics to location list'}},
       }
     })
   end,
@@ -86,40 +87,63 @@ M.setup = {
   matchup = function() map({ [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } }) end,
   mini = function() map({ [{ 'n' }] = { { '<leader>m', function() require('mini.map').toggle() end, {desc = 'Toggle mini.map'}}}}) end,
   dial = function()
-    local dial = require('dial.map')
     map({
       [{'n'}] = {
-        { "<c-a>", dial.inc_normal(), {noremap = true} },
-        { "<c-x>", dial.dec_normal(), {noremap = true} },
+        { "<c-a>", require('dial.map').inc_normal(), {noremap = true} },
+        { "<c-x>", require('dial.map').dec_normal(), {noremap = true} },
       },
       [{'v'}] = {
-        { "<c-a>", dial.inc_visual(), {noremap = true} },
-        { "<c-x>", dial.dec_visual(), {noremap = true} },
-        { "g<c-a>", dial.inc_gvisual(), {noremap = true} },
-        { "g<c-x>", dial.dec_gvisual(), {noremap = true} },
+        { "<c-a>", require('dial.map').inc_visual(), {noremap = true} },
+        { "<c-x>", require('dial.map').dec_visual(), {noremap = true} },
+        { "g<c-a>", require('dial.map').inc_gvisual(), {noremap = true} },
+        { "g<c-x>", require('dial.map').dec_gvisual(), {noremap = true} },
       }
     })
   end,
+
   telescope = function()
-    local ts_builtin = require('telescope.builtin')
     map({
       [{ 'n' }] = {
-        { '<leader><space>', ts_builtin.buffers, {desc = '(TS) Buffers'}},
-        { '<leader>ff', ts_builtin.find_files, {desc = '(TS) Find files'}},
-        { '<leader>f/', ts_builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
-        { '<leader>fh', ts_builtin.help_tags, {desc = '(TS) Neovim help'}},
-        { '<leader>ft', ts_builtin.tags, {desc = '(TS) Tags'}},
-        { '<leader>fd', ts_builtin.grep_string, {desc = '(TS) grep current string'}},
-        { '<leader>fp', ts_builtin.live_grep, {desc = '(TS) live grep a string'}},
-        { '<leader>fo', function() ts_builtin.tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
-        { '<leader>?', ts_builtin.oldfiles, {desc = '(TS) Oldfiles'}},
+        { '<leader><space>', require('telescope.builtin').buffers, {desc = '(TS) Buffers'}},
+        { '<leader>ff', require('telescope.builtin').find_files, {desc = '(TS) Find files'}},
+        { '<leader>f/', require('telescope.builtin').current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
+        { '<leader>fh', require('telescope.builtin').help_tags, {desc = '(TS) Neovim help'}},
+        { '<leader>ft', require('telescope.builtin').tags, {desc = '(TS) Tags'}},
+        { '<leader>fd', require('telescope.builtin').grep_string, {desc = '(TS) grep current string'}},
+        { '<leader>fp', require('telescope.builtin').live_grep, {desc = '(TS) live grep a string'}},
+        { '<leader>fo', function() require('telescope.builtin').tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
+        { '<leader>?', require('telescope.builtin').oldfiles, {desc = '(TS) Oldfiles'}},
         { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
       }
     })
-  end
+  end,
+  cmp = {
+
+  }
 }
 
 -- For other plugins
+M.cmp = {
+  insert = function()
+    local cmp = require('cmp')
+    return cmp.mapping.preset.insert({
+      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+      ["<C-f>"] = cmp.mapping.scroll_docs(4),
+      ["<C-Space>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto, }),
+      ["<CR>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, },
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then cmp.select_next_item()
+        elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
+        else fallback() end
+      end, { "i", "s", 'c' }),
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then cmp.select_prev_item()
+        elseif luasnip.jumpable(-1) then luasnip.jump(-1)
+        else fallback() end
+      end, { "i", "s", 'c' }),
+    })
+  end,
+}
 
 M.toggleterm = {
   open_mapping = [[<C-\>]]

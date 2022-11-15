@@ -66,6 +66,7 @@ o.splitright = true
 o.splitbelow = true
 
 -- Misc
+o.updatetime = 500
 o.termguicolors = true
 g.gutentags_enabled = 1
 o.history = 1000
