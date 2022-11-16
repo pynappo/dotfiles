@@ -20,11 +20,6 @@ M.setup = {
         { 'x', '"_x', { silent = true }},
         { 'j', 'gj' , { silent = true }},
         { 'k', 'gk' , { silent = true }},
-        -- Better window navigation
-        { '<C-j>', '<C-w>j', { silent = true } },
-        { '<C-k>', '<C-w>k', { silent = true } },
-        { '<C-h>', '<C-w>h', { silent = true } },
-        { '<C-l>', '<C-w>l', { silent = true } },
         -- Better tabs
         { '<C-S-h>', '<Cmd>:tabprev<CR>', { silent = true } },
         { '<C-S-l>', '<Cmd>:tabnext<CR>', { silent = true } },
@@ -49,6 +44,20 @@ M.setup = {
         { '<leader>p', '"+p=`]', { silent = true } },
         { '<leader>y', '"+y"', { silent = true }},
       },
+    })
+  end,
+  smart_splits = function()
+    map({
+      [{'n'}] = {
+        { '<A-h>', require('smart-splits').resize_left, { silent = true } },
+        { '<A-j>', require('smart-splits').resize_down, { silent = true } },
+        { '<A-k>', require('smart-splits').resize_up, { silent = true } },
+        { '<A-l>', require('smart-splits').resize_right, { silent = true } },
+        { '<C-h>', require('smart-splits').move_cursor_left, { silent = true } },
+        { '<C-j>', require('smart-splits').move_cursor_down, { silent = true } },
+        { '<C-k>', require('smart-splits').move_cursor_up, { silent = true } },
+        { '<C-l>', require('smart-splits').move_cursor_right, { silent = true } },
+      }
     })
   end,
   diagnostics = function()
@@ -102,30 +111,29 @@ M.setup = {
   end,
 
   telescope = function()
+    local builtin = require('telescope.builtin')
     map({
       [{ 'n' }] = {
-        { '<leader><space>', require('telescope.builtin').buffers, {desc = '(TS) Buffers'}},
-        { '<leader>ff', require('telescope.builtin').find_files, {desc = '(TS) Find files'}},
-        { '<leader>f/', require('telescope.builtin').current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
-        { '<leader>fh', require('telescope.builtin').help_tags, {desc = '(TS) Neovim help'}},
-        { '<leader>ft', require('telescope.builtin').tags, {desc = '(TS) Tags'}},
-        { '<leader>fd', require('telescope.builtin').grep_string, {desc = '(TS) grep current string'}},
-        { '<leader>fp', require('telescope.builtin').live_grep, {desc = '(TS) live grep a string'}},
-        { '<leader>fo', function() require('telescope.builtin').tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
-        { '<leader>?', require('telescope.builtin').oldfiles, {desc = '(TS) Oldfiles'}},
+        { '<leader><space>', builtin.buffers, {desc = '(TS) Buffers'}},
+        { '<leader>ff', builtin.find_files, {desc = '(TS) Find files'}},
+        { '<leader>f/', builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
+        { '<leader>fh', builtin.help_tags, {desc = '(TS) Neovim help'}},
+        { '<leader>ft', builtin.tags, {desc = '(TS) Tags'}},
+        { '<leader>fd', builtin.grep_string, {desc = '(TS) grep current string'}},
+        { '<leader>fp', builtin.live_grep, {desc = '(TS) live grep a string'}},
+        { '<leader>fo', function() builtin.tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
+        { '<leader>?', builtin.oldfiles, {desc = '(TS) Oldfiles'}},
         { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
       }
     })
   end,
-  cmp = {
-
-  }
 }
 
 -- For other plugins
 M.cmp = {
   insert = function()
     local cmp = require('cmp')
+    local luasnip = require('luasnip')
     return cmp.mapping.preset.insert({
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
       ["<C-f>"] = cmp.mapping.scroll_docs(4),

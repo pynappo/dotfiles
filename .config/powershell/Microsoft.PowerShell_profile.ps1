@@ -2,6 +2,7 @@ Unblock-File $profile
 
 
 Invoke-Expression (&starship init powershell)
+oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.json" | Invoke-Expression
 Import-Module posh-git
 $env:POSH_GIT_ENABLED = $true
 Import-Module -Name Terminal-Icons

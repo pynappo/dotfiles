@@ -1,4 +1,3 @@
-require('pynappo/keymaps').setup.telescope()
 local ts = require('telescope')
 ts.setup {
   defaults = {
@@ -13,6 +12,7 @@ ts.setup {
     }
   }
 }
+require('pynappo/keymaps').setup.telescope()
 ts.load_extension("fzf")
 ts.load_extension("file_browser")
 ts.load_extension("notify")

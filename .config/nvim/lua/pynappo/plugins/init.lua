@@ -39,7 +39,6 @@ require('packer').startup({function(use)
       'nvim-telescope/telescope.nvim',
       requires = 'nvim-lua/plenary.nvim',
       config = function() require('pynappo/plugins/telescope') end,
-      cmd = 'Telescope'
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     'nvim-telescope/telescope-file-browser.nvim',
@@ -303,7 +302,7 @@ require('packer').startup({function(use)
     'anuvyklack/hydra.nvim',
     config = function() require('pynappo/plugins/hydra') end
   }
-  use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'nvo'}) end }
+  use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'vo'}) end }
   use {
     'dstein64/nvim-scrollview',
     config = function() require('scrollview').setup({
@@ -313,7 +312,13 @@ require('packer').startup({function(use)
     })
     end
   }
-  use 'mrjones2014/smart-splits.nvim'
+  use {
+    'mrjones2014/smart-splits.nvim',
+    config = function()
+      require('smart-splits').setup({})
+      require('pynappo/keymaps').setup.smart_splits()
+    end
+  }
   if packer_bootstrap then
     require('packer').sync()
   end
