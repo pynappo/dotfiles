@@ -57,4 +57,4 @@ g.gutentags_generate_on_write = true
 g.gutentags_generate_on_empty_buffer = true
 g.gutentags_ctags_extra_args = {'--tag-relative=yes', '--fields=+ailmnS', }
 
-vim.api.nvim_create_user_command({'GutentagsClearCache', vim.fn.system('rm', g.gutentags_cache_dir .. '/*'), {}})
+vim.api.nvim_create_user_command('GutentagsClearCache', vim.fn.system('rm', g.gutentags_cache_dir .. '/*'), {})
