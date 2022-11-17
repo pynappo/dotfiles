@@ -290,7 +290,18 @@ require('packer').startup({function(use)
   use 'RRethy/vim-illuminate'
   use { 'AckslD/nvim-FeMaco.lua', config = function() require("femaco").setup() end }
   use (
-    { 'levouh/tint.nvim', config = function() require('tint').setup() end },
+    { 'levouh/tint.nvim',
+      config = function()
+        require('tint').setup({
+          window_ignore_function = function(winid)
+            local bufid = vim.api.nvim_win_get_buf(winid)
+            local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
+            local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
+            return buftype == "terminal" or buftype == 'nofile' or floating
+          end
+        })
+      end
+    },
     { 'nvim-zh/colorful-winsep.nvim', config = function() require('colorful-winsep').setup() end}
   )
   use {
