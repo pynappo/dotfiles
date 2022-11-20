@@ -3,7 +3,7 @@ local utils = require("heirline.utils")
 
 local space = { provider = " " }
 local M = {
-  vimode = {
+  vi_mode = {
     init = function(self)
       self.mode = vim.fn.mode(1) -- :h mode()
       -- execute this only once, this is required if you want the ViMode
@@ -245,9 +245,9 @@ local M = {
       local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
       return " " .. tname
     end,
-    hl = { fg = "function", bold = true },
+    hl = { fg = "func", bold = true },
   },
-  helpfilename = {
+  help_filename = {
     condition = function()
       return vim.bo.filetype == "help"
     end,
@@ -267,19 +267,15 @@ local M = {
       local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
       return string.rep(self.sbar[i], 2)
     end,
-    hl = { fg = "function", bg = "bright_bg" },
+    hl = { fg = "func", bg = "bright_bg" },
   },
 
   spell = {
     condition = function() return vim.wo.spell end,
-    provider = 'SPELL ',
+    provider = 'SPELL',
     hl = { bold = true, fg = "constant"}
   },
-  filetype = {
-    provider = function() return string.upper(vim.bo.filetype) end,
-    hl = { fg = utils.get_highlight("Type").fg, bold = true },
-  },
-  lsps = {
+  lsp = {
     condition = conditions.lsp_attached,
     update = {'LspAttach', 'LspDetach'},
     init = function(self)
@@ -307,35 +303,7 @@ local M = {
     end,
     hl = { fg = "string", bold = true },
   },
-  fileinfo = {
-    init = function(self)
-      self.filename = vim.fn.expand("%:t")
-      self.extension = vim.fn.expand("%:e")
-      self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(self.filename, self.extension, { default = true })
-    end,
-    {
-      provider = function(self) return self.icon and (self.icon .. " ") end,
-      hl = function(self) return { fg = self.icon_color } end
-    },
-    {
-      {
-        provider = function(self)
-          local filename = vim.fn.fnamemodify(self.filename, ":.")
-          if filename == "" then return "[No Name]" end
-          if not conditions.width_percent_below(#filename, 0.25) then
-            filename = vim.fn.pathshorten(filename)
-          end
-          return filename
-        end,
-        hl = { fg = utils.get_highlight("Directory").fg },
-      },
-      hl = function()
-        if vim.bo.modified then
-          return { italic = true, bold = true, force=true }
-        end
-      end,
-
-    },
+  file_flags = {
     {
       condition = function() return vim.bo.modified end,
       provider = " [+]",
@@ -347,6 +315,42 @@ local M = {
       hl = { fg = "constant" },
     },
   },
+  filename = {
+    {
+      provider = function(self)
+        local filename = vim.fn.fnamemodify(self.filename, ":.")
+        if filename == "" then return "[No Name]" end
+        if not conditions.width_percent_below(#filename, 0.25) then
+          filename = vim.fn.pathshorten(filename)
+        end
+        return filename
+      end,
+      hl = { fg = utils.get_highlight("Directory").fg },
+    },
+    hl = function()
+      if vim.bo.modified then
+        return { italic = true, bold = true, force=true }
+      end
+    end,
+  },
+  file_icon = {
+    provider = function(self) return self.icon and (self.icon .. " ") end,
+    hl = function(self) return { fg = self.icon_color } end
+  },
+  filetype = {
+    provider = function() return string.upper(vim.bo.filetype) end,
+    hl = { fg = utils.get_highlight("Type").fg, bold = true },
+  },
 }
 
+M.file_info = {
+  init = function(self)
+    self.filename = vim.fn.expand("%:t")
+    self.extension = vim.fn.expand("%:e")
+    self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(self.filename, self.extension, { default = true })
+  end,
+  M.file_icon,
+  M.filename,
+  M.file_flags
+}
 return M

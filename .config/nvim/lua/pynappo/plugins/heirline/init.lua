@@ -8,7 +8,7 @@ local function setup_colors()
     bright_bg = get_hl("StatusLine").bg,
     bright_fg = get_hl("StatusLineNC").fg,
     normal = get_hl("Normal").fg,
-    ['function'] = get_hl("Function").fg,
+    func = get_hl("Function").fg,
     comment = get_hl("NonText").fg,
     constant = get_hl("Constant").fg,
     statement = get_hl("Statement").fg,
@@ -49,25 +49,20 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-local c = require("pynappo.plugins.heirline.components")
+local c = require("pynappo/plugins/heirline/components/base")
 local align = { provider = "%=" }
 local space = { provider = " " }
 c.vimode = utils.surround({ "", "" }, "bright_bg", { c.vimode })
-local DefaultStatusline = {
-  c.vimode, space, c.gitsigns, space, c.diagnostics, align,
-  c.fileinfo, align,
-  c.dap, c.lsps, space, c.ruler, space, c.scrollbar
+local default_status = {
+  c.vi_mode, space, c.gitsigns, space, c.diagnostics, align,
+  c.file_info, align,
+  c.dap, c.lsp, space, c.ruler, space, c.scrollbar
 }
-local TerminalStatusline = {
-
-  condition = function()
-    return conditions.buffer_matches({ buftype = { "terminal" } })
-  end,
-
-  -- Quickly add a condition to the ViMode to only show it when buffer is active!
-  { condition = conditions.is_active, c.vimode, space }, c.fileicon, space, c.termname, align,
+local terminal_status = {
+  condition = function() return conditions.buffer_matches({ buftype = { "terminal" } }) end,
+  { condition = conditions.is_active, c.vi_mode, space }, c.file_icon, space, c.termname, align,
 }
-local SpecialStatusline = {
+local special_status = {
   condition = function()
     return conditions.buffer_matches({
       buftype = { "nofile", "prompt", "help", "quickfix" },
@@ -75,7 +70,7 @@ local SpecialStatusline = {
     })
   end,
 
-  c.filetype, space, c.helpfilename, align
+  c.filetype, space, c.help_filename, align
 }
 
 local StatusLines = {
@@ -90,7 +85,7 @@ local StatusLines = {
   -- think of it as a switch case with breaks to stop fallthrough.
   fallthrough = false,
 
-  SpecialStatusline, TerminalStatusline, DefaultStatusline,
+  special_status, terminal_status, default_status,
 }
 local WinBars = {
   fallthrough = false,
@@ -101,11 +96,30 @@ local WinBars = {
         filetype = { "^git.*", "fugitive" },
       })
     end,
-    init = function()
-      vim.opt_local.winbar = nil
-    end
+    init = function() vim.opt_local.winbar = nil end
   },
-  { c.navic, align, c.fileinfo }
+  { c.navic, align, c.file_info }
 }
-require("heirline").setup(StatusLines, WinBars)
+
+local t = require('pynappo/plugins/heirline/components/tabline')
+local bufferline = utils.make_buflist(
+  t.tabline_buffer_block,
+  { provider = "", hl = { fg = "gray" } },
+  { provider = "", hl = { fg = "gray" } }
+)
+local tabpages = {
+  condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
+  { provider = "%=" },
+  utils.make_tablist({
+    provider = function(self) return "%" .. self.tabnr .. "T " .. self.tabnr .. " %T" end,
+    hl = function(self) return self.is_active and "TabLineSel" or "TabLine" end,
+  }),
+  {
+    provider = "%999X  %X",
+    hl = "TabLine",
+  },
+}
+local TabLines = { bufferline, tabpages }
+
+require("heirline").setup(StatusLines, WinBars, TabLines)
 
