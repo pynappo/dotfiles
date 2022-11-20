@@ -1,7 +1,6 @@
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
 
-local space = { provider = " " }
 local M = {
   vi_mode = {
     init = function(self)
@@ -75,6 +74,30 @@ local M = {
       return { fg = self.mode_colors[mode], bold = true, }
     end,
     update = { "ModeChanged" },
+  },
+  cwd = {
+    init = function(self)
+      self.icon = (vim.fn.haslocaldir(0) == 1 and "(Local)" or "") .. " " .. " "
+      self.cwd = vim.fn.fnamemodify(vim.fn.getcwd(0), ":~")
+    end,
+    hl = { fg = "directory" },
+    flexible = 1,
+    { -- evaluates to the full-lenth path
+      provider = function(self)
+        local trail = self.cwd:sub(-1) == "/" and "" or (vim.fn.has("win32") and "\\" or "/")
+        return self.icon .. self.cwd .. trail .." "
+      end,
+    },
+    { -- evaluates to the shortened path
+      provider = function(self)
+        local cwd = vim.fn.pathshorten(self.cwd)
+        local trail = self.cwd:sub(-1) == "/" and "" or "/"
+        return self.icon .. cwd .. trail .. " "
+      end,
+    },
+    { -- evaluates to "", hiding the component
+      provider = "",
+    }
   },
   gitsigns = {
     condition = conditions.is_git_repo,
@@ -235,7 +258,7 @@ local M = {
       return session ~= nil
     end,
     provider = function() return " " .. require("dap").status() end,
-    hl = "Debug"
+    hl = { fg = "debug" },
     -- see Click-it! section for clickable actions
   },
   termname = {
@@ -245,17 +268,15 @@ local M = {
       local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
       return " " .. tname
     end,
-    hl = { fg = "func", bold = true },
+    hl = { fg = "func" },
   },
   help_filename = {
-    condition = function()
-      return vim.bo.filetype == "help"
-    end,
+    condition = function() return vim.bo.filetype == "help" end,
     provider = function()
       local filename = vim.api.nvim_buf_get_name(0)
       return vim.fn.fnamemodify(filename, ":t")
     end,
-    hl = { fg = 'function' },
+    hl = { fg = 'func' },
   },
   -- I take no credits for this! :lion:
   ruler = { provide = "%7(%l/%3L%):%2c %P" },
@@ -268,12 +289,6 @@ local M = {
       return string.rep(self.sbar[i], 2)
     end,
     hl = { fg = "func", bg = "bright_bg" },
-  },
-
-  spell = {
-    condition = function() return vim.wo.spell end,
-    provider = 'SPELL',
-    hl = { bold = true, fg = "constant"}
   },
   lsp = {
     condition = conditions.lsp_attached,
@@ -316,22 +331,16 @@ local M = {
     },
   },
   filename = {
-    {
-      provider = function(self)
-        local filename = vim.fn.fnamemodify(self.filename, ":.")
-        if filename == "" then return "[No Name]" end
-        if not conditions.width_percent_below(#filename, 0.25) then
-          filename = vim.fn.pathshorten(filename)
-        end
-        return filename
-      end,
-      hl = { fg = utils.get_highlight("Directory").fg },
-    },
-    hl = function()
-      if vim.bo.modified then
-        return { italic = true, bold = true, force=true }
-      end
+    init = function(self)
+      self.lfilename = vim.fn.fnamemodify(self.filename, ":.")
+      if self.lfilename == "" then self.lfilename = "[No Name]" end
     end,
+    hl = function()
+      if vim.bo.modified then return { italic = true, bold = true, force=true } end
+    end,
+    flexible = 2,
+    { provider = function(self) return self.lfilename end },
+    { provider = function(self) return vim.fn.pathshorten(self.lfilename) end },
   },
   file_icon = {
     provider = function(self) return self.icon and (self.icon .. " ") end,
@@ -339,13 +348,13 @@ local M = {
   },
   filetype = {
     provider = function() return string.upper(vim.bo.filetype) end,
-    hl = { fg = utils.get_highlight("Type").fg, bold = true },
+    hl = { fg = "type", bold = true },
   },
 }
 
 M.file_info = {
   init = function(self)
-    self.filename = vim.fn.expand("%:t")
+    self.filename = vim.api.nvim_buf_get_name(0)
     self.extension = vim.fn.expand("%:e")
     self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(self.filename, self.extension, { default = true })
   end,
