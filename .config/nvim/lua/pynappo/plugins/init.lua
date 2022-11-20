@@ -245,7 +245,7 @@ require('packer').startup({function(use)
     },
     { 'rebelot/heirline.nvim', config = function() require('pynappo/plugins/heirline') end },
     { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function() require('pynappo/plugins/navic') end },
-    { 'nanozuki/tabby.nvim', config = function() require('pynappo/plugins/tabby') end }
+    -- { 'nanozuki/tabby.nvim', config = function() require('pynappo/plugins/tabby') end }
   })
   use { 'AckslD/nvim-neoclip.lua', requires = 'nvim-telescope/telescope.nvim', config = function() require('neoclip').setup() end }
   use ({
