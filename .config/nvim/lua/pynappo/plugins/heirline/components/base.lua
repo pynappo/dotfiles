@@ -80,6 +80,7 @@ local M = {
       self.icon = (vim.fn.haslocaldir(0) == 1 and "(Local)" or "") .. " " .. " "
       self.cwd = vim.fn.fnamemodify(vim.fn.getcwd(0), ":~")
     end,
+    update = { "DirChanged" },
     hl = { fg = "directory" },
     flexible = 1,
     { -- evaluates to the full-lenth path
@@ -233,21 +234,25 @@ local M = {
       self.getsign = vim.fn.sign_getdefined
     end,
     update = { "DiagnosticChanged", "BufEnter" },
-    { provider = "[", },
+    on_click = {
+      callback = function() require("trouble").toggle({ mode = "document_diagnostics" }) end,
+      name = "heirline_diagnostics",
+    },
+    { provider = "[ ", },
     {
-      provider = function(self) return self.errors > 0 and (self.getsign("DiagnosticSignError")[1].text .. self.errors) end,
+      provider = function(self) return self.errors > 0 and (self.errors .. self.getsign("DiagnosticSignError")[1].text) end,
       hl = { fg = "diag_error" },
     },
     {
-      provider = function(self) return self.warnings > 0 and (self.getsign("DiagnosticSignWarn")[1].text .. self.warnings) end,
+      provider = function(self) return self.warnings > 0 and (self.warnings .. self.getsign("DiagnosticSignWarn")[1].text) end,
       hl = { fg = "diag_warn" },
     },
     {
-      provider = function(self) return self.info > 0 and (self.getsign("DiagnosticSignInfo")[1].text .. self.info) end,
+      provider = function(self) return self.info > 0 and (self.info .. self.getsign("DiagnosticSignInfo")[1].text)end,
       hl = { fg = "diag_info" },
     },
     {
-      provider = function(self) return self.hints > 0 and (self.getsign("DiagnosticSignHint")[1].text .. self.hints) end,
+      provider = function(self) return self.hints > 0 and (self.hints .. self.getsign("DiagnosticSignHint")[1].text) end,
       hl = { fg = "diag_hint" },
     },
     { provider = "]", },
@@ -264,14 +269,12 @@ local M = {
   termname = {
     -- we could add a condition to check that buftype == 'terminal'
     -- or we could do that later (see #conditional-statuslines below)
-    provider = function()
-      local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
-      return " " .. tname
-    end,
+    provider = function() return " " .. vim.api.nvim_buf_get_name(0):gsub(".*:", "") end,
     hl = { fg = "func" },
   },
   help_filename = {
     condition = function() return vim.bo.filetype == "help" end,
+    update = "BufEnter",
     provider = function()
       local filename = vim.api.nvim_buf_get_name(0)
       return vim.fn.fnamemodify(filename, ":t")
@@ -281,13 +284,14 @@ local M = {
   -- I take no credits for this! :lion:
   ruler = { provide = "%7(%l/%3L%):%2c %P" },
   scrollbar = {
-    static = { sbar = { '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' } },
+    static = { sbar = { '█','▇', '▆', '▅', '▄', '▃', '▂', '▁' } },
     provider = function(self)
       local curr_line = vim.api.nvim_win_get_cursor(0)[1]
       local lines = vim.api.nvim_buf_line_count(0)
       local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
       return string.rep(self.sbar[i], 2)
     end,
+    update = 'CursorMoved',
     hl = { fg = "func", bg = "bright_bg" },
   },
   lsp = {
@@ -295,7 +299,14 @@ local M = {
     update = {'LspAttach', 'LspDetach'},
     init = function(self)
       self.servers = vim.lsp.get_active_clients()
+      self.devicon_by_filetype = require("nvim-web-devicons").get_icon_by_filetype
     end,
+    on_click = {
+      callback = function()
+        vim.defer_fn(function() vim.cmd("LspInfo") end, 100)
+      end,
+      name = "heirline_LSP",
+    },
     static = {
       ls_icons = {
         copilot = '',
@@ -303,18 +314,15 @@ local M = {
       }
     },
     provider = function(self)
-      local status = ''
+      local icons = {}
       for _, s in ipairs(self.servers) do
         if self.ls_icons[s.name] then
-          status = status .. ' ' .. self.ls_icons[s.name]
+          table.insert(icons, self.ls_icons[s.name])
         else
-          if s.config then
-            local icon, _ = require('nvim-web-devicons').get_icon_by_filetype(s.config.filetypes[1])
-            status = status .. ' ' .. icon
-          end
+          if s.config then table.insert(icons, self.devicon_by_filetype(s.config.filetypes[1]) or '') end
         end
       end
-      return status
+      return ' [' .. table.concat(icons, ' ') .. ']'
     end,
     hl = { fg = "string", bold = true },
   },
@@ -327,6 +335,7 @@ local M = {
     {
       condition = function() return not vim.bo.modifiable or vim.bo.readonly end,
       provider = " ",
+      update = "BufEnter",
       hl = { fg = "constant" },
     },
   },
@@ -336,19 +345,22 @@ local M = {
       if self.lfilename == "" then self.lfilename = "[No Name]" end
     end,
     hl = function()
-      if vim.bo.modified then return { italic = true, bold = true, force=true } end
+      if vim.bo.modified then return { italic = true, force=true } end
     end,
     flexible = 2,
+    update = 'BufEnter',
     { provider = function(self) return self.lfilename end },
     { provider = function(self) return vim.fn.pathshorten(self.lfilename) end },
   },
   file_icon = {
     provider = function(self) return self.icon and (self.icon .. " ") end,
-    hl = function(self) return { fg = self.icon_color } end
+    hl = function(self) return { fg = self.icon_color } end,
+    update = { "FileType" },
   },
   filetype = {
     provider = function() return string.upper(vim.bo.filetype) end,
     hl = { fg = "type", bold = true },
+    update = { "FileType" },
   },
 }
 

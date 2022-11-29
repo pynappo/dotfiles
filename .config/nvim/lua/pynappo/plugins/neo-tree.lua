@@ -16,7 +16,7 @@ require("neo-tree").setup({
     "git_status",
   },
   add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
-  close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+  close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
   close_floats_on_escape_key = true,
   default_source = "filesystem",
   enable_diagnostics = true,

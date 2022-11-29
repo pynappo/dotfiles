@@ -20,9 +20,9 @@ local function setup_colors()
     diag_error = get_hl("DiagnosticError").fg,
     diag_hint = get_hl("DiagnosticHint").fg,
     diag_info = get_hl("DiagnosticInfo").fg,
-    git_del = get_hl("DiffDelete").fg,
+    git_del = get_hl("DiffRemoved").fg,
     git_add = get_hl("DiffAdded").fg,
-    git_change = get_hl("DiffChange").fg,
+    git_change = get_hl("GitsignsChange").fg,
   }
 end
 require('heirline').load_colors(setup_colors())
@@ -49,7 +49,8 @@ local space = { provider = " " }
 c.vi_mode = utils.surround({ "", "" }, "bright_bg", { c.vi_mode })
 
 local status = {
-  c.vi_mode, space, c.gitsigns, space, c.diagnostics, align,
+  { c.vi_mode, space, c.gitsigns, space, c.diagnostics, },
+  align,
   {
     fallthrough = false,
     {
@@ -67,14 +68,13 @@ local status = {
     },
     {c.cwd, c.file_info}
   },
-  align, c.dap, c.lsp, space, c.ruler, space, c.scrollbar
+  align,
+  { c.dap, c.lsp, space, c.ruler, space, c.scrollbar }
 }
-local StatusLines = {
-  hl = function() return conditions.is_active() and "StatusLine" or "StatusLineNC" end,
-  status,
-}
+local StatusLines = { status, }
 
 local WinBars = {
+  hl = "Tabline",
   fallthrough = false,
   {
     condition = function()
@@ -84,6 +84,10 @@ local WinBars = {
       })
     end,
     init = function() vim.opt_local.winbar = nil end
+  },
+  {
+    condition = function() return conditions.buffer_matches({ buftype = { "terminal" } }) end,
+    align, c.file_icon, space, c.termname
   },
   { c.navic, align, c.file_info }
 }

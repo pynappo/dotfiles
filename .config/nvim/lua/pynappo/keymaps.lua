@@ -1,11 +1,11 @@
 local M = {}
 
-local function map(mappings)
+local function map(mappings, opts)
   for mode, mapping_table in pairs(mappings) do
     for _, mapping in pairs(mapping_table) do
       local key = mapping[1]
       local cmd = mapping[2]
-      local opts = mapping[3]
+      local opts = vim.tbl_deep_extend("force", mapping[3] or {}, opts or {})
       vim.keymap.set(mode, key, cmd, opts)
     end
   end
@@ -17,48 +17,52 @@ M.setup = {
     vim.g.maplocalleader = ' '
     map({
       [{'n'}] = {
-        { 'x', '"_x', { silent = true }},
-        { 'j', 'gj' , { silent = true }},
-        { 'k', 'gk' , { silent = true }},
+        { 'x', '"_x' },
+        { 'j', 'gj'  },
+        { 'k', 'gk'  },
         -- Better tabs
-        { '<C-S-h>', '<Cmd>:tabprev<CR>', { silent = true } },
-        { '<C-S-l>', '<Cmd>:tabnext<CR>', { silent = true } },
-        { '<leader>1', '1gt', { silent = true } },
-        { '<leader>2', '2gt', { silent = true } },
-        { '<leader>3', '3gt', { silent = true } },
-        { '<leader>4', '4gt', { silent = true } },
-        { '<leader>5', '5gt', { silent = true } },
-        { '<leader>6', '6gt', { silent = true } },
-        { '<leader>7', '7gt', { silent = true } },
-        { '<leader>8', '8gt', { silent = true } },
-        { '<leader>9', '9gt', { silent = true } },
-        { '<leader>0', '10gt', { silent = true } },
+        { '<C-S-h>', '<Cmd>:tabprev<CR>' },
+        { '<C-S-l>', '<Cmd>:tabnext<CR>' },
+        { '<leader>1', '1gt' },
+        { '<leader>2', '2gt' },
+        { '<leader>3', '3gt' },
+        { '<leader>4', '4gt' },
+        { '<leader>5', '5gt' },
+        { '<leader>6', '6gt' },
+        { '<leader>7', '7gt' },
+        { '<leader>8', '8gt' },
+        { '<leader>9', '9gt' },
+        { '<leader>0', '10gt' },
         -- Autoindent on insert
-        { 'i', function () return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end, {expr=true, silent = true}},
+        { 'i', function () return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end, {expr=true}},
       },
       [{'n', 'v'}] = {
         -- Better pasting
-        { 'p', 'p=`]', { silent = true } },
-        { 'P', 'P=`]', { silent = true } },
-        {'<Space>', '<Nop>', { silent = true }},
-        { '<leader>p', '"+p=`]', { silent = true } },
-        { '<leader>y', '"+y"', { silent = true }},
+        { 'p', 'p=`]' },
+        { 'P', 'P=`]' },
+        {'<Space>', '<Nop>' },
+        { '<leader>p', '"+p=`]' },
+        { '<leader>y', '"+y"'},
       },
-    })
+      [{'i'}] = {
+        {'<Up>', function() return vim.fn.pumvisible() == 1 and 'k' or '<Up>' end, {silent = true, expr = true} }
+      }
+    }, {silent=true})
   end,
   smart_splits = function()
+    local ss = require('smart-splits')
     map({
       [{'n'}] = {
-        { '<A-h>', require('smart-splits').resize_left, { silent = true } },
-        { '<A-j>', require('smart-splits').resize_down, { silent = true } },
-        { '<A-k>', require('smart-splits').resize_up, { silent = true } },
-        { '<A-l>', require('smart-splits').resize_right, { silent = true } },
-        { '<C-h>', require('smart-splits').move_cursor_left, { silent = true } },
-        { '<C-j>', require('smart-splits').move_cursor_down, { silent = true } },
-        { '<C-k>', require('smart-splits').move_cursor_up, { silent = true } },
-        { '<C-l>', require('smart-splits').move_cursor_right, { silent = true } },
+        { '<A-h>', ss.resize_left },
+        { '<A-j>', ss.resize_down },
+        { '<A-k>', ss.resize_up },
+        { '<A-l>', ss.resize_right },
+        { '<C-h>', ss.move_cursor_left },
+        { '<C-j>', ss.move_cursor_down },
+        { '<C-k>', ss.move_cursor_up },
+        { '<C-l>', ss.move_cursor_right },
       }
-    })
+    }, {silent = true})
   end,
   diagnostics = function()
     local diag = vim.diagnostic
@@ -83,31 +87,31 @@ M.setup = {
   hlslens = function()
     map({
       [{'n'}] = {
-        { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-        { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-        { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-        { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-        { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-        { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true} },
-        { '<Leader>l', ':noh<CR>', {noremap = true, silent = true} },
+        { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+        { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+        { '*', [[*<Cmd>lua require('hlslens').start()<CR>]] },
+        { '#', [[#<Cmd>lua require('hlslens').start()<CR>]] },
+        { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]] },
+        { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]] },
+        { '<Leader>l', ':noh<CR>' },
       }
-    })
+    }, {noremap = true, silent = true})
   end,
   matchup = function() map({ [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } }) end,
   mini = function() map({ [{ 'n' }] = { { '<leader>m', function() require('mini.map').toggle() end, {desc = 'Toggle mini.map'}}}}) end,
   dial = function()
     map({
       [{'n'}] = {
-        { "<c-a>", require('dial.map').inc_normal(), {noremap = true} },
-        { "<c-x>", require('dial.map').dec_normal(), {noremap = true} },
+        { "<c-a>", require('dial.map').inc_normal() },
+        { "<c-x>", require('dial.map').dec_normal() },
       },
       [{'v'}] = {
-        { "<c-a>", require('dial.map').inc_visual(), {noremap = true} },
-        { "<c-x>", require('dial.map').dec_visual(), {noremap = true} },
-        { "g<c-a>", require('dial.map').inc_gvisual(), {noremap = true} },
-        { "g<c-x>", require('dial.map').dec_gvisual(), {noremap = true} },
+        { "<c-a>", require('dial.map').inc_visual() },
+        { "<c-x>", require('dial.map').dec_visual() },
+        { "g<c-a>", require('dial.map').inc_gvisual() },
+        { "g<c-x>", require('dial.map').dec_gvisual() },
       }
-    })
+    }, {remap = false})
   end,
 
   telescope = function()

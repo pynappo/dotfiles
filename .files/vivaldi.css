@@ -1,14 +1,15 @@
-/* Screw the vivaldi button, just press Alt lol */
+/* Center the bookmark bar */
 .bookmark-bar .observer {
  justify-content: center;
 }
 
+/* Screw the button, just press Alt lol */
 button.vivaldi {
     display: none !important;
 }
 
 #tabs-container.top {
-    margin-left: -1.8%;
+  padding-left: 0 !important;
 }
 
 /* Define any/all variables for centered URL bar */
@@ -73,5 +74,55 @@ button.vivaldi {
   border: 1px solid transparent;
 }
 .tab-position .tab:not(.active):hover {
-  border: 1px solid #ac70ff;
+  border: 2px solid #66aa22;
 }
+
+/* colorful download panel list buttons */
+.panel.downloads .DownloadItem button[title="Show in File Manager"] svg {fill: white; background: limegreen; box-shadow: 0 0 0 3px limegreen; border-radius: 8px;}
+.panel.downloads .DownloadItem button[title="Resume Download"] svg {fill: black; background: yellow; box-shadow: 0 0 0 1px black; border-radius: 2px;}
+.panel.downloads .DownloadItem button[title="Remove"] svg { fill: white; background: tomato; box-shadow: 0 0 0 1px red; border-radius: 2px;}
+.panel.downloads .DownloadItem button:hover {transform: scale(1.18);}
+
+/* colorful download panel list progressbar */
+.panel.downloads .DownloadItem-ProgressBar.visible .value {filter: hue-rotate(137deg) brightness(.98); transition: filter 300ms ease-out 0s !important;}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='1']:not([aria-valuenow^='1.']):not([aria-valuenow^='100']) .value {filter: hue-rotate(150deg);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='2']:not([aria-valuenow^='2.']) .value {filter: hue-rotate(165deg);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='3']:not([aria-valuenow^='3.']) .value {filter: hue-rotate(180deg) brightness(1.1);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='4']:not([aria-valuenow^='4.']) .value {filter: hue-rotate(200deg) brightness(1.25);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='5']:not([aria-valuenow^='5.']) .value {filter: hue-rotate(210deg) brightness(1.3);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='6']:not([aria-valuenow^='6.']) .value {filter: hue-rotate(230deg) brightness(1.25);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='7']:not([aria-valuenow^='7.']) .value {filter: hue-rotate(270deg) brightness(1.1);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='8']:not([aria-valuenow^='8.']) .value {filter: hue-rotate(325deg);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='9']:not([aria-valuenow^='9.']) .value {filter: hue-rotate(360deg);}
+.panel.downloads .DownloadItem-ProgressBar[aria-valuenow^='100'] .value {filter: brightness(1.3);}
+
+/* colorful download progress button */
+#switch > button.downloads.loading .progress {background-color: black !important;}
+
+#switch > button.downloads.loading .progress .loaded {transition: background-color 300ms ease-out 0s !important;}
+#switch > button.downloads.loading .progress .loaded:is([style^='width: 0.'], [style^='width: 1.'], [style^='width: 2.'], [style^='width: 3.'], [style^='width: 4.'], [style^='width: 5.'], [style^='width: 6.'], [style^='width: 7.'], [style^='width: 8.'], [style^='width: 9.']) {background-color: magenta;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 1']:not([style^='width: 1.']):not([style^='width: 100%']) {background-color: #ff0080;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 2']:not([style^='width: 2.']) {background-color: darkorange;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 3']:not([style^='width: 3.']) {background-color: orange;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 4']:not([style^='width: 4.']) {background-color: gold;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 5']:not([style^='width: 5.']) {background-color: yellow;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 6']:not([style^='width: 6.']) {background-color: greenyellow;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 7']:not([style^='width: 7.']) {background-color: limegreen;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 8']:not([style^='width: 8.']) {background-color: mediumturquoise;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 9']:not([style^='width: 9.']) {background-color: deepskyblue;}
+#switch > button.downloads.loading .progress .loaded[style^='width: 100'] {background-color: lightcyan !important;}
+
+/* download panel button global progress counter */
+#switch > button.downloads.loading .loaded::before, #switch > button.downloads.loading .loaded::after {position: absolute; color: white; -webkit-text-stroke: .2px; text-shadow: -.5px -.5px 1px cyan, .5px .5px 1px red, -1px 0 1px black, 1px 0 1px black, 0 -.5px 1px black, .5px 1.5px 1px black; /* animation: tic 1.5s ease-in-out 0s infinite !important; */}
+@keyframes tic {50% {color: #ffff8e;}} /* optional: enable previous line animation for blinking yellow effect */
+/* number */
+#switch > button.downloads.loading .progress .loaded:not([style^='width: 100%']):not([style^='width: 0%'])::before {content: attr(style); left: -3px; bottom: 1px; width: 13px; height: 30px; font-size: 10px; clip-path: inset(13px 0 0 0);}
+#switch > button.downloads.loading .progress .loaded:not([style^='width: 100%']):not([style^='width: 0%']):not([style^='width: 0.']):not([style^='width: 1.']):not([style^='width: 2.']):not([style^='width: 3.']):not([style^='width: 4.']):not([style^='width: 5.']):not([style^='width: 6.']):not([style^='width: 7.']):not([style^='width: 8.']):not([style^='width: 9.'])::before {left: -2.5px; width: 11.5px;}
+/* percent */
+#switch > button.downloads.loading .progress .loaded:not([style^='width: 100%']):not([style^='width: 0%'])::after {content: '%'; left: 11px; bottom: 6.5px; font-size: 8px;}
+#switch > button.downloads.loading .progress .loaded:not([style^='width: 100%']):not([style^='width: 0%']):not([style^='width: 0.']):not([style^='width: 1.']):not([style^='width: 2.']):not([style^='width: 3.']):not([style^='width: 4.']):not([style^='width: 5.']):not([style^='width: 6.']):not([style^='width: 7.']):not([style^='width: 8.']):not([style^='width: 9.'])::after {left: 9px;}
+
+/* option A: animated downloading icon (remove / in the begining of next line to enable) */
+/#switch > button.downloads.loading svg {animation: CalendarNotificationFadeDown 2s steps(6) infinite !important;}
+/* option B: or hide it (remove / in the begining of next line to enable) */
+/#switch > button.downloads.loading svg {opacity:0; transition: 10s;}

@@ -22,17 +22,11 @@ vim.diagnostic.config({
   },
 })
 
-
+local configs = require('pynappo/plugins/lsp/configs')
+local lspconfig = require('lspconfig')
 mason_lspconfig.setup_handlers {
-  function(ls)
-    local config = require('pynappo/plugins/lsp/config/defaults')
-    local ok, override = pcall(require, 'pynappo/plugins/lsp/config/' .. ls)
-    if ok then config = vim.tbl_deep_extend('force', config, override) end
-    require('lspconfig')[ls].setup(config)
-  end,
-  ['rust_analyzer'] = function()
-      require('rust-tools').setup()
-  end,
+  function(ls) lspconfig[ls].setup(vim.tbl_deep_extend("force", configs.defaults, configs[ls] or {})) end,
+  ['rust_analyzer'] = function() require('rust-tools').setup() end,
 }
 
 local null_ls = require('null-ls')
