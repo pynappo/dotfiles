@@ -64,6 +64,63 @@ M.setup = {
       }
     }, {silent = true})
   end,
+  treesj = function()
+    map({
+      [{'n'}] = { {'J', '<Cmd>TSJToggle<CR>', {desc = 'Split/join line'} } }
+    })
+  end,
+  dap = function()
+    local dap = require('dap')
+    map({
+      [{'n'}] = {
+        { '<F5>', dap.continue },
+        { '<F10>', dap.step_over },
+        { '<F11>', dap.step_into },
+        { '<F12>', dap.step_out },
+        { '<leader>db', dap.toggle_breakpoint },
+        { '<leader>dB', dap.set_breakpoint },
+        { '<leader>dl', dap.set_breakpoint },
+        { '<leader>dr', dap.repl.open },
+        { '<leader>dc', dap.disconnect },
+        { '<leader>dk', dap.up },
+        { '<leader>dj', dap.down },
+        { '<leader>dh', dap.left },
+        { '<leader>dl', dap.right },
+        { '<leader>di', dap.step_into },
+        { '<leader>do', dap.step_out },
+        { '<leader>du', dap.step_over },
+        { '<leader>ds', dap.stop },
+        { '<leader>dn', dap.run_to_cursor },
+        { '<leader>dR', dap.repl.run_last },
+        { '<leader>de', dap.set_exception_breakpoints },
+        { '<leader>dt', dap.set_breakpoint },
+        { '<leader>dv', dap.variables },
+        { '<leader>df', dap.set_function_breakpoints },
+        { '<leader>dl', dap.set_breakpoint },
+        { '<leader>dc', dap.set_breakpoint },
+        { '<leader>dr', dap.repl.open },
+        { '<leader>dc', dap.disconnect },
+        { '<leader>dk', dap.up },
+        { '<leader>dj', dap.down },
+        { '<leader>dh', dap.left },
+        { '<leader>dl', dap.right },
+        { '<leader>di', dap.step_into },
+        { '<leader>do', dap.step_out },
+        { '<leader>du', dap.step_over },
+        { '<leader>ds', dap.stop },
+        { '<leader>dn', dap.run_to_cursor },
+        { '<leader>dR', dap.repl.run_last },
+        { '<leader>de', dap.set_exception_breakpoints },
+        { '<leader>dt', dap.set_breakpoint },
+        { '<leader>dv', dap.variables },
+        { '<leader>df', dap.set_function_breakpoints },
+        { '<leader>dl', dap.set_breakpoint },
+        { '<leader>dc', dap.set_breakpoint },
+        { '<leader>dr', dap.repl.open },
+        { '<leader>dc', dap.disconnect },
+      }
+    })
+  end,
   diagnostics = function()
     local diag = vim.diagnostic
     map({
@@ -113,7 +170,6 @@ M.setup = {
       }
     }, {remap = false})
   end,
-
   telescope = function()
     local builtin = require('telescope.builtin')
     map({
