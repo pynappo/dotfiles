@@ -13,6 +13,7 @@ local packer_bootstrap = ensure_packer()
 
 require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
+  -- use { 'EdenEast/packer.nvim', branch = 'feat/lockfile' }
   use ({
     { 'tpope/vim-fugitive' },
     { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, config = function() require('pynappo/plugins/gitsigns') end },
@@ -30,7 +31,7 @@ require('packer').startup({function(use)
   })
   use ({
     { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
-    { 'ggandor/leap.nvim', config = function() require('leap').set_default_keymaps() end },
+    { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end },
     { 'ggandor/leap-spooky.nvim', config = function() require('leap-spooky').setup() end },
     { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end }
   })
@@ -313,7 +314,7 @@ require('packer').startup({function(use)
     'anuvyklack/hydra.nvim',
     config = function() require('pynappo/plugins/hydra') end
   }
-  use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'vo'}) end }
+  use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'v'}) end }
   use {
     'dstein64/nvim-scrollview',
     config = function() require('scrollview').setup({
@@ -330,6 +331,7 @@ require('packer').startup({function(use)
       require('pynappo/keymaps').setup.smart_splits()
     end
   }
+  use { 'Wansmer/treesj', requires = 'nvim-treesitter', config = function() require('treesj').setup() end }
   if packer_bootstrap then
     require('packer').sync()
   end
@@ -338,6 +340,11 @@ end,
     max_jobs = 10,
     display = {
       prompt_border = 'single',
+      compact = true
     },
+    lockfile = {
+      enable = true,
+      regen_on_update = true
+    }
   }
 })

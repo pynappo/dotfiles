@@ -78,9 +78,7 @@ M.tabline_filename_block = {
 }
 M.tabline_buffer_block = utils.surround({ "", "" },
   function(self)
-    return self.is_active
-      and utils.get_highlight("TabLineSel").bg
-      or utils.get_highlight("TabLine").bg
+    return self.is_active and utils.get_highlight("TabLineSel").bg or utils.get_highlight("TabLine").bg
   end,
   {
     M.tabline_filename_block,

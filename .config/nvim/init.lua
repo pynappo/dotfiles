@@ -18,12 +18,12 @@ g.firenvim_config = {
   }
 }
 if vim.fn.has('win32') then
-  vim.o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
-  vim.o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-  vim.o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  vim.o.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  vim.o.shellquote = ''
-  vim.o.shellxquote = ''
+  o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
+  o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+  o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  o.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  o.shellquote = ''
+  o.shellxquote = ''
 end
 if g.started_by_firenvim then
   o.laststatus = 0
@@ -43,6 +43,7 @@ if g.neovide then
   g.neovide_remember_window_size = true
 end
 -- Line numbers
+o.undofile = true
 o.signcolumn = "auto:2"
 o.relativenumber = true
 o.number = true
@@ -126,3 +127,17 @@ require("pynappo/commands")
 require("pynappo/keymaps").setup.regular()
 require("pynappo/autocmds")
 
+local function SuggestOneCharacter()
+  local suggestion = vim.fn['copilot#Accept']("")
+  local bar = vim.fn['copilot#TextQueuedForInsertion']()
+  return bar[0]
+end
+local function SuggestOneWord()
+  local suggestion = vim.fn['copilot#Accept']("")
+  local bar = vim.fn['copilot#TextQueuedForInsertion']()
+  return vim.split(bar,  '[ .]\zs')[0]
+end
+
+local map = vim.keymap.set
+map('i', '<C-l>', SuggestOneCharacter, {expr = true, remap = false})
+map('i', '<C-left>', SuggestOneWord, {expr = true, remap = false})

@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-11-03T13:35:44.931-00:00",
+	"CreationDate" : "2022-11-28T12:53:58.615-00:00",
 	"Sources" : 
 	[
 		{
@@ -22,7 +22,7 @@
 					"PackageIdentifier" : "9NBLGGH5L9XT"
 				},
 				{
-					"PackageIdentifier" : "9PGZKJC81Q7J"
+					"PackageIdentifier" : "9PJPW5LDXLZ5"
 				}
 			],
 			"SourceDetails" : 
@@ -43,7 +43,7 @@
 					"PackageIdentifier" : "7zip.7zip"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
+					"PackageIdentifier" : "ShareX.ShareX"
 				},
 				{
 					"PackageIdentifier" : "FinalWire.AIDA64.Extreme"
@@ -52,13 +52,13 @@
 					"PackageIdentifier" : "Audacity.Audacity"
 				},
 				{
-					"PackageIdentifier" : "Lexikos.AutoHotkey"
-				},
-				{
 					"PackageIdentifier" : "CrystalDewWorld.CrystalDiskMark"
 				},
 				{
 					"PackageIdentifier" : "Discord.Discord"
+				},
+				{
+					"PackageIdentifier" : "DiskInternals.LinuxReader"
 				},
 				{
 					"PackageIdentifier" : "GitHub.GitHubDesktop"
@@ -71,6 +71,9 @@
 				},
 				{
 					"PackageIdentifier" : "HandBrake.HandBrake"
+				},
+				{
+					"PackageIdentifier" : "KDE.KDEConnect"
 				},
 				{
 					"PackageIdentifier" : "Resplendence.LatencyMon"
@@ -91,7 +94,13 @@
 					"PackageIdentifier" : "Microsoft.WindowsTerminal"
 				},
 				{
+					"PackageIdentifier" : "Anaconda.Miniconda3"
+				},
+				{
 					"PackageIdentifier" : "Mozilla.Firefox"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Office"
 				},
 				{
 					"PackageIdentifier" : "OBSProject.OBSStudio"
@@ -106,6 +115,9 @@
 					"PackageIdentifier" : "Playnite.Playnite"
 				},
 				{
+					"PackageIdentifier" : "Piriform.Recuva"
+				},
+				{
 					"PackageIdentifier" : "RubyInstallerTeam.RubyWithDevKit.3.1"
 				},
 				{
@@ -118,16 +130,22 @@
 					"PackageIdentifier" : "StefanSundin.Superf4"
 				},
 				{
+					"PackageIdentifier" : "Unigine.SuperpositionBenchmark"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
-					"PackageIdentifier" : "Ultimaker.Cura"
+					"PackageIdentifier" : "JetBrains.Toolbox"
 				},
 				{
 					"PackageIdentifier" : "Unigine.HeavenBenchmark"
 				},
 				{
 					"PackageIdentifier" : "Ubisoft.Connect"
+				},
+				{
+					"PackageIdentifier" : "AntibodySoftware.WizTree"
 				},
 				{
 					"PackageIdentifier" : "Ytmdesktop.Ytmdesktop"
@@ -145,9 +163,6 @@
 					"PackageIdentifier" : "chrisant996.Clink"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.BuildTools"
-				},
-				{
 					"PackageIdentifier" : "ItchIo.Itch"
 				},
 				{
@@ -163,85 +178,52 @@
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
+					"PackageIdentifier" : "Starship.Starship"
 				},
 				{
-					"PackageIdentifier" : "GitHub.cli"
-				},
-				{
-					"PackageIdentifier" : "Intel.IntelDriverAndSupportAssistant"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.Runtime.3_1"
+					"PackageIdentifier" : "Alacritty.Alacritty"
 				},
 				{
 					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
+					"PackageIdentifier" : "ElectronicArts.EADesktop"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
 				},
 				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.WindowsSDK"
-				},
-				{
-					"PackageIdentifier" : "MSYS2.MSYS2"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2008Redist-x64"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.PowerToys"
-				},
-				{
-					"PackageIdentifier" : "Hirschmann.NotebookFanControl"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2005.x86"
-				},
-				{
-					"PackageIdentifier" : "GoLang.Go.1.18"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
-				},
-				{
-					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
-				},
-				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.16.JDK"
+					"PackageIdentifier" : "GitHub.cli"
 				},
 				{
 					"PackageIdentifier" : "Nushell.Nushell"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
+					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
-					"PackageIdentifier" : "Nvidia.GeForceExperience"
-				},
-				{
-					"PackageIdentifier" : "Nvidia.PhysX"
-				},
-				{
-					"PackageIdentifier" : "wez.wezterm"
+					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
 				},
 				{
 					"PackageIdentifier" : "Zoom.Zoom"
+				},
+				{
+					"PackageIdentifier" : "Tyrrrz.LightBulb"
+				},
+				{
+					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.PowerShell"
+				},
+				{
+					"PackageIdentifier" : "wez.wezterm"
 				},
 				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.18.JDK"
@@ -253,16 +235,22 @@
 					"PackageIdentifier" : "Microsoft.XNARedist"
 				},
 				{
+					"PackageIdentifier" : "GoLang.Go.1.18"
+				},
+				{
 					"PackageIdentifier" : "Google.EarthPro"
 				},
 				{
 					"PackageIdentifier" : "Inkscape.Inkscape"
 				},
 				{
+					"PackageIdentifier" : "JetBrains.ReSharper"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
 				},
 				{
-					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
+					"PackageIdentifier" : "Nvidia.PhysXLegacy"
 				},
 				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
@@ -271,16 +259,22 @@
 					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
 				},
 				{
-					"PackageIdentifier" : "ElectronicArts.EADesktop"
+					"PackageIdentifier" : "Peppy.Osu!"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2012.x64"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
+					"PackageIdentifier" : "Microsoft.PowerToys"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				}
 			],
 			"SourceDetails" : 
@@ -292,5 +286,5 @@
 			}
 		}
 	],
-	"WinGetVersion" : "1.4.2161-preview"
+	"WinGetVersion" : "1.4.3132-preview"
 }
