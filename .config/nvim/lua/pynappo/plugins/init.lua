@@ -272,7 +272,7 @@ require('packer').startup({function(use)
   })
   use { 'akinsho/toggleterm.nvim', tag = '*', config = function() require('pynappo/plugins/toggleterm') end }
   use ({
-    "mfussenegger/nvim-dap",
+    { "mfussenegger/nvim-dap", config = function() require('pynappo/plugins/dap') end },
     { "rcarriga/nvim-dap-ui", config = function() require("dapui").setup() end },
     { 'theHamsta/nvim-dap-virtual-text', config = function() require("nvim-dap-virtual-text").setup() end },
   })
@@ -314,7 +314,10 @@ require('packer').startup({function(use)
     'anuvyklack/hydra.nvim',
     config = function() require('pynappo/plugins/hydra') end
   }
-  use { 'ggandor/flit.nvim', config = function() require('flit').setup({labeled_modes = 'v'}) end }
+  use {
+    'ggandor/flit.nvim',
+    config = function() require('flit').setup({ labeled_modes = 'v' }) end,
+  }
   use {
     'dstein64/nvim-scrollview',
     config = function() require('scrollview').setup({
@@ -331,7 +334,15 @@ require('packer').startup({function(use)
       require('pynappo/keymaps').setup.smart_splits()
     end
   }
-  use { 'Wansmer/treesj', requires = 'nvim-treesitter', config = function() require('treesj').setup() end }
+  use {
+    'Wansmer/treesj',
+    requires = 'nvim-treesitter',
+    config = function()
+      require('treesj').setup({use_default_keymaps = false})
+      require('pynappo/keymaps').setup.treesj()
+    end
+  }
+  use { 'alaviss/nim.nvim'}
   if packer_bootstrap then
     require('packer').sync()
   end

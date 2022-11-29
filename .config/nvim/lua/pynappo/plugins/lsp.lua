@@ -22,11 +22,34 @@ vim.diagnostic.config({
   },
 })
 
-local configs = require('pynappo/plugins/lsp/configs')
+local configs = {
+  default = {
+    {
+      on_attach = function(client, bufnr)
+        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+        for _, map in pairs(require('pynappo/keymaps').lsp.on_attach) do
+          vim.api.nvim_buf_set_keymap(bufnr, map[1], map[2], map[3], {silent = true})
+        end
+        require('nvim-navic').attach(client, bufnr)
+      end,
+      capabilities = require("cmp_nvim_lsp").default_capabilities(),
+      flags = {debounce_text_changes = 200}
+    }
+  },
+  sumneko_lua = {
+    settings = {
+      Lua = {
+        completion = {
+          callSnippet = 'Replace',
+        }
+      }
+    }
+  }
+}
 local lspconfig = require('lspconfig')
 mason_lspconfig.setup_handlers {
-  function(ls) lspconfig[ls].setup(vim.tbl_deep_extend("force", configs.defaults, configs[ls] or {})) end,
-  ['rust_analyzer'] = function() require('rust-tools').setup() end,
+  function(ls) lspconfig[ls].setup(vim.tbl_deep_extend("force", configs.default, configs[ls] or {})) end,
+  rust_analyzer = function() require('rust-tools').setup() end,
 }
 
 local null_ls = require('null-ls')
