@@ -1,7 +1,6 @@
 Unblock-File $profile
 
 
-Invoke-Expression (&starship init powershell)
 oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.json" | Invoke-Expression
 Import-Module posh-git
 $env:POSH_GIT_ENABLED = $true
@@ -27,7 +26,6 @@ Function Notepad { Notepads @Args }
 Function Dotfiles {
     git --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args
 }
-Set-Alias -Name df -Value Dotfiles
 Function Dotwindows {
     if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
         if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
@@ -46,9 +44,8 @@ Function Dotwindows {
     }
     else { git --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
 }
-Set-Alias -Name dw -Value Dotwindows
 Function Lazy-Dotfiles { lazygit --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args }
-Set-Alias -Name ldf -Value Lazy-Dotfiles
+Function Lazy-Dotwindows { lazygit --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
 
 Function Pacup ([string]$Path = "$Home\.files\"){
 	scoop export > ($Path + 'scoop.json')
@@ -62,13 +59,40 @@ Function New-Link ($Path, $Target) {
 
 Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
 	param($wordToComplete, $commandAst, $cursorPosition)
-		[Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
-		$Local:word = $wordToComplete.Replace('"', '""')
-			$Local:ast = $commandAst.ToString().Replace('"', '""')
-			winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
-				[System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-			}
+	[Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
+	$Local:word = $wordToComplete.Replace('"', '""')
+	$Local:ast = $commandAst.ToString().Replace('"', '""')
+	winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+	}
 }
+Add-Type -AssemblyName Microsoft.VisualBasic
+
+function Remove-Item-ToRecycleBin($Path) {
+    $item = Get-Item -Path $Path -ErrorAction SilentlyContinue
+    if ($item -eq $null)
+    {
+        Write-Error("'{0}' not found" -f $Path)
+    }
+    else
+    {
+        $fullpath=$item.FullName
+        Write-Verbose ("Moving '{0}' to the Recycle Bin" -f $fullpath)
+        if (Test-Path -Path $fullpath -PathType Container)
+        {
+            [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteDirectory($fullpath,'OnlyErrorDialogs','SendToRecycleBin')
+        }
+        else
+        {
+            [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($fullpath,'OnlyErrorDialogs','SendToRecycleBin')
+        }
+    }
+}
+Set-Alias -Name df -Value Dotfiles
+Set-Alias -Name dw -Value Dotwindows
+Set-Alias -Name ldf -Value Lazy-Dotfiles
+Set-Alias -Name ldw -Value Lazy-Dotwindows
+Set-Alias -Name trash -Value Remove-Item-ToRecycleBin
 # powershell completion for gh                                   -*- shell-script -*-
 
 function __gh_debug {

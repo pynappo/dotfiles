@@ -50,6 +50,7 @@ local lspconfig = require('lspconfig')
 mason_lspconfig.setup_handlers {
   function(ls) lspconfig[ls].setup(vim.tbl_deep_extend("force", configs.default, configs[ls] or {})) end,
   rust_analyzer = function() require('rust-tools').setup() end,
+  jdtls = function() end, -- use method recommended by nvim-jdtls instead with ftplugins
 }
 
 local null_ls = require('null-ls')

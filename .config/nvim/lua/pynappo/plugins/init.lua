@@ -99,6 +99,7 @@ require('packer').startup({function(use)
         "hrsh7th/cmp-emoji",
         "hrsh7th/cmp-nvim-lsp",
         "f3fora/cmp-spell",
+        "hrsh7th/cmp-nvim-lsp-document-symbol",
         "octaltree/cmp-look",
         "saadparwaiz1/cmp_luasnip",
         'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -151,6 +152,9 @@ require('packer').startup({function(use)
               border = { style = "rounded" },
               position = { row = 2 }
             },
+          },
+          presets = {
+            long_message_to_split = true,
           }
         })
       end,
@@ -253,6 +257,7 @@ require('packer').startup({function(use)
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'folke/neodev.nvim',
+    'mfussenegger/nvim-jdtls',
     'simrat39/rust-tools.nvim',
     'jose-elias-alvarez/null-ls.nvim',
     {

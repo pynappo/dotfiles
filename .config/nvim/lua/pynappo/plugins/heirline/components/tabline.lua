@@ -12,7 +12,7 @@ local M = {
       return filename
     end,
     hl = function(self)
-      return { bold = self.is_active or self.is_visible, italic = true }
+      return { bold = self.is_active or self.is_visible }
     end,
   },
   tabline_file_flags = {
