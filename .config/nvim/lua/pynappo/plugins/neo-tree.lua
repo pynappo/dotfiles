@@ -8,7 +8,27 @@ vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSign
 local keymaps = require("pynappo/keymaps")
 keymaps.setup.neotree_window()
 local neotree_keymaps = keymaps.neo_tree
-
+local function getTelescopeOpts(state, path)
+  return {
+    cwd = path,
+    search_dirs = { path },
+    attach_mappings = function (prompt_bufnr, map)
+      local actions = require "telescope.actions"
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local action_state = require "telescope.actions.state"
+        local selection = action_state.get_selected_entry()
+        local filename = selection.filename
+        if (filename == nil) then
+          filename = selection[1]
+        end
+        -- any way to open the file without triggering auto-close event of neo-tree?
+        require("neo-tree.sources.filesystem").navigate(state, state.path, filename)
+      end)
+      return true
+    end
+  }
+end
 require("neo-tree").setup({
   sources = {
     "filesystem",
@@ -34,25 +54,10 @@ require("neo-tree").setup({
       diagnostics = " 裂Diagnostics ",
     },
     content_layout = "center", -- only with `tabs_layout` = "equal", "focus"
-    --                start  : |/ 裡 bufname     \/...
-    --                end    : |/     裡 bufname \/...
-    --                center : |/   裡 bufname   \/...
     tabs_layout = "equal", -- start, end, center, equal, focus
-    --             start  : |/  a  \/  b  \/  c  \            |
-    --             end    : |            /  a  \/  b  \/  c  \|
-    --             center : |      /  a  \/  b  \/  c  \      |
-    --             equal  : |/    a    \/    b    \/    c    \|
-    --             active : |/  focused tab    \/  b  \/  c  \|
     truncation_character = "…", -- character to use when truncating the tab label
     padding = 0, -- can be int or table
-    -- padding = { left = 2, right = 0 },
-    -- separator = "▕", -- can be string or table, see below
     separator = { left = "▏", right= "▕" },
-    -- separator = { left = "/", right = "\\", override = nil },     -- |/  a  \/  b  \/  c  \...
-    -- separator = { left = "/", right = "\\", override = "right" }, -- |/  a  \  b  \  c  \...
-    -- separator = { left = "/", right = "\\", override = "left" },  -- |/  a  /  b  /  c  /...
-    -- separator = { left = "/", right = "\\", override = "active" },-- |/  a  / b:active \  c  \...
-    -- separator = "|",                                              -- ||  a  |  b  |  c  |...
     show_separator_on_edge = false,
     --                       true  : |/    a    \/    b    \/    c    \|
     --                       false : |     a    \/    b    \/    c     |
@@ -216,59 +221,8 @@ require("neo-tree").setup({
       hide_dotfiles = true,
       hide_gitignored = true,
       hide_hidden = true, -- only works on Windows for hidden files/directories
-      hide_by_name = {
-        ".DS_Store",
-        "thumbs.db"
-        --"node_modules",
-      },
-      hide_by_pattern = { -- uses glob style patterns
-        --"*.meta",
-        --"*/src/*/tsconfig.json"
-      },
-      always_show = { -- remains visible even if other settings would normally hide it
-        --".gitignored",
-      },
-      never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
-        --".DS_Store",
-        --"thumbs.db"
-      },
-      never_show_by_pattern = { -- uses glob style patterns
-        --".null-ls_*",
-      },
     },
     find_by_full_path_words = false,  -- `false` means it only searches the tail of a path.
-    -- `true` will change the filter into a full path
-    -- search with space as an implicit ".*", so
-    -- `fi init`
-    -- will match: `./sources/filesystem/init.lua
-    --find_command = "fd", -- this is determined automatically, you probably don't need to set it
-    --find_args = {  -- you can specify extra args to pass to the find command.
-    --  fd = {
-    --  "--exclude", ".git",
-    --  "--exclude",  "node_modules"
-    --  }
-    --},
-    ---- or use a function instead of list of strings
-    --find_args = function(cmd, path, search_term, args)
-    --  if cmd ~= "fd" then
-    --    return args
-    --  end
-    --  --maybe you want to force the filter to always include hidden files:
-    --  table.insert(args, "--hidden")
-    --  -- but no one ever wants to see .git files
-    --  table.insert(args, "--exclude")
-    --  table.insert(args, ".git")
-    --  -- or node_modules
-    --  table.insert(args, "--exclude")
-    --  table.insert(args, "node_modules")
-    --  --here is where it pays to use the function, you can exclude more for
-    --  --short search terms, or vary based on the directory
-    --  if string.len(search_term) < 4 and path == "/home/cseickel" then
-    --    table.insert(args, "--exclude")
-    --    table.insert(args, "Library")
-    --  end
-    --  return args
-    --end,
     group_empty_dirs = true, -- when true, empty folders will be grouped together
     search_limit = 50, -- max number of search results when using filters
     follow_current_file = true, -- This will find and focus the file in the active buffer every time

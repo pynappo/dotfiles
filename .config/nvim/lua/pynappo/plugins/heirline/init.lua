@@ -46,8 +46,9 @@ vim.api.nvim_create_autocmd("User", {
 local c = require("pynappo/plugins/heirline/components/base")
 local align = { provider = "%=" }
 local space = { provider = " " }
-c.vi_mode = utils.surround({ "", "" }, "bright_bg", { c.vi_mode })
-
+c.vi_mode = utils.surround({ "", "" }, function(self) return self:mode_color() end, { c.vi_mode, hl = {fg = 'black'} })
+c.lsp = { {provider = 'LSP: ', hl = {fg = 'string'}}, utils.surround({ "", "" }, 'string', { c.lsp, hl = { fg = "black" } }) }
+c.ruler = utils.surround({ "", "" }, 'func', { c.ruler, hl = { fg = "black" } })
 local status = {
   { c.vi_mode, space, c.gitsigns, space, c.diagnostics, },
   align,
@@ -69,9 +70,33 @@ local status = {
     {c.cwd, c.file_info}
   },
   align,
-  { c.dap, c.lsp, space, c.ruler, space, c.scrollbar }
+  { c.dap, c.lsp, space, c.ruler }
 }
-local StatusLines = { status, }
+local StatusLines = {
+  hl = function() return not conditions.buffer_matches({ buftype = { "terminal" } }) and "StatusLine" end,
+  static = {
+    mode_colors = {
+      n = "type",
+      i = "comment",
+      v = "func",
+      V = "func",
+      ["\22"] = "",
+      c = "debug",
+      s = "constant",
+      S = "constant",
+      ["\19"] = "constant",
+      R = "diag_error",
+      r = "diag_error",
+      ["!"] = "diag_error",
+      t = "normal",
+    },
+    mode_color = function(self)
+      local mode = conditions.is_active() and vim.fn.mode() or "n"
+      return self.mode_colors[mode]
+    end,
+  },
+  status,
+}
 
 local WinBars = {
   hl = "Tabline",

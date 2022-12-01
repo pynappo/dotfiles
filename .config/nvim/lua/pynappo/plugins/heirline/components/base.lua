@@ -4,9 +4,7 @@ local utils = require("heirline.utils")
 local M = {
   vi_mode = {
     init = function(self)
-      self.mode = vim.fn.mode(1) -- :h mode()
-      -- execute this only once, this is required if you want the ViMode
-      -- component to be updated on operator pending mode
+      self.mode = vim.fn.mode(1)
       if not self.once then
         vim.api.nvim_create_autocmd("ModeChanged", {
           pattern = "*:*o",
@@ -16,7 +14,7 @@ local M = {
       end
     end,
     static = {
-      mode_names = { -- change the strings if you like it vvvvverbose!
+      mode_names = {
         n = "N",
         no = "N?",
         nov = "N?",
@@ -52,27 +50,9 @@ local M = {
         ["!"] = "!",
         t = "T",
       },
-      mode_colors = {
-        n = "diag_error" ,
-        i = "string",
-        v = "special",
-        V =  "special",
-        ["\22"] =  "special",
-        c =  "constant",
-        s =  "statement",
-        S =  "statement",
-        ["\19"] =  "statement",
-        R =  "constant",
-        r =  "constant",
-        ["!"] =  "diag_error",
-        t =  "diag_error",
-      }
     },
-    provider = function(self) return " %2("..self.mode_names[self.mode].."%)" end,
-    hl = function(self)
-      local mode = self.mode:sub(1, 1) -- get only the first mode character
-      return { fg = self.mode_colors[mode], bold = true, }
-    end,
+    provider = function(self) return "%2("..self.mode_names[self.mode].."%)" end,
+    hl = { bold = true },
     update = { "ModeChanged" },
   },
   cwd = {
@@ -82,6 +62,10 @@ local M = {
     end,
     update = { "DirChanged" },
     hl = { fg = "directory" },
+    on_click = {
+      callback = function() vim.cmd('Neotree toggle left reveal_force_cwd') end,
+      name = "heirline_neotree"
+    },
     flexible = 1,
     { -- evaluates to the full-lenth path
       provider = function(self)
@@ -282,7 +266,7 @@ local M = {
     hl = { fg = 'func' },
   },
   -- I take no credits for this! :lion:
-  ruler = { provide = "%7(%l/%3L%):%2c %P" },
+  ruler = { provider = "%7(%l/%3L%):%2c - %P" },
   scrollbar = {
     static = { sbar = { '█','▇', '▆', '▅', '▄', '▃', '▂', '▁' } },
     provider = function(self)
@@ -296,15 +280,13 @@ local M = {
   },
   lsp = {
     condition = conditions.lsp_attached,
-    update = {'LspAttach', 'LspDetach'},
+    update = {'CursorMoved', 'LspAttach', 'LspDetach'},
     init = function(self)
       self.servers = vim.lsp.get_active_clients()
       self.devicon_by_filetype = require("nvim-web-devicons").get_icon_by_filetype
     end,
     on_click = {
-      callback = function()
-        vim.defer_fn(function() vim.cmd("LspInfo") end, 100)
-      end,
+      callback = function() vim.defer_fn(function() vim.cmd("LspInfo") end, 100) end,
       name = "heirline_LSP",
     },
     static = {
@@ -315,16 +297,16 @@ local M = {
     },
     provider = function(self)
       local icons = {}
+      if #self.servers == 0 then return "N/A" end
       for _, s in ipairs(self.servers) do
         if self.ls_icons[s.name] then
           table.insert(icons, self.ls_icons[s.name])
-        else
-          if s.config then table.insert(icons, self.devicon_by_filetype(s.config.filetypes[1]) or '') end
+        elseif s.config then
+          table.insert(icons, self.devicon_by_filetype(s.config.filetypes[1]) or '')
         end
       end
-      return ' [' .. table.concat(icons, ' ') .. ']'
+      return table.concat(icons, ' ')
     end,
-    hl = { fg = "string", bold = true },
   },
   file_flags = {
     {

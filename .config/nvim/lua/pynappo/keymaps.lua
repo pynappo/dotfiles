@@ -69,6 +69,21 @@ M.setup = {
       [{'n'}] = { {'J', '<Cmd>TSJToggle<CR>', {desc = 'Split/join line'} } }
     })
   end,
+  jdtls = function()
+    local jdtls = require('jdtls')
+    map({
+      [{'n'}] = {
+        { "<A-o>", jdtls.organize_imports },
+        { "<leader>df", jdtls.test_class },
+        { "<leader>dm", jdtls.test_nearest_method },
+        { "crv", jdtls.extract_variable },
+        { "crc", jdtls.extract_constant },
+      },
+      [{'v'}] = {
+        { 'crm', [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]] }
+      }
+    })
+  end,
   dap = function()
     local dap = require('dap')
     map({
@@ -96,28 +111,7 @@ M.setup = {
         { '<leader>dt', dap.set_breakpoint },
         { '<leader>dv', dap.variables },
         { '<leader>df', dap.set_function_breakpoints },
-        { '<leader>dl', dap.set_breakpoint },
-        { '<leader>dc', dap.set_breakpoint },
         { '<leader>dr', dap.repl.open },
-        { '<leader>dc', dap.disconnect },
-        { '<leader>dk', dap.up },
-        { '<leader>dj', dap.down },
-        { '<leader>dh', dap.left },
-        { '<leader>dl', dap.right },
-        { '<leader>di', dap.step_into },
-        { '<leader>do', dap.step_out },
-        { '<leader>du', dap.step_over },
-        { '<leader>ds', dap.stop },
-        { '<leader>dn', dap.run_to_cursor },
-        { '<leader>dR', dap.repl.run_last },
-        { '<leader>de', dap.set_exception_breakpoints },
-        { '<leader>dt', dap.set_breakpoint },
-        { '<leader>dv', dap.variables },
-        { '<leader>df', dap.set_function_breakpoints },
-        { '<leader>dl', dap.set_breakpoint },
-        { '<leader>dc', dap.set_breakpoint },
-        { '<leader>dr', dap.repl.open },
-        { '<leader>dc', dap.disconnect },
       }
     })
   end,
@@ -140,7 +134,7 @@ M.setup = {
       }
     })
   end,
-  incremental_rename = function() map ({ [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") .. "<CR>" end, {expr = true, desc = 'Rename (incrementally)'} }, } })end,
+  incremental_rename = function() map ({ [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, } })end,
   hlslens = function()
     map({
       [{'n'}] = {
@@ -157,16 +151,17 @@ M.setup = {
   matchup = function() map({ [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } }) end,
   mini = function() map({ [{ 'n' }] = { { '<leader>m', function() require('mini.map').toggle() end, {desc = 'Toggle mini.map'}}}}) end,
   dial = function()
+    local dial = require('dial.map')
     map({
       [{'n'}] = {
-        { "<c-a>", require('dial.map').inc_normal() },
-        { "<c-x>", require('dial.map').dec_normal() },
+        { "<c-a>", dial.inc_normal() },
+        { "<c-x>", dial.dec_normal() },
       },
       [{'v'}] = {
-        { "<c-a>", require('dial.map').inc_visual() },
-        { "<c-x>", require('dial.map').dec_visual() },
-        { "g<c-a>", require('dial.map').inc_gvisual() },
-        { "g<c-x>", require('dial.map').dec_gvisual() },
+        { "<c-a>", dial.inc_visual() },
+        { "<c-x>", dial.dec_visual() },
+        { "g<c-a>", dial.inc_gvisual() },
+        { "g<c-x>", dial.dec_gvisual() },
       }
     }, {remap = false})
   end,
@@ -239,6 +234,7 @@ M.neo_tree = {
         show_path = "none" -- "none", "relative", "absolute"
       }
     },
+    ["i"] = "run_command",
     ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add".
     ["d"] = "delete",
     ["r"] = "rename",
@@ -277,7 +273,42 @@ M.neo_tree = {
     ["gc"] = "git_commit",
     ["gp"] = "git_push",
     ["gg"] = "git_commit_and_push",
-  }
+  },
+  commands = function()
+    local function getTelescopeOpts(state, path)
+      return {
+        cwd = path,
+        search_dirs = { path },
+        attach_mappings = function (prompt_bufnr, map)
+          local actions = require "telescope.actions"
+          actions.select_default:replace(function()
+            actions.close(prompt_bufnr)
+            local action_state = require "telescope.actions.state"
+            local selection = action_state.get_selected_entry()
+            local filename = selection.filename
+            if (filename == nil) then
+              filename = selection[1]
+            end
+            -- any way to open the file without triggering auto-close event of neo-tree?
+            require("neo-tree.sources.filesystem").navigate(state, state.path, filename)
+          end)
+          return true
+        end
+      }
+    end
+    return {
+      telescope_find = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        require('telescope.builtin').find_files(getTelescopeOpts(state, path))
+      end,
+      telescope_grep = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        require('telescope.builtin').live_grep(getTelescopeOpts(state, path))
+      end,
+    }
+  end
 }
 M.lsp = {
   on_attach = {
