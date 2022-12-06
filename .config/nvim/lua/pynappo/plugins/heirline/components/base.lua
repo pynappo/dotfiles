@@ -1,6 +1,7 @@
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
 
+local space = { provider = " " }
 local M = {
   vi_mode = {
     init = function(self)
@@ -92,9 +93,7 @@ local M = {
     end,
     hl = { fg = "constant" },
     {   -- git branch name
-      provider = function(self)
-        return " " .. self.status_dict.head
-      end,
+      provider = function(self) return " " .. self.status_dict.head end,
       hl = { bold = true }
     },
     -- You could handle delimiters, icons and counts similar to Diagnostics
@@ -222,30 +221,27 @@ local M = {
       callback = function() require("trouble").toggle({ mode = "document_diagnostics" }) end,
       name = "heirline_diagnostics",
     },
-    { provider = "[ ", },
+    { provider = "[", },
     {
-      provider = function(self) return self.errors > 0 and (self.errors .. self.getsign("DiagnosticSignError")[1].text) end,
+      provider = function(self) return self.errors > 0 and (self.getsign("DiagnosticSignError")[1].text .. self.errors) end,
       hl = { fg = "diag_error" },
     },
     {
-      provider = function(self) return self.warnings > 0 and (self.warnings .. self.getsign("DiagnosticSignWarn")[1].text) end,
+      provider = function(self) return self.warnings > 0 and (self.getsign("DiagnosticSignWarn")[1].text .. self.warnings) end,
       hl = { fg = "diag_warn" },
     },
     {
-      provider = function(self) return self.info > 0 and (self.info .. self.getsign("DiagnosticSignInfo")[1].text)end,
+      provider = function(self) return self.info > 0 and (self.getsign("DiagnosticSignInfo")[1].text .. self.info) end,
       hl = { fg = "diag_info" },
     },
     {
-      provider = function(self) return self.hints > 0 and (self.hints .. self.getsign("DiagnosticSignHint")[1].text) end,
+      provider = function(self) return self.hints > 0 and (self.getsign("DiagnosticSignHint")[1].text .. self.hints) end,
       hl = { fg = "diag_hint" },
     },
     { provider = "]", },
   },
   dap = {
-    condition = function()
-      local session = require("dap").session()
-      return session ~= nil
-    end,
+    condition = function() return require("dap").session() ~= nil end,
     provider = function() return " " .. require("dap").status() end,
     hl = { fg = "debug" },
     -- see Click-it! section for clickable actions
@@ -292,18 +288,15 @@ local M = {
     static = {
       ls_icons = {
         copilot = '',
-        ['null-ls'] = 'ﳠ'
+        ['null-ls'] = 'ﳠ',
+        jdtls = '',
       }
     },
     provider = function(self)
       local icons = {}
       if #self.servers == 0 then return "N/A" end
       for _, s in ipairs(self.servers) do
-        if self.ls_icons[s.name] then
-          table.insert(icons, self.ls_icons[s.name])
-        elseif s.config then
-          table.insert(icons, self.devicon_by_filetype(s.config.filetypes[1]) or '')
-        end
+        table.insert(icons, self.ls_icons[s.name] or self.devicon_by_filetype(s.config.filetypes[1]) or '')
       end
       return table.concat(icons, ' ')
     end,
@@ -326,9 +319,7 @@ local M = {
       self.lfilename = vim.fn.fnamemodify(self.filename, ":.")
       if self.lfilename == "" then self.lfilename = "[No Name]" end
     end,
-    hl = function()
-      if vim.bo.modified then return { italic = true, force=true } end
-    end,
+    hl = function() if vim.bo.modified then return { italic = true, force=true } end end,
     flexible = 2,
     update = 'BufEnter',
     { provider = function(self) return self.lfilename end },

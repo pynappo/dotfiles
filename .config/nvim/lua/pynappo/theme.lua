@@ -1,4 +1,10 @@
 local M = {}
+function M.default()
+  require('nvim-web-devicons').setup {
+    color_icons = true;
+    default = true;
+  }
+end
 function M.ayu()
   local colors = require("ayu.colors")
   require("ayu").setup({
@@ -22,6 +28,7 @@ function M.transparent_override()
     "VertSplit",
     "SignColumn",
     "EndOfBuffer",
+    "TablineFill"
   }
   for _, name in pairs(highlights) do
     vim.cmd.highlight(name .. ' guibg=none ctermbg=none')
