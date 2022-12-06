@@ -1,13 +1,12 @@
 -- Unless you are still migrating, remove the deprecated commands from v1.x
 vim.g.neo_tree_remove_legacy_commands = 1
 -- If you want icons for diagnostic errors, you'll need to define them somewhere:
-vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSignError"})
-vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
-vim.fn.sign_define("DiagnosticSignInfo", {text = " ", texthl = "DiagnosticSignInfo"})
+vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"})
 vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
 local keymaps = require("pynappo/keymaps")
 keymaps.setup.neotree_window()
-local neotree_keymaps = keymaps.neo_tree
 local function getTelescopeOpts(state, path)
   return {
     cwd = path,
@@ -18,10 +17,7 @@ local function getTelescopeOpts(state, path)
         actions.close(prompt_bufnr)
         local action_state = require "telescope.actions.state"
         local selection = action_state.get_selected_entry()
-        local filename = selection.filename
-        if (filename == nil) then
-          filename = selection[1]
-        end
+        local filename = selection.filename or selection[1]
         -- any way to open the file without triggering auto-close event of neo-tree?
         require("neo-tree.sources.filesystem").navigate(state, state.path, filename)
       end)
@@ -29,16 +25,55 @@ local function getTelescopeOpts(state, path)
     end
   }
 end
+
 require("neo-tree").setup({
-  sources = {
-    "filesystem",
-    "buffers",
-    "git_status",
+  event_handlers = {
+    {
+      event = "file_open_requested",
+      handler = function(args)
+        local state = args.state
+        local path = args.path
+        local open_cmd = args.open_cmd or "edit"
+
+        -- use last window if possible
+        local suitable_window_found = false
+        local nt = require("neo-tree")
+        if nt.config.open_files_in_last_window then
+          local prior_window = nt.get_prior_window()
+          if prior_window > 0 then
+            local success = pcall(vim.api.nvim_set_current_win, prior_window)
+            suitable_window_found = success
+          end
+        end
+
+        -- find a suitable window to open the file in
+        if not suitable_window_found then vim.cmd(state.window.position == "right" and "wincmd t" or "wincmd w") end
+        local attempts = 0
+        while attempts < 4 and vim.bo.filetype == "neo-tree" do
+          attempts = attempts + 1
+          vim.cmd.wincmd("w")
+        end
+        if vim.bo.filetype == "neo-tree" then
+          -- Neo-tree must be the only window, restore it's status as a sidebar
+          local winid = vim.api.nvim_get_current_win()
+          local width = require("neo-tree.utils").get_value(state, "window.width", 40)
+          vim.cmd.vsplit(path)
+          vim.api.nvim_win_set_width(winid, width)
+        else
+          vim.cmd(open_cmd .. " " .. path)
+        end
+
+        -- If you don't return this, it will proceed to open the file using built-in logic.
+        return { handled = true }
+      end
+    },
   },
+  sources = { "filesystem", "buffers", "git_status" },
   add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
   close_floats_on_escape_key = true,
   default_source = "filesystem",
+  sort_case_insensitive = true,
   enable_diagnostics = true,
   use_default_mappings = true,
   -- source_selector provides clickable tabs to switch between sources.
@@ -82,108 +117,12 @@ require("neo-tree").setup({
     --    error = "DiagnosticSignError",
     --  },
     --},
-    indent = {
-      indent_size = 2,
-      padding = 1,
-      -- indent guides
-      with_markers = true,
-      indent_marker = "│",
-      last_indent_marker = "└",
-      highlight = "NeoTreeIndentMarker",
-      -- expander config, needed for nesting files
-      with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-      expander_collapsed = "",
-      expander_expanded = "",
-      expander_highlight = "NeoTreeExpander",
-    },
-    icon = {
-      folder_closed = "",
-      folder_open = "",
-      folder_empty = "ﰊ",
-      -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
-      -- then these will never be used.
-      default = "*",
-      highlight = "NeoTreeFileIcon"
-    },
     modified = {
       symbol = "[+] ",
       highlight = "NeoTreeModified",
     },
-    name = {
-      trailing_slash = false,
-      use_git_status_colors = true,
-      highlight = "NeoTreeFileName",
-    },
-    git_status = {
-      symbols = {
-        -- Change type
-        added     = "✚", -- NOTE: you can set any of these to an empty string to not show them
-        deleted   = "✖",
-        modified  = "",
-        renamed   = "",
-        -- Status type
-        untracked = "",
-        ignored   = "",
-        unstaged  = "",
-        staged    = "",
-        conflict  = "",
-      },
-      align = "right",
-    },
-  },
-  renderers = {
-    directory = {
-      { "indent" },
-      { "icon" },
-      { "current_filter" },
-      {
-        "container",
-        content = {
-          { "name", zindex = 10 },
-          -- {
-          --   "symlink_target",
-          --   zindex = 10,
-          --   highlight = "NeoTreeSymbolicLinkTarget",
-          -- },
-          { "clipboard", zindex = 10 },
-          { "diagnostics", errors_only = true, zindex = 20, align = "right" },
-          { "git_status", zindex = 20, align = "right" },
-        },
-      },
-    },
-    file = {
-      { "indent" },
-      { "icon" },
-      {
-        "container",
-        content = {
-          {
-            "name",
-            zindex = 10
-          },
-          -- {
-          --   "symlink_target",
-          --   zindex = 10,
-          --   highlight = "NeoTreeSymbolicLinkTarget",
-          -- },
-          { "clipboard", zindex = 10 },
-          { "bufnr", zindex = 10 },
-          { "modified", zindex = 20, align = "right" },
-          { "diagnostics",  zindex = 20, align = "right" },
-          { "git_status", zindex = 20, align = "right" },
-        },
-      },
-    },
-    message = {
-      { "indent", with_markers = false },
-      { "name", highlight = "NeoTreeMessage" },
-    },
-    terminal = {
-      { "indent" },
-      { "icon" },
-      { "name" },
-      { "bufnr" }
-    }
+    name = { use_git_status_colors = true, },
+    git_status = { align = "right", },
   },
   window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
     -- possible options. These can also be functions that return these options.
@@ -199,21 +138,45 @@ require("neo-tree").setup({
       -- you can also specify border here, if you want a different setting from
       -- the global popup_border_style.
     },
-    mapping_options = {
-      noremap = true,
-      nowait = true,
-    },
-    mappings = neotree_keymaps.default,
+    mapping_options = { noremap = true, nowait = true, },
+    mappings = keymaps.neotree.default,
   },
   filesystem = {
-    window = {
-      mappings = neotree_keymaps.filesystem
+    window = { mappings = keymaps.neotree.filesystem, },
+    commands = {
+      telescope_find = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        require('telescope.builtin').find_files(getTelescopeOpts(state, path))
+      end,
+      telescope_grep = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        require('telescope.builtin').live_grep(getTelescopeOpts(state, path))
+      end,
+      run_command = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        vim.api.nvim_input(": " .. path .. "<Home>")
+      end,
+      system_open = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        if vim.fn.has('win32') == 1 then
+          print("Opening " .. path .. " with Start-Process")
+          vim.fn.system('start', path)
+        else for _, open_cmd in pairs({'xdg-open', 'open'}) do
+            if vim.fn.executable(open_cmd) == 1 then
+              print("Opening " .. path .. " with " .. open_cmd)
+              vim.fn.system(open_cmd, path)
+              return
+            end
+          end
+        end
+      end,
     },
     bind_to_cwd = true, -- true creates a 2-way binding between vim's cwd and neo-tree's root
-    cwd_target = {
-      sidebar = "tab",   -- sidebar is when position = left or right
-      current = "window" -- current is when position = current
-    },
+    cwd_target = { sidebar = "tab", current = "window" },
     filtered_items = {
       visible = true, -- when true, they will just be displayed differently than normal items
       force_visible_in_empty_folder = false, -- when true, hidden files will be shown if the root folder is otherwise empty
@@ -223,15 +186,11 @@ require("neo-tree").setup({
       hide_hidden = true, -- only works on Windows for hidden files/directories
     },
     find_by_full_path_words = false,  -- `false` means it only searches the tail of a path.
-    group_empty_dirs = true, -- when true, empty folders will be grouped together
+    group_empty_dirs = false, -- when true, empty folders will be grouped together
     search_limit = 50, -- max number of search results when using filters
     follow_current_file = true, -- This will find and focus the file in the active buffer every time
     -- the current file is changed while the tree is open.
-    hijack_netrw_behavior = "disabled", -- netrw disabled, opening a directory opens neo-tree
-    -- in whatever position is specified in window.position
-    -- "open_current",-- netrw disabled, opening a directory opens within the
-    -- window like netrw would, regardless of window.position
-    -- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
+    hijack_netrw_behavior = "disabled",
     use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
     -- instead of relying on nvim autocmd events.
   },
@@ -240,7 +199,7 @@ require("neo-tree").setup({
     follow_current_file = true, -- This will find and focus the file in the active buffer every time
     -- the current file is changed while the tree is open.
     group_empty_dirs = true, -- when true, empty directories will be grouped together
-    window = { mappings = neotree_keymaps.buffers, },
+    window = { mappings = keymaps.neotree.buffers, },
   },
-  git_status = { window = { mappings = neotree_keymaps.git_status, }, },
+  git_status = { window = { mappings = keymaps.neotree.git_status, }, },
 })

@@ -46,11 +46,13 @@ vim.api.nvim_create_autocmd("User", {
 local c = require("pynappo/plugins/heirline/components/base")
 local align = { provider = "%=" }
 local space = { provider = " " }
-c.vi_mode = utils.surround({ "", "" }, function(self) return self:mode_color() end, { c.vi_mode, hl = {fg = 'black'} })
+c.vi_mode = utils.surround({ "", " " }, function(self) return self:mode_color() end, { c.vi_mode, hl = {fg = 'black'} })
 c.lsp = { {provider = 'LSP: ', hl = {fg = 'string'}}, utils.surround({ "", "" }, 'string', { c.lsp, hl = { fg = "black" } }) }
-c.ruler = utils.surround({ "", "" }, 'func', { c.ruler, hl = { fg = "black" } })
+c.ruler = utils.surround({ " ", "" }, 'func', { c.ruler, hl = { fg = "black" } })
+table.insert(c.gitsigns, 1, space)
+table.insert(c.diagnostics, 1, space)
 local status = {
-  { c.vi_mode, space, c.gitsigns, space, c.diagnostics, },
+  { c.vi_mode, c.gitsigns, c.diagnostics },
   align,
   {
     fallthrough = false,

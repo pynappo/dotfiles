@@ -16,10 +16,10 @@ cmp.setup {
       border = nil,
       scrollbar = '║'
     },
-    documentation = { -- no border; native-style scrollbar
-      border = 'rounded',
-      scrollbar = '',
-    },
+    -- documentation = { -- no border; native-style scrollbar
+    --   border = 'rounded',
+    --   scrollbar = '',
+    -- },
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
@@ -60,8 +60,8 @@ cmp.setup {
     { name = "nvim_lsp_signature_help" },
     { name = "crates" },
     { name = "path"},
-    {name = 'emoji'}
-
+    {name = 'emoji'},
+    { name = 'calc'}
   },
   view = { entries = { name = "custom", selection_order = "near_cursor" } },
 }

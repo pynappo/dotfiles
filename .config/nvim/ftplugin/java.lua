@@ -1,11 +1,11 @@
 local mason_jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-local workspace_dir = '~/code/' .. project_name
+local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'})
+local project_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
+local workspace_dir = vim.fn.expand('~/code/jdtls_workspaces/') .. project_name
 local is_win = vim.fn.has('win32') == 1
 
 local config = {
   cmd = {
-
     'java',
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
@@ -18,15 +18,16 @@ local config = {
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
 
     '-jar', vim.fn.glob(mason_jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar'),
-    '-configuration', mason_jdtls_path .. '/config_' .. is_win and 'win' or 'linux',
+    '-configuration', mason_jdtls_path .. '/config_' .. (is_win and 'win' or 'linux'),
     -- See `data directory configuration` section in the README
     '-data', workspace_dir,
   },
+  on_attach = require('pynappo/plugins/lsp').get_config('jdtls'),
 
   -- 💀
   -- This is the default if not provided, you can remove it. Or adjust as needed.
   -- One dedicated LSP server & client will be started per unique root_dir
-  root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
+  root_dir = root_dir,
 
   -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request

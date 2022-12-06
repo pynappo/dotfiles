@@ -44,9 +44,6 @@ M.setup = {
         { '<leader>p', '"+p=`]' },
         { '<leader>y', '"+y"'},
       },
-      [{'i'}] = {
-        {'<Up>', function() return vim.fn.pumvisible() == 1 and 'k' or '<Up>' end, {silent = true, expr = true} }
-      }
     }, {silent=true})
   end,
   smart_splits = function()
@@ -66,8 +63,27 @@ M.setup = {
   end,
   treesj = function()
     map({
-      [{'n'}] = { {'J', '<Cmd>TSJToggle<CR>', {desc = 'Split/join line'} } }
+      [{'n'}] = { {'gJ', '<Cmd>TSJToggle<CR>', {desc = 'Split/join line'} } }
     })
+  end,
+  lsp = function(bufnr)
+    map({
+      [{'n'}] = {
+        { 'gD', vim.lsp.buf.declaration },
+        { 'gd', vim.lsp.buf.definition },
+        { 'K', vim.lsp.buf.hover },
+        { 'gi', vim.lsp.buf.implementation },
+        { '<C-k>', vim.lsp.buf.signature_help },
+        { '<leader>wa', vim.lsp.buf.add_workspace_folder },
+        { '<leader>wr', vim.lsp.buf.remove_workspace_folder },
+        { '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end},
+        { '<leader>D', vim.lsp.buf.type_definition },
+        { '<leader>rn', vim.lsp.buf.rename },
+        { '<leader>ca', vim.lsp.buf.code_action },
+        { 'gr', vim.lsp.buf.references },
+        { '<leader>f', function() vim.lsp.buf.format({ async = true }) end },
+      }
+    }, { remap=false, silent=true, buffer=bufnr })
   end,
   jdtls = function()
     local jdtls = require('jdtls')
@@ -211,8 +227,17 @@ M.cmp = {
 M.toggleterm = {
   open_mapping = [[<C-\>]]
 }
-M.neo_tree = {
+M.neotree = {
   default = {
+    ['<tab>'] = function (state)
+      local node = state.tree:get_node()
+      if require("neo-tree.utils").is_expandable(node) then
+        state.commands["toggle_node"](state)
+      else
+        state.commands['open'](state)
+        vim.cmd('Neotree reveal')
+      end
+    end,
     ["<space>"] = {
       "toggle_node",
       nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
@@ -223,35 +248,53 @@ M.neo_tree = {
     ["s"] = "vsplit_with_window_picker",
     ["t"] = "open_tabnew",
     ["w"] = "open_with_window_picker",
-    ["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
+    ["P"] = { "toggle_preview", config = {use_float = true} },
     ["C"] = "close_node",
     ["z"] = "close_all_nodes",
     ["Z"] = "expand_all_nodes",
-    ["a"] = {
-      "add",
-      -- some commands may take optional config options, see `:h neo-tree-mappings` for details
-      config = {
-        show_path = "none" -- "none", "relative", "absolute"
-      }
-    },
-    ["i"] = "run_command",
-    ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add".
+    ["a"] = { "add", config = { show_path = "relative" } },
+    ["A"] = { "add_directory", config = { show_path = "relative" } },
+    ["h"] = function(state)
+      local node = state.tree:get_node()
+      if node.type == 'directory' and node:is_expanded() then
+        require'neo-tree.sources.filesystem'.toggle_directory(state, node)
+      else
+        require'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+      end
+    end,
+    ["l"] = function(state)
+      local node = state.tree:get_node()
+      if node.type == 'directory' then
+        if not node:is_expanded() then
+          require'neo-tree.sources.filesystem'.toggle_directory(state, node)
+        elseif node:has_children() then
+          require'neo-tree.ui.renderer'.focus_node(state, node:get_child_ids()[1])
+        end
+      end
+    end,
     ["d"] = "delete",
     ["r"] = "rename",
     ["y"] = "copy_to_clipboard",
     ["x"] = "cut_to_clipboard",
     ["p"] = "paste_from_clipboard",
-    ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
-    ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
+    ["c"] = "copy",
+    ["m"] = "move",
     ["q"] = "close_window",
     ["R"] = "refresh",
     ["?"] = "show_help",
     ["<"] = "prev_source",
     [">"] = "next_source",
+    ["e"] = function() vim.cmd("Neotree focus filesystem left") end,
+    ["b"] = function() vim.cmd("Neotree focus buffers left") end,
+    ["g"] = function() vim.cmd("Neotree focus git_status left") end,
   },
   filesystem = {
+    ["tf"] = "telescope_find",
+    ["tg"] = "telescope_grep",
     ["<bs>"] = "navigate_up",
     ["."] = "set_root",
+    ["i"] = "run_command",
+    ["o"] = "system_open",
     ["H"] = "toggle_hidden",
     ["/"] = "fuzzy_finder",
     ["D"] = "fuzzy_finder_directory",
@@ -274,57 +317,6 @@ M.neo_tree = {
     ["gp"] = "git_push",
     ["gg"] = "git_commit_and_push",
   },
-  commands = function()
-    local function getTelescopeOpts(state, path)
-      return {
-        cwd = path,
-        search_dirs = { path },
-        attach_mappings = function (prompt_bufnr, map)
-          local actions = require "telescope.actions"
-          actions.select_default:replace(function()
-            actions.close(prompt_bufnr)
-            local action_state = require "telescope.actions.state"
-            local selection = action_state.get_selected_entry()
-            local filename = selection.filename
-            if (filename == nil) then
-              filename = selection[1]
-            end
-            -- any way to open the file without triggering auto-close event of neo-tree?
-            require("neo-tree.sources.filesystem").navigate(state, state.path, filename)
-          end)
-          return true
-        end
-      }
-    end
-    return {
-      telescope_find = function(state)
-        local node = state.tree:get_node()
-        local path = node:get_id()
-        require('telescope.builtin').find_files(getTelescopeOpts(state, path))
-      end,
-      telescope_grep = function(state)
-        local node = state.tree:get_node()
-        local path = node:get_id()
-        require('telescope.builtin').live_grep(getTelescopeOpts(state, path))
-      end,
-    }
-  end
-}
-M.lsp = {
-  on_attach = {
-    { "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>" },
-    { "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>" },
-    { "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>" },
-    { "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>" },
-    { "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>" },
-    { "n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
-    { "n", "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" },
-    { "n", "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
-    { "n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>" },
-    { "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>" },
-    { "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>" },
-    { "n", "<leader>f", "<cmd>lua vim.lsp.buf.format()<CR>" }
-  }
 }
 M.neoscroll = {
   ["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "150", [["sine"]] } },
