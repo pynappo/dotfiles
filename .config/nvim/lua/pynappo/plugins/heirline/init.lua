@@ -49,7 +49,6 @@ local space = { provider = " " }
 c.vi_mode = utils.surround({ "", " " }, function(self) return self:mode_color() end, { c.vi_mode, hl = {fg = 'black'} })
 c.lsp = { {provider = 'LSP: ', hl = {fg = 'string'}}, utils.surround({ "", "" }, 'string', { c.lsp, hl = { fg = "black" } }) }
 c.ruler = utils.surround({ " ", "" }, 'func', { c.ruler, hl = { fg = "black" } })
-table.insert(c.gitsigns, 1, space)
 table.insert(c.diagnostics, 1, space)
 local status = {
   { c.vi_mode, c.gitsigns, c.diagnostics },
@@ -100,6 +99,7 @@ local StatusLines = {
   status,
 }
 
+table.insert(c.gitsigns, space)
 local WinBars = {
   hl = "Tabline",
   fallthrough = false,
@@ -116,7 +116,7 @@ local WinBars = {
     condition = function() return conditions.buffer_matches({ buftype = { "terminal" } }) end,
     align, c.file_icon, space, c.termname
   },
-  { c.navic, align, c.file_info }
+  { c.navic, align, c.gitsigns, space, c.file_info }
 }
 
 local t = require('pynappo/plugins/heirline/components/tabline')

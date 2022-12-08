@@ -5,7 +5,7 @@ local function map(mappings, opts)
     for _, mapping in pairs(mapping_table) do
       local key = mapping[1]
       local cmd = mapping[2]
-      local opts = vim.tbl_deep_extend("force", mapping[3] or {}, opts or {})
+      opts = vim.tbl_deep_extend("force", mapping[3] or {}, opts or {})
       vim.keymap.set(mode, key, cmd, opts)
     end
   end
@@ -49,7 +49,7 @@ M.setup = {
   smart_splits = function()
     local ss = require('smart-splits')
     map({
-      [{'n'}] = {
+      [{'n', 't'}] = {
         { '<A-h>', ss.resize_left },
         { '<A-j>', ss.resize_down },
         { '<A-k>', ss.resize_up },
@@ -82,52 +82,63 @@ M.setup = {
         { '<leader>ca', vim.lsp.buf.code_action },
         { 'gr', vim.lsp.buf.references },
         { '<leader>f', function() vim.lsp.buf.format({ async = true }) end },
+
       }
     }, { remap=false, silent=true, buffer=bufnr })
   end,
-  jdtls = function()
+  jdtls = function(bufnr)
     local jdtls = require('jdtls')
     map({
       [{'n'}] = {
         { "<A-o>", jdtls.organize_imports },
-        { "<leader>df", jdtls.test_class },
-        { "<leader>dm", jdtls.test_nearest_method },
+        { "<leader>tc", jdtls.test_class },
+        { "<leader>tm", jdtls.test_nearest_method },
         { "crv", jdtls.extract_variable },
         { "crc", jdtls.extract_constant },
+        { "<leader>tr", require('jdtls.dap').setup_dap_main_class_configs() }
       },
       [{'v'}] = {
         { 'crm', [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]] }
       }
-    })
+    }, {buffer = bufnr})
   end,
   dap = function()
     local dap = require('dap')
     map({
       [{'n'}] = {
-        { '<F5>', dap.continue },
-        { '<F10>', dap.step_over },
-        { '<F11>', dap.step_into },
-        { '<F12>', dap.step_out },
-        { '<leader>db', dap.toggle_breakpoint },
-        { '<leader>dB', dap.set_breakpoint },
-        { '<leader>dl', dap.set_breakpoint },
-        { '<leader>dr', dap.repl.open },
-        { '<leader>dc', dap.disconnect },
-        { '<leader>dk', dap.up },
-        { '<leader>dj', dap.down },
-        { '<leader>dh', dap.left },
-        { '<leader>dl', dap.right },
-        { '<leader>di', dap.step_into },
-        { '<leader>do', dap.step_out },
-        { '<leader>du', dap.step_over },
-        { '<leader>ds', dap.stop },
-        { '<leader>dn', dap.run_to_cursor },
-        { '<leader>dR', dap.repl.run_last },
-        { '<leader>de', dap.set_exception_breakpoints },
-        { '<leader>dt', dap.set_breakpoint },
-        { '<leader>dv', dap.variables },
-        { '<leader>df', dap.set_function_breakpoints },
-        { '<leader>dr', dap.repl.open },
+        { '<F5>', function() dap.continue() end },
+        { '<leader>db', function() dap.toggle_breakpoint() end },
+        { '<leader>dB', function() dap.set_breakpoint() end },
+        { '<leader>dc', function() dap.disconnect() end },
+        { '<leader>dk', function() dap.up() end },
+        { '<leader>dj', function() dap.down() end },
+        { '<leader>dh', function() dap.left() end },
+        { '<leader>dl', function() dap.right() end },
+        { '<leader>di', function() dap.step_into() end },
+        { '<leader>do', function() dap.step_out() end },
+        { '<leader>du', function() dap.step_over() end },
+        { '<leader>ds', function() dap.stop() end },
+        { '<leader>dn', function() dap.run_to_cursor() end },
+        { '<leader>dR', function() dap.repl.run_last() end },
+        { '<leader>de', function() dap.set_exception_breakpoints() end },
+        { '<leader>dv', function() dap.variables() end },
+        { '<leader>df', function() dap.set_function_breakpoints() end },
+        { '<leader>dr', function() dap.repl.open() end },
+      }
+    })
+  end,
+  dapui = function()
+    local dapui = require('dapui')
+    map({
+      [{'n'}] = {
+        {'<S-F5>', function() dapui.toggle() end},
+        {'<S-F6>', function() dapui.close() end},
+        {'<S-F7>', function() dapui.float_element() end},
+        {'<S-F8>', function() dapui.float_terminal() end},
+        {'<S-F9>', function() dapui.float_scopes() end},
+        {'<S-F10>', function() dapui.float_breakpoints() end},
+        {'<S-F11>', function() dapui.float_stacks() end},
+        {'<S-F12>', function() dapui.float_variables() end},
       }
     })
   end,

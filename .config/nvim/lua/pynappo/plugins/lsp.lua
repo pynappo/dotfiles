@@ -14,14 +14,17 @@ local configs = {
       Lua = {
         completion = {
           callSnippet = 'Replace',
-        }
+        },
+        diagnostics = {
+          disable = {
+            ''
+          }
+        },
       }
     }
   }
 }
-function M.get_config(ls)
-  return vim.tbl_deep_extend("force", configs.default, configs[ls] or {})
-end
+function M.get_config(ls) return vim.tbl_deep_extend("force", configs.default, configs[ls] or {}) end
 
 vim.diagnostic.config({
   virtual_text = false,
@@ -40,31 +43,40 @@ vim.diagnostic.config({
 })
 
 require('neodev').setup({})
-local mason_lspconfig = require('mason-lspconfig')
-mason_lspconfig.setup({
+require('mason-tool-installer').setup {
   ensure_installed = {
-    "sumneko_lua",
-    "html",
-    "jdtls",
-    "jsonls",
-    "ltex",
-    "powershell_es",
-    "pylsp",
-    "theme_check",
-    "zls",
-    "csharp_ls",
-    "rust_analyzer",
-    "gopls",
+    'codespell',
+    'cpptools',
+    'csharp-language-server',
+    'gopls',
+    -- 'html-lsp',
+    'java-debug-adapter',
+    'java-test',
+    'jdtls',
+    -- 'json-lsp',
+    -- 'ltex-ls',
+    'lua-language-server',
+    'marksman',
+    'netcoredbg',
+    'nimlsp',
+    'powershell-editor-services',
+    'python-lsp-server',
+    'rust-analyzer',
+    -- 'shopify-theme-check',
+    'stylua',
+    'zls',
   },
-  automatic_installation = true
-})
+}
+
 require('pynappo/keymaps').setup.diagnostics()
 
+local mason_lspconfig = require('mason-lspconfig')
 local lspconfig = require('lspconfig')
+mason_lspconfig.setup()
 mason_lspconfig.setup_handlers {
   function(ls) lspconfig[ls].setup(M.get_config(ls)) end,
   rust_analyzer = function() require('rust-tools').setup() end,
-  jdtls = function() end, -- use method recommended by nvim-jdtls instead with ftplugins
+  jdtls = function() end, -- use method recommended by nvim-jdtls @ ftplugin/java.lua
 }
 
 local null_ls = require('null-ls')

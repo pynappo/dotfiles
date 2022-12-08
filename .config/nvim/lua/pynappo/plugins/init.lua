@@ -213,7 +213,6 @@ require('packer').startup({function(use)
         css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
         mode = "foreground", -- Set the display mode.
         tailwind = true, -- Enable tailwind colors
-        sass = { enable = false, parsers = { css }, }, -- Enable sass colors
       },
     })
     end
@@ -259,9 +258,7 @@ require('packer').startup({function(use)
   }
   use {
     'rebelot/heirline.nvim',
-    config = function()
-      require('pynappo/plugins/heirline')
-    end,
+    config = function() require('pynappo/plugins/heirline') end,
     requires = {
       { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function() require('pynappo/plugins/navic') end }
     }
@@ -277,6 +274,7 @@ require('packer').startup({function(use)
       'jose-elias-alvarez/null-ls.nvim',
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim'
     },
     config = function()
       require('mason').setup({ ui = { border = "single" }})
@@ -289,11 +287,14 @@ require('packer').startup({function(use)
     'rouge8/neotest-rust'
   })
   use { 'akinsho/toggleterm.nvim', tag = '*', config = function() require('pynappo/plugins/toggleterm') end }
-  use ({
-    { "mfussenegger/nvim-dap", config = function() require('pynappo/plugins/dap') end },
-    { "rcarriga/nvim-dap-ui", config = function() require("dapui").setup() end },
-    { 'theHamsta/nvim-dap-virtual-text', config = function() require("nvim-dap-virtual-text").setup({commented = true}) end },
-  })
+  use {
+    "rcarriga/nvim-dap-ui",
+    requires = {
+      { "mfussenegger/nvim-dap" },
+      { 'theHamsta/nvim-dap-virtual-text', config = function() require("nvim-dap-virtual-text").setup({commented = true}) end },
+    },
+    config = function() require('pynappo/plugins/dap') end
+  }
   use { "monaqa/dial.nvim", config = function() require("pynappo/plugins/dial") end }
   use {
     'kosayoda/nvim-lightbulb',
@@ -371,7 +372,15 @@ require('packer').startup({function(use)
       require('pynappo/keymaps').setup.treesj()
     end
   }
-  use { 'alaviss/nim.nvim'}
+  use { 'alaviss/nim.nvim' }
+  use {
+    'melkster/modicator.nvim',
+    setup = function()
+      vim.o.number = true
+      vim.o.cursorline = true
+    end,
+    config = function() require('modicator').setup() end,
+  }
   if packer_bootstrap then require('packer').sync() end
 end,
   config = {
