@@ -27,47 +27,6 @@ local function getTelescopeOpts(state, path)
 end
 
 require("neo-tree").setup({
-  event_handlers = {
-    {
-      event = "file_open_requested",
-      handler = function(args)
-        local state = args.state
-        local path = args.path
-        local open_cmd = args.open_cmd or "edit"
-
-        -- use last window if possible
-        local suitable_window_found = false
-        local nt = require("neo-tree")
-        if nt.config.open_files_in_last_window then
-          local prior_window = nt.get_prior_window()
-          if prior_window > 0 then
-            local success = pcall(vim.api.nvim_set_current_win, prior_window)
-            suitable_window_found = success
-          end
-        end
-
-        -- find a suitable window to open the file in
-        if not suitable_window_found then vim.cmd(state.window.position == "right" and "wincmd t" or "wincmd w") end
-        local attempts = 0
-        while attempts < 4 and vim.bo.filetype == "neo-tree" do
-          attempts = attempts + 1
-          vim.cmd.wincmd("w")
-        end
-        if vim.bo.filetype == "neo-tree" then
-          -- Neo-tree must be the only window, restore it's status as a sidebar
-          local winid = vim.api.nvim_get_current_win()
-          local width = require("neo-tree.utils").get_value(state, "window.width", 40)
-          vim.cmd.vsplit(path)
-          vim.api.nvim_win_set_width(winid, width)
-        else
-          vim.cmd(open_cmd .. " " .. path)
-        end
-
-        -- If you don't return this, it will proceed to open the file using built-in logic.
-        return { handled = true }
-      end
-    },
-  },
   sources = { "filesystem", "buffers", "git_status" },
   add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
