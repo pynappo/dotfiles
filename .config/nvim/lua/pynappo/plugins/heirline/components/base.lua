@@ -128,127 +128,179 @@ local M = {
     },
   },
   navic = {
-    condition = require("nvim-navic").is_available,
-    static = {
-      -- create a type highlight map
-      type_hl = {
-        File = "Directory",
-        Module = "@include",
-        Namespace = "@namespace",
-        Package = "@include",
-        Class = "@structure",
-        Method = "@method",
-        Property = "@property",
-        Field = "@field",
-        Constructor = "@constructor",
-        Enum = "@field",
-        Interface = "@type",
-        Function = "@function",
-        Variable = "@variable",
-        Constant = "@constant",
-        String = "@string",
-        Number = "@number",
-        Boolean = "@boolean",
-        Array = "@field",
-        Object = "@type",
-        Key = "@keyword",
-        Null = "@comment",
-        EnumMember = "@field",
-        Struct = "@structure",
-        Event = "@keyword",
-        Operator = "@operator",
-        TypeParameter = "@type",
-      },
-      -- bit operation dark magic, see below...
-      enc = function(line, col, winnr) return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr) end,
-      -- line: 16 bit (65535); col: 10 bit (1023); winnr: 6 bit (63)
-      dec = function(c)
-        local line = bit.rshift(c, 16)
-        local col = bit.band(bit.rshift(c, 6), 1023)
-        local winnr = bit.band(c,  63)
-        return line, col, winnr
-      end
-    },
-    init = function(self)
-      local data = require("nvim-navic").get_data() or {}
-      local children = {}
-      -- create a child for each level
-      for i, d in ipairs(data) do
-        -- encode line and column numbers into a single integer
-        local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
-        local child = {
-          { provider = d.icon, hl = self.type_hl[d.type], },
-          {
-            provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ''),
-            on_click = {
-              -- pass the encoded position through minwid
-              minwid = pos,
-              callback = function(_, minwid)
-                local line, col, winnr = self.dec(minwid)
-                vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), {line, col})
-              end,
-              name = "heirline_navic",
-            },
-          },
-        }
-        if #data > 1 and i < #data then
-          table.insert(child, {
-            provider = " > ",
-            hl = { fg = 'normal' },
-          })
+    flexible = 3,
+    {
+      condition = require("nvim-navic").is_available,
+      static = {
+        -- create a type highlight map
+        type_hl = {
+          File = "Directory",
+          Module = "@include",
+          Namespace = "@namespace",
+          Package = "@include",
+          Class = "@structure",
+          Method = "@method",
+          Property = "@property",
+          Field = "@field",
+          Constructor = "@constructor",
+          Enum = "@field",
+          Interface = "@type",
+          Function = "@function",
+          Variable = "@variable",
+          Constant = "@constant",
+          String = "@string",
+          Number = "@number",
+          Boolean = "@boolean",
+          Array = "@field",
+          Object = "@type",
+          Key = "@keyword",
+          Null = "@comment",
+          EnumMember = "@field",
+          Struct = "@structure",
+          Event = "@keyword",
+          Operator = "@operator",
+          TypeParameter = "@type",
+        },
+        -- bit operation dark magic, see below...
+        enc = function(line, col, winnr) return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr) end,
+        -- line: 16 bit (65535); col: 10 bit (1023); winnr: 6 bit (63)
+        dec = function(c)
+          local line = bit.rshift(c, 16)
+          local col = bit.band(bit.rshift(c, 6), 1023)
+          local winnr = bit.band(c,  63)
+          return line, col, winnr
         end
-        table.insert(children, child)
-      end
-      -- instantiate the new child, overwriting the previous one
-      self.child = self:new(children, 1)
-    end,
-    -- evaluate the children containing navic components
-    provider = function(self) return self.child:eval() end,
-    hl = { fg = "normal" },
-    update = 'CursorHold'
+      },
+      init = function(self)
+        local data = require("nvim-navic").get_data() or {}
+        local children = {}
+        -- create a child for each level
+        for i, d in ipairs(data) do
+          -- encode line and column numbers into a single integer
+          local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
+          local child = {
+            { provider = d.icon, hl = self.type_hl[d.type], },
+            {
+              provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ''),
+              on_click = {
+                -- pass the encoded position through minwid
+                minwid = pos,
+                callback = function(_, minwid)
+                  local line, col, winnr = self.dec(minwid)
+                  vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), {line, col})
+                end,
+                name = "heirline_navic",
+              },
+            },
+          }
+          if #data > 1 and i < #data then
+            table.insert(child, { provider = " > ", hl = { fg = 'normal' }, })
+          end
+          table.insert(children, child)
+        end
+        -- instantiate the new child, overwriting the previous one
+        self.child = self:new(children, 1)
+      end,
+      -- evaluate the children containing navic components
+      provider = function(self) return self.child:eval() end,
+      hl = { fg = "normal" },
+      update = 'CursorHold'
+    },
+    { provider = '' }
   },
   diagnostics = {
     condition = conditions.has_diagnostics,
     init = function(self)
-      self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-      self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-      self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-      self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
-      self.getsign = vim.fn.sign_getdefined
+      local diag = vim.diagnostic
+      local diagnostics_count = {
+        error = #diag.get(0, { severity = diag.severity.ERROR }),
+        warning = #diag.get(0, { severity = diag.severity.WARN }),
+        hint = #diag.get(0, { severity = diag.severity.HINT }),
+        info = #diag.get(0, { severity = diag.severity.INFO })
+      }
+      print (vim.inspect(diagnostics_count))
+      local children = {}
+      for k, v in pairs(diagnostics_count) do
+        if v > 0 then table.insert(children, {
+            provider = string.format("%s%s", self.icons[k], v),
+            hl = self.highlights[k]
+          })
+        end
+      end
+      for i = 1, #children - 1, 1 do table.insert(children[i], { provider = " " }) end
+      self.child = self:new(children, 1)
     end,
+    static = {
+      icons = {
+        error = vim.fn.sign_getdefined('DiagnosticSignError')[1].text,
+        warning = vim.fn.sign_getdefined('DiagnosticSignWarn')[1].text,
+        info = vim.fn.sign_getdefined('DiagnosticSignInfo')[1].text,
+        hint = vim.fn.sign_getdefined('DiagnosticSignHint')[1].text
+      },
+      highlights = {
+        error = 'DiagnosticError',
+        warning = 'DiagnosticWarn',
+        info = 'DiagnosticInfo',
+        hint = 'DiagnosticHint'
+      }
+    },
     update = { "DiagnosticChanged", "BufEnter" },
     on_click = {
       callback = function() require("trouble").toggle({ mode = "document_diagnostics" }) end,
       name = "heirline_diagnostics",
     },
-    { provider = "[", },
-    {
-      provider = function(self) return self.errors > 0 and (self.getsign("DiagnosticSignError")[1].text .. self.errors) end,
-      hl = { fg = "diag_error" },
-    },
-    {
-      provider = function(self) return self.warnings > 0 and (self.getsign("DiagnosticSignWarn")[1].text .. self.warnings) end,
-      hl = { fg = "diag_warn" },
-    },
-    {
-      provider = function(self) return self.info > 0 and (self.getsign("DiagnosticSignInfo")[1].text .. self.info) end,
-      hl = { fg = "diag_info" },
-    },
-    {
-      provider = function(self) return self.hints > 0 and (self.getsign("DiagnosticSignHint")[1].text .. self.hints) end,
-      hl = { fg = "diag_hint" },
-    },
-    { provider = "]", },
+    provider = function(self) return self.child:eval() end
   },
   dap = {
-    condition = function() return require("dap").session() ~= nil end,
-    provider = function() return " " .. require("dap").status() end,
-    hl = { fg = "debug" },
-    -- see Click-it! section for clickable actions
+    condition = function() return session ~= require("dap").session() end,
+    provider = function() return " " .. require("dap").status() .. " " end,
+    hl = "Debug",
+    {
+      provider = "",
+      on_click = {
+        callback = function() require("dap").step_into() end,
+        name = "heirline_dap_step_into",
+      },
+    },
+    { provider = " " },
+    {
+      provider = "",
+      on_click = {
+        callback = function() require("dap").step_out() end,
+        name = "heirline_dap_step_out",
+      },
+    },
+    { provider = " " },
+    {
+      provider = " ",
+      on_click = {
+        callback = function() require("dap").step_over() end,
+        name = "heirline_dap_step_over",
+      },
+    },
+    { provider = " " },
+    {
+      provider = "ﰇ",
+      on_click = {
+        callback = function() require("dap").run_last() end,
+        name = "heirline_dap_run_last",
+      },
+    },
+    { provider = " " },
+    {
+      provider = "",
+      on_click = {
+        callback = function()
+          require("dap").terminate()
+          require("dapui").close({})
+        end,
+        name = "heirline_dap_close",
+      },
+    },
+    { provider = " " },
+    -- icons:       ﰇ  
   },
   termname = {
-    -- we could add a condition to check that buftype == 'terminal'
-    -- or we could do that later (see #conditional-statuslines below)
     provider = function() return " " .. vim.api.nvim_buf_get_name(0):gsub(".*:", "") end,
     hl = { fg = "func" },
   },
@@ -276,7 +328,7 @@ local M = {
   },
   lsp = {
     condition = conditions.lsp_attached,
-    update = {'CursorMoved', 'LspAttach', 'LspDetach'},
+    update = {'LspAttach', 'LspDetach'},
     init = function(self)
       self.servers = vim.lsp.get_active_clients()
       self.devicon_by_filetype = require("nvim-web-devicons").get_icon_by_filetype
@@ -302,6 +354,7 @@ local M = {
     end,
   },
   file_flags = {
+    update = {'BufWritePost', 'BufEnter'},
     {
       condition = function() return vim.bo.modified end,
       provider = " [+]",
@@ -310,7 +363,6 @@ local M = {
     {
       condition = function() return not vim.bo.modifiable or vim.bo.readonly end,
       provider = " ",
-      update = "BufEnter",
       hl = { fg = "constant" },
     },
   },
@@ -321,7 +373,7 @@ local M = {
     end,
     hl = function() if vim.bo.modified then return { italic = true, force=true } end end,
     flexible = 2,
-    update = 'BufEnter',
+    update = { 'BufEnter', 'BufWritePost' },
     { provider = function(self) return self.lfilename end },
     { provider = function(self) return vim.fn.pathshorten(self.lfilename) end },
   },

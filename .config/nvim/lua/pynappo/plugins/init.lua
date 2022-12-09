@@ -60,6 +60,7 @@ require('packer').startup({function(use)
       end
       vim.cmd.highlight('IndentBlanklineContextChar guifg=#888888 gui=bold,nocombine')
       require('indent_blankline').setup {
+        filetype_exclude = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
         show_trailing_blankline_indent = false,
         space_char_blankline = ' ',
         char_highlight_list = hl_list,
@@ -129,7 +130,10 @@ require('packer').startup({function(use)
       { 's1n7ax/nvim-window-picker', tag = "v1.*" }
     },
     config = function()
-      require('window-picker').setup()
+      require('window-picker').setup({
+        fg_color = '#ededed',
+        other_win_hl_color = '#226622',
+      })
       require('pynappo/plugins/neo-tree')
     end
   }

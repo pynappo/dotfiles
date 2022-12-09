@@ -53,9 +53,13 @@ Function Pacup ([string]$Path = "$Home\.files\"){
     pip freeze > ($Path + 'requirements.txt')
 }
 
-Function Cdl {
+Function C {
     cd @Args
     ls
+}
+Function Mc {
+    mkdir @Args
+    cd @Args
 }
 Function New-Link ($Path, $Target) {
     New-Item -ItemType SymbolicLink -Path $Path -Value $Target

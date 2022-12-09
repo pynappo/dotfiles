@@ -43,15 +43,35 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+local mode_colors = {
+  n = "type",
+  i = "string",
+  v = "func",
+  V = "func",
+  ["\22"] = "",
+  c = "debug",
+  s = "constant",
+  S = "constant",
+  ["\19"] = "constant",
+  R = "diag_error",
+  r = "diag_error",
+  ["!"] = "diag_error",
+  t = "normal",
+}
+local get_mode_color = function(self)
+  local mode = conditions.is_active() and vim.fn.mode() or "n"
+  return self.mode_colors[mode]
+end
+
 local c = require("pynappo/plugins/heirline/components/base")
 local align = { provider = "%=" }
 local space = { provider = " " }
-c.vi_mode = utils.surround({ "", " " }, function(self) return self:mode_color() end, { c.vi_mode, hl = {fg = 'black'} })
+c.vi_mode = utils.surround({ "", " " }, function(self) return self:get_mode_color() end, { c.vi_mode, hl = {fg = 'black'} })
 c.lsp = { {provider = 'LSP: ', hl = {fg = 'string'}}, utils.surround({ "", "" }, 'string', { c.lsp, hl = { fg = "black" } }) }
-c.ruler = utils.surround({ " ", "" }, 'func', { c.ruler, hl = { fg = "black" } })
-table.insert(c.diagnostics, 1, space)
-local status = {
-  { c.vi_mode, c.gitsigns, c.diagnostics },
+c.ruler = utils.surround({ " ", "" }, function(self) return self:get_mode_color() end, { c.ruler, hl = { fg = "black" } })
+
+local statuses = {
+  { c.vi_mode },
   align,
   {
     fallthrough = false,
@@ -73,33 +93,14 @@ local status = {
   align,
   { c.dap, c.lsp, space, c.ruler }
 }
-local StatusLines = {
+local StatusLine = {
   hl = function() return not conditions.buffer_matches({ buftype = { "terminal" } }) and "StatusLine" end,
   static = {
-    mode_colors = {
-      n = "type",
-      i = "comment",
-      v = "func",
-      V = "func",
-      ["\22"] = "",
-      c = "debug",
-      s = "constant",
-      S = "constant",
-      ["\19"] = "constant",
-      R = "diag_error",
-      r = "diag_error",
-      ["!"] = "diag_error",
-      t = "normal",
-    },
-    mode_color = function(self)
-      local mode = conditions.is_active() and vim.fn.mode() or "n"
-      return self.mode_colors[mode]
-    end,
+    mode_colors = mode_colors,
+    get_mode_color = get_mode_color,
   },
-  status,
+  statuses,
 }
-
-table.insert(c.gitsigns, space)
 local WinBars = {
   hl = "Tabline",
   fallthrough = false,
@@ -116,7 +117,7 @@ local WinBars = {
     condition = function() return conditions.buffer_matches({ buftype = { "terminal" } }) end,
     align, c.file_icon, space, c.termname
   },
-  { c.navic, align, c.gitsigns, space, c.file_info }
+  { c.navic, align, c.diagnostics, c.gitsigns, space, c.file_info }
 }
 
 local t = require('pynappo/plugins/heirline/components/tabline')
@@ -134,7 +135,7 @@ local tabline_offset = {
   provider = function(self)
     local title = self.title
     local width = vim.api.nvim_win_get_width(self.winid)
-    local pad = math.ceil((width - #title) / 2)
+    local pad = math.ceil((width - string.len(title)) / 2)
     return string.rep(" ", pad) .. title .. string.rep(" ", pad)
   end,
   hl = function(self) return vim.api.nvim_get_current_win() == self.winid and "TablineSel" or "Tabline" end,
@@ -146,6 +147,7 @@ local bufferline = utils.make_buflist(
 )
 local tabpages = {
   condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
+  update = {"TabNewEntered", "TabNew", "TabLeave", "TabEnter", "TabClosed"},
   utils.make_tablist({
     provider = function(self) return "%" .. self.tabnr .. "T " .. self.tabnr .. " %T" end,
     hl = function(self) return self.is_active and "TabLineSel" or "TabLine" end,
@@ -157,5 +159,5 @@ local tabpages = {
 }
 local TabLines = { tabline_offset, bufferline, align, tabpages }
 
-require("heirline").setup(StatusLines, WinBars, TabLines)
+require("heirline").setup(StatusLine, WinBars, TabLines)
 
