@@ -13,8 +13,11 @@ end
 
 M.setup = {
   regular = function()
+    vim.keymap.set({ 'n', 'v' }, 'p', 'p=`]', {silent = true})
+    vim.keymap.set({ 'n', 'v' }, 'P', 'P=`]', {silent = true})
     vim.g.mapleader = ' '
     vim.g.maplocalleader = ' '
+    vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', {silent = true})
     map({
       [{'n'}] = {
         { 'x', '"_x' },
@@ -33,16 +36,15 @@ M.setup = {
         { '<leader>8', '8gt' },
         { '<leader>9', '9gt' },
         { '<leader>0', '10gt' },
+        { '<Esc>', '<Cmd>nohl<CR>'},
         -- Autoindent on insert
         { 'i', function () return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end, {expr=true}},
       },
       [{'n', 'v'}] = {
-        -- Better pasting
-        { 'p', 'p=`]' },
-        { 'P', 'P=`]' },
-        {'<Space>', '<Nop>' },
-        { '<leader>p', '"+p=`]' },
-        { '<leader>y', '"+y"'},
+        -- {'p', 'p=`]'},
+        -- {'P', 'P=`]'},
+        {'Space', '<Nop>' },
+        -- {'<leader>p', '"+p'}
       },
     }, {silent=true})
   end,
@@ -82,7 +84,6 @@ M.setup = {
         { '<leader>ca', vim.lsp.buf.code_action },
         { 'gr', vim.lsp.buf.references },
         { '<leader>f', function() vim.lsp.buf.format({ async = true }) end },
-
       }
     }, { remap=false, silent=true, buffer=bufnr })
   end,
@@ -222,22 +223,20 @@ M.cmp = {
       ["<C-Space>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto, }),
       ["<CR>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, },
       ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
+        if luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
+        elseif cmp.visible() then cmp.select_next_item()
         else fallback() end
       end, { "i", "s", 'c' }),
       ["<S-Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then luasnip.jump(-1)
+        if luasnip.jumpable(-1) then luasnip.jump(-1)
+        elseif cmp.visible() then cmp.select_prev_item()
         else fallback() end
       end, { "i", "s", 'c' }),
     })
   end,
 }
 
-M.toggleterm = {
-  open_mapping = [[<C-\>]]
-}
+M.toggleterm = { open_mapping = [[<C-\>]] }
 M.neotree = {
   default = {
     ['<tab>'] = function (state)

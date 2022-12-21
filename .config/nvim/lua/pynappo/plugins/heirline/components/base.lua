@@ -218,10 +218,10 @@ local M = {
         hint = #diag.get(0, { severity = diag.severity.HINT }),
         info = #diag.get(0, { severity = diag.severity.INFO })
       }
-      print (vim.inspect(diagnostics_count))
       local children = {}
       for k, v in pairs(diagnostics_count) do
-        if v > 0 then table.insert(children, {
+        if v > 0 then
+          table.insert(children, {
             provider = string.format("%s%s", self.icons[k], v),
             hl = self.highlights[k]
           })
@@ -252,7 +252,7 @@ local M = {
     provider = function(self) return self.child:eval() end
   },
   dap = {
-    condition = function() return session ~= require("dap").session() end,
+    condition = function() return require("dap").session() ~= nil end,
     provider = function() return " " .. require("dap").status() .. " " end,
     hl = "Debug",
     {
@@ -297,8 +297,6 @@ local M = {
         name = "heirline_dap_close",
       },
     },
-    { provider = " " },
-    -- icons:       ﰇ  
   },
   termname = {
     provider = function() return " " .. vim.api.nvim_buf_get_name(0):gsub(".*:", "") end,
@@ -308,8 +306,7 @@ local M = {
     condition = function() return vim.bo.filetype == "help" end,
     update = "BufEnter",
     provider = function()
-      local filename = vim.api.nvim_buf_get_name(0)
-      return vim.fn.fnamemodify(filename, ":t")
+      return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t")
     end,
     hl = { fg = 'func' },
   },
@@ -328,7 +325,7 @@ local M = {
   },
   lsp = {
     condition = conditions.lsp_attached,
-    update = {'LspAttach', 'LspDetach'},
+    update = {'WinResized', 'VimResized', 'LspAttach', 'LspDetach'},
     init = function(self)
       self.servers = vim.lsp.get_active_clients()
       self.devicon_by_filetype = require("nvim-web-devicons").get_icon_by_filetype
@@ -354,7 +351,7 @@ local M = {
     end,
   },
   file_flags = {
-    update = {'BufWritePost', 'BufEnter'},
+    update = {'BufWritePost', 'BufEnter', 'TextChanged'},
     {
       condition = function() return vim.bo.modified end,
       provider = " [+]",
@@ -371,9 +368,9 @@ local M = {
       self.lfilename = vim.fn.fnamemodify(self.filename, ":.")
       if self.lfilename == "" then self.lfilename = "[No Name]" end
     end,
-    hl = function() if vim.bo.modified then return { italic = true, force=true } end end,
+    hl = vim.bo.modified and { italic = true, force=true } or nil,
     flexible = 2,
-    update = { 'BufEnter', 'BufWritePost' },
+    update = { 'BufEnter', 'BufWritePost', 'WinResized', 'VimResized' },
     { provider = function(self) return self.lfilename end },
     { provider = function(self) return vim.fn.pathshorten(self.lfilename) end },
   },

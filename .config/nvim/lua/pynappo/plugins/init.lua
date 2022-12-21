@@ -3,7 +3,7 @@ local ensure_packer = function()
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
     fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd([[packadd packer.nvim]])
+    vim.cmd.packadd([[packer.nvim]])
     return true
   end
   return false
@@ -25,10 +25,8 @@ require('packer').startup({function(use)
       config = function() require("octo").setup() end
     }
   })
-  use ({
-    { 'catppuccin/nvim', as = 'catppuccin' },
-    'Shatur/neovim-ayu'
-  })
+  use { 'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end }
+  use 'Shatur/neovim-ayu'
   use ({
     { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
     { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end },
@@ -44,11 +42,6 @@ require('packer').startup({function(use)
     { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     'nvim-telescope/telescope-file-browser.nvim',
   })
-  -- use ({
-  --   '~/code/nvim/fzf-lua',
-  --   requires = { 'kyazdani42/nvim-web-devicons' },
-  --   config = function() require('pynappo/plugins/fzf') end
-  -- })
   use {
     'lukas-reineke/indent-blankline.nvim',
     config = function()
@@ -82,13 +75,7 @@ require('packer').startup({function(use)
     }
   }
   use ({
-    {
-      'zbirenbaum/copilot.lua',
-      after = "heirline.nvim",
-      config = function ()
-        vim.defer_fn(function() require("copilot").setup() end, 100)
-      end,
-    },
+    { 'zbirenbaum/copilot.lua', config = function () vim.defer_fn(function() require("copilot").setup() end, 100) end, },
     {
       'L3MON4D3/LuaSnip',
       config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
@@ -120,23 +107,6 @@ require('packer').startup({function(use)
     },
     { 'windwp/nvim-autopairs', config = function() require('pynappo/plugins/autopairs') end },
   })
-  use {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons',
-      'MunifTanjim/nui.nvim',
-      { 's1n7ax/nvim-window-picker', tag = "v1.*" }
-    },
-    config = function()
-      require('window-picker').setup({
-        fg_color = '#ededed',
-        other_win_hl_color = '#226622',
-      })
-      require('pynappo/plugins/neo-tree')
-    end
-  }
   use ({
     { 'folke/which-key.nvim', config = function() require('which-key').setup({window = {border = "single"}}) end },
     { 'folke/trouble.nvim', requires = 'kyazdani4/nvim-web-devicons', config = function() require('trouble').setup{} end, },
@@ -163,7 +133,16 @@ require('packer').startup({function(use)
         require("noice").setup({
           cmdline = { enabled = false },
           messages = { enabled = false },
-          lsp = { progress = { enabled = false } },
+          lsp = {
+            progress = {
+              enabled = false,
+            },
+            override = {
+              ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+              ["vim.lsp.util.stylize_markdown"] = true,
+              ["cmp.entry.get_documentation"] = true,
+            }
+          },
           views = {
             hover = {
               border = { style = "rounded" },
@@ -190,16 +169,19 @@ require('packer').startup({function(use)
     {'lewis6991/impatient.nvim'},
     { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = function() vim.g.startuptime_tries = 3 end }
   })
-  use {
-    'andymass/vim-matchup',
-    config = function()
-      for _, option in pairs({'enabled', 'surround_enabled', 'transmute_enabled', 'matchparen_deferdiag_error'}) do
-        vim.g['matchup_' .. option] = 1
-      end
-      vim.g.matchup_matchparen_offscreen = { method = "popup" }
-      require('pynappo/keymaps').setup.matchup()
-    end,
-  }
+  use (
+    -- {
+    --   'andymass/vim-matchup',
+    --   config = function()
+    --     for _, option in pairs({'enabled', 'surround_enabled', 'transmute_enabled', 'matchparen_deferdiag_error'}) do
+    --       vim.g['matchup_' .. option] = 1
+    --     end
+    --     vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    --     require('pynappo/keymaps').setup.matchup()
+    --   end,
+    -- },
+    { 'monkoose/matchparen.nvim', config = function() require('matchparen').setup() end }
+  )
   use { 'nmac427/guess-indent.nvim', config = function() require('guess-indent').setup{} end, }
   use 'tpope/vim-repeat'
   use {
@@ -221,10 +203,27 @@ require('packer').startup({function(use)
     })
     end
   }
-  use ({
+  use {
     { 'simrat39/symbols-outline.nvim', config = function() require('symbols-outline').setup() end },
-    { 'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end }
-  })
+    {
+      'nvim-neo-tree/neo-tree.nvim',
+      branch = 'v2.x',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'kyazdani42/nvim-web-devicons',
+        'MunifTanjim/nui.nvim',
+        { 's1n7ax/nvim-window-picker', tag = "v1.*" }
+      },
+      config = function()
+        require('window-picker').setup({
+          fg_color = '#ededed',
+          other_win_hl_color = '#226622',
+        })
+        require('pynappo/plugins/neo-tree')
+      end
+    },
+    { 'akinsho/toggleterm.nvim', tag = '*', config = function() require('pynappo/plugins/toggleterm') end }
+  }
   use {
     'karb94/neoscroll.nvim',
     config = function ()
@@ -237,15 +236,19 @@ require('packer').startup({function(use)
     'simnalamburt/vim-mundo'
   })
   use { 'nacro90/numb.nvim', config = function() require('numb').setup() end }
+  use ({
+    {
+      'max397574/better-escape.nvim',
+      config = function()
+        require('better_escape').setup({
+          mapping = {"jk", "kj"},
+          keys = function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end
+        })
+      end
+    },
+    { 'nyngwang/murmur.lua', config = function () require('pynappo/plugins/murmur') end }
+  })
 
-  use {
-    'max397574/better-escape.nvim', config = function()
-      require('better_escape').setup({
-        mapping = {"jk", "kj"},
-        keys = function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end
-      })
-    end
-  }
   use {
     "kevinhwang91/nvim-hlslens",
     config = function()
@@ -260,15 +263,16 @@ require('packer').startup({function(use)
     after = 'nvim-treesitter', -- You may want to specify Telescope here as well
     config = function() require('neorg').setup {['core.defaults'] = {}} end
   }
-  use {
-    'rebelot/heirline.nvim',
-    config = function() require('pynappo/plugins/heirline') end,
-    requires = {
-      { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function() require('pynappo/plugins/navic') end }
-    }
-  }
-
-  use { 'AckslD/nvim-neoclip.lua', requires = 'nvim-telescope/telescope.nvim', config = function() require('neoclip').setup() end }
+  use ({
+    {
+      'rebelot/heirline.nvim',
+      config = function() require('pynappo/plugins/heirline') end,
+      requires = {
+        { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function() require('pynappo/plugins/navic') end }
+      }
+    },
+    { "tiagovla/scope.nvim", config = function() require('scope').setup() end }
+  })
   use {
     'neovim/nvim-lspconfig',
     requires = {
@@ -285,12 +289,10 @@ require('packer').startup({function(use)
       require('pynappo/plugins/lsp')
     end
   }
-
   use ({
     { 'nvim-neotest/neotest', requires = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', }, },
     'rouge8/neotest-rust'
   })
-  use { 'akinsho/toggleterm.nvim', tag = '*', config = function() require('pynappo/plugins/toggleterm') end }
   use {
     "rcarriga/nvim-dap-ui",
     requires = {
@@ -325,8 +327,6 @@ require('packer').startup({function(use)
     end
   }
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
-  -- use 'RRethy/vim-illuminate'
-  use { 'nyngwang/murmur.lua', config = function () require('pynappo/plugins/murmur') end }
   use { 'AckslD/nvim-FeMaco.lua', config = function() require("femaco").setup() end }
   use (
     {
@@ -334,7 +334,7 @@ require('packer').startup({function(use)
       config = function()
         require('tint').setup({
           window_ignore_function = function(winid)
-            local buftype = vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(winid), "buftype")
+            local buftype = vim.bo[vim.api.nvim_win_get_buf(winid)].buftype
             local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
             return buftype == "terminal" or buftype == 'nofile' or floating
           end
@@ -385,6 +385,7 @@ require('packer').startup({function(use)
     end,
     config = function() require('modicator').setup() end,
   }
+
   if packer_bootstrap then require('packer').sync() end
 end,
   config = {
@@ -396,6 +397,10 @@ end,
     lockfile = {
       enable = true,
       regen_on_update = true
+    },
+    profile = {
+      enable = true,
+      threshold = 1
     }
   }
 })

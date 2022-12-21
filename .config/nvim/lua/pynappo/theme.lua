@@ -1,10 +1,10 @@
 local M = {}
-function M.default()
-  require('nvim-web-devicons').setup {
-    color_icons = true;
-    default = true;
-  }
-end
+vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"})
+vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
+local links = { }
+for source, destination in pairs(links) do vim.api.nvim_set_hl(0, source, {link = destination}) end
 function M.ayu()
   local colors = require("ayu.colors")
   require("ayu").setup({
@@ -30,15 +30,6 @@ function M.transparent_override()
     "EndOfBuffer",
     "TablineFill"
   }
-  for _, name in pairs(highlights) do
-    vim.cmd.highlight(name .. ' guibg=none ctermbg=none')
-  end
-end
-function M.link_highlights()
-  local links = {
-  }
-  for source, destination in pairs(links) do
-    vim.api.nvim_set_hl(0, source, {link = destination})
-  end
+  for _, name in pairs(highlights) do vim.cmd.highlight(name .. ' guibg=none ctermbg=none') end
 end
 return M

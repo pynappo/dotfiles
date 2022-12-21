@@ -28,10 +28,7 @@ end
 require('heirline').load_colors(setup_colors())
 
 vim.api.nvim_create_augroup("Heirline", { clear = true })
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function() utils.on_colorscheme(setup_colors()) end,
-  group = "Heirline",
-})
+vim.api.nvim_create_autocmd("ColorScheme", { callback = function() utils.on_colorscheme(setup_colors()) end, group = "Heirline", })
 
 vim.api.nvim_create_autocmd("User", {
   pattern = 'HeirlineInitWinbar',
@@ -39,6 +36,7 @@ vim.api.nvim_create_autocmd("User", {
     local buf = args.buf
     local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo[buf].buftype)
     local filetype = vim.tbl_contains({ "gitcommit", "fugitive" }, vim.bo[buf].filetype)
+
     if buftype or filetype then vim.opt_local.winbar = nil end
   end,
 })
@@ -70,7 +68,12 @@ c.vi_mode = utils.surround({ "", " " }, function(self) return self:get_mod
 c.lsp = { {provider = 'LSP: ', hl = {fg = 'string'}}, utils.surround({ "", "" }, 'string', { c.lsp, hl = { fg = "black" } }) }
 c.ruler = utils.surround({ " ", "" }, function(self) return self:get_mode_color() end, { c.ruler, hl = { fg = "black" } })
 
-local statuses = {
+local StatusLine = {
+  hl = function() return not conditions.buffer_matches({ buftype = { "terminal" } }) and "StatusLine" end,
+  static = {
+    mode_colors = mode_colors,
+    get_mode_color = get_mode_color,
+  },
   { c.vi_mode },
   align,
   {
@@ -93,14 +96,6 @@ local statuses = {
   align,
   { c.dap, c.lsp, space, c.ruler }
 }
-local StatusLine = {
-  hl = function() return not conditions.buffer_matches({ buftype = { "terminal" } }) and "StatusLine" end,
-  static = {
-    mode_colors = mode_colors,
-    get_mode_color = get_mode_color,
-  },
-  statuses,
-}
 local WinBars = {
   hl = "Tabline",
   fallthrough = false,
@@ -121,43 +116,7 @@ local WinBars = {
 }
 
 local t = require('pynappo/plugins/heirline/components/tabline')
-local tabline_offset = {
-  condition = function(self)
-    local win = vim.api.nvim_tabpage_list_wins(0)[1]
-    local bufnr = vim.api.nvim_win_get_buf(win)
-    self.winid = win
-
-    if vim.bo[bufnr].filetype == "neo-tree" then
-      self.title = "Neo-Tree"
-      return true
-    end
-  end,
-  provider = function(self)
-    local title = self.title
-    local width = vim.api.nvim_win_get_width(self.winid)
-    local pad = math.ceil((width - string.len(title)) / 2)
-    return string.rep(" ", pad) .. title .. string.rep(" ", pad)
-  end,
-  hl = function(self) return vim.api.nvim_get_current_win() == self.winid and "TablineSel" or "Tabline" end,
-}
-local bufferline = utils.make_buflist(
-  t.tabline_buffer_block,
-  { provider = "", hl = { fg = "gray" } },
-  { provider = "", hl = { fg = "gray" } }
-)
-local tabpages = {
-  condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
-  update = {"TabNewEntered", "TabNew", "TabLeave", "TabEnter", "TabClosed"},
-  utils.make_tablist({
-    provider = function(self) return "%" .. self.tabnr .. "T " .. self.tabnr .. " %T" end,
-    hl = function(self) return self.is_active and "TabLineSel" or "TabLine" end,
-  }),
-  {
-    provider = "%999X  %X",
-    hl = "TabLine",
-  },
-}
-local TabLines = { tabline_offset, bufferline, align, tabpages }
+local TabLines = { t.tabline_offset, t.bufferline, align, t.tabpages }
 
 require("heirline").setup(StatusLine, WinBars, TabLines)
 
