@@ -1,4 +1,5 @@
-require("impatient")
+local packer_exists = pcall(require, 'packer')
+if packer_exists then require("impatient") end
 
 local o = vim.o
 local opt = vim.opt
@@ -36,7 +37,7 @@ else
 end
 if g.neovide then
   g.neovide_transparency = 0.8
-  g.neovide_refresh_rate = 165
+  g.neovide_refresh_rate = 144
   g.neovide_cursor_vfx_mode = 'ripple'
   g.neovide_cursor_animation_length = 0.03
   g.neovide_cursor_trail_size = 0.9
@@ -66,8 +67,14 @@ o.smartcase = true
 o.splitright = true
 o.splitbelow = true
 
+-- Line breaks
+o.linebreak = true
+o.breakindent = true
+o.wrap = true
+
 -- Misc
-o.updatetime = 500
+o.pumblend = 20
+o.updatetime = 300
 o.termguicolors = true
 g.gutentags_enabled = 1
 o.history = 1000
@@ -95,7 +102,6 @@ opt.listchars = {
   nbsp = '␣',
 }
 o.cursorline = true
-o.wrap = false
 o.formatoptions = "jcrql"
 
 local disabled_built_ins = {
@@ -115,29 +121,13 @@ local disabled_built_ins = {
   "2html_plugin",
   "logipat",
   "rrhelper",
-  "matchit"
+  "matchparen"
 }
 for _, plugin in pairs(disabled_built_ins) do vim.g["loaded_" .. plugin] = 1 end
 require("pynappo/plugins")
 local theme = require("pynappo/theme")
 theme.ayu()
 if not g.neovide then theme.transparent_override() end
-theme.link_highlights()
 require("pynappo/commands")
 require("pynappo/keymaps").setup.regular()
 require("pynappo/autocmds")
-
-local function SuggestOneCharacter()
-  local suggestion = vim.fn['copilot#Accept']("")
-  local bar = vim.fn['copilot#TextQueuedForInsertion']()
-  return bar[0]
-end
-local function SuggestOneWord()
-  local suggestion = vim.fn['copilot#Accept']("")
-  local bar = vim.fn['copilot#TextQueuedForInsertion']()
-  return vim.split(bar,  '[ .]\zs')[0]
-end
-
-local map = vim.keymap.set
-map('i', '<C-l>', SuggestOneCharacter, {expr = true, remap = false})
-map('i', '<C-left>', SuggestOneWord, {expr = true, remap = false})

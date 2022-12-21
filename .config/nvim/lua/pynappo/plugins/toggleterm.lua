@@ -6,4 +6,9 @@ require('toggleterm').setup {
       return term.name
     end
   },
+  highlights = {
+    StatusLine = {
+      guibg = 'StatusLine'
+    }
+  },
 }

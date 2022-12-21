@@ -1,5 +1,6 @@
 local luasnip = require("luasnip")
 local cmp = require("cmp")
+local cmp_buffer = require("cmp_buffer")
 local lspkind = require("lspkind")
 lspkind.init({
   symbol_map = {
@@ -7,6 +8,7 @@ lspkind.init({
   },
 })
 
+local compare = require('cmp.config.compare')
 cmp.setup {
   window = {
     completion = {
@@ -16,10 +18,6 @@ cmp.setup {
       border = nil,
       scrollbar = '║'
     },
-    -- documentation = { -- no border; native-style scrollbar
-    --   border = 'rounded',
-    --   scrollbar = '',
-    -- },
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
@@ -38,7 +36,6 @@ cmp.setup {
           cmdline_history = "[Hist]",
           git = "[Git]",
         },
-        symbol_map = { Copilot = "" }
       })(entry, vim_item)
       local strings = vim.split(kind.kind, "%s", { trimempty = true })
       kind.kind = " " .. strings[1] .. " "
@@ -46,24 +43,51 @@ cmp.setup {
     end
   },
   snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
+    expand = function(args) luasnip.lsp_expand(args.body) end,
   },
   confirmation = { completeopt = 'menu,menuone,noinsert' },
   mapping = require("pynappo/keymaps").cmp.insert(),
-  sources = {
-    { name = "nvim_lsp" },
-    { name = "nvim_lua"},
-    { name = "copilot" },
-    { name = "luasnip" },
-    { name = "nvim_lsp_signature_help" },
-    { name = "crates" },
-    { name = "path"},
-    {name = 'emoji'},
-    { name = 'calc'}
+  sources = cmp.config.sources(
+    {
+      { name = "nvim_lsp" },
+      { name = "luasnip" },
+      { name = "nvim_lsp_signature_help" },
+      { name = "crates" },
+      { name = 'emoji' },
+      { name = 'calc'},
+    },
+    {
+      { name = 'copilot' },
+      { name = "nvim_lua" },
+      {
+        name = 'buffer',
+        option = {
+          get_bufnrs = function()
+            local bufs = {}
+            for _, win in ipairs(vim.api.nvim_list_wins()) do bufs[vim.api.nvim_win_get_buf(win)] = true end
+            return vim.tbl_keys(bufs)
+          end
+        }
+      },
+      { name = "path"},
+    }
+  ),
+  sorting = {
+    comparators = {
+      function (...) return cmp_buffer:compare_locality(...) end,
+      compare.offset,
+      compare.exact,
+      compare.score,
+      compare.recently_used,
+      compare.locality,
+      compare.kind,
+      compare.sort_text,
+      compare.length,
+      compare.order,
+    },
   },
   view = { entries = { name = "custom", selection_order = "near_cursor" } },
+  experimental = { ghost_text = true },
 }
 
 cmp.setup.filetype('gitcommit', {
@@ -81,11 +105,11 @@ cmp.event:on(
 )
 cmp.setup.cmdline(':', {
   confirmation = { completeopt = 'menu,menuone,noinsert' },
-  sources = {
-    { name = 'cmdline' },
-    { name = 'cmdline_history' },
-    { name = 'path'}
-  }
+  sources = cmp.config.sources(
+    {{ name = 'cmdline' }},
+    {{ name = 'cmdline_history' }},
+    {{ name = 'path'}}
+  )
 })
 cmp.setup.cmdline('/', {
   sources = {

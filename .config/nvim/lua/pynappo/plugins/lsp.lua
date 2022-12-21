@@ -2,7 +2,7 @@ local M = {}
 local configs = {
   default = {
     on_attach = function(client, bufnr)
-      vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
       require('pynappo/keymaps').setup.lsp(bufnr)
       require('nvim-navic').attach(client, bufnr)
     end,
@@ -16,9 +16,7 @@ local configs = {
           callSnippet = 'Replace',
         },
         diagnostics = {
-          disable = {
-            ''
-          }
+          globals = {'vim'}
         },
       }
     }

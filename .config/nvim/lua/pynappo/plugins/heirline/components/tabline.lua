@@ -17,37 +17,27 @@ local M = {
   },
   tabline_file_flags = {
     {
-      condition = function(self)
-        return vim.api.nvim_buf_get_option(self.bufnr, "modified")
-      end,
+      condition = function(self) return vim.bo[self.bufnr].modified end,
       provider = "[+]",
       hl = { fg = "green" },
     },
     {
       condition = function(self)
-        return not vim.api.nvim_buf_get_option(self.bufnr, "modifiable")
-          or vim.api.nvim_buf_get_option(self.bufnr, "readonly")
+        return not vim.bo[self.bufnr].modifiable or vim.bo[self.bufnr].filetype == "help"
       end,
       provider = function(self)
-        if vim.api.nvim_buf_get_option(self.bufnr, "buftype") == "terminal" then
-          return "  "
-        else return ""
-        end
+        return vim.bo[self.bufnr].filetype == "terminal" and "  " or ""
       end,
       hl = { fg = "orange" },
     },
   },
   tabline_close_button = {
-    condition = function(self)
-      return not vim.api.nvim_buf_get_option(self.bufnr, "modified")
-    end,
+    condition = function(self) return not vim.bo[self.bufnr].modified end,
     {
       provider = " ",
       hl = { fg = "gray" },
       on_click = {
-        callback = function(_, minwid)
-          vim.api.nvim_buf_delete(minwid, { force = false })
-        end,
+        callback = function(_, minwid) vim.api.nvim_buf_delete(minwid, { force = false }) end,
         minwid = function(self) return self.bufnr end,
         name = "heirline_tabline_close_buffer_callback",
       },
@@ -85,4 +75,41 @@ M.tabline_buffer_block = utils.surround({ "", "" },
     M.tabline_close_button
   }
 )
+
+M.tabline_offset = {
+  condition = function(self)
+    local win = vim.api.nvim_tabpage_list_wins(0)[1]
+    local bufnr = vim.api.nvim_win_get_buf(win)
+    self.winid = win
+
+    if vim.bo[bufnr].filetype == "neo-tree" then
+      self.title = "Neo-Tree"
+      return true
+    end
+  end,
+  provider = function(self)
+    local title = self.title
+    local width = vim.api.nvim_win_get_width(self.winid)
+    local pad = math.ceil((width - string.len(title)) / 2)
+    return string.rep(" ", pad) .. title .. string.rep(" ", pad)
+  end,
+  hl = function(self) return vim.api.nvim_get_current_win() == self.winid and "TablineSel" or "Tabline" end,
+}
+M.bufferline = utils.make_buflist(
+  M.tabline_buffer_block,
+  { provider = "", hl = { fg = "gray" } },
+  { provider = "", hl = { fg = "gray" } }
+)
+M.tabpages = {
+  condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
+  update = {"TabNewEntered", "TabNew", "TabLeave", "TabEnter", "TabClosed"},
+  utils.make_tablist({
+    provider = function(self) return "%" .. self.tabnr .. "T " .. self.tabnr .. " %T" end,
+    hl = function(self) return self.is_active and "TabLineSel" or "TabLine" end,
+  }),
+  {
+    provider = "%999X  %X",
+    hl = "TabLine",
+  },
+}
 return M

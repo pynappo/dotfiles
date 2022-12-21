@@ -33,7 +33,7 @@ autocmd('BufReadPost',  {
   end
 })
 
-vim.api.nvim_create_autocmd('DiagnosticChanged', {
+autocmd('DiagnosticChanged', {
   group = 'pynappo',
   callback = function() vim.diagnostic.setloclist({ open = false }) end,
 })
