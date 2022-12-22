@@ -1,27 +1,24 @@
-local api = vim.api
-local autocmd = api.nvim_create_autocmd
-api.nvim_create_augroup("pynappo", { clear = true })
+local M = {}
+local pynappo = vim.api.nvim_create_augroup("pynappo", { clear = true })
+M.create_autocmd = function(event, opts)
+  if opts.group == nil then opts.group = pynappo end
+  vim.api.nvim_create_autocmd(event, opts)
+end
 if vim.g.started_by_firenvim then
-  autocmd('BufEnter', {
-    callback = function()
-      vim.cmd('startinsert')
-    end,
-    group = 'pynappo'
+  M.create_autocmd('BufEnter', {
+    callback = function() vim.cmd.startinsert() end,
+    group = pynappo
   })
 end
 
-autocmd ('TextYankPost',{
+M.create_autocmd ('TextYankPost',{
   callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
-  group = 'pynappo'
 })
-  -- use { 'j-hui/fidget.nvim', config = function() require("fidget").setup({ window = { blend = 0 }}) end }
-
-autocmd("BufWritePre", {
+M.create_autocmd("BufWritePre", {
   command = [[%s/\s\+$//e]],
-  group = 'pynappo'
 })
-autocmd('BufReadPost',  {
-  group    = 'pynappo',
+
+M.create_autocmd('BufReadPost',  {
   pattern  = '*',
   callback = function()
     local fn = vim.fn
@@ -33,7 +30,16 @@ autocmd('BufReadPost',  {
   end
 })
 
-autocmd('DiagnosticChanged', {
-  group = 'pynappo',
+M.create_autocmd('DiagnosticChanged', {
   callback = function() vim.diagnostic.setloclist({ open = false }) end,
 })
+
+if not vim.g.neovide then
+  M.create_autocmd('ColorScheme', {
+    callback = function()
+      require('pynappo/theme').transparent_override()
+    end
+  })
+end
+
+return M
