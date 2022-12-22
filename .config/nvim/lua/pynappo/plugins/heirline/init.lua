@@ -20,8 +20,8 @@ local function setup_colors()
     diag_error = get_hl("DiagnosticError").fg,
     diag_hint = get_hl("DiagnosticHint").fg,
     diag_info = get_hl("DiagnosticInfo").fg,
-    git_del = get_hl("DiffRemoved").fg,
-    git_add = get_hl("DiffAdded").fg,
+    git_del = get_hl("GitSignsDelete").fg,
+    git_add = get_hl("GitSignsAdd").fg,
     git_change = get_hl("GitsignsChange").fg,
   }
 end

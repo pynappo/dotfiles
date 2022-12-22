@@ -1,6 +1,3 @@
-local packer_exists = pcall(require, 'packer')
-if packer_exists then require("impatient") end
-
 local o = vim.o
 local opt = vim.opt
 local g = vim.g
@@ -124,10 +121,29 @@ local disabled_built_ins = {
   "matchparen"
 }
 for _, plugin in pairs(disabled_built_ins) do vim.g["loaded_" .. plugin] = 1 end
-require("pynappo/plugins")
-local theme = require("pynappo/theme")
-theme.ayu()
-if not g.neovide then theme.transparent_override() end
-require("pynappo/commands")
 require("pynappo/keymaps").setup.regular()
 require("pynappo/autocmds")
+vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"})
+vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
+local theme = require("pynappo/theme")
+require("pynappo/plugins")
+local hl_list = {}
+vim.cmd.colorscheme('ayu')
+for i, color in pairs({ '#782121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#563155' }) do
+  local name = 'IndentBlanklineIndent' .. i
+  vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
+  table.insert(hl_list, name);
+end
+vim.cmd.highlight('IndentBlanklineContextChar guifg=#888888 gui=bold,nocombine')
+require('indent_blankline').setup {
+  filetype_exclude = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
+  show_trailing_blankline_indent = false,
+  space_char_blankline = ' ',
+  char_highlight_list = hl_list,
+  use_treesitter = true,
+  use_treesitter_scope = true,
+  show_current_context = true
+}
+require("pynappo/commands")

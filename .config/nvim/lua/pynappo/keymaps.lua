@@ -104,53 +104,50 @@ M.setup = {
     }, {buffer = bufnr})
   end,
   dap = function()
-    local dap = require('dap')
     map({
       [{'n'}] = {
-        { '<F5>', function() dap.continue() end },
-        { '<leader>db', function() dap.toggle_breakpoint() end },
-        { '<leader>dB', function() dap.set_breakpoint() end },
-        { '<leader>dc', function() dap.disconnect() end },
-        { '<leader>dk', function() dap.up() end },
-        { '<leader>dj', function() dap.down() end },
-        { '<leader>dh', function() dap.left() end },
-        { '<leader>dl', function() dap.right() end },
-        { '<leader>di', function() dap.step_into() end },
-        { '<leader>do', function() dap.step_out() end },
-        { '<leader>du', function() dap.step_over() end },
-        { '<leader>ds', function() dap.stop() end },
-        { '<leader>dn', function() dap.run_to_cursor() end },
-        { '<leader>dR', function() dap.repl.run_last() end },
-        { '<leader>de', function() dap.set_exception_breakpoints() end },
-        { '<leader>dv', function() dap.variables() end },
-        { '<leader>df', function() dap.set_function_breakpoints() end },
-        { '<leader>dr', function() dap.repl.open() end },
+        { '<F5>', function() require('dap').continue() end },
+        { '<leader>db', function() require('dap').toggle_breakpoint() end },
+        { '<leader>dB', function() require('dap').set_breakpoint() end },
+        { '<leader>dc', function() require('dap').disconnect() end },
+        { '<leader>dk', function() require('dap').up() end },
+        { '<leader>dj', function() require('dap').down() end },
+        { '<leader>dh', function() require('dap').left() end },
+        { '<leader>dl', function() require('dap').right() end },
+        { '<leader>di', function() require('dap').step_into() end },
+        { '<leader>do', function() require('dap').step_out() end },
+        { '<leader>du', function() require('dap').step_over() end },
+        { '<leader>ds', function() require('dap').stop() end },
+        { '<leader>dn', function() require('dap').run_to_cursor() end },
+        { '<leader>dR', function() require('dap').repl.run_last() end },
+        { '<leader>de', function() require('dap').set_exception_breakpoints() end },
+        { '<leader>dv', function() require('dap').variables() end },
+        { '<leader>df', function() require('dap').set_function_breakpoints() end },
+        { '<leader>dr', function() require('dap').repl.open() end },
       }
     })
   end,
   dapui = function()
-    local dapui = require('dapui')
     map({
       [{'n'}] = {
-        {'<S-F5>', function() dapui.toggle() end},
-        {'<S-F6>', function() dapui.close() end},
-        {'<S-F7>', function() dapui.float_element() end},
-        {'<S-F8>', function() dapui.float_terminal() end},
-        {'<S-F9>', function() dapui.float_scopes() end},
-        {'<S-F10>', function() dapui.float_breakpoints() end},
-        {'<S-F11>', function() dapui.float_stacks() end},
-        {'<S-F12>', function() dapui.float_variables() end},
+        {'<S-F5>', function() require('dapui').toggle() end},
+        {'<S-F6>', function() require('dapui').close() end},
+        {'<S-F7>', function() require('dapui').float_element() end},
+        {'<S-F8>', function() require('dapui').float_terminal() end},
+        {'<S-F9>', function() require('dapui').float_scopes() end},
+        {'<S-F10>', function() require('dapui').float_breakpoints() end},
+        {'<S-F11>', function() require('dapui').float_stacks() end},
+        {'<S-F12>', function() require('dapui').float_variables() end},
       }
     })
   end,
   diagnostics = function()
-    local diag = vim.diagnostic
     map({
       [{ 'n' }] = {
-        { '<leader>e', diag.open_float, {desc = 'Floating Diagnostics'}},
-        { '[d', diag.goto_prev, {desc = 'Previous diagnostic'}},
-        { ']d', diag.goto_next, {desc = 'Next diagnostic'}},
-        { '<leader>q', diag.setloclist, {desc = 'Add diagnostics to location list'}},
+        { '<leader>e', vim.diagnostic.open_float, {desc = 'Floating Diagnostics'}},
+        { '[d', vim.diagnostic.goto_prev, {desc = 'Previous diagnostic'}},
+        { ']d', vim.diagnostic.goto_next, {desc = 'Next diagnostic'}},
+        { '<leader>q', vim.diagnostic.setloclist, {desc = 'Add diagnostics to location list'}},
       }
     })
   end,
@@ -179,33 +176,32 @@ M.setup = {
   matchup = function() map({ [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } }) end,
   mini = function() map({ [{ 'n' }] = { { '<leader>m', function() require('mini.map').toggle() end, {desc = 'Toggle mini.map'}}}}) end,
   dial = function()
-    local dial = require('dial.map')
+    local dial =
     map({
       [{'n'}] = {
-        { "<c-a>", dial.inc_normal() },
-        { "<c-x>", dial.dec_normal() },
+        { "<c-a>", require('dial.map').inc_normal() },
+        { "<c-x>", require('dial.map').dec_normal() },
       },
       [{'v'}] = {
-        { "<c-a>", dial.inc_visual() },
-        { "<c-x>", dial.dec_visual() },
-        { "g<c-a>", dial.inc_gvisual() },
-        { "g<c-x>", dial.dec_gvisual() },
+        { "<c-a>", require('dial.map').inc_visual() },
+        { "<c-x>", require('dial.map').dec_visual() },
+        { "g<c-a>", require('dial.map').inc_gvisual() },
+        { "g<c-x>", require('dial.map').dec_gvisual() },
       }
     }, {remap = false})
   end,
   telescope = function()
-    local builtin = require('telescope.builtin')
     map({
       [{ 'n' }] = {
-        { '<leader><space>', builtin.buffers, {desc = '(TS) Buffers'}},
-        { '<leader>ff', builtin.find_files, {desc = '(TS) Find files'}},
-        { '<leader>f/', builtin.current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
-        { '<leader>fh', builtin.help_tags, {desc = '(TS) Neovim help'}},
-        { '<leader>ft', builtin.tags, {desc = '(TS) Tags'}},
-        { '<leader>fd', builtin.grep_string, {desc = '(TS) grep current string'}},
-        { '<leader>fp', builtin.live_grep, {desc = '(TS) live grep a string'}},
-        { '<leader>fo', function() builtin.tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
-        { '<leader>?', builtin.oldfiles, {desc = '(TS) Oldfiles'}},
+        { '<leader><space>', require('telescope.builtin').buffers, {desc = '(TS) Buffers'}},
+        { '<leader>ff', require('telescope.builtin').find_files, {desc = '(TS) Find files'}},
+        { '<leader>f/', require('telescope.builtin').current_buffer_fuzzy_find, {desc = '(TS) Fuzzy find in buffer'}},
+        { '<leader>fh', require('telescope.builtin').help_tags, {desc = '(TS) Neovim help'}},
+        { '<leader>ft', require('telescope.builtin').tags, {desc = '(TS) Tags'}},
+        { '<leader>fd', require('telescope.builtin').grep_string, {desc = '(TS) grep current string'}},
+        { '<leader>fp', require('telescope.builtin').live_grep, {desc = '(TS) live grep a string'}},
+        { '<leader>fo', function() require('telescope.builtin').tags({ only_current_buffer = true }) end, {desc = '(TS) Tags in buffer'}},
+        { '<leader>?', require('telescope.builtin').oldfiles, {desc = '(TS) Oldfiles'}},
         { '<leader>fb', "<Cmd>Telescope file_browser<CR>", {desc = '(TS) Browse files'}},
       }
     })
