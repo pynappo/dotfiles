@@ -5,9 +5,7 @@ M.create_autocmd = function(event, opts)
   vim.api.nvim_create_autocmd(event, opts)
 end
 if vim.g.started_by_firenvim then
-  M.create_autocmd('BufEnter', {
-    callback = function() vim.cmd.startinsert() end,
-  })
+  M.create_autocmd('BufEnter', { callback = function() vim.cmd.startinsert() end, })
 end
 
 M.create_autocmd ('TextYankPost',{
@@ -32,7 +30,22 @@ M.create_autocmd('DiagnosticChanged', {
 })
 
 if not vim.g.neovide then
-  M.create_autocmd('ColorScheme', { callback = require('pynappo/theme').transparent_override })
+  M.create_autocmd('ColorScheme', {
+    callback = function ()
+      local highlights = {
+        "Normal",
+        "LineNr",
+        "Folded",
+        "NonText",
+        "SpecialKey",
+        "VertSplit",
+        "SignColumn",
+        "EndOfBuffer",
+        "TablineFill"
+      }
+      for _, name in pairs(highlights) do vim.cmd.highlight(name .. ' guibg=none ctermbg=none') end
+    end
+  })
 end
 
 return M
