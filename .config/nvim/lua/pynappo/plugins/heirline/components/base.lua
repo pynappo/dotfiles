@@ -130,7 +130,7 @@ local M = {
   navic = {
     flexible = 3,
     {
-      condition = require("nvim-navic").is_available,
+      condition = function() require("nvim-navic").is_available() end,
       static = {
         -- create a type highlight map
         type_hl = {

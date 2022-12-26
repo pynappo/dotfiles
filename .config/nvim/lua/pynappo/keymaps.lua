@@ -9,6 +9,7 @@ local function map(mappings, opts)
       vim.keymap.set(mode, key, cmd, opts)
     end
   end
+
 end
 
 M.setup = {

@@ -15,7 +15,7 @@ g.firenvim_config = {
     },
   }
 }
-if vim.fn.has('win32') then
+if jit.os == "Windows" then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
   o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
@@ -129,4 +129,37 @@ vim.fn.sign_define("DiagnosticSignInfo", {text = "", texthl = "DiagnosticSign
 vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
 require("pynappo/plugins")
 vim.cmd.colorscheme('ayu')
-require("pynappo/commands")
+
+
+local commands = {
+  {"CDhere", "cd %:p:h"},
+  {
+    "Trim",
+    function() -- yoinked from mini.trailspace because I don't like highlights
+      -- Save cursor position to later restore
+      local curpos = vim.api.nvim_win_get_cursor(0)
+      -- Search and replace trailing whitespace
+      vim.cmd([[keeppatterns %s/\s\+$//e]])
+      vim.api.nvim_win_set_cursor(0, curpos)
+
+      --- Trim last blank lines
+      local n_lines = vim.api.nvim_buf_line_count(0)
+      local last_nonblank = vim.fn.prevnonblank(n_lines)
+      if last_nonblank < n_lines then vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, {}) end
+    end,
+  },
+  {
+    "DotfilesGit",
+    function()
+      vim.env.GIT_WORK_TREE = vim.fn.expand("~")
+      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
+    end,
+  },
+  {
+    'ClearSwapFiles',
+    function()
+      vim.fn.system('rm ' .. vim.fn.stdpath('data') .. '/swap/*' .. jit.os == "Windows" and ' -Force' or ' -f')
+    end
+  }
+}
+for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {}) end
