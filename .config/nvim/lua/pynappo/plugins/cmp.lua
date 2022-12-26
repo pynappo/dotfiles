@@ -59,6 +59,9 @@ cmp.setup {
     {
       { name = 'copilot' },
       { name = "nvim_lua" },
+      { name = "path"},
+    },
+    {
       {
         name = 'buffer',
         option = {
@@ -68,8 +71,7 @@ cmp.setup {
             return vim.tbl_keys(bufs)
           end
         }
-      },
-      { name = "path"},
+      }
     }
   ),
   sorting = {
@@ -91,6 +93,7 @@ cmp.setup {
 }
 
 cmp.setup.filetype('gitcommit', {
+
   sources = cmp.config.sources(
     {{ name = 'git' }},
     {{ name = 'buffer' }},
@@ -99,10 +102,7 @@ cmp.setup.filetype('gitcommit', {
   )
 })
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on(
-  'confirm_done',
-  cmp_autopairs.on_confirm_done()
-)
+cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
 cmp.setup.cmdline(':', {
   confirmation = { completeopt = 'menu,menuone,noinsert' },
   sources = cmp.config.sources(

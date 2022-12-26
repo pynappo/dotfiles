@@ -395,7 +395,7 @@ require('lazy').setup({
   {
     'nvim-zh/colorful-winsep.nvim',
     config = function()
-      require('colorful-winsep').setup({ highlight = { fg = "#1F3442"} })
+      require('colorful-winsep').setup({ highlight = { fg = "#202521"} })
     end,
   },
   {
