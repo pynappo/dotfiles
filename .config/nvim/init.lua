@@ -1,6 +1,3 @@
-local packer_exists = pcall(require, 'packer')
-if packer_exists then require("impatient") end
-
 local o = vim.o
 local opt = vim.opt
 local g = vim.g
@@ -18,7 +15,7 @@ g.firenvim_config = {
     },
   }
 }
-if vim.fn.has('win32') then
+if jit.os == "Windows" then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
   o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
@@ -51,7 +48,7 @@ o.number = true
 
 -- Enable mouse
 o.mouse = "a"
-o.mousescroll = "ver:4,hor:6"
+o.mousescroll = "ver:6,hor:6"
 
 -- Tabs
 o.tabstop = 2
@@ -124,10 +121,45 @@ local disabled_built_ins = {
   "matchparen"
 }
 for _, plugin in pairs(disabled_built_ins) do vim.g["loaded_" .. plugin] = 1 end
-require("pynappo/plugins")
-local theme = require("pynappo/theme")
-theme.ayu()
-if not g.neovide then theme.transparent_override() end
-require("pynappo/commands")
 require("pynappo/keymaps").setup.regular()
 require("pynappo/autocmds")
+vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"})
+vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
+require("pynappo/plugins")
+vim.cmd.colorscheme('ayu')
+
+
+local commands = {
+  {"CDhere", "cd %:p:h"},
+  {
+    "Trim",
+    function() -- yoinked from mini.trailspace because I don't like highlights
+      -- Save cursor position to later restore
+      local curpos = vim.api.nvim_win_get_cursor(0)
+      -- Search and replace trailing whitespace
+      vim.cmd([[keeppatterns %s/\s\+$//e]])
+      vim.api.nvim_win_set_cursor(0, curpos)
+
+      --- Trim last blank lines
+      local n_lines = vim.api.nvim_buf_line_count(0)
+      local last_nonblank = vim.fn.prevnonblank(n_lines)
+      if last_nonblank < n_lines then vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, {}) end
+    end,
+  },
+  {
+    "DotfilesGit",
+    function()
+      vim.env.GIT_WORK_TREE = vim.fn.expand("~")
+      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
+    end,
+  },
+  {
+    'ClearSwapFiles',
+    function()
+      vim.fn.system('rm ' .. vim.fn.stdpath('data') .. '/swap/*' .. jit.os == "Windows" and ' -Force' or ' -f')
+    end
+  }
+}
+for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {}) end
