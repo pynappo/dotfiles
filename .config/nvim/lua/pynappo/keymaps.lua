@@ -49,17 +49,16 @@ M.setup = {
     }, {silent=true})
   end,
   smart_splits = function()
-    local ss = require('smart-splits')
     map({
       [{'n', 't'}] = {
-        { '<A-h>', ss.resize_left },
-        { '<A-j>', ss.resize_down },
-        { '<A-k>', ss.resize_up },
-        { '<A-l>', ss.resize_right },
-        { '<C-h>', ss.move_cursor_left },
-        { '<C-j>', ss.move_cursor_down },
-        { '<C-k>', ss.move_cursor_up },
-        { '<C-l>', ss.move_cursor_right },
+        { '<A-h>', require('smart-splits').resize_left },
+        { '<A-j>', require('smart-splits').resize_down },
+        { '<A-k>', require('smart-splits').resize_up },
+        { '<A-l>', require('smart-splits').resize_right },
+        { '<C-h>', require('smart-splits').move_cursor_left },
+        { '<C-j>', require('smart-splits').move_cursor_down },
+        { '<C-k>', require('smart-splits').move_cursor_up },
+        { '<C-l>', require('smart-splits').move_cursor_right },
       }
     }, {silent = true})
   end,
@@ -176,7 +175,7 @@ M.setup = {
   matchup = function() map({ [{'n'}] = { { "<c-K>", [[<Cmd><C-u>MatchupWhereAmI?<cr>]], {desc = "(Matchup) Where am I?"} } } }) end,
   mini = function() map({ [{ 'n' }] = { { '<leader>m', function() require('mini.map').toggle() end, {desc = 'Toggle mini.map'}}}}) end,
   dial = function()
-    local dial =
+    local dial = require('dial.map')
     map({
       [{'n'}] = {
         { "<c-a>", require('dial.map').inc_normal() },
@@ -217,20 +216,21 @@ M.cmp = {
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
       ["<C-f>"] = cmp.mapping.scroll_docs(4),
       ["<C-Space>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto, }),
-      ["<CR>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, },
+      ["<CR>"] = cmp.mapping.confirm ({ behavior = cmp.ConfirmBehavior.Replace }),
       ["<Tab>"] = cmp.mapping(function(fallback)
-        if luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
-        elseif cmp.visible() then cmp.select_next_item()
+        if cmp.visible() then cmp.select_next_item()
+        elseif luasnip.jumpable(1) then luasnip.jump(1)
         else fallback() end
       end, { "i", "s", 'c' }),
       ["<S-Tab>"] = cmp.mapping(function(fallback)
-        if luasnip.jumpable(-1) then luasnip.jump(-1)
-        elseif cmp.visible() then cmp.select_prev_item()
+        if cmp.visible() then cmp.select_prev_item()
+        elseif luasnip.jumpable(-1) then luasnip.jump(-1)
         else fallback() end
       end, { "i", "s", 'c' }),
     })
   end,
 }
+
 
 M.toggleterm = { open_mapping = [[<C-\>]] }
 M.neotree = {
