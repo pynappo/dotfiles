@@ -42,13 +42,13 @@ require('lazy').setup({
   { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
   { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end },
   { 'ggandor/leap-spooky.nvim', config = function() require('leap-spooky').setup() end },
-  { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end } ,
-  { 'nvim-telescope/telescope-fzf-native.nvim', build = "make"},
+  { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = "make"},
     },
     config = function() require('pynappo/plugins/telescope') end,
   },
@@ -60,7 +60,7 @@ require('lazy').setup({
         {
           callback = function()
             local hl_list = {}
-            for i, color in pairs({ '#782121', '#6a6a21', '#216631', '#325f5f', '#324b7b', '#563155' }) do
+            for i, color in pairs({ '#4b2121', '#464421', '#21492a', '#2e4249', '#223b4b', '#463145' }) do
               local name = 'IndentBlanklineIndent' .. i
               vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
               table.insert(hl_list, name);
@@ -116,14 +116,14 @@ require('lazy').setup({
       "hrsh7th/cmp-cmdline",
       'dmitmel/cmp-cmdline-history',
       {
-        'zbirenbaum/copilot.lua',
+        "zbirenbaum/copilot-cmp",
         dependencies = {
           {
-            "zbirenbaum/copilot-cmp",
-            config = function() require("copilot_cmp").setup() end,
+            'zbirenbaum/copilot.lua',
+            config = function () vim.defer_fn(function() require("copilot").setup() end, 100) end,
           }
         },
-        config = function () vim.defer_fn(function() require("copilot").setup() end, 100) end,
+        config = function() require("copilot_cmp").setup() end,
       },
       "hrsh7th/cmp-emoji",
       "hrsh7th/cmp-nvim-lsp",
@@ -135,6 +135,7 @@ require('lazy').setup({
       { 'saecki/crates.nvim', event = "BufRead Cargo.toml", dependencies = { 'nvim-lua/plenary.nvim' }, config = function() require('crates').setup() end },
       { "petertriho/cmp-git", dependencies = { "nvim-lua/plenary.nvim" }, config = function() require('cmp_git').setup() end},
       'davidsierradz/cmp-conventionalcommits',
+      { 'alaviss/nim.nvim' },
     },
   },
   { 'windwp/nvim-autopairs', config = function() require('pynappo/plugins/autopairs') end },
@@ -226,8 +227,6 @@ require('lazy').setup({
         names = true, -- "Name" codes like Blue or blue
         RRGGBBAA = true, -- #RRGGBBAA hex codes
         AARRGGBB = true, -- 0xAARRGGBB hex codes
-        rgb_fn = true, -- CSS rgb() and rgba() functions
-        hsl_fn = true, -- CSS hsl() and hsla() functions
         css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
         css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
         mode = "foreground", -- Set the display mode.
@@ -265,7 +264,7 @@ require('lazy').setup({
           enabled = true,
           name_formatter = function(term) return term.name end
         },
-        highlights = { StatusLine = { guibg = 'StatusLine' } },
+        highlights = { StatusLine = { guibg = 'StatusLine' } }, -- Hack for global heirline to work
       }
     end
   },
@@ -365,7 +364,7 @@ require('lazy').setup({
   },
   {
     'toppair/peek.nvim',
-    build = function() vim.fn.system('deno task --quiet build:fast') end,
+    build = 'deno task --quiet build:fast',
     config = function()
       require('peek').setup({
         auto_load = true,         -- whether to automatically load preview when
@@ -378,7 +377,7 @@ require('lazy').setup({
       vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
     end
   },
-  { 'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
+  -- { 'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
   { 'AckslD/nvim-FeMaco.lua', config = function() require("femaco").setup() end },
   {
     'levouh/tint.nvim',
@@ -394,9 +393,7 @@ require('lazy').setup({
   },
   {
     'nvim-zh/colorful-winsep.nvim',
-    config = function()
-      require('colorful-winsep').setup({ highlight = { fg = "#202521"} })
-    end,
+    config = function() require('colorful-winsep').setup({ highlight = { fg = "#202521"} }) end,
   },
   {
     'xeluxee/competitest.nvim',
@@ -421,7 +418,6 @@ require('lazy').setup({
       require('pynappo/keymaps').setup.smart_splits()
     end
   },
-  { 'alaviss/nim.nvim' },
   {
     'melkster/modicator.nvim',
     init = function()

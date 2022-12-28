@@ -1,6 +1,14 @@
 local o = vim.o
 local opt = vim.opt
 local g = vim.g
+if jit.os == "Windows" then
+  o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
+  o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+  o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  o.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  o.shellquote = ''
+  o.shellxquote = ''
+end
 g.firenvim_config = {
   globalSettings = {
     alt = 'all',
@@ -15,14 +23,6 @@ g.firenvim_config = {
     },
   }
 }
-if jit.os == "Windows" then
-  o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
-  o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-  o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  o.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  o.shellquote = ''
-  o.shellxquote = ''
-end
 if g.started_by_firenvim then
   o.laststatus = 0
   o.cmdheight = 0
