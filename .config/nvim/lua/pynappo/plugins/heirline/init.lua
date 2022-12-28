@@ -1,7 +1,8 @@
 local utils = require("heirline.utils")
+local get_hl = utils.get_highlight
 local conditions = require("heirline.conditions")
 local function setup_colors()
-  local get_hl = utils.get_highlight
+  print(vim.g.colors_name)
   return {
     panel_border = get_hl("CursorLineNr").fg,
     string = get_hl("String").fg,
@@ -20,24 +21,51 @@ local function setup_colors()
     diag_error = get_hl("DiagnosticError").fg,
     diag_hint = get_hl("DiagnosticHint").fg,
     diag_info = get_hl("DiagnosticInfo").fg,
-    git_del = get_hl("GitSignsDelete").fg,
-    git_add = get_hl("GitSignsAdd").fg,
+    git_del = get_hl("DiffRemoved").fg,
+    git_add = get_hl("DiffAdded").fg,
     git_change = get_hl("GitsignsChange").fg,
   }
 end
-require('heirline').load_colors(setup_colors())
+
+-- These are default colors that builtin colorschemes should already have
+local default_colors = {
+  panel_border = get_hl("CursorLineNr").fg,
+  string = get_hl("String").fg,
+  bright_bg = get_hl("StatusLine").bg,
+  bright_fg = get_hl("StatusLineNC").fg,
+  normal = get_hl("Normal").fg,
+  func = get_hl("Function").fg,
+  type = get_hl("Type").fg,
+  debug = get_hl("Debug").fg,
+  comment = get_hl("NonText").fg,
+  directory = get_hl("Directory").fg,
+  constant = get_hl("Constant").fg,
+  statement = get_hl("Statement").fg,
+  special = get_hl("Special").fg,
+  diag_warn = get_hl("DiagnosticWarn").fg,
+  diag_error = get_hl("DiagnosticError").fg,
+  diag_hint = get_hl("DiagnosticHint").fg,
+  diag_info = get_hl("DiagnosticInfo").fg,
+  git_del = get_hl("DiffDelete").bg,
+  git_add = get_hl("DiffAdd").bg,
+  git_change = get_hl("DiffChange").bg,
+}
+require('heirline').load_colors(default_colors)
 
 vim.api.nvim_create_augroup("Heirline", { clear = true })
-vim.api.nvim_create_autocmd("ColorScheme", { callback = function() utils.on_colorscheme(setup_colors()) end, group = "Heirline", })
+-- We're gonna assume that the user is applying a colorscheme with gitsigns support
+vim.api.nvim_create_autocmd("ColorScheme", { callback = function()
+  local plugin_support, new_colors = pcall(setup_colors)
+  utils.on_colorscheme(plugin_support and new_colors or default_colors)
+end, group = "Heirline", })
 
 vim.api.nvim_create_autocmd("User", {
   pattern = 'HeirlineInitWinbar',
   callback = function(args)
-    local buf = args.buf
-    local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo[buf].buftype)
-    local filetype = vim.tbl_contains({ "gitcommit", "fugitive" }, vim.bo[buf].filetype)
+    local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo[args.buf].buftype)
+    local filetype = vim.tbl_contains({ "gitcommit", "fugitive" }, vim.bo[args.buf].filetype)
 
-    if buftype or filetype then vim.opt_local.winbar = nil end
+    if buftype or filetype then vim.wo.winbar = nil end
   end,
 })
 

@@ -16,6 +16,7 @@ require('lazy').setup({
   { 'tpope/vim-fugitive' },
   {
     'Shatur/neovim-ayu',
+    priority = 100,
     config = function()
       local colors = require('ayu.colors')
       require("ayu").setup({
@@ -362,21 +363,7 @@ require('lazy').setup({
       })
     end
   },
-  {
-    'toppair/peek.nvim',
-    build = 'deno task --quiet build:fast',
-    config = function()
-      require('peek').setup({
-        auto_load = true,         -- whether to automatically load preview when
-        -- entering another markdown buffer
-        close_on_bdelete = true,  -- close preview window on buffer delete
-        syntax = true,            -- enable syntax highlighting, affects performance
-        theme = 'dark',           -- 'dark' or 'light'
-      })
-      vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
-      vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
-    end
-  },
+  "ellisonleao/glow.nvim",
   -- { 'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
   { 'AckslD/nvim-FeMaco.lua', config = function() require("femaco").setup() end },
   {
