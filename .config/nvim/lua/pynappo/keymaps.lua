@@ -159,7 +159,7 @@ M.setup = {
       }
     })
   end,
-  incremental_rename = function() map ({ [{ 'n' }] = { { '<leader>rn', function() return "<Cmd>IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, } })end,
+  incremental_rename = function() map ({ [{ 'n' }] = { { '<leader>rn', function() return ":IncRename " .. vim.fn.expand("<cword>") end, {expr = true, desc = 'Rename (incrementally)'} }, } })end,
   hlslens = function()
     map({
       [{'n'}] = {

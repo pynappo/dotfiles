@@ -61,6 +61,9 @@ Function Mc {
     mkdir @Args
     cd @Args
 }
+Function Rmf {
+    rm -Force @Args
+}
 Function New-Link ($Path, $Target) {
     New-Item -ItemType SymbolicLink -Path $Path -Value $Target
 }
