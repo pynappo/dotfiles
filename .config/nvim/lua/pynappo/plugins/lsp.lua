@@ -21,6 +21,18 @@ local configs = {
       }
     }
   }
+  ltex = {
+    filetypes = {
+      "bib",
+      "gitcommit",
+      -- "markdown",
+      "org",
+      "plaintex",
+      "rst",
+      "rnoweb",
+      "tex",
+    }
+  }
 }
 function M.get_config(ls) return vim.tbl_deep_extend("force", configs.default, configs[ls] or {}) end
 
