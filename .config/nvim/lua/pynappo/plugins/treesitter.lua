@@ -4,13 +4,12 @@ require('nvim-treesitter.configs').setup {
     enable = true,
     additional_vim_regex_highlighting = true,
   },
-  incremental_selection = {
+  textsubjects = {
     enable = true,
     keymaps = {
-      init_selection = 'gnn',
-      node_incremental = 'grn',
-      scope_incremental = 'grc',
-      node_decremental = 'grm',
+      ['.'] = 'textsubjects-smart',
+      ['a.'] = 'textsubjects-container-outer',
+      ['i.'] = 'textsubjects-container-inner',
     },
   },
   indent = {
@@ -53,13 +52,13 @@ require('nvim-treesitter.configs').setup {
     enable = true
   },
   rainbow = {
-    enable = true,
-    extended_mode = true,
+    enable = false,
+    extended_mode = false,
     max_file_lines = nil
   },
   autotag = {
     enable = true,
-  }
+  },
 }
 
 -- Better folds

@@ -1,15 +1,19 @@
 local M = {}
+local default_config = {
+  on_attach = function(client, bufnr)
+    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+    require('pynappo/keymaps').setup.lsp(bufnr)
+    require('nvim-navic').attach(client, bufnr)
+  end,
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
+  flags = {debounce_text_changes = 200}
+}
 local configs = {
-  default = {
-    on_attach = function(client, bufnr)
-      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-      require('pynappo/keymaps').setup.lsp(bufnr)
-      require('nvim-navic').attach(client, bufnr)
-    end,
-    capabilities = require("cmp_nvim_lsp").default_capabilities(),
-    flags = {debounce_text_changes = 200}
-  },
   sumneko_lua = {
+    on_attach = function(client, bufnr)
+      client.server_capabilities.document_formatting = false
+      default_config.on_attach(client, bufnr)
+    end,
     settings = {
       Lua = {
         completion = {
@@ -17,6 +21,10 @@ local configs = {
         },
         diagnostics = {
           globals = {'vim'}
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file('', true),
+          checkThirdParty = false,
         },
       }
     }
@@ -34,7 +42,7 @@ local configs = {
     }
   }
 }
-function M.get_config(ls) return vim.tbl_deep_extend("force", configs.default, configs[ls] or {}) end
+function M.get_config(ls) return vim.tbl_deep_extend("force", default_config, configs[ls] or {}) end
 
 vim.diagnostic.config({
   virtual_text = false,

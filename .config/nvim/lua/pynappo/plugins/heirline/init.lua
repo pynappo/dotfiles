@@ -2,7 +2,6 @@ local utils = require("heirline.utils")
 local get_hl = utils.get_highlight
 local conditions = require("heirline.conditions")
 local function setup_colors()
-  print(vim.g.colors_name)
   return {
     panel_border = get_hl("CursorLineNr").fg,
     string = get_hl("String").fg,

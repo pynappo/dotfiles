@@ -4,9 +4,7 @@ end
 
 local function all(tbl, check)
   for _, entry in ipairs(tbl) do
-    if not check(entry) then
-      return false
-    end
+    if not check(entry) then return false end
   end
   return true
 end
