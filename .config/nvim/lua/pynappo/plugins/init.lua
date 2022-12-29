@@ -133,8 +133,17 @@ require('lazy').setup({
       "octaltree/cmp-look",
       "saadparwaiz1/cmp_luasnip",
       'hrsh7th/cmp-nvim-lsp-signature-help',
-      { 'saecki/crates.nvim', event = "BufRead Cargo.toml", dependencies = { 'nvim-lua/plenary.nvim' }, config = function() require('crates').setup() end },
-      { "petertriho/cmp-git", dependencies = { "nvim-lua/plenary.nvim" }, config = function() require('cmp_git').setup() end},
+      {
+        'saecki/crates.nvim',
+        event = "BufRead Cargo.toml",
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        config = function() require('crates').setup() end,
+      },
+      {
+        "petertriho/cmp-git",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function() require('cmp_git').setup() end,
+      },
       'davidsierradz/cmp-conventionalcommits',
       { 'alaviss/nim.nvim' },
     },
@@ -181,7 +190,7 @@ require('lazy').setup({
       { "rcarriga/nvim-notify", config = function() require("notify").setup({background_colour = '#000000'}) end },
       {
         "smjonas/inc-rename.nvim",
-        requirements = {
+        dependencies = {
           {
             'stevearc/dressing.nvim',
             config = function()
@@ -301,8 +310,11 @@ require('lazy').setup({
     'nvim-neorg/neorg',
     -- tag = 'latest',
     ft = 'norg',
-    after = 'nvim-treesitter', -- You may want to specify Telescope here as well
-    config = function() require('neorg').setup {['core.defaults'] = {}} end
+    cmd = 'Neorg',
+    priority = 30,
+    config = function()
+      require('neorg').setup({ load = { ['core.defaults'] = {}, }, })
+    end
   },
   {
     'rebelot/heirline.nvim',
@@ -339,9 +351,12 @@ require('lazy').setup({
   },
   {
     'nvim-neotest/neotest',
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'rouge8/neotest-rust',
+    },
   },
-  'rouge8/neotest-rust',
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
@@ -380,7 +395,7 @@ require('lazy').setup({
   },
   {
     'nvim-zh/colorful-winsep.nvim',
-    config = function() require('colorful-winsep').setup({ highlight = { fg = "#202521"} }) end,
+    config = function() require('colorful-winsep').setup({ highlight = { fg = "#303531"} }) end,
   },
   {
     'xeluxee/competitest.nvim',

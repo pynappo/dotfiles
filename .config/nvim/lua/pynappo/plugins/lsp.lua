@@ -20,7 +20,7 @@ local configs = {
         },
       }
     }
-  }
+  },
   ltex = {
     filetypes = {
       "bib",
