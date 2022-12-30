@@ -27,6 +27,8 @@ M.create_autocmd('DiagnosticChanged', {
   callback = function() vim.diagnostic.setloclist({ open = false }) end,
 })
 
+pcall(vim.api.nvim_clear_autocmds, { group = "FileExplorer" })
+
 if not vim.g.neovide then
   M.create_autocmd('ColorScheme', {
     callback = function()
