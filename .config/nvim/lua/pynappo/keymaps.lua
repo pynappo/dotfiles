@@ -1,25 +1,27 @@
 local M = {}
 
-local function map(mappings, opts)
-  for modes, maps in pairs(mappings) do
+local function map(keymaps, opts, lazy)
+  local lazy_keymaps = {}
+  for modes, maps in pairs(keymaps) do
     for _, m in pairs(maps) do
-      opts = vim.tbl_extend('force', m[3] or {}, opts or {})
-      vim.keymap.set(modes, m[1], m[2], opts)
+      opts = vim.tbl_extend('force', opts or {}, m[3] or {})
+      if lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, opts))
+      else vim.keymap.set(modes, m[1], m[2], opts) end
     end
   end
+  return lazy_keymaps
 end
 
--- for use in `keys` field in lazy.nvim plugin specs
-local function lazy_map(mappings, opts)
-  local lazy_mappings = {}
-  for modes, maps in pairs(mappings) do
-    for _, m in pairs(maps) do
-      opts = vim.tbl_extend('force', m[3] or {}, opts or {})
-      table.insert(lazy_mappings, { m[1], m[2], mode = modes, unpack(opts) })
-    end
-  end
-  return lazy_mappings
-end
+-- -- for use in `keys` field in lazy.nvim plugin specs
+-- local function lazy_map(mappings, opts)
+--   for modes, maps in pairs(mappings) do
+--     for _, m in pairs(maps) do
+--       opts = vim.tbl_extend('force', m[3] or {}, opts or {})
+--       table.insert(lazy_mappings, { m[1], m[2], mode = modes, unpack(opts) })
+--     end
+--   end
+--   return lazy_mappings
+-- end
 
 M.setup = {
   regular = function()
@@ -155,18 +157,6 @@ M.setup = {
       },
     })
   end,
-  neotree_window = function()
-    map({
-      [{ 'n' }] = {
-        { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', { desc = 'Toggle Neo-tree (left) ' } },
-        {
-          'gd',
-          '<Cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>',
-          { desc = 'Popup Neo-tree for file under cursor' },
-        },
-      },
-    })
-  end,
   incremental_rename = function()
     map({
       [{ 'n' }] = {
@@ -214,35 +204,8 @@ M.setup = {
       },
     }, { remap = false })
   end,
-  telescope = function()
-    map({
-      [{ 'n' }] = {
-        { '<leader><space>', function() require('telescope.builtin').buffers() end, { desc = '(TS) Buffers' } },
-        { '<leader>ff', function() require('telescope.builtin').find_files() end, { desc = '(TS) Find files' } },
-        {
-          '<leader>f/',
-          require('telescope.builtin').current_buffer_fuzzy_find,
-          { desc = '(TS) Fuzzy find in buffer' },
-        },
-        { '<leader>fh', function() require('telescope.builtin').help_tags() end, { desc = '(TS) Neovim help' } },
-        { '<leader>ft', function() require('telescope.builtin').tags() end, { desc = '(TS) Tags' } },
-        { '<leader>fd', function() require('telescope.builtin').grep_string() end, { desc = '(TS) grep current string' } },
-        { '<leader>fp', function() require('telescope.builtin').live_grep() end, { desc = '(TS) live grep a string' } },
-        {
-          '<leader>fo',
-          function() require('telescope.builtin').tags({ only_current_buffer = true }) end,
-          { desc = '(TS) Tags in buffer' },
-        },
-        { '<leader>?', function() require('telescope.builtin').oldfiles() end, { desc = '(TS) Oldfiles' } },
-        { '<leader>fb', '<Cmd>Telescope file_browser<CR>', { desc = '(TS) Browse files' } },
-      },
-    })
-  end,
-}
-
-M.lazy_setup = {
-  telescope = function()
-    return lazy_map({
+  telescope = function(opts)
+    return map({
       [{ 'n' }] = {
         { '<leader><space>', function() require('telescope.builtin').buffers() end, { desc = '(TS) Buffers' } },
         { '<leader>ff', function() require('telescope.builtin').find_files() end, { desc = '(TS) Find files' } },
@@ -263,8 +226,23 @@ M.lazy_setup = {
         { '<leader>?', function() require('telescope.builtin').oldfiles() end, { desc = '(TS) Oldfiles' } },
         { '<leader>fb', '<Cmd>Telescope file_browser<CR>', { desc = '(TS) Browse files' } },
       },
-    })
+    }, {}, opts.lazy)
   end,
+  neo_tree = function(opts)
+    return map({
+      [{ 'n' }] = {
+        { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', { desc = 'Toggle Neo-tree (left) ' } },
+        {
+          'gd',
+          '<Cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>',
+          { desc = 'Popup Neo-tree for file under cursor' },
+        },
+      },
+    }, {}, opts.lazy)
+  end
+}
+
+M.lazy_setup = {
 }
 
 -- For other plugins
