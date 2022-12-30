@@ -89,11 +89,8 @@ require('lazy').setup({
         desc = "lazy-loaded telescope-file-browser.nvimw",
       })
     end,
-    config = function()
-      require('pynappo/plugins/telescope')
-      -- require('pynappo/keymaps').setup.telescope()
-    end,
-    keys = require('pynappo/keymaps').lazy_setup.telescope()
+    config = function() require('pynappo/plugins/telescope') end,
+    keys = require('pynappo/keymaps').setup.telescope({lazy = true})
   },
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -302,6 +299,7 @@ require('lazy').setup({
   {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v2.x',
+    cmd = 'Neotree',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
@@ -315,7 +313,9 @@ require('lazy').setup({
         end,
       },
     },
+    init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
     config = function() require('pynappo/plugins/neo-tree') end,
+    keys = require('pynappo/keymaps').setup.neo_tree({lazy = true})
   },
   {
     'akinsho/toggleterm.nvim',
@@ -353,10 +353,8 @@ require('lazy').setup({
 
   {
     'kevinhwang91/nvim-hlslens',
-    config = function()
-      require('hlslens').setup()
-      require('pynappo/keymaps').setup.hlslens()
-    end,
+    init = function() require('pynappo/keymaps').setup.hlslens() end,
+    config = function() require('hlslens').setup() end,
   },
   {
     'nvim-neorg/neorg',
@@ -395,6 +393,9 @@ require('lazy').setup({
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
     },
+    init = function()
+      require('pynappo/keymaps').setup.diagnostics()
+    end,
     config = function()
       require('mason').setup({ ui = { border = 'single' } })
       require('pynappo/plugins/lsp')
@@ -420,7 +421,11 @@ require('lazy').setup({
     },
     config = function() require('pynappo/plugins/dap') end,
   },
-  { 'monaqa/dial.nvim', config = function() require('pynappo/plugins/dial') end },
+  {
+    'monaqa/dial.nvim',
+    init = function() require("pynappo/keymaps").setup.dial() end,
+    config = function() require('pynappo/plugins/dial') end,
+  },
   {
     'kosayoda/nvim-lightbulb',
     config = function()

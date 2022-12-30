@@ -86,8 +86,6 @@ require('mason-tool-installer').setup {
   },
 }
 
-require('pynappo/keymaps').setup.diagnostics()
-
 local mason_lspconfig = require('mason-lspconfig')
 local lspconfig = require('lspconfig')
 mason_lspconfig.setup()

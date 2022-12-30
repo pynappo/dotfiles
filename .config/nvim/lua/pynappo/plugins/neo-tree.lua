@@ -1,8 +1,5 @@
--- Unless you are still migrating, remove the deprecated commands from v1.x
-vim.g.neo_tree_remove_legacy_commands = 1
 -- If you want icons for diagnostic errors, you'll need to define them somewhere:
 local keymaps = require("pynappo/keymaps")
-keymaps.setup.neotree_window()
 local function getTelescopeOpts(state, path)
   return {
     cwd = path,
