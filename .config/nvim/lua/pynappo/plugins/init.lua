@@ -45,12 +45,55 @@ require('lazy').setup({
   { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
     'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
-    config = function() require('pynappo/plugins/telescope') end,
+    init = function()
+      vim.api.nvim_create_autocmd("VimEnter", {
+        pattern = "*",
+        once = true,
+        callback = function() pcall(vim.api.nvim_clear_autocmds, { group = "FileExplorer" }) end,
+      })
+      local netrw_bufname
+      vim.api.nvim_create_autocmd("BufEnter", {
+        group = vim.api.nvim_create_augroup("telescope-file-browser.nvim", { clear = true }),
+        pattern = "*",
+        callback = function()
+          vim.schedule(function()
+            if vim.bo[0].filetype == "netrw" then return end
+            local bufname = vim.api.nvim_buf_get_name(0)
+            if vim.fn.isdirectory(bufname) == 0 then
+              _, netrw_bufname = pcall(vim.fn.expand, "#:p:h")
+              return
+            end
+
+            -- prevents reopening of file-browser if exiting without selecting a file
+            if netrw_bufname == bufname then
+              netrw_bufname = nil
+              return
+            else
+              netrw_bufname = bufname
+            end
+
+            vim.bo[0].bufhidden = "wipe"
+
+            require("telescope").extensions.file_browser.file_browser {
+              cwd = vim.fn.expand "%:p:h",
+            }
+          end)
+        end,
+        once = true,
+        desc = "lazy-loaded telescope-file-browser.nvimw",
+      })
+    end,
+    config = function()
+      require('pynappo/plugins/telescope')
+      -- require('pynappo/keymaps').setup.telescope()
+    end,
+    keys = require('pynappo/keymaps').lazy_setup.telescope()
   },
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -107,6 +150,7 @@ require('lazy').setup({
   },
   {
     'L3MON4D3/LuaSnip',
+    event = 'InsertEnter',
     config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
     dependencies = { 'rafamadriz/friendly-snippets' },
   },
@@ -327,15 +371,17 @@ require('lazy').setup({
     dependencies = {
       {
         'SmiteshP/nvim-navic',
+        event = 'LspAttach',
         dependencies = { 'neovim/nvim-lspconfig' },
         config = function() require('pynappo/plugins/navic') end,
       },
-      {
-        'lewis6991/gitsigns.nvim',
-        dependencies = { 'nvim-lua/plenary.nvim' },
-        config = function() require('pynappo/plugins/gitsigns') end,
-      },
+      { 'lewis6991/gitsigns.nvim' },
     },
+  },
+  {
+    'lewis6991/gitsigns.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function() require('pynappo/plugins/gitsigns') end,
   },
   { 'tiagovla/scope.nvim', config = function() require('scope').setup() end },
   {
@@ -401,10 +447,20 @@ require('lazy').setup({
   },
   {
     'nvim-zh/colorful-winsep.nvim',
-    config = function() require('colorful-winsep').setup({ highlight = { fg = "#303531"} }) end,
+    config = function() require('colorful-winsep').setup({ highlight = { fg = "#373751"} }) end,
   },
   {
     'xeluxee/competitest.nvim',
+    cmd = {
+      'CompetiTestAdd',
+      'CompetiTestRun',
+      'CompetiTestEdit',
+      'CompetiTestDelete',
+      'CompetiTestReceive',
+      'CompetiTestRunNE',
+      'CompetiTestRunNC',
+      'CompetiTestConvert'
+    },
     dependencies = { 'MunifTanjim/nui.nvim' },
     config = function() require('competitest').setup({ runner_ui = { interface = 'popup' } }) end,
   },

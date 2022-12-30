@@ -102,3 +102,4 @@
   "vim-repeat": { "branch": "master", "commit": "24afe922e6a05891756ecf331f39a1f6743d3d5a" },
   "vim-startuptime": { "branch": "master", "commit": "cb4c112b9e0f224236ee4eab6bf5153406b3f88b" },
   "which-key.nvim": { "branch": "main", "commit": "8682d3003595017cd8ffb4c860a07576647cc6f8" }
+}
