@@ -1,27 +1,17 @@
 local M = {}
 
-local function map(keymaps, opts, lazy)
+local function map(keymaps, opts, extra_opts)
   local lazy_keymaps = {}
+  extra_opts = extra_opts or {}
   for modes, maps in pairs(keymaps) do
     for _, m in pairs(maps) do
       opts = vim.tbl_extend('force', opts or {}, m[3] or {})
-      if lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, opts))
+      if extra_opts.lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, opts))
       else vim.keymap.set(modes, m[1], m[2], opts) end
     end
   end
   return lazy_keymaps
 end
-
--- -- for use in `keys` field in lazy.nvim plugin specs
--- local function lazy_map(mappings, opts)
---   for modes, maps in pairs(mappings) do
---     for _, m in pairs(maps) do
---       opts = vim.tbl_extend('force', m[3] or {}, opts or {})
---       table.insert(lazy_mappings, { m[1], m[2], mode = modes, unpack(opts) })
---     end
---   end
---   return lazy_mappings
--- end
 
 M.setup = {
   regular = function()
@@ -65,24 +55,23 @@ M.setup = {
     }, { silent = true })
   end,
   smart_splits = function()
-    local ss = require('smart-splits')
     map({
       [{ 'n', 't' }] = {
-        { '<A-h>', ss.resize_left },
-        { '<A-j>', ss.resize_down },
-        { '<A-k>', ss.resize_up },
-        { '<A-l>', ss.resize_right },
-        { '<C-h>', ss.move_cursor_left },
-        { '<C-j>', ss.move_cursor_down },
-        { '<C-k>', ss.move_cursor_up },
-        { '<C-l>', ss.move_cursor_right },
+        { '<A-h>', function() require('smart-splits').resize_left() end },
+        { '<A-j>', function() require('smart-splits').resize_down() end },
+        { '<A-k>', function() require('smart-splits').resize_up() end },
+        { '<A-l>', function() require('smart-splits').resize_right() end },
+        { '<C-h>', function() require('smart-splits').move_cursor_left() end },
+        { '<C-j>', function() require('smart-splits').move_cursor_down() end },
+        { '<C-k>', function() require('smart-splits').move_cursor_up() end },
+        { '<C-l>', function() require('smart-splits').move_cursor_right() end },
       },
     }, { silent = true })
   end,
-  treesj = function()
+  treesj = function(opts)
     map({
       [{ 'n' }] = { { 'gJ', '<Cmd>TSJToggle<CR>', { desc = 'Split/join line' } } },
-    })
+    }, {}, opts)
   end,
   lsp = function(bufnr)
     map({
@@ -168,7 +157,7 @@ M.setup = {
       },
     })
   end,
-  hlslens = function()
+  hlslens = function(opts)
     map({
       [{ 'n' }] = {
         { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
@@ -179,10 +168,12 @@ M.setup = {
         { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]] },
         { '<Leader>l', ':noh<CR>' },
       },
-    }, { noremap = true, silent = true })
+    }, { noremap = true, silent = true }, opts)
   end,
   matchup = function()
-    map({ [{ 'n' }] = { { '<c-K>', [[<Cmd><C-u>MatchupWhereAmI?<cr>]], { desc = '(Matchup) Where am I?' } } } })
+    map({
+      [{ 'n' }] = { { '<c-K>', [[<Cmd><C-u>MatchupWhereAmI?<cr>]], { desc = '(Matchup) Where am I?' } } },
+    })
   end,
   mini = function()
     map({
@@ -226,7 +217,7 @@ M.setup = {
         { '<leader>?', function() require('telescope.builtin').oldfiles() end, { desc = '(TS) Oldfiles' } },
         { '<leader>fb', '<Cmd>Telescope file_browser<CR>', { desc = '(TS) Browse files' } },
       },
-    }, {}, opts.lazy)
+    }, {}, opts)
   end,
   neo_tree = function(opts)
     return map({
@@ -238,14 +229,10 @@ M.setup = {
           { desc = 'Popup Neo-tree for file under cursor' },
         },
       },
-    }, {}, opts.lazy)
+    }, {}, opts)
   end
 }
 
-M.lazy_setup = {
-}
-
--- For other plugins
 M.cmp = {
   insert = function()
     local cmp = require('cmp')

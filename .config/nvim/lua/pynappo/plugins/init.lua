@@ -11,6 +11,118 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
+local lazy_opts = {
+  root = vim.fn.stdpath('data') .. '/lazy', -- directory where plugins will be installed
+  defaults = {
+    lazy = false, -- should plugins be lazy-loaded?
+  },
+  lockfile = vim.fn.stdpath('config') .. '/lazy-lock.json', -- lockfile generated after running update.
+  concurrency = nil, ---@type number limit the maximum amount of concurrent tasks
+  git = {
+    -- defaults for the `Lazy log` command
+    -- log = { "-10" }, -- show the last 10 commits
+    log = { '--since=3 days ago' }, -- show commits from the last 3 days
+    timeout = 90, -- seconds
+    url_format = 'https://github.com/%s.git',
+  },
+  dev = {
+    -- directory where you store your local plugin projects
+    path = '~/code/nvim',
+    ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
+    patterns = {}, -- For example {"folke"}
+  },
+  install = {
+    -- install missing plugins on startup. This doesn't increase startup time.
+    missing = true,
+    -- try to load one of these colorschemes when starting an installation during startup
+    colorscheme = { 'habamax' },
+  },
+  ui = {
+    size = { width = 0.8, height = 0.8 },
+    border = 'none',
+    icons = {
+      loaded = '●',
+      not_loaded = '○',
+      cmd = ' ',
+      config = '',
+      event = '',
+      ft = ' ',
+      init = ' ',
+      keys = ' ',
+      plugin = ' ',
+      runtime = ' ',
+      source = ' ',
+      start = '',
+      task = '✔ ',
+      lazy = '鈴 ',
+      list = {
+        '●',
+        '➜',
+        '★',
+        '‒',
+      },
+    },
+    custom_keys = {
+      -- you can define custom key maps here.
+      -- To disable one of the defaults, set it to false
+
+      -- open lazygit log
+      ['<localleader>l'] = function(plugin)
+        require('lazy.util').open_cmd({ 'lazygit', 'log' }, {
+          cwd = plugin.dir,
+          terminal = true,
+          close_on_exit = true,
+          enter = true,
+        })
+      end,
+
+      -- open a terminal for the plugin dir
+      ['<localleader>t'] = function(plugin)
+        require('lazy.util').open_cmd({ vim.go.shell }, {
+          cwd = plugin.dir,
+          terminal = true,
+          close_on_exit = true,
+          enter = true,
+        })
+      end,
+    },
+  },
+  diff = { cmd = 'diffview.nvim' },
+  checker = {
+    -- automatically check for plugin updates
+    enabled = false,
+    concurrency = nil, ---@type number? set to 1 to check for updates very slowly
+    notify = true, -- get a notification when new updates are found
+    frequency = 3600, -- check for updates every hour
+  },
+  change_detection = {
+    enabled = true,
+    notify = true, -- get a notification when changes are found
+  },
+  performance = {
+    cache = {
+      enabled = true,
+      path = vim.fn.stdpath('cache') .. '/lazy/cache',
+      disable_events = { 'VimEnter', 'BufReadPre' },
+      ttl = 3600 * 24 * 5, -- keep unused modules for up to 5 days
+    },
+    reset_packpath = true, -- reset the package path to improve startup time
+    rtp = {
+      reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
+      ---@type string[]
+      paths = {}, -- add any custom paths here that you want to indluce in the rtp
+      ---@type string[] list any plugins you want to disable here
+      -- disabled_plugins = require('init').disabled_plugins,
+    },
+  },
+  readme = {
+    root = vim.fn.stdpath('state') .. '/lazy/readme',
+    files = { 'README.md' },
+    -- only generate markdown helptags for plugins that dont have docs
+    skip_if_doc_exists = true,
+  },
+}
+
 require('lazy').setup({
   { 'tpope/vim-fugitive' },
   {
@@ -52,21 +164,21 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
     init = function()
-      vim.api.nvim_create_autocmd("VimEnter", {
-        pattern = "*",
+      vim.api.nvim_create_autocmd('VimEnter', {
+        pattern = '*',
         once = true,
-        callback = function() pcall(vim.api.nvim_clear_autocmds, { group = "FileExplorer" }) end,
+        callback = function() pcall(vim.api.nvim_clear_autocmds, { group = 'FileExplorer' }) end,
       })
-      local netrw_bufname
-      vim.api.nvim_create_autocmd("BufEnter", {
-        group = vim.api.nvim_create_augroup("telescope-file-browser.nvim", { clear = true }),
-        pattern = "*",
+      vim.api.nvim_create_autocmd('BufEnter', {
+        group = vim.api.nvim_create_augroup('telescope-file-browser.nvim', { clear = true }),
+        pattern = '*',
         callback = function()
           vim.schedule(function()
-            if vim.bo[0].filetype == "netrw" then return end
+            local netrw_bufname, _
+            if vim.bo[0].filetype == 'netrw' then return end
             local bufname = vim.api.nvim_buf_get_name(0)
             if vim.fn.isdirectory(bufname) == 0 then
-              _, netrw_bufname = pcall(vim.fn.expand, "#:p:h")
+              _, netrw_bufname = pcall(vim.fn.expand, '#:p:h')
               return
             end
 
@@ -77,20 +189,18 @@ require('lazy').setup({
             else
               netrw_bufname = bufname
             end
-
-            vim.bo[0].bufhidden = "wipe"
-
-            require("telescope").extensions.file_browser.file_browser {
-              cwd = vim.fn.expand "%:p:h",
-            }
+            vim.bo[0].bufhidden = 'wipe'
+            require('telescope').extensions.file_browser.file_browser({
+              cwd = vim.fn.expand('%:p:h'),
+            })
           end)
         end,
         once = true,
-        desc = "lazy-loaded telescope-file-browser.nvimw",
+        desc = 'lazy-loaded telescope-file-browser.nvimw',
       })
     end,
     config = function() require('pynappo/plugins/telescope') end,
-    keys = require('pynappo/keymaps').setup.telescope({lazy = true})
+    keys = require('pynappo/keymaps').setup.telescope({ lazy = true }),
   },
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -99,7 +209,7 @@ require('lazy').setup({
       require('pynappo/autocmds').create_autocmd('ColorScheme', {
         callback = function()
           local hl_list = {}
-          for i, color in pairs({ '#4b2121', '#464421', '#21492a', '#2e4249', '#223b4b', '#463145' }) do
+          for i, color in pairs({ '#4b2121', '#464421', '#21492a', '#284043', '#223b4b', '#463145' }) do
             local name = 'IndentBlanklineIndent' .. i
             vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
             table.insert(hl_list, name)
@@ -123,15 +233,15 @@ require('lazy').setup({
     config = function() require('pynappo/plugins/treesitter') end,
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
-      'p00f/nvim-ts-rainbow',
+      -- 'p00f/nvim-ts-rainbow', breaks too much
       'windwp/nvim-ts-autotag',
       {
         'nvim-treesitter/nvim-treesitter-context',
         config = function()
           require('treesitter-context').setup({
-            min_window_height=30
+            min_window_height = 30,
           })
-        end
+        end,
       },
       'nvim-treesitter/playground',
       'RRethy/nvim-treesitter-textsubjects',
@@ -140,6 +250,7 @@ require('lazy').setup({
   {
     'Wansmer/treesj',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    cmd = "TSJToggle",
     config = function()
       require('treesj').setup({ use_default_keymaps = false })
       require('pynappo/keymaps').setup.treesj()
@@ -162,17 +273,6 @@ require('lazy').setup({
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
       'dmitmel/cmp-cmdline-history',
-      {
-        'zbirenbaum/copilot-cmp',
-        event = 'BufRead',
-        dependencies = {
-          {
-            'zbirenbaum/copilot.lua',
-            config = function() require('copilot').setup() end,
-          },
-        },
-        config = function() require('copilot_cmp').setup() end,
-      },
       'hrsh7th/cmp-emoji',
       'hrsh7th/cmp-nvim-lsp',
       'f3fora/cmp-spell',
@@ -181,8 +281,15 @@ require('lazy').setup({
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'davidsierradz/cmp-conventionalcommits',
-      { 'alaviss/nim.nvim' },
     },
+  },
+  {
+    'zbirenbaum/copilot-cmp',
+    event = 'BufRead',
+    dependencies = {
+      { 'zbirenbaum/copilot.lua', config = function() require('copilot').setup() end },
+    },
+    config = function() require('copilot_cmp').setup() end,
   },
   {
     'petertriho/cmp-git',
@@ -196,7 +303,26 @@ require('lazy').setup({
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function() require('crates').setup() end,
   },
-  { 'windwp/nvim-autopairs', config = function() require('pynappo/plugins/autopairs') end },
+  {
+    'windwp/nvim-autopairs',
+    config = function()
+      require('nvim-autopairs').setup({
+        check_ts = true,
+        ts_config = {},
+        ignored_next_char = '[%w%.]',
+        fast_wrap = {
+          map = '<M-e>',
+          chars = { '{', '[', '(', '"', "'" },
+          pattern = [=[[%"%"%)%>%]%)%}%,]]=],
+          end_key = '$',
+          keys = 'qwertyuiopzxcvbnmasdfghjkl',
+          check_comma = true,
+          highlight = 'Search',
+          highlight_grey = 'Comment',
+        },
+      })
+    end,
+  },
   { 'folke/which-key.nvim', config = function() require('which-key').setup({ window = { border = 'single' } }) end },
   { 'folke/trouble.nvim', config = function() require('trouble').setup({}) end },
   {
@@ -237,7 +363,7 @@ require('lazy').setup({
       'MunifTanjim/nui.nvim',
       { 'rcarriga/nvim-notify', config = function() require('notify').setup({ background_colour = '#000000' }) end },
       {
-        "smjonas/inc-rename.nvim",
+        'smjonas/inc-rename.nvim',
         dependencies = {
           {
             'stevearc/dressing.nvim',
@@ -315,7 +441,7 @@ require('lazy').setup({
     },
     init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
     config = function() require('pynappo/plugins/neo-tree') end,
-    keys = require('pynappo/keymaps').setup.neo_tree({lazy = true})
+    keys = require('pynappo/keymaps').setup.neo_tree({ lazy = true }),
   },
   {
     'akinsho/toggleterm.nvim',
@@ -338,7 +464,10 @@ require('lazy').setup({
     end,
   },
   { 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
-  'simnalamburt/vim-mundo',
+  {
+    'simnalamburt/vim-mundo',
+    cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
+  },
   { 'nacro90/numb.nvim', config = function() require('numb').setup() end },
   {
     'max397574/better-escape.nvim',
@@ -350,11 +479,12 @@ require('lazy').setup({
     end,
   },
   { 'nyngwang/murmur.lua', config = function() require('pynappo/plugins/murmur') end },
-
   {
     'kevinhwang91/nvim-hlslens',
-    init = function() require('pynappo/keymaps').setup.hlslens() end,
     config = function() require('hlslens').setup() end,
+    event = 'CmdlineEnter',
+    cmd = { 'HlSearchLensEnable', 'HlSearchLensDisable', 'HlSearchLensToggle' },
+    keys = require('pynappo/keymaps').setup.hlslens({ lazy = true }),
   },
   {
     'nvim-neorg/neorg',
@@ -369,7 +499,6 @@ require('lazy').setup({
     dependencies = {
       {
         'SmiteshP/nvim-navic',
-        event = 'LspAttach',
         dependencies = { 'neovim/nvim-lspconfig' },
         config = function() require('pynappo/plugins/navic') end,
       },
@@ -392,10 +521,9 @@ require('lazy').setup({
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
+      'alaviss/nim.nvim',
     },
-    init = function()
-      require('pynappo/keymaps').setup.diagnostics()
-    end,
+    init = function() require('pynappo/keymaps').setup.diagnostics() end,
     config = function()
       require('mason').setup({ ui = { border = 'single' } })
       require('pynappo/plugins/lsp')
@@ -408,10 +536,10 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter',
       'rouge8/neotest-rust',
     },
+    lazy = true
   },
   {
     'rcarriga/nvim-dap-ui',
-
     dependencies = {
       { 'mfussenegger/nvim-dap' },
       {
@@ -423,8 +551,27 @@ require('lazy').setup({
   },
   {
     'monaqa/dial.nvim',
-    init = function() require("pynappo/keymaps").setup.dial() end,
-    config = function() require('pynappo/plugins/dial') end,
+    init = function() require('pynappo/keymaps').setup.dial() end,
+    config = function()
+      local augend = require('dial.augend')
+      require('dial.config').augends:register_group({
+        default = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.date.alias['%Y/%m/%d'],
+          augend.hexcolor.new({ case = 'lower' }),
+          augend.constant.alias.bool,
+        },
+        visual = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.date.alias['%Y/%m/%d'],
+          augend.constant.alias.alpha,
+          augend.constant.alias.Alpha,
+          augend.constant.alias.bool,
+        },
+      })
+    end,
   },
   {
     'kosayoda/nvim-lightbulb',
@@ -452,7 +599,7 @@ require('lazy').setup({
   },
   {
     'nvim-zh/colorful-winsep.nvim',
-    config = function() require('colorful-winsep').setup({ highlight = { fg = "#373751"} }) end,
+    config = function() require('colorful-winsep').setup({ highlight = { fg = '#373751' } }) end,
   },
   {
     'xeluxee/competitest.nvim',
@@ -464,12 +611,11 @@ require('lazy').setup({
       'CompetiTestReceive',
       'CompetiTestRunNE',
       'CompetiTestRunNC',
-      'CompetiTestConvert'
+      'CompetiTestConvert',
     },
     dependencies = { 'MunifTanjim/nui.nvim' },
     config = function() require('competitest').setup({ runner_ui = { interface = 'popup' } }) end,
   },
-  { 'anuvyklack/hydra.nvim', config = function() require('pynappo/plugins/hydra') end },
   { 'ggandor/flit.nvim', config = function() require('flit').setup({ labeled_modes = 'v' }) end },
   {
     'dstein64/nvim-scrollview',
@@ -483,10 +629,8 @@ require('lazy').setup({
   },
   {
     'mrjones2014/smart-splits.nvim',
-    config = function()
-      require('smart-splits').setup({})
-      require('pynappo/keymaps').setup.smart_splits()
-    end,
+    init = function() require('pynappo/keymaps').setup.smart_splits() end,
+    config = function() require('smart-splits').setup({}) end,
   },
   {
     'melkster/modicator.nvim',
@@ -496,4 +640,4 @@ require('lazy').setup({
     end,
     config = function() require('modicator').setup() end,
   },
-})
+}, lazy_opts)

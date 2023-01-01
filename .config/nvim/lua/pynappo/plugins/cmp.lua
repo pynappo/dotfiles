@@ -1,6 +1,5 @@
 local luasnip = require("luasnip")
 local cmp = require("cmp")
-local cmp_buffer = require("cmp_buffer")
 local lspkind = require("lspkind")
 lspkind.init({
   symbol_map = {
@@ -27,7 +26,9 @@ cmp.setup {
         menu = {
           luasnip = "[Snip]",
           nvim_lsp = "[LSP]",
+          nvim_lsp_signature_help = "[Sign]",
           nvim_lua =  "[Lua]",
+          emoji = "[Emoji]",
           buffer = "[Buf]",
           copilot = "[GHub]",
           crates = "[Crate]",
@@ -35,6 +36,8 @@ cmp.setup {
           cmdline = "[Cmd]",
           cmdline_history = "[Hist]",
           git = "[Git]",
+          conventionalcommits = "[Conv]",
+          calc = "[Calc]"
         },
       })(entry, vim_item)
       local strings = vim.split(kind.kind, "%s", { trimempty = true })
@@ -45,7 +48,7 @@ cmp.setup {
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
   },
-  confirmation = { completeopt = 'menu,menuone,noinsert' },
+  completion = { completeopt = 'menu,menuone,noinsert' },
   mapping = require("pynappo/keymaps").cmp.insert(),
   sources = cmp.config.sources(
     {
@@ -76,7 +79,7 @@ cmp.setup {
   ),
   sorting = {
     comparators = {
-      function (...) return cmp_buffer:compare_locality(...) end,
+      function (...) return require("cmp_buffer"):compare_locality(...) end,
       compare.offset,
       compare.exact,
       compare.score,
@@ -93,25 +96,41 @@ cmp.setup {
 }
 
 cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources(
-    {{ name = 'git' }},
-    {{ name = 'buffer' }},
-    {{ name = 'conventionalcommits' }},
-    {{ name = 'luasnip' }}
-  )
+  sources = cmp.config.sources( {
+    { name = 'git' },
+    { name = 'buffer' },
+    { name = 'conventionalcommits' },
+    { name = 'luasnip' },
+  })
 })
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
 cmp.setup.cmdline(':', {
   confirmation = { completeopt = 'menu,menuone,noinsert' },
-  sources = cmp.config.sources(
-    {{ name = 'cmdline' }},
-    {{ name = 'cmdline_history' }},
-    {{ name = 'path'}}
-  )
+  sources = cmp.config.sources( {
+    { name = 'cmdline' },
+    { name = 'cmdline_history' },
+    { name = 'path' },
+  })
 })
 cmp.setup.cmdline('/', {
   sources = {
     { name = 'buffer' }
   },
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
