@@ -48,13 +48,12 @@ cmp.setup {
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
   },
-  completion = { completeopt = 'menu,menuone,noinsert' },
+  completion = { completeopt = 'menu,menuone,noinsert,noselect' },
   mapping = require("pynappo/keymaps").cmp.insert(),
   sources = cmp.config.sources(
     {
       { name = "nvim_lsp" },
       { name = "luasnip" },
-      { name = "nvim_lsp_signature_help" },
       { name = "crates" },
       { name = 'emoji' },
       { name = 'calc'},

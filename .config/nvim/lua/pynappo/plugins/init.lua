@@ -12,12 +12,6 @@ end
 vim.opt.runtimepath:prepend(lazypath)
 
 local lazy_opts = {
-  root = vim.fn.stdpath('data') .. '/lazy', -- directory where plugins will be installed
-  defaults = {
-    lazy = false, -- should plugins be lazy-loaded?
-  },
-  lockfile = vim.fn.stdpath('config') .. '/lazy-lock.json', -- lockfile generated after running update.
-  concurrency = nil, ---@type number limit the maximum amount of concurrent tasks
   git = {
     -- defaults for the `Lazy log` command
     -- log = { "-10" }, -- show the last 10 commits
@@ -253,8 +247,8 @@ require('lazy').setup({
     cmd = "TSJToggle",
     config = function()
       require('treesj').setup({ use_default_keymaps = false })
-      require('pynappo/keymaps').setup.treesj()
     end,
+    keys = require('pynappo/keymaps').setup.treesj({ lazy = true }),
   },
   {
     'L3MON4D3/LuaSnip',
@@ -441,7 +435,7 @@ require('lazy').setup({
     },
     init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
     config = function() require('pynappo/plugins/neo-tree') end,
-    keys = require('pynappo/keymaps').setup.neo_tree({ lazy = true }),
+    keys = require('pynappo/keymaps').setup.neotree({ lazy = true }),
   },
   {
     'akinsho/toggleterm.nvim',
@@ -468,7 +462,7 @@ require('lazy').setup({
     'simnalamburt/vim-mundo',
     cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
   },
-  { 'nacro90/numb.nvim', config = function() require('numb').setup() end },
+  { 'nacro90/numb.nvim', config = function() require('numb').setup() end, event = 'CmdlineEnter' },
   {
     'max397574/better-escape.nvim',
     config = function()
@@ -528,6 +522,10 @@ require('lazy').setup({
       require('mason').setup({ ui = { border = 'single' } })
       require('pynappo/plugins/lsp')
     end,
+  },
+  {
+    url = 'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+
   },
   {
     'nvim-neotest/neotest',
@@ -640,4 +638,10 @@ require('lazy').setup({
     end,
     config = function() require('modicator').setup() end,
   },
+  {
+    'chentoast/marks.nvim',
+    config = function()
+
+    end
+  }
 }, lazy_opts)
