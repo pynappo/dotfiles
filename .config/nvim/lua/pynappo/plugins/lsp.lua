@@ -17,7 +17,7 @@ local configs = {
     settings = {
       Lua = {
         completion = {
-          callSnippet = 'Replace',
+          callSnippet = 'Both',
         },
         diagnostics = {
           globals = {'vim'}
@@ -46,6 +46,7 @@ function M.get_config(ls) return vim.tbl_deep_extend("force", default_config, co
 
 vim.diagnostic.config({
   virtual_text = false,
+  virtual_lines = {only_current_line = true},
   signs = true,
   float = {
     border = "single",

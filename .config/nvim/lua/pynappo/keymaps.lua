@@ -1,13 +1,13 @@
 local M = {}
 
-local function map(keymaps, opts, extra_opts)
+local function map(keymaps, keymap_opts, extra_opts)
   local lazy_keymaps = {}
   extra_opts = extra_opts or {}
   for modes, maps in pairs(keymaps) do
     for _, m in pairs(maps) do
-      opts = vim.tbl_extend('force', opts or {}, m[3] or {})
-      if extra_opts.lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, opts))
-      else vim.keymap.set(modes, m[1], m[2], opts) end
+      keymap_opts = vim.tbl_extend('force', keymap_opts or {}, m[3] or {})
+      if extra_opts.lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, keymap_opts))
+      else vim.keymap.set(modes, m[1], m[2], keymap_opts) end
     end
   end
   return lazy_keymaps
@@ -69,25 +69,25 @@ M.setup = {
     }, { silent = true })
   end,
   treesj = function(opts)
-    map({
+    return map({
       [{ 'n' }] = { { 'gJ', '<Cmd>TSJToggle<CR>', { desc = 'Split/join line' } } },
     }, {}, opts)
   end,
   lsp = function(bufnr)
     map({
       [{ 'n' }] = {
-        { 'gD', vim.lsp.buf.declaration },
-        { 'gd', vim.lsp.buf.definition },
-        { 'K', vim.lsp.buf.hover },
-        { 'gi', vim.lsp.buf.implementation },
-        { '<C-k>', vim.lsp.buf.signature_help },
-        { '<leader>wa', vim.lsp.buf.add_workspace_folder },
-        { '<leader>wr', vim.lsp.buf.remove_workspace_folder },
-        { '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end },
-        { '<leader>D', vim.lsp.buf.type_definition },
-        { 'ga', vim.lsp.buf.code_action },
-        { 'gr', vim.lsp.buf.references },
-        { '<leader>f', function() vim.lsp.buf.format({ async = true }) end },
+        { 'gD', vim.lsp.buf.declaration, {desc = '(LSP) Get declaration'} },
+        { 'gd', vim.lsp.buf.definition, {desc = '(LSP) Get definition'} },
+        { 'K', vim.lsp.buf.hover, {desc = '(LSP) Get definition'}},
+        { 'gi', vim.lsp.buf.implementation, {desc = '(LSP) Get implementation'}},
+        { '<C-k>', vim.lsp.buf.signature_help, {desc = '(LSP) Get signature help'}},
+        { '<leader>wa', vim.lsp.buf.add_workspace_folder, {desc = '(LSP) Add workspace folder'}},
+        { '<leader>wr', vim.lsp.buf.remove_workspace_folder, {desc = '(LSP) Remove workspace folder'}},
+        { '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, {desc = '(LSP) Get workspace folders'} },
+        { '<leader>D', vim.lsp.buf.type_definition, {desc = '(LSP) Get type'} },
+        { 'ga', vim.lsp.buf.code_action, {desc = '(LSP) Get code actions'}},
+        { 'gr', vim.lsp.buf.references, {desc = '(LSP) Get references'}},
+        { '<leader>f', function() vim.lsp.buf.format({ async = true }) end, {desc = '(LSP) Format'}},
       },
     }, { remap = false, silent = true, buffer = bufnr })
   end,
@@ -158,7 +158,7 @@ M.setup = {
     })
   end,
   hlslens = function(opts)
-    map({
+    return map({
       [{ 'n' }] = {
         { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
         { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
@@ -174,6 +174,33 @@ M.setup = {
     map({
       [{ 'n' }] = { { '<c-K>', [[<Cmd><C-u>MatchupWhereAmI?<cr>]], { desc = '(Matchup) Where am I?' } } },
     })
+  end,
+  marks = function()
+    local keymaps = {
+      { 'm' , '<Plug>(Marks-set)' },
+      { 'm,' , '<Plug>(Marks-setnext)' },
+      { 'm;' , '<Plug>(Marks-toggle)' },
+      { 'dm' , '<Plug>(Marks-delete)' },
+      { 'dm-' , '<Plug>(Marks-deleteline)' },
+      { 'dm<space>' , '<Plug>(Marks-deletebuf)' },
+      { 'm:' , '<Plug>(Marks-preview)' },
+      { 'm]' , '<Plug>(Marks-next)' },
+      { 'm[' , '<Plug>(Marks-prev)' },
+      { 'dm=' , '<Plug>(Marks-delete-bookmark)' },
+      { 'm}' , '<Plug>(Marks-next-bookmark)' },
+      { 'm{' , '<Plug>(Marks-prev-bookmark)' },
+    }
+    for i=0,9 do
+      local stri = tostring(i)
+      local temp = {
+        ['m'..stri] = '<Plug>(Marks-set-bookmark'..stri..')',
+        ['dm'..stri] = '<Plug>(Marks-delete-bookmark'..stri..')',
+        ['m}'..stri] = '<Plug>(Marks-next-bookmark'..stri..')',
+        ['m{'..stri] = '<Plug>(Marks-prev-bookmark'..stri..')'
+      }
+      for k, v in pairs(temp) do table.insert(keymaps, {k,v}) end
+    end
+    return map(keymaps, {}, opts)
   end,
   mini = function()
     map({
@@ -219,12 +246,12 @@ M.setup = {
       },
     }, {}, opts)
   end,
-  neo_tree = function(opts)
+  neotree = function(opts)
     return map({
       [{ 'n' }] = {
         { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', { desc = 'Toggle Neo-tree (left) ' } },
         {
-          'gd',
+          '<leader>gn',
           '<Cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>',
           { desc = 'Popup Neo-tree for file under cursor' },
         },
