@@ -2,7 +2,7 @@
   "aria2-enabled": true,
   "aria2-warning-enabled": false,
   "test": true,
-  "last_update": "2022-12-31T20:33:47.0104471-08:00",
+  "last_update": "2023-01-01T14:11:45.6209654-08:00",
   "check_nightly_outdated": true,
   "scoop_repo": "https://github.com/ScoopInstaller/Scoop",
   "scoop_branch": "master"
