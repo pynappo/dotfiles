@@ -638,10 +638,5 @@ require('lazy').setup({
     end,
     config = function() require('modicator').setup() end,
   },
-  {
-    'chentoast/marks.nvim',
-    config = function()
-
-    end
-  }
+ { 'chentoast/marks.nvim', }
 }, lazy_opts)
