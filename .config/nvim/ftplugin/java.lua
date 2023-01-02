@@ -3,10 +3,9 @@ local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'})
 local workspace_dir = vim.fn.expand('~/code/jdtls_workspaces/') .. vim.fn.fnamemodify(root_dir, ':p:h:t')
 local is_win = vim.fn.has('win32') == 1
 
-local lsp_config = require('pynappo/plugins/lsp').get_config('jdtls')
 local bundles = { vim.fn.glob(mason_packages_path .. '/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar'), }
 vim.list_extend(bundles, vim.split(vim.fn.glob(mason_packages_path .. '/java-test/extension/server/com.microsoft.java.test.plugin-*.jar'), "\n"))
--- print(vim.inspect(bundles))
+
 local config = {
   cmd = {
     'java',
@@ -24,24 +23,13 @@ local config = {
     '-configuration', mason_packages_path .. '/jdtls/config_' .. (is_win and 'win' or 'linux'),
     '-data', workspace_dir,
   },
-  on_attach = function(client, bufnr)
-    lsp_config.on_attach(client, bufnr)
-    require('pynappo/keymaps').setup.jdtls(bufnr)
-    require('jdtls').setup_dap({ hotcodereplace = 'auto' })
-  end,
-
-  -- 💀
-  -- This is the default if not provided, you can remove it. Or adjust as needed.
-  -- One dedicated LSP server & client will be started per unique root_dir
+  -- on_attach = jdtls_config.on_attach
+  --
   root_dir = root_dir,
 
-  -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
   -- for a list of options
-  settings = {
-    java = {
-    }
-  },
+  -- settings = {}
 
   -- Language server `initializationOptions`
   -- You need to extend the `bundles` with paths to jar files
@@ -54,8 +42,6 @@ local config = {
     bundles = bundles
   },
 }
--- print(table.concat(config.cmd, ' '))
--- This starts a new client & server,
--- or attaches to an existing client & server depending on the `root_dir`.
+config = vim.tbl_extend('force', config, require('pynappo/plugins/lsp').get_config('jdtls'))
 require('jdtls').start_or_attach(config)
 require('jdtls.setup').add_commands()

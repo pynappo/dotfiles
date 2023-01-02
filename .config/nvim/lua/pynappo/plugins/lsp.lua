@@ -40,6 +40,16 @@ local configs = {
       "rnoweb",
       "tex",
     }
+  },
+  jdtls = {
+    on_attach = function(client, bufnr)
+      default_config.on_attach(client, bufnr)
+      require('pynappo/keymaps').setup.jdtls(bufnr)
+      require('jdtls').setup_dap({ hotcodereplace = 'auto' })
+    end,
+    settings = {
+      java = {}
+    }
   }
 }
 function M.get_config(ls) return vim.tbl_deep_extend("force", default_config, configs[ls] or {}) end
@@ -93,7 +103,7 @@ mason_lspconfig.setup()
 mason_lspconfig.setup_handlers {
   function(ls) lspconfig[ls].setup(M.get_config(ls)) end,
   rust_analyzer = function() require('rust-tools').setup() end,
-  jdtls = function() end, -- use method recommended by nvim-jdtls @ ftplugin/java.lua
+  jdtls = function() end, -- use method recommended by nvim-jdtls @ ../../../ftplugin/java.lua
 }
 
 local null_ls = require('null-ls')
