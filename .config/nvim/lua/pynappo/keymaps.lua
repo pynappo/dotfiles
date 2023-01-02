@@ -23,8 +23,8 @@ M.setup = {
     map({
       [{ 'n' }] = {
         { 'x', '"_x' },
-        { 'j', 'gj' },
-        { 'k', 'gk' },
+        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, {expr = true} },
+        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, {expr = true} },
         -- Better tabs
         { '<C-S-h>', '<Cmd>:tabprev<CR>' },
         { '<C-S-l>', '<Cmd>:tabnext<CR>' },
@@ -38,7 +38,7 @@ M.setup = {
         { '<leader>8', '8gt' },
         { '<leader>9', '9gt' },
         { '<leader>0', '10gt' },
-        { '<Esc>', '<Cmd>nohl<CR>' },
+        { '<Esc>', function() vim.cmd.nohlsearch() end },
         -- Autoindent on insert
         {
           'i',
