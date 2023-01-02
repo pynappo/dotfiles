@@ -130,7 +130,8 @@ vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSign
 require("pynappo/plugins")
 vim.cmd.colorscheme('ayu')
 
-
+vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
+vim.cmd.amenu([[PopUp.Inspect <Cmd>Inspect<CR>]])
 local commands = {
   {"CDhere", "cd %:p:h"},
   {
