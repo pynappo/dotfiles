@@ -11,6 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
+local keymaps = require('pynappo/keymaps')
 local lazy_opts = {
   git = {
     -- defaults for the `Lazy log` command
@@ -156,6 +157,7 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+      'debugloop/telescope-undo.nvim'
     },
     init = function()
       vim.api.nvim_create_autocmd('VimEnter', {
@@ -194,7 +196,7 @@ require('lazy').setup({
       })
     end,
     config = function() require('pynappo/plugins/telescope') end,
-    keys = require('pynappo/keymaps').setup.telescope({ lazy = true }),
+    keys = keymaps.setup.telescope({ lazy = true }),
   },
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -248,7 +250,7 @@ require('lazy').setup({
     config = function()
       require('treesj').setup({ use_default_keymaps = false })
     end,
-    keys = require('pynappo/keymaps').setup.treesj({ lazy = true }),
+    keys = keymaps.setup.treesj({ lazy = true }),
   },
   {
     'L3MON4D3/LuaSnip',
@@ -279,7 +281,7 @@ require('lazy').setup({
   },
   {
     'zbirenbaum/copilot-cmp',
-    event = 'BufRead',
+    event = { 'BufRead', 'BufNewFile' },
     dependencies = {
       { 'zbirenbaum/copilot.lua', config = function() require('copilot').setup() end },
     },
@@ -326,6 +328,8 @@ require('lazy').setup({
   },
   {
     'folke/noice.nvim',
+    cond = not vim.g.neovide,
+
     config = function()
       require('noice').setup({
         cmdline = { enabled = false },
@@ -376,7 +380,7 @@ require('lazy').setup({
         },
         config = function()
           require('inc_rename').setup({ input_buffer_type = 'dressing' })
-          require('pynappo/keymaps').setup.incremental_rename()
+          keymaps.setup.incremental_rename()
         end,
       },
     },
@@ -435,13 +439,13 @@ require('lazy').setup({
     },
     init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
     config = function() require('pynappo/plugins/neo-tree') end,
-    keys = require('pynappo/keymaps').setup.neotree({ lazy = true }),
+    keys = keymaps.setup.neotree({ lazy = true }),
   },
   {
     'akinsho/toggleterm.nvim',
     config = function()
       require('toggleterm').setup({
-        open_mapping = require('pynappo/keymaps').toggleterm.open_mapping,
+        open_mapping = keymaps.toggleterm.open_mapping,
         winbar = {
           enabled = true,
           name_formatter = function(term) return term.name end,
@@ -454,14 +458,10 @@ require('lazy').setup({
     'karb94/neoscroll.nvim',
     config = function()
       require('neoscroll').setup({ easing_function = 'quadratic' })
-      require('neoscroll.config').set_mappings(require('pynappo/keymaps').neoscroll)
+      require('neoscroll.config').set_mappings(keymaps.neoscroll)
     end,
   },
   { 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
-  {
-    'simnalamburt/vim-mundo',
-    cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
-  },
   { 'nacro90/numb.nvim', config = function() require('numb').setup() end, event = 'CmdlineEnter' },
   {
     'max397574/better-escape.nvim',
@@ -478,7 +478,7 @@ require('lazy').setup({
     config = function() require('hlslens').setup() end,
     event = 'CmdlineEnter',
     cmd = { 'HlSearchLensEnable', 'HlSearchLensDisable', 'HlSearchLensToggle' },
-    keys = require('pynappo/keymaps').setup.hlslens({ lazy = true }),
+    keys = keymaps.setup.hlslens({ lazy = true }),
   },
   {
     'nvim-neorg/neorg',
@@ -517,7 +517,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'alaviss/nim.nvim',
     },
-    init = function() require('pynappo/keymaps').setup.diagnostics() end,
+    init = function() keymaps.setup.diagnostics() end,
     config = function()
       require('mason').setup({ ui = { border = 'single' } })
       require('pynappo/plugins/lsp')
@@ -549,7 +549,7 @@ require('lazy').setup({
   },
   {
     'monaqa/dial.nvim',
-    init = function() require('pynappo/keymaps').setup.dial() end,
+    init = function() keymaps.setup.dial() end,
     config = function()
       local augend = require('dial.augend')
       require('dial.config').augends:register_group({
@@ -627,7 +627,7 @@ require('lazy').setup({
   },
   {
     'mrjones2014/smart-splits.nvim',
-    init = function() require('pynappo/keymaps').setup.smart_splits() end,
+    init = function() keymaps.setup.smart_splits() end,
     config = function() require('smart-splits').setup({}) end,
   },
   {
@@ -638,5 +638,9 @@ require('lazy').setup({
     end,
     config = function() require('modicator').setup() end,
   },
- { 'chentoast/marks.nvim', }
+ {
+   'chentoast/marks.nvim',
+    config = function() require('marks').setup() end,
+    keys = keymaps.setup.marks({lazy=true})
+ }
 }, lazy_opts)

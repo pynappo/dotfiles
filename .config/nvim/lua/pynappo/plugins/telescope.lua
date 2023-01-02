@@ -38,3 +38,5 @@ ts.setup {
 ts.load_extension("fzf")
 ts.load_extension("file_browser")
 ts.load_extension("notify")
+ts.load_extension("undo")
+ts.load_extension("ui-select")

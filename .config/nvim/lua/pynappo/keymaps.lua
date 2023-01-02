@@ -54,7 +54,6 @@ M.setup = {
       [{ 'n', 'v' }] = {
         -- {'p', 'p=`]'},
         -- {'P', 'P=`]'},
-        { 'Space', '<Nop>' },
         -- {'<leader>p', '"+p'}
       },
     }, { silent = true })
@@ -180,20 +179,23 @@ M.setup = {
       [{ 'n' }] = { { '<c-K>', [[<Cmd><C-u>MatchupWhereAmI?<cr>]], { desc = '(Matchup) Where am I?' } } },
     })
   end,
-  marks = function()
+  marks = function(opts)
+    local normal = {'n'}
     local keymaps = {
-      { 'm' , '<Plug>(Marks-set)' },
-      { 'm,' , '<Plug>(Marks-setnext)' },
-      { 'm;' , '<Plug>(Marks-toggle)' },
-      { 'dm' , '<Plug>(Marks-delete)' },
-      { 'dm-' , '<Plug>(Marks-deleteline)' },
-      { 'dm<space>' , '<Plug>(Marks-deletebuf)' },
-      { 'm:' , '<Plug>(Marks-preview)' },
-      { 'm]' , '<Plug>(Marks-next)' },
-      { 'm[' , '<Plug>(Marks-prev)' },
-      { 'dm=' , '<Plug>(Marks-delete-bookmark)' },
-      { 'm}' , '<Plug>(Marks-next-bookmark)' },
-      { 'm{' , '<Plug>(Marks-prev-bookmark)' },
+      [normal] = {
+        { 'm' , '<Plug>(Marks-set)' },
+        { 'm,' , '<Plug>(Marks-setnext)' },
+        { 'm;' , '<Plug>(Marks-toggle)' },
+        { 'dm' , '<Plug>(Marks-delete)' },
+        { 'dm-' , '<Plug>(Marks-deleteline)' },
+        { 'dm<space>' , '<Plug>(Marks-deletebuf)' },
+        { 'm:' , '<Plug>(Marks-preview)' },
+        { 'm]' , '<Plug>(Marks-next)' },
+        { 'm[' , '<Plug>(Marks-prev)' },
+        { 'dm=' , '<Plug>(Marks-delete-bookmark)' },
+        { 'm}' , '<Plug>(Marks-next-bookmark)' },
+        { 'm{' , '<Plug>(Marks-prev-bookmark)' },
+      }
     }
     for i=0,9 do
       local stri = tostring(i)
@@ -203,7 +205,7 @@ M.setup = {
         ['m}'..stri] = '<Plug>(Marks-next-bookmark'..stri..')',
         ['m{'..stri] = '<Plug>(Marks-prev-bookmark'..stri..')'
       }
-      for k, v in pairs(temp) do table.insert(keymaps, {k,v}) end
+      for k, v in pairs(temp) do table.insert(keymaps[normal], {k,v}) end
     end
     return map(keymaps, {}, opts)
   end,
