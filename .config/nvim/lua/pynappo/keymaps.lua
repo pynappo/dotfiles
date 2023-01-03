@@ -15,11 +15,16 @@ end
 
 M.setup = {
   regular = function()
-    vim.keymap.set({ 'n', 'v' }, 'p', 'p=`]', { silent = true })
-    vim.keymap.set({ 'n', 'v' }, 'P', 'P=`]', { silent = true })
     vim.g.mapleader = ' '
     vim.g.maplocalleader = ' '
-    vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', { silent = true })
+    map({
+      [{'n', 'v'}] = {
+        { 'p', 'p=`]' },
+        { 'P', 'P=`]' },
+        { '<leader>p', '"+p' },
+      }
+    }, {silent = true})
+    -- I have no idea why but I can't put the above mappings in the below map() call without a weird mapping error, so this stays separate for now
     map({
       [{ 'n' }] = {
         { 'x', '"_x' },
