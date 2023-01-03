@@ -24,7 +24,7 @@ M.setup = {
         { '<leader>p', '"+p' },
       }
     }, {silent = true})
-    -- I have no idea why but I can't put the above mappings in the below map() call without a weird mapping error, so this stays separate for now
+    -- I have no idea why, but I can't put the above mappings in the below map() call without a weird mapping error, so this stays separate for now
     map({
       [{ 'n' }] = {
         { 'x', '"_x' },
@@ -264,6 +264,8 @@ M.setup = {
     }, {}, opts)
   end
 }
+
+-- Other random plugin-specific mapping tables go here: --
 
 M.cmp = {
   insert = function()
