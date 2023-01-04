@@ -5,9 +5,11 @@ local function map(keymaps, keymap_opts, extra_opts)
   extra_opts = extra_opts or {}
   for modes, maps in pairs(keymaps) do
     for _, m in pairs(maps) do
-      keymap_opts = vim.tbl_extend('force', keymap_opts or {}, m[3] or {})
-      if extra_opts.lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, keymap_opts))
-      else vim.keymap.set(modes, m[1], m[2], keymap_opts) end
+      local opts = vim.tbl_extend('force', keymap_opts or {}, m[3] or {})
+      if extra_opts.lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, opts))
+      else
+        vim.keymap.set(modes, m[1], m[2], opts)
+      end
     end
   end
   return lazy_keymaps
@@ -17,19 +19,9 @@ M.setup = {
   regular = function()
     vim.g.mapleader = ' '
     vim.g.maplocalleader = ' '
-    map({
-      [{'n', 'v'}] = {
-        { 'p', 'p=`]' },
-        { 'P', 'P=`]' },
-        { '<leader>p', '"+p' },
-      }
-    }, {silent = true})
     -- I have no idea why, but I can't put the above mappings in the below map() call without a weird mapping error, so this stays separate for now
     map({
-      [{ 'n' }] = {
-        { 'x', '"_x' },
-        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, {expr = true} },
-        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, {expr = true} },
+      [{ 'n', 't' }] = {
         -- Better tabs
         { '<C-S-h>', '<Cmd>:tabprev<CR>' },
         { '<C-S-l>', '<Cmd>:tabnext<CR>' },
@@ -43,7 +35,9 @@ M.setup = {
         { '<leader>8', '8gt' },
         { '<leader>9', '9gt' },
         { '<leader>0', '10gt' },
+
         { '<Esc>', function() vim.cmd.nohlsearch() end },
+        { '<leader>q', function() vim.cmd.bdelete() end },
         -- Autoindent on insert
         {
           'i',
@@ -52,9 +46,12 @@ M.setup = {
         },
       },
       [{ 'n', 'v' }] = {
-        -- {'p', 'p=`]'},
-        -- {'P', 'P=`]'},
-        -- {'<leader>p', '"+p'}
+        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, {expr = true} },
+        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, {expr = true} },
+        {'p', 'p=`]'},
+        {'P', 'P=`]'},
+        {'<leader>p', '"+p'},
+        { 'x', '"_x' },
       },
     }, { silent = true })
   end,
@@ -278,23 +275,22 @@ M.cmp = {
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto }),
       ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
-      ['<Tab>'] = cmp.mapping(function(fallback)
+      ['<C-j>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
-        elseif luasnip.jumpable(1) then
-          luasnip.jump(1)
         else
           fallback()
         end
+      end, {'i', 'c'}),
+      ['<Tab>'] = cmp.mapping(function(fallback)
+        if cmp.visible() then cmp.select_next_item()
+        elseif luasnip.jumpable(1) then luasnip.jump(1)
+        else fallback() end
       end, { 'i', 's', 'c' }),
       ['<S-Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-          luasnip.jump(-1)
-        else
-          fallback()
-        end
+        if cmp.visible() then cmp.select_prev_item()
+        elseif luasnip.jumpable(-1) then luasnip.jump(-1)
+        else fallback() end
       end, { 'i', 's', 'c' }),
     })
   end,

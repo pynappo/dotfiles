@@ -1,4 +1,5 @@
 local o = vim.o
+local wo = vim.wo
 local opt = vim.opt
 local g = vim.g
 if jit.os == "Windows" then
@@ -42,7 +43,7 @@ if g.neovide then
 end
 -- Line numbers
 o.undofile = true
-o.signcolumn = "auto:2"
+wo.signcolumn = "auto:2"
 o.relativenumber = true
 o.number = true
 
@@ -100,6 +101,7 @@ opt.listchars = {
 }
 o.cursorline = true
 o.formatoptions = "jcrql"
+opt.formatoptions:remove('o')
 
 local disabled_built_ins = {
   "netrw",
@@ -122,7 +124,7 @@ local disabled_built_ins = {
 }
 for _, plugin in pairs(disabled_built_ins) do vim.g["loaded_" .. plugin] = 1 end
 require("pynappo/keymaps").setup.regular()
-require("pynappo/autocmds")
+local autocmd_utils = require("pynappo/autocmds")
 vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticSignError"})
 vim.fn.sign_define("DiagnosticSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
 vim.fn.sign_define("DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"})
@@ -161,6 +163,6 @@ local commands = {
     function()
       vim.fn.system('rm ' .. vim.fn.stdpath('data') .. '/swap/*' .. jit.os == "Windows" and ' -Force' or ' -f')
     end
-  }
+  },
 }
 for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {}) end

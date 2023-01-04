@@ -145,9 +145,8 @@ require('lazy').setup({
     cmd = 'Octo',
     config = function() require('octo').setup() end,
   },
-  { 'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end },
-  { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
-  { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end },
+  -- { 'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end },
+  { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }, { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end },
   { 'ggandor/leap-spooky.nvim', config = function() require('leap-spooky').setup() end },
   { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
@@ -157,7 +156,8 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-      'debugloop/telescope-undo.nvim'
+      'debugloop/telescope-undo.nvim',
+      'nvim-telescope/telescope-ui-select.nvim'
     },
     init = function()
       vim.api.nvim_create_autocmd('VimEnter', {
@@ -490,6 +490,7 @@ require('lazy').setup({
   {
     'rebelot/heirline.nvim',
     config = function() require('pynappo/plugins/heirline') end,
+    priority = 60,
     dependencies = {
       {
         'SmiteshP/nvim-navic',
@@ -525,7 +526,7 @@ require('lazy').setup({
   },
   {
     url = 'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-
+    config = function() require("lsp_lines").setup() end,
   },
   {
     'nvim-neotest/neotest',
