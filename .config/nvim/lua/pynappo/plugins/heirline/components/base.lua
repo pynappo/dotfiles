@@ -86,51 +86,56 @@ local M = {
     },
   },
   gitsigns = {
-    condition = conditions.is_git_repo,
-    init = function(self)
-      self.status_dict = vim.b.gitsigns_status_dict
-      self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
-    end,
-    hl = { fg = 'constant' },
-    { -- git branch name
-      provider = function(self) return ' ' .. self.status_dict.head end,
-      hl = { bold = true },
-    },
-    -- You could handle delimiters, icons and counts similar to Diagnostics
     {
-      condition = function(self) return self.has_changes end,
-      provider = '(',
-    },
-    {
-      provider = function(self)
-        local count = self.status_dict.added or 0
-        return count > 0 and ('+' .. count)
+      condition = conditions.is_git_repo,
+      init = function(self)
+        self.status_dict = vim.b.gitsigns_status_dict
+        self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
       end,
-      hl = { fg = 'git_add' },
+      hl = { fg = 'constant' },
+      { -- git branch name
+        provider = function(self) return ' ' .. self.status_dict.head end,
+        hl = { bold = true },
+      },
+      -- You could handle delimiters, icons and counts similar to Diagnostics
+      {
+        condition = function(self) return self.has_changes end,
+        provider = '(',
+      },
+      {
+        provider = function(self)
+          local count = self.status_dict.added or 0
+          return count > 0 and ('+' .. count)
+        end,
+        hl = { fg = 'git_add' },
+      },
+      {
+        provider = function(self)
+          local count = self.status_dict.removed or 0
+          return count > 0 and ('-' .. count)
+        end,
+        hl = { fg = 'git_del' },
+      },
+      {
+        provider = function(self)
+          local count = self.status_dict.changed or 0
+          return count > 0 and ('~' .. count)
+        end,
+        hl = { fg = 'git_change' },
+      },
+      {
+        condition = function(self) return self.has_changes end,
+        provider = ')',
+      },
     },
-    {
-      provider = function(self)
-        local count = self.status_dict.removed or 0
-        return count > 0 and ('-' .. count)
-      end,
-      hl = { fg = 'git_del' },
-    },
-    {
-      provider = function(self)
-        local count = self.status_dict.changed or 0
-        return count > 0 and ('~' .. count)
-      end,
-      hl = { fg = 'git_change' },
-    },
-    {
-      condition = function(self) return self.has_changes end,
-      provider = ')',
-    },
+    update = {'BufEnter', 'BufWritePost'}
   },
   navic = {
     flexible = 3,
     {
-      condition = function() require('nvim-navic').is_available() end,
+      condition = function()
+        return require('nvim-navic').is_available()
+      end,
       static = {
         -- create a type highlight map
         type_hl = {
@@ -200,116 +205,125 @@ local M = {
         self.child = self:new(children, 1)
       end,
       -- evaluate the children containing navic components
-      provider = function(self) return self.child:eval() end,
+      provider = function(self)
+        return self.child:eval()
+      end,
       hl = { fg = 'normal' },
-      update = 'CursorHold',
     },
     { provider = '' },
+    update = 'CursorHold'
   },
   diagnostics = {
-    condition = conditions.has_diagnostics,
-    init = function(self)
-      local diag = vim.diagnostic
-      local diagnostics_count = {
-        error = #diag.get(0, { severity = diag.severity.ERROR }),
-        warning = #diag.get(0, { severity = diag.severity.WARN }),
-        hint = #diag.get(0, { severity = diag.severity.HINT }),
-        info = #diag.get(0, { severity = diag.severity.INFO }),
-      }
-      local children = {}
-      for k, v in pairs(diagnostics_count) do
-        if v > 0 then
-          table.insert(children, {
-            provider = string.format('%s%s', self.icons[k], v),
-            hl = self.highlights[k],
-          })
+    {
+      condition = conditions.has_diagnostics,
+      init = function(self)
+        local diag = vim.diagnostic
+        local diagnostics_count = {
+          error = #diag.get(0, { severity = diag.severity.ERROR }),
+          warning = #diag.get(0, { severity = diag.severity.WARN }),
+          hint = #diag.get(0, { severity = diag.severity.HINT }),
+          info = #diag.get(0, { severity = diag.severity.INFO }),
+        }
+        local children = {}
+        for diag, count in pairs(diagnostics_count) do
+          if count > 0 then
+            table.insert(children, {
+              provider = string.format('%s%s', self.icons[diag], count),
+              hl = self.highlights[diag],
+            })
+          end
         end
-      end
-      for i = 1, #children - 1, 1 do
-        table.insert(children[i], { provider = ' ' })
-      end
-      self.child = self:new(children, 1)
-    end,
-    static = {
-      icons = {
-        error = vim.fn.sign_getdefined('DiagnosticSignError')[1].text,
-        warning = vim.fn.sign_getdefined('DiagnosticSignWarn')[1].text,
-        info = vim.fn.sign_getdefined('DiagnosticSignInfo')[1].text,
-        hint = vim.fn.sign_getdefined('DiagnosticSignHint')[1].text,
+        for i = 1, #children - 1, 1 do table.insert(children[i], { provider = ' ' }) end
+        self.child = self:new(children, 1)
+      end,
+      static = {
+        icons = {
+          error = vim.fn.sign_getdefined('DiagnosticSignError')[1].text,
+          warning = vim.fn.sign_getdefined('DiagnosticSignWarn')[1].text,
+          info = vim.fn.sign_getdefined('DiagnosticSignInfo')[1].text,
+          hint = vim.fn.sign_getdefined('DiagnosticSignHint')[1].text,
+        },
+        highlights = {
+          error = 'DiagnosticError',
+          warning = 'DiagnosticWarn',
+          info = 'DiagnosticInfo',
+          hint = 'DiagnosticHint',
+        },
       },
-      highlights = {
-        error = 'DiagnosticError',
-        warning = 'DiagnosticWarn',
-        info = 'DiagnosticInfo',
-        hint = 'DiagnosticHint',
+      on_click = {
+        callback = function() require('trouble').toggle({ mode = 'document_diagnostics' }) end,
+        name = 'heirline_diagnostics',
       },
+      provider = function(self) return self.child:eval() end,
     },
-    update = { 'DiagnosticChanged', 'BufEnter' },
-    on_click = {
-      callback = function() require('trouble').toggle({ mode = 'document_diagnostics' }) end,
-      name = 'heirline_diagnostics',
-    },
-    provider = function(self) return self.child:eval() end,
+    update = 'DiagnosticChanged'
   },
   dap = {
-    condition = function() return require('dap').session() ~= nil end,
-    provider = function() return ' ' .. require('dap').status() .. ' ' end,
-    hl = 'Debug',
     {
-      provider = '',
-      on_click = {
-        callback = function() require('dap').step_into() end,
-        name = 'heirline_dap_step_into',
+      condition = function() return require('dap').session() ~= nil end,
+      provider = function() return ' ' .. require('dap').status() .. ' ' end,
+      hl = 'Debug',
+      {
+        provider = '',
+        on_click = {
+          callback = function() require('dap').step_into() end,
+          name = 'heirline_dap_step_into',
+        },
+      },
+      { provider = ' ' },
+      {
+        provider = '',
+        on_click = {
+          callback = function() require('dap').step_out() end,
+          name = 'heirline_dap_step_out',
+        },
+      },
+      { provider = ' ' },
+      {
+        provider = ' ',
+        on_click = {
+          callback = function() require('dap').step_over() end,
+          name = 'heirline_dap_step_over',
+        },
+      },
+      { provider = ' ' },
+      {
+        provider = 'ﰇ',
+        on_click = {
+          callback = function() require('dap').run_last() end,
+          name = 'heirline_dap_run_last',
+        },
+      },
+      { provider = ' ' },
+      {
+        provider = '',
+        on_click = {
+          callback = function()
+            require('dap').terminate()
+            require('dapui').close({})
+          end,
+          name = 'heirline_dap_close',
+        },
       },
     },
-    { provider = ' ' },
-    {
-      provider = '',
-      on_click = {
-        callback = function() require('dap').step_out() end,
-        name = 'heirline_dap_step_out',
-      },
-    },
-    { provider = ' ' },
-    {
-      provider = ' ',
-      on_click = {
-        callback = function() require('dap').step_over() end,
-        name = 'heirline_dap_step_over',
-      },
-    },
-    { provider = ' ' },
-    {
-      provider = 'ﰇ',
-      on_click = {
-        callback = function() require('dap').run_last() end,
-        name = 'heirline_dap_run_last',
-      },
-    },
-    { provider = ' ' },
-    {
-      provider = '',
-      on_click = {
-        callback = function()
-          require('dap').terminate()
-          require('dapui').close({})
-        end,
-        name = 'heirline_dap_close',
-      },
-    },
+    update = {'CursorHold'}
   },
   termname = {
     provider = function() return ' ' .. vim.api.nvim_buf_get_name(0):gsub('.*:', '') end,
     hl = { fg = 'func' },
   },
   help_filename = {
-    condition = function() return vim.bo.filetype == 'help' end,
+    {
+      condition = function() return vim.bo.filetype == 'help' end,
+      provider = function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':t') end,
+      hl = { fg = 'func' },
+    },
     update = 'BufEnter',
-    provider = function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':t') end,
-    hl = { fg = 'func' },
   },
-  -- I take no credits for this! :lion:
-  ruler = { provider = '%7(%l/%3L%):%2c - %P' },
+  ruler = {
+    provider = '%7(%l/%3L%):%2c - %P',
+    update = { 'CursorMoved', 'ModeChanged' }
+  },
   scrollbar = {
     static = { sbar = { '█', '▇', '▆', '▅', '▄', '▃', '▂', '▁' } },
     provider = function(self)
@@ -390,7 +404,7 @@ M.file_info = {
     self.filename = vim.api.nvim_buf_get_name(0)
     self.extension = vim.fn.expand('%:e')
     self.icon, self.icon_color =
-      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+    require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   M.file_icon,
   M.filename,

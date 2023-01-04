@@ -2,28 +2,29 @@ local utils = require('heirline.utils')
 local M = {
   tabline_bufnr = {
     provider = function(self) return tostring(self.bufnr) .. '. ' end,
-    hl = 'Comment',
+    hl = function(self) return { fg = 'comment', bold = self.is_visible } end,
   },
   tabline_filename = {
-    provider = function(self)
-      -- self.filename will be defined later, just keep looking at the example!
-      local filename = self.filename
-      filename = filename == '' and '[No Name]' or vim.fn.fnamemodify(filename, ':t')
-      return filename
+    init = function(self)
+      self.lfilename = vim.fn.fnamemodify(self.filename, ':.')
+      if self.lfilename == '' then self.lfilename = '[No Name]' end
     end,
-    hl = function(self) return { bold = self.is_active or self.is_visible } end,
+    hl = vim.bo.modified and { italic = true, force = true } or nil,
+    update = { 'BufEnter', 'BufWritePost', 'WinResized', 'VimResized' },
+    provider = function(self) return vim.fn.pathshorten(self.lfilename) end,
   },
   tabline_file_flags = {
     {
       condition = function(self) return vim.bo[self.bufnr].modified end,
-      provider = '[+]',
-      hl = { fg = 'green' },
+      provider = ' [+]',
+      hl = { fg = 'string' },
     },
     {
       condition = function(self) return not vim.bo[self.bufnr].modifiable or vim.bo[self.bufnr].filetype == 'help' end,
       provider = function(self) return vim.bo[self.bufnr].filetype == 'terminal' and '  ' or '' end,
       hl = { fg = 'orange' },
     },
+    update = { 'BufWritePost', 'BufEnter', 'InsertEnter', 'TextChanged' },
   },
   tabline_close_button = {
     condition = function(self) return not vim.bo[self.bufnr].modified end,
@@ -37,6 +38,30 @@ local M = {
       },
     },
   },
+  tabline_picker = {
+    condition = function(self)
+      return self._show_picker
+    end,
+    init = function(self)
+      local bufname = vim.api.nvim_buf_get_name(self.bufnr)
+      bufname = vim.fn.fnamemodify(bufname, ":t")
+      local label = bufname:sub(1, 1)
+      local i = 2
+      while self._picker_labels[label] do
+        if i > #bufname then
+          break
+        end
+        label = bufname:sub(i, i)
+        i = i + 1
+      end
+      self._picker_labels[label] = self.bufnr
+      self.label = label
+    end,
+    provider = function(self)
+      return self.label
+    end,
+    hl = { fg = 'diag_warn', bold = true },
+  }
 }
 
 local file_icon = require('pynappo/plugins/heirline/components/base').file_icon
@@ -44,7 +69,7 @@ M.tabline_filename_block = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
     self.icon, self.icon_color =
-      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+    require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   on_click = {
@@ -65,7 +90,7 @@ M.tabline_filename_block = {
 }
 M.tabline_buffer_block = utils.surround(
   { '', '' },
-  function(self) return self.is_active and utils.get_highlight('TabLineSel').bg or utils.get_highlight('TabLine').bg end,
+  function(self) return self.is_active and 'tabline_sel' or 'tabline' end,
   {
     M.tabline_filename_block,
     M.tabline_close_button,
@@ -97,15 +122,17 @@ M.bufferline = utils.make_buflist(
   { provider = '', hl = { fg = 'gray' } }
 )
 M.tabpages = {
-  condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
-  update = { 'TabNewEntered', 'TabNew', 'TabLeave', 'TabEnter', 'TabClosed' },
-  utils.make_tablist({
-    provider = function(self) return '%' .. self.tabnr .. 'T ' .. self.tabnr .. ' %T' end,
-    hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
-  }),
   {
-    provider = '%999X  %X',
-    hl = 'TabLine',
+    condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
+    utils.make_tablist({
+      provider = function(self) return '%' .. self.tabnr .. 'T ' .. self.tabnr .. ' %T' end,
+      hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
+    }),
+    {
+      provider = '%999X  %X',
+      hl = 'TabLine',
+    },
   },
+  update = {'TabEnter', 'TabLeave', 'TabNew', 'TabNewEntered', 'TabClosed'}
 }
 return M

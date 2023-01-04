@@ -3,7 +3,9 @@ local default_config = {
   on_attach = function(client, bufnr)
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     require('pynappo/keymaps').setup.lsp(bufnr)
-    require('nvim-navic').attach(client, bufnr)
+    if client.server_capabilities.documentSymbolProvider then
+      require('nvim-navic').attach(client, bufnr)
+    end
   end,
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
   flags = {debounce_text_changes = 200}
