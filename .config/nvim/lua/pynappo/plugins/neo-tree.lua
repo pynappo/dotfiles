@@ -55,20 +55,6 @@ require("neo-tree").setup({
       width = "100%",
       right_padding = 0,
     },
-    --diagnostics = {
-    --  symbols = {
-    --    hint = "H",
-    --    info = "I",
-    --    warn = "!",
-    --    error = "X",
-    --  },
-    --  highlights = {
-    --    hint = "DiagnosticSignHint",
-    --    info = "DiagnosticSignInfo",
-    --    warn = "DiagnosticSignWarn",
-    --    error = "DiagnosticSignError",
-    --  },
-    --},
     modified = {
       symbol = "[+] ",
       highlight = "NeoTreeModified",
@@ -142,9 +128,6 @@ require("neo-tree").setup({
     search_limit = 50, -- max number of search results when using filters
     follow_current_file = true, -- This will find and focus the file in the active buffer every time
     -- the current file is changed while the tree is open.
-    hijack_netrw_behavior = "disabled",
-    use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
-    -- instead of relying on nvim autocmd events.
   },
   buffers = {
     bind_to_cwd = true,

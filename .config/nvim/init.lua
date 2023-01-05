@@ -42,7 +42,6 @@ if g.neovide then
   g.neovide_remember_window_size = true
 end
 -- Line numbers
-o.undofile = true
 wo.signcolumn = "auto:2"
 o.relativenumber = true
 o.number = true
@@ -70,13 +69,14 @@ o.linebreak = true
 o.breakindent = true
 o.wrap = true
 
--- Misc
+-- Pop up menu stuff
 o.pumblend = 20
 o.updatetime = 300
-o.termguicolors = true
-g.gutentags_enabled = 1
+
+-- Misc.
 o.history = 1000
 o.scrolloff = 4
+o.undofile = true
 opt.whichwrap:append("<,>,h,l,[,]")
 opt.fillchars = {
   horiz     = '━',
@@ -124,16 +124,21 @@ local disabled_built_ins = {
 }
 for _, plugin in pairs(disabled_built_ins) do vim.g["loaded_" .. plugin] = 1 end
 require("pynappo/keymaps").setup.regular()
-local autocmd_utils = require("pynappo/autocmds")
-vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticSignError"})
-vim.fn.sign_define("DiagnosticSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
-vim.fn.sign_define("DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"})
-vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
+require("pynappo/autocmds")
+local signs = {
+  DiagnosticSignError = {text = "", texthl = "DiagnosticSignError"},
+  DiagnosticSignWarn = {text = "", texthl = "DiagnosticSignWarn"},
+  DiagnosticSignInfo = {text = "", texthl = "DiagnosticSignInfo"},
+  DiagnosticSignHint = {text = "", texthl = "DiagnosticSignHint"}
+}
+for name, sign in pairs(signs) do vim.fn.sign_define(name, sign) end
+o.termguicolors = true
 require("pynappo/plugins")
 vim.cmd.colorscheme('ayu')
 
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
-vim.cmd.amenu([[PopUp.Inspect <Cmd>Inspect<CR>]])
+vim.cmd.amenu([[PopUp.:Inspect <Cmd>Inspect<CR>]])
+vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 local commands = {
   {"CDhere", "cd %:p:h"},
   {
@@ -142,7 +147,7 @@ local commands = {
       -- Save cursor position to later restore
       local curpos = vim.api.nvim_win_get_cursor(0)
       -- Search and replace trailing whitespace
-      vim.cmd([[keeppatterns %s/\s\+$//e]])
+      vim.cmd.keeppatterns([[%s/\s\+$//e]])
       vim.api.nvim_win_set_cursor(0, curpos)
 
       --- Trim last blank lines
@@ -166,3 +171,4 @@ local commands = {
   },
 }
 for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {}) end
+if vim.fn.getcwd():find(vim.fn.expand("~/.config")) then vim.cmd('DotfilesGit') end

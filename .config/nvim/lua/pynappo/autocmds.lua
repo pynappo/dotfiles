@@ -9,7 +9,7 @@ if vim.g.started_by_firenvim then M.create_autocmd('BufEnter', { callback = func
 M.create_autocmd('TextYankPost', {
   callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
 })
-M.create_autocmd('BufWritePre', { command = [[%s/\s\+$//e]] })
+M.create_autocmd('BufWritePre', { command = [[keeppatterns %s/\s\+$//e]] })
 
 M.create_autocmd('BufReadPost', {
   pattern = '*',
@@ -22,6 +22,7 @@ M.create_autocmd('BufReadPost', {
     end
   end,
 })
+
 
 M.create_autocmd('DiagnosticChanged', {
   callback = function() vim.diagnostic.setloclist({ open = false }) end,

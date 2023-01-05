@@ -119,7 +119,7 @@ local lazy_opts = {
 }
 
 require('lazy').setup({
-  { 'tpope/vim-fugitive' },
+  'tpope/vim-fugitive',
   {
     'Shatur/neovim-ayu',
     priority = 100,
@@ -146,8 +146,19 @@ require('lazy').setup({
     config = function() require('octo').setup() end,
   },
   -- { 'ludovicchabant/vim-gutentags', config = function() require('pynappo/plugins/gutentags') end },
-  { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }, { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end },
-  { 'ggandor/leap-spooky.nvim', config = function() require('leap-spooky').setup() end },
+  { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
+  {
+    'ggandor/leap.nvim',
+    dependencies = {
+      { 'ggandor/leap-spooky.nvim', config = function() require('leap-spooky').setup() end },
+      { 'ggandor/flit.nvim', config = function() require('flit').setup({ labeled_modes = 'v' }) end },
+    },
+    config = function() require('leap').add_default_mappings() end,
+  },
+  {
+    'fedepujol/move.nvim',
+    keys = keymaps.setup.move({lazy = true})
+  },
   { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
     'nvim-telescope/telescope.nvim',
@@ -524,10 +535,7 @@ require('lazy').setup({
       require('pynappo/plugins/lsp')
     end,
   },
-  {
-    url = 'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-    config = function() require("lsp_lines").setup() end,
-  },
+  -- { url = 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', config = function() require("lsp_lines").setup() end, },
   {
     'nvim-neotest/neotest',
     dependencies = {
@@ -615,7 +623,6 @@ require('lazy').setup({
     dependencies = { 'MunifTanjim/nui.nvim' },
     config = function() require('competitest').setup({ runner_ui = { interface = 'popup' } }) end,
   },
-  { 'ggandor/flit.nvim', config = function() require('flit').setup({ labeled_modes = 'v' }) end },
   {
     'dstein64/nvim-scrollview',
     config = function()
