@@ -19,7 +19,6 @@ M.setup = {
   regular = function()
     vim.g.mapleader = ' '
     vim.g.maplocalleader = ' '
-    -- I have no idea why, but I can't put the above mappings in the below map() call without a weird mapping error, so this stays separate for now
     map({
       [{ 'n', 't' }] = {
         -- Better tabs
@@ -185,7 +184,7 @@ M.setup = {
         { 'm;' , '<Plug>(Marks-toggle)' },
         { 'dm' , '<Plug>(Marks-delete)' },
         { 'dm-' , '<Plug>(Marks-deleteline)' },
-        { 'dm<space>' , '<Plug>(Marks-deletebuf)' },
+        { 'dm<Space>' , '<Plug>(Marks-deletebuf)' },
         { 'm:' , '<Plug>(Marks-preview)' },
         { 'm]' , '<Plug>(Marks-next)' },
         { 'm[' , '<Plug>(Marks-prev)' },
@@ -261,9 +260,24 @@ M.setup = {
         },
       },
     }, {}, opts)
+  end,
+  move = function(opts)
+    return map({
+      [{'i'}] = {
+        { '<A-j>', '<Cmd>MoveLine(1)<CR>' },
+        { '<A-k>', '<Cmd>MoveLine(-1)<CR>' },
+        { '<A-h>', '<Cmd>MoveHChar(-1)<CR>' },
+        { '<A-l>', '<Cmd>MoveHChar(1)<CR>' }
+      },
+      [{'v'}] = {
+        { '<A-j>', '<Cmd>MoveBlock(1)<CR>', },
+        { '<A-k>', '<Cmd>MoveBlock(-1)<CR>' },
+        { '<A-h>', '<Cmd>MoveHBlock(-1)<CR>' },
+        { '<A-l>', '<Cmd>MoveHBlock(1)<CR>' }
+      }
+    }, {}, opts)
   end
 }
-
 -- Other random plugin-specific mapping tables go here: --
 
 M.cmp = {
@@ -275,13 +289,6 @@ M.cmp = {
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto }),
       ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
-      ['<C-j>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        else
-          fallback()
-        end
-      end, {'i', 'c'}),
       ['<Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then cmp.select_next_item()
         elseif luasnip.jumpable(1) then luasnip.jump(1)

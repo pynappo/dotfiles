@@ -11,11 +11,6 @@ ts.setup {
       hijack_netrw = true,
     }
   },
-  pickers = {
-    buffers = {
-      initial_mode = "normal",
-    }
-  },
   playground = {
     enable = true,
     disable = {},
