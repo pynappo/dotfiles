@@ -10,37 +10,11 @@ if jit.os == "Windows" then
   o.shellquote = ''
   o.shellxquote = ''
 end
-g.firenvim_config = {
-  globalSettings = {
-    alt = 'all',
-  },
-  localSettings = {
-    ['.*'] = {
-      cmdline = 'neovim',
-      content = 'md',
-      priority = 0,
-      selector = 'textarea',
-      takeover = 'never',
-    },
-  }
-}
-if g.started_by_firenvim then
-  o.laststatus = 0
-  o.cmdheight = 0
-  o.showtabline = 0
-else
-  o.cmdheight = 1
-  o.showtabline = 2
-  o.laststatus = 3
-end
-if g.neovide then
-  g.neovide_transparency = 0.8
-  g.neovide_refresh_rate = 144
-  g.neovide_cursor_vfx_mode = 'ripple'
-  g.neovide_cursor_animation_length = 0.03
-  g.neovide_cursor_trail_size = 0.9
-  g.neovide_remember_window_size = true
-end
+
+o.cmdheight = 1
+o.showtabline = 2
+o.laststatus = 3
+
 -- Line numbers
 wo.signcolumn = "auto:2"
 o.relativenumber = true
@@ -172,3 +146,4 @@ local commands = {
 }
 for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {}) end
 if vim.fn.getcwd():find(vim.fn.expand("~/.config")) then vim.cmd('DotfilesGit') end
+require('pynappo/gui')
