@@ -50,6 +50,7 @@ M.setup = {
         {'p', 'p=`]'},
         {'P', 'P=`]'},
         {'<leader>p', '"+p'},
+        {'<leader>y', '"+y'},
         { 'x', '"_x' },
       },
     }, { silent = true })
@@ -406,5 +407,4 @@ M.neoscroll = {
   ['zz'] = { 'zz', { '100' } },
   ['zb'] = { 'zb', { '100' } },
 }
-
 return M
