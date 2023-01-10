@@ -1,15 +1,15 @@
 local ts = require('telescope')
-ts.setup {
+ts.setup({
   defaults = {
-    path_display = {"smart"}
+    path_display = { 'smart' },
   },
   extensions = {
-    ["ui-select"] = {
-      require("telescope.themes").get_dropdown { }
+    ['ui-select'] = {
+      require('telescope.themes').get_dropdown({}),
     },
     file_browser = {
       hijack_netrw = true,
-    }
+    },
   },
   playground = {
     enable = true,
@@ -28,10 +28,10 @@ ts.setup {
       goto_node = '<cr>',
       show_help = '?',
     },
-  }
-}
-ts.load_extension("fzf")
-ts.load_extension("file_browser")
-ts.load_extension("notify")
-ts.load_extension("undo")
-ts.load_extension("ui-select")
+  },
+})
+ts.load_extension('fzf')
+ts.load_extension('file_browser')
+ts.load_extension('notify')
+-- ts.load_extension('undo')
+ts.load_extension('ui-select')

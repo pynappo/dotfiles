@@ -70,7 +70,7 @@ local config = {
   max_fps = 144,
   color_scheme = 'Ayu Mirage',
   font = wezterm.font_with_fallback({
-    'Inconsolata',
+    'Inconsolata NFM',
     { family = "Symbols NFM", scale = 0.5 },
     'Noto Color Emoji',
   }),

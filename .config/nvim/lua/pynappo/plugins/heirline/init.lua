@@ -1,3 +1,4 @@
+local M = {}
 local utils = require('heirline.utils')
 local get_hl = utils.get_highlight
 local conditions = require('heirline.conditions')
@@ -40,7 +41,7 @@ end
 require('heirline').load_colors(default_colors())
 
 vim.api.nvim_create_augroup('Heirline', { clear = true })
--- We're gonna assume that the user is applying a colorscheme with gitsigns support
+
 vim.api.nvim_create_autocmd('ColorScheme', {
   callback = function()
     local plugin_support, new_colors = pcall(plugin_colors)
@@ -50,6 +51,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 vim.api.nvim_create_autocmd('User', {
+  group = 'Heirline',
   pattern = 'HeirlineInitWinbar',
   callback = function(args)
     local buftype = vim.tbl_contains({ 'prompt', 'nofile', 'help', 'quickfix' }, vim.bo[args.buf].buftype)
@@ -59,7 +61,7 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
-local mode_colors = {
+M.mode_colors = {
   n = 'type',
   i = 'string',
   v = 'func',
@@ -74,9 +76,8 @@ local mode_colors = {
   ['!'] = 'diag_error',
   t = 'normal',
 }
-local get_mode_color = function(self)
-  local mode = conditions.is_active() and vim.fn.mode() or 'n'
-  return self.mode_colors[mode]
+get_mode_color = function(self)
+  return self.mode_colors[conditions.is_active() and vim.fn.mode() or 'n']
 end
 
 local c = require('pynappo/plugins/heirline/components/base')
@@ -92,7 +93,7 @@ c.lsp = {
   utils.surround({ '', '' }, 'string', { c.lsp, hl = { fg = 'black' } }),
 }
 c.ruler = utils.surround(
-  { ' ', '' },
+  { '', '' },
   function(self) return self:get_mode_color() end,
   { c.ruler, hl = { fg = 'black' } }
 )
@@ -100,7 +101,7 @@ c.ruler = utils.surround(
 local StatusLine = {
   hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' end,
   static = {
-    mode_colors = mode_colors,
+    mode_colors = M.mode_colors,
     get_mode_color = get_mode_color,
   },
   { c.vi_mode },
@@ -156,3 +157,4 @@ local t = require('pynappo/plugins/heirline/components/tabline')
 local TabLines = { t.tabline_offset, t.bufferline, align, t.tabpages }
 
 require('heirline').setup(StatusLine, WinBars, TabLines)
+return M
