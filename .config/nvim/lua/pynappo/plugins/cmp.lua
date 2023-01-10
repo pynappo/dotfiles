@@ -1,4 +1,3 @@
-local luasnip = require("luasnip")
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 lspkind.init({
@@ -46,7 +45,7 @@ cmp.setup {
     end
   },
   snippet = {
-    expand = function(args) luasnip.lsp_expand(args.body) end,
+    expand = function(args) require('luasnip').lsp_expand(args.body) end,
   },
   completion = { completeopt = 'menu,menuone,noinsert,noselect' },
   mapping = require("pynappo/keymaps").cmp.insert(),
@@ -57,8 +56,6 @@ cmp.setup {
       { name = "crates" },
       { name = 'emoji' },
       { name = 'calc'},
-    },
-    {
       { name = 'copilot' },
       { name = "nvim_lua" },
       { name = "path"},

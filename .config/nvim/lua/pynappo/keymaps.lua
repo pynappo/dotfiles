@@ -211,20 +211,19 @@ M.setup = {
       [{ 'n' }] = { { '<leader>m', function() require('mini.map').toggle() end, { desc = 'Toggle mini.map' } } },
     })
   end,
-  dial = function()
-    local dial = require('dial.map')
-    map({
+  dial = function(opts)
+    return map({
       [{ 'n' }] = {
-        { '<c-a>', dial.inc_normal() },
-        { '<c-x>', dial.dec_normal() },
+        { '<C-a>', function() require('dial.map').inc_normal() end },
+        { '<C-x>', function() require('dial.map').dec_normal() end },
       },
       [{ 'v' }] = {
-        { '<c-a>', dial.inc_visual() },
-        { '<c-x>', dial.dec_visual() },
-        { 'g<c-a>', dial.inc_gvisual() },
-        { 'g<c-x>', dial.dec_gvisual() },
+        { '<C-a>', function() require('dial.map').inc_visual() end },
+        { '<C-x>', function() require('dial.map').dec_visual() end },
+        { 'g<C-a>', function() require('dial.map').inc_gvisual() end },
+        { 'g<c-x>', function() require('dial.map').dec_gvisual() end },
       },
-    }, { remap = false })
+    }, {}, opts)
   end,
   telescope = function(opts)
     return map({

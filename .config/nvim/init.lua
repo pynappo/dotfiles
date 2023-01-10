@@ -1,7 +1,6 @@
 local o = vim.o
 local wo = vim.wo
 local opt = vim.opt
-local g = vim.g
 if jit.os == "Windows" then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
@@ -45,9 +44,10 @@ o.wrap = true
 
 -- Pop up menu stuff
 o.pumblend = 20
-o.updatetime = 300
+o.updatetime = 500
 
 -- Misc.
+o.showmode = false
 o.history = 1000
 o.scrolloff = 4
 o.undofile = true
@@ -98,7 +98,6 @@ local disabled_built_ins = {
 }
 for _, plugin in pairs(disabled_built_ins) do vim.g["loaded_" .. plugin] = 1 end
 require("pynappo/keymaps").setup.regular()
-require("pynappo/autocmds")
 local signs = {
   DiagnosticSignError = {text = "", texthl = "DiagnosticSignError"},
   DiagnosticSignWarn = {text = "", texthl = "DiagnosticSignWarn"},
@@ -108,6 +107,8 @@ local signs = {
 for name, sign in pairs(signs) do vim.fn.sign_define(name, sign) end
 o.termguicolors = true
 require("pynappo/plugins")
+require("pynappo/autocmds")
+require("pynappo/theme").transparent_override()
 vim.cmd.colorscheme('ayu')
 
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
@@ -117,10 +118,9 @@ local commands = {
   {"CDhere", "cd %:p:h"},
   {
     "Trim",
-    function() -- yoinked from mini.trailspace because I don't like highlights
-      -- Save cursor position to later restore
+    function()
       local curpos = vim.api.nvim_win_get_cursor(0)
-      -- Search and replace trailing whitespace
+      -- Trail whitespace
       vim.cmd.keeppatterns([[%s/\s\+$//e]])
       vim.api.nvim_win_set_cursor(0, curpos)
 
@@ -140,10 +140,39 @@ local commands = {
   {
     'ClearSwapFiles',
     function()
-      vim.fn.system('rm ' .. vim.fn.stdpath('data') .. '/swap/*' .. jit.os == "Windows" and ' -Force' or ' -f')
+      print(vim.fn.system('rm ' .. vim.fn.stdpath('data') .. '/swap/*' .. (jit.os == "Windows" and ' -Force' or ' -f')))
     end
   },
 }
 for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {}) end
 if vim.fn.getcwd():find(vim.fn.expand("~/.config")) then vim.cmd('DotfilesGit') end
-require('pynappo/gui')
+
+-- Gui stuff
+local g = vim.g
+if g.started_by_firenvim then
+  vim.cmd.startinsert()
+  g.firenvim_config = {
+    globalSettings = {
+      alt = 'all',
+    },
+    localSettings = {
+      ['.*'] = {
+        cmdline = 'neovim',
+        content = 'md',
+        priority = 0,
+        selector = 'textarea',
+        takeover = 'never',
+      },
+    }
+  }
+  o.laststatus = 0
+  o.cmdheight = 0
+  o.showtabline = 0
+elseif g.neovide then
+  g.neovide_transparency = 0.8
+  g.neovide_refresh_rate = 144
+  g.neovide_cursor_vfx_mode = 'ripple'
+  g.neovide_cursor_animation_length = 0.03
+  g.neovide_cursor_trail_size = 0.9
+  g.neovide_remember_window_size = true
+end
