@@ -44,8 +44,8 @@ vim.api.nvim_create_augroup('Heirline', { clear = true })
 
 vim.api.nvim_create_autocmd('ColorScheme', {
   callback = function()
-    local plugin_support, new_colors = pcall(plugin_colors)
-    utils.on_colorscheme(vim.tbl_extend('force', default_colors(), plugin_support and new_colors or {}))
+    local plugin_support, extra_colors = pcall(plugin_colors)
+    utils.on_colorscheme(vim.tbl_extend('force', default_colors(), plugin_support and extra_colors or {}))
   end,
   group = 'Heirline',
 })

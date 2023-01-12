@@ -8,7 +8,7 @@ ts.setup({
       require('telescope.themes').get_dropdown({}),
     },
     file_browser = {
-      hijack_netrw = true,
+      hijack_netrw = false,
     },
   },
   playground = {

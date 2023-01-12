@@ -122,7 +122,7 @@ local lazy_opts = {
         "getscriptPlugin",
         "vimball",
         "vimballPlugin",
-        "2html_plugin",
+        -- "2html_plugin",
         "logipat",
         "rrhelper",
         "matchparen"
@@ -153,6 +153,9 @@ require('lazy').setup({
         },
       })
     end,
+  },
+  {
+    'folke/tokyonight.nvim'
   },
   {
     'TimUntersberger/neogit',
@@ -360,7 +363,7 @@ require('lazy').setup({
   },
   {
     'folke/noice.nvim',
-    cond = not vim.g.neovide,
+    cond = false,
     config = function()
       require('noice').setup({
         cmdline = { enabled = false },
