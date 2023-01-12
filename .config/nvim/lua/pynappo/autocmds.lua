@@ -18,7 +18,7 @@ Autocmds:create('TextYankPost', {
   callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
   desc = 'Highlight on yank',
 })
-Autocmds:create('BufWritePre', { command = [[keeppatterns %s/\s\+$//e]], desc = 'Trim ending whitespace' })
+-- Autocmds:create('BufWritePre', { command = [[keeppatterns %s/\s\+$//e]], desc = 'Trim ending whitespace' })
 
 Autocmds:create('BufReadPost', {
   pattern = '*',

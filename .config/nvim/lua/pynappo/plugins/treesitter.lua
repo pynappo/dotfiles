@@ -74,15 +74,15 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Better folds
-local o = vim.o
-o.foldexpr = 'nvim_treesitter#foldexpr()'
-o.foldmethod = 'expr'
-o.foldlevel = 99
-function _G.custom_fold_text()
-  local line = vim.fn.getline(vim.v.foldstart)
-  local line_count = vim.v.foldend - vim.v.foldstart + 1
-  return '+' .. line .. ': ' .. line_count .. ' lines'
-end
-
-o.foldtext = 'v:lua.custom_fold_text()'
+-- local o = vim.o
+-- o.foldexpr = 'nvim_treesitter#foldexpr()'
+-- o.foldmethod = 'expr'
+-- o.foldlevel = 99
+-- function _G.custom_fold_text()
+--   local line = vim.fn.getline(vim.v.foldstart)
+--   local line_count = vim.v.foldend - vim.v.foldstart + 1
+--   return '+' .. line .. ': ' .. line_count .. ' lines'
+-- end
+-- 
+-- o.foldtext = 'v:lua.custom_fold_text()'
 
