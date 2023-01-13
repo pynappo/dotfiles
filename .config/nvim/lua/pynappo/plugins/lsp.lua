@@ -54,11 +54,9 @@ local configs = {
 }
 function M.get_config(ls)
   local config = vim.tbl_deep_extend("force", default_config, configs[ls] or {})
-  if configs[ls] and configs[ls].on_attach then
-    config.on_attach = function(client, bufnr)
-      configs[ls].on_attach(client, bufnr)
-      default_config.on_attach(client, bufnr)
-    end
+  config.on_attach = function(client, bufnr)
+    if configs[ls].on_attach then configs[ls].on_attach(client, bufnr) end
+    default_config.on_attach(client, bufnr)
   end
   return config
 end
