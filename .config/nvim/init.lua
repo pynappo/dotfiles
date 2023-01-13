@@ -77,7 +77,6 @@ o.cursorline = true
 o.formatoptions = "jcrql"
 opt.formatoptions:remove('o')
 
-require("pynappo/keymaps").setup.regular()
 local signs = {
   DiagnosticSignError = {text = "", texthl = "DiagnosticSignError"},
   DiagnosticSignWarn = {text = "", texthl = "DiagnosticSignWarn"},
@@ -86,7 +85,10 @@ local signs = {
 }
 for name, sign in pairs(signs) do vim.fn.sign_define(name, sign) end
 o.termguicolors = true
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 require("pynappo/plugins")
+require("pynappo/keymaps").setup.regular()
 require("pynappo/autocmds")
 require("pynappo/theme").transparent_override()
 vim.cmd.colorscheme('ayu')

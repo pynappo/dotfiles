@@ -186,10 +186,10 @@ require('lazy').setup({
     },
     config = function() require('leap').add_default_mappings() end,
   },
-  {
-    'fedepujol/move.nvim',
-    keys = keymaps.setup.move({lazy = true})
-  },
+  -- {
+  --   'fedepujol/move.nvim',
+  --   keys = keymaps.setup.move({lazy = true})
+  -- },
   { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
     'nvim-telescope/telescope.nvim',
@@ -239,7 +239,8 @@ require('lazy').setup({
     'lukas-reineke/indent-blankline.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
-      require('pynappo/autocmds'):create('ColorScheme', {
+      require('pynappo/autocmds').create('ColorScheme', {
+
         callback = function()
           local hl_list = {}
           for i, color in pairs({ '#4b2121', '#464421', '#21492a', '#284043', '#223b4b', '#463145' }) do
@@ -549,7 +550,9 @@ require('lazy').setup({
   },
   {
     'rebelot/heirline.nvim',
-    config = function() require('pynappo/plugins/heirline') end,
+    config = function()
+      require('pynappo/plugins/heirline')
+    end,
     event = 'ColorScheme', -- helps prevent colorscheme errors and stuff
     dependencies = {
       {
@@ -600,7 +603,6 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'alaviss/nim.nvim',
     },
-    event = 'VeryLazy',
     init = function() keymaps.setup.diagnostics() end,
     config = function()
       require('mason').setup({ ui = { border = 'single' } })
@@ -717,5 +719,22 @@ require('lazy').setup({
     'chentoast/marks.nvim',
     config = function() require('marks').setup() end,
     keys = keymaps.setup.marks({lazy=true})
+  },
+  {
+    "gbprod/yanky.nvim",
+    dependencies = { "kkharji/sqlite.lua" },
+    config = function()
+      require("yanky").setup({
+        picker = {
+          select = {
+            action = nil, -- nil to use default put action
+          },
+          telescope = {
+            mappings = nil, -- nil to use default mappings
+          },
+        },
+      })
+      keymaps.setup.yanky()
+    end
   }
 }, lazy_opts)
