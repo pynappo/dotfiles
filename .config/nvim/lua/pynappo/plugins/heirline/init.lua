@@ -76,7 +76,7 @@ M.mode_colors = {
   ['!'] = 'diag_error',
   t = 'normal',
 }
-get_mode_color = function(self)
+local get_mode_color = function(self)
   return self.mode_colors[conditions.is_active() and vim.fn.mode() or 'n']
 end
 
@@ -98,63 +98,63 @@ c.ruler = utils.surround(
   { c.ruler, hl = { fg = 'black' } }
 )
 
-local StatusLine = {
-  hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' end,
-  static = {
-    mode_colors = M.mode_colors,
-    get_mode_color = get_mode_color,
+local t = require('pynappo/plugins/heirline/components/tabline')
+
+require('heirline').setup({
+  statusline = {
+    hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' end,
+    static = {
+      mode_colors = M.mode_colors,
+      get_mode_color = get_mode_color,
+    },
+    { c.vi_mode },
+    align,
+    {
+      fallthrough = false,
+      {
+        condition = function()
+          return conditions.buffer_matches({
+            buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
+            filetype = { '^git.*', 'fugitive' },
+          })
+        end,
+        c.cwd,
+        c.filetype,
+        space,
+        c.help_filename,
+      },
+      {
+        condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
+        c.file_icon,
+        space,
+        c.termname,
+      },
+      { c.cwd, c.file_info },
+    },
+    align,
+    { c.dap, c.lsp, space, c.ruler },
   },
-  { c.vi_mode },
-  align,
-  {
+  winbar = {
+    hl = 'Tabline',
     fallthrough = false,
     {
       condition = function()
         return conditions.buffer_matches({
-          buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
+          buftype = { 'nofile', 'prompt', 'quickfix' },
           filetype = { '^git.*', 'fugitive' },
         })
       end,
-      c.cwd,
-      c.filetype,
-      space,
-      c.help_filename,
+      init = function() vim.opt_local.winbar = nil end,
     },
     {
       condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
+      align,
       c.file_icon,
       space,
       c.termname,
     },
-    { c.cwd, c.file_info },
-  },
-  align,
-  { c.dap, c.lsp, space, c.ruler },
-}
-local WinBars = {
-  hl = 'Tabline',
-  fallthrough = false,
-  {
-    condition = function()
-      return conditions.buffer_matches({
-        buftype = { 'nofile', 'prompt', 'quickfix' },
-        filetype = { '^git.*', 'fugitive' },
-      })
-    end,
-    init = function() vim.opt_local.winbar = nil end,
-  },
-  {
-    condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
-    align,
-    c.file_icon,
-    space,
-    c.termname,
-  },
-  { c.navic, align, c.diagnostics, c.gitsigns, space, c.file_info },
-}
-
-local t = require('pynappo/plugins/heirline/components/tabline')
-local TabLines = { t.tabline_offset, t.bufferline, align, t.tabpages }
-
-require('heirline').setup(StatusLine, WinBars, TabLines)
+    { c.navic, align, c.diagnostics, c.gitsigns, space, c.file_info },
+  } ,
+  tabline = { t.tabline_offset, t.bufferline, align, t.tabpages },
+})
 return M
