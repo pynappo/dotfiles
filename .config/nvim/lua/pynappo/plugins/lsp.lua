@@ -14,7 +14,6 @@ local configs = {
   sumneko_lua = {
     on_attach = function(client, bufnr)
       client.server_capabilities.document_formatting = false
-      default_config.on_attach(client, bufnr)
     end,
     settings = {
       Lua = {
@@ -45,7 +44,6 @@ local configs = {
   },
   jdtls = {
     on_attach = function(client, bufnr)
-      default_config.on_attach(client, bufnr)
       require('pynappo/keymaps').setup.jdtls(bufnr)
       require('jdtls').setup_dap({ hotcodereplace = 'auto' })
     end,
@@ -54,7 +52,16 @@ local configs = {
     }
   }
 }
-function M.get_config(ls) return vim.tbl_deep_extend("force", default_config, configs[ls] or {}) end
+function M.get_config(ls)
+  local config = vim.tbl_deep_extend("force", default_config, configs[ls] or {})
+  if configs[ls] and configs[ls].on_attach then
+    config.on_attach = function(client, bufnr)
+      configs[ls].on_attach(client, bufnr)
+      default_config.on_attach(client, bufnr)
+    end
+  end
+  return config
+end
 
 vim.diagnostic.config({
   virtual_text = false,
