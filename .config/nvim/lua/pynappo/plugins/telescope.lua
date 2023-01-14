@@ -1,7 +1,12 @@
 local ts = require('telescope')
+
 ts.setup({
   defaults = {
     path_display = { 'smart' },
+    layout_strategy = 'flex',
+    layout_config = {
+      prompt_position = 'top',
+    },
   },
   extensions = {
     ['ui-select'] = {
