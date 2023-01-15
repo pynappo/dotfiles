@@ -47,8 +47,6 @@ M.setup = {
       [{ 'n', 'v' }] = {
         { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, {expr = true} },
         { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, {expr = true} },
-        {'p', 'p=`]'},
-        {'P', 'P=`]'},
         {'<leader>p', '"+p'},
         {'<leader>y', '"+y'},
         { 'x', '"_x' },

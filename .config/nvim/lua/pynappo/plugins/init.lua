@@ -144,19 +144,21 @@ require('lazy').setup({
     priority = 100,
     config = function()
       local colors = require('ayu.colors')
+      local mirage = true
+      colors.generate(mirage)
+      vim.pretty_print(colors)
       require('ayu').setup({
-        mirage = true,
+        mirage = mirage,
         overrides = {
           Wildmenu = { bg = colors.bg, fg = colors.markup },
-          Comment = { fg = 'gray', italic = true },
-          LineNr = { fg = 'gray' },
+          Comment = { fg = colors.fg_idle, italic = true },
+          Search = { bg = '', underline = true },
+          LineNr = { fg = colors.fg_idle },
         },
       })
     end,
   },
-  {
-    'folke/tokyonight.nvim'
-  },
+  { 'folke/tokyonight.nvim' },
   {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
@@ -186,10 +188,6 @@ require('lazy').setup({
     },
     config = function() require('leap').add_default_mappings() end,
   },
-  -- {
-  --   'fedepujol/move.nvim',
-  --   keys = keymaps.setup.move({lazy = true})
-  -- },
   { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
     'nvim-telescope/telescope.nvim',
@@ -240,7 +238,6 @@ require('lazy').setup({
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
       require('pynappo/autocmds').create('ColorScheme', {
-
         callback = function()
           local hl_list = {}
           for i, color in pairs({ '#4b2121', '#464421', '#21492a', '#284043', '#223b4b', '#463145' }) do
@@ -271,9 +268,7 @@ require('lazy').setup({
       'windwp/nvim-ts-autotag',
       {
         'nvim-treesitter/nvim-treesitter-context',
-        config = function()
-          require('treesitter-context').setup({ min_window_height = 30 })
-        end,
+        config = function() require('treesitter-context').setup({ min_window_height = 30 }) end,
       },
       'nvim-treesitter/playground',
       'RRethy/nvim-treesitter-textsubjects',
@@ -364,6 +359,7 @@ require('lazy').setup({
   },
   {
     'folke/noice.nvim',
+    cond = false,
     config = function()
       require('noice').setup({
         cmdline = { enabled = false },
@@ -507,32 +503,33 @@ require('lazy').setup({
       })
     end,
   },
-  {
-    'nyngwang/murmur.lua',
-    config = function()
-      local augroup = vim.api.nvim_create_augroup('murmur', { clear = true })
-      require('murmur').setup {
-        max_len = 80, -- maximum word-length to highlight
-        exclude_filetypes = {},
-        callbacks = {
-          function ()
-            vim.cmd.doautocmd('InsertEnter')
-            vim.w.diag_shown = false
-          end,
-        }
-      }
-      vim.api.nvim_create_autocmd({ 'CursorHold' }, {
-        group = augroup,
-        pattern = '*',
-        callback = function ()
-          if not vim.w.diag_shown and vim.w.cursor_word ~= '' then
-            vim.diagnostic.open_float()
-            vim.w.diag_shown = true
-          end
-        end
-      })
-    end,
-  },
+  { 'RRethy/vim-illuminate' },
+  -- {
+  --   'nyngwang/murmur.lua',
+  --   config = function()
+  --     local augroup = vim.api.nvim_create_augroup('murmur', { clear = true })
+  --     require('murmur').setup {
+  --       max_len = 80, -- maximum word-length to highlight
+  --       exclude_filetypes = {},
+  --       callbacks = {
+  --         function ()
+  --           vim.cmd.doautocmd('InsertEnter')
+  --           vim.w.diag_shown = false
+  --         end,
+  --       }
+  --     }
+  --     vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+  --       group = augroup,
+  --       pattern = '*',
+  --       callback = function ()
+  --         if not vim.w.diag_shown and vim.w.cursor_word ~= '' then
+  --           vim.diagnostic.open_float()
+  --           vim.w.diag_shown = true
+  --         end
+  --       end
+  --     })
+  --   end,
+  -- },
   {
     'kevinhwang91/nvim-hlslens',
     config = function() require('hlslens').setup() end,
@@ -666,24 +663,24 @@ require('lazy').setup({
   'ellisonleao/glow.nvim',
   -- { 'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
   { 'AckslD/nvim-FeMaco.lua', config = function() require('femaco').setup() end },
-  {
-    'levouh/tint.nvim',
-    cond = false,
-    config = function()
-      require('tint').setup({
-        tint_background_colors = false,
-        window_ignore_function = function(winid)
-          local buftype = vim.bo[vim.api.nvim_win_get_buf(winid)].buftype
-          local floating = vim.api.nvim_win_get_config(winid).relative ~= ''
-          return vim.tbl_contains({ 'terminal', 'nofile' }, buftype) or floating
-        end,
-      })
-    end,
-  },
-  {
-    'nvim-zh/colorful-winsep.nvim',
-    config = function() require('colorful-winsep').setup({ highlight = { fg = '#373751' } }) end,
-  },
+  -- {
+  --   'levouh/tint.nvim',
+  --   cond = false,
+  --   config = function()
+  --     require('tint').setup({
+  --       tint_background_colors = false,
+  --       window_ignore_function = function(winid)
+  --         local buftype = vim.bo[vim.api.nvim_win_get_buf(winid)].buftype
+  --         local floating = vim.api.nvim_win_get_config(winid).relative ~= ''
+  --         return vim.tbl_contains({ 'terminal', 'nofile' }, buftype) or floating
+  --       end,
+  --     })
+  --   end,
+  -- },
+  -- {
+  --   'nvim-zh/colorful-winsep.nvim',
+  --   config = function() require('colorful-winsep').setup({ highlight = { fg = '#373751' } }) end,
+  -- },
   {
     'xeluxee/competitest.nvim',
     cmd = {
