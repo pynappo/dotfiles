@@ -1,3 +1,4 @@
+-- A file containing theme commands and various color utilities
 local theme = {}
 local highlights = {
   'Normal',

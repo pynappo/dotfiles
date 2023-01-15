@@ -85,6 +85,7 @@ local signs = {
 }
 for name, sign in pairs(signs) do vim.fn.sign_define(name, sign) end
 o.termguicolors = true
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 require("pynappo/plugins")
@@ -130,22 +131,22 @@ for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2
 if vim.fn.getcwd():find(vim.fn.expand("~/.config")) then vim.cmd('DotfilesGit') end
 -- Gui stuff
 local g = vim.g
+g.firenvim_config = {
+  globalSettings = {
+    alt = 'all',
+  },
+  localSettings = {
+    ['.*'] = {
+      cmdline = 'neovim',
+      content = 'md',
+      priority = 0,
+      selector = 'textarea',
+      takeover = 'never',
+    },
+  }
+}
 if g.started_by_firenvim then
   vim.cmd.startinsert()
-  g.firenvim_config = {
-    globalSettings = {
-      alt = 'all',
-    },
-    localSettings = {
-      ['.*'] = {
-        cmdline = 'neovim',
-        content = 'md',
-        priority = 0,
-        selector = 'textarea',
-        takeover = 'never',
-      },
-    }
-  }
   o.laststatus = 0
   o.cmdheight = 0
   o.showtabline = 0
