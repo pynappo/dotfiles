@@ -1,5 +1,4 @@
 require('nvim-treesitter.configs').setup {
-  auto_install = vim.env.GIT_WORK_TREE == nil, -- otherwise auto-install fails on git commit -a
   ensure_installed = {
     { "lua", "markdown", "help", "java", "markdown_inline", "regex" },
   },
