@@ -235,7 +235,7 @@ require('lazy').setup({
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    event = 'BufReadPre',
     config = function()
       require('pynappo/autocmds').create('ColorScheme', {
         callback = function()
@@ -262,6 +262,7 @@ require('lazy').setup({
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    event = 'BufReadPost',
     config = function() require('pynappo/plugins/treesitter') end,
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
@@ -329,26 +330,6 @@ require('lazy').setup({
     event = 'BufRead Cargo.toml',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function() require('crates').setup() end,
-  },
-  {
-    'windwp/nvim-autopairs',
-    config = function()
-      require('nvim-autopairs').setup({
-        check_ts = true,
-        ts_config = {},
-        ignored_next_char = '[%w%.]',
-        fast_wrap = {
-          map = '<M-e>',
-          chars = { '{', '[', '(', '"', "'" },
-          pattern = [=[[%"%"%)%>%]%)%}%,]]=],
-          end_key = '$',
-          keys = 'qwertyuiopzxcvbnmasdfghjkl',
-          check_comma = true,
-          highlight = 'Search',
-          highlight_grey = 'Comment',
-        },
-      })
-    end,
   },
   { 'folke/which-key.nvim', config = function() require('which-key').setup({ window = { border = 'single' } }) end },
   { 'folke/trouble.nvim', config = function() require('trouble').setup({}) end },
@@ -546,9 +527,7 @@ require('lazy').setup({
   },
   {
     'rebelot/heirline.nvim',
-    config = function()
-      require('pynappo/plugins/heirline')
-    end,
+    config = function() require('pynappo/plugins/heirline') end,
     event = 'ColorScheme', -- helps prevent colorscheme errors and stuff
     dependencies = {
       {
@@ -556,11 +535,11 @@ require('lazy').setup({
         -- dependencies = { 'neovim/nvim-lspconfig' },
         config = function() require('pynappo/plugins/navic') end,
       },
-      { 'lewis6991/gitsigns.nvim' },
     },
   },
   {
     'lewis6991/gitsigns.nvim',
+    event = "BufReadPre",
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('gitsigns').setup {
@@ -589,6 +568,7 @@ require('lazy').setup({
   { 'tiagovla/scope.nvim', config = function() require('scope').setup() end },
   {
     'neovim/nvim-lspconfig',
+    event = 'BufReadPre',
     dependencies = {
       'folke/neodev.nvim',
       'mfussenegger/nvim-jdtls',
@@ -731,6 +711,14 @@ require('lazy').setup({
         },
       })
       keymaps.setup.yanky()
+    end
+  },
+  {
+    'echasnovski/mini.nvim',
+    event = 'VeryLazy',
+    config = function()
+      require('mini.pairs').setup()
+      require('mini.ai').setup()
     end
   }
 }, lazy_opts)
