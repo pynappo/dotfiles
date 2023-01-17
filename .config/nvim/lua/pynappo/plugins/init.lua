@@ -146,7 +146,6 @@ require('lazy').setup({
       local colors = require('ayu.colors')
       local mirage = true
       colors.generate(mirage)
-      vim.pretty_print(colors)
       require('ayu').setup({
         mirage = mirage,
         overrides = {
@@ -484,7 +483,7 @@ require('lazy').setup({
       })
     end,
   },
-  { 'RRethy/vim-illuminate' },
+  { 'RRethy/vim-illuminate', event = 'BufRead' },
   -- {
   --   'nyngwang/murmur.lua',
   --   config = function()
