@@ -12,7 +12,6 @@ autocmds.create('TextYankPost', {
   callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
   desc = 'Highlight on yank',
 })
--- Autocmds.create('BufWritePre', { command = [[keeppatterns %s/\s\+$//e]], desc = 'Trim ending whitespace' })
 
 autocmds.create('BufReadPost', {
   pattern = '*',
@@ -46,7 +45,7 @@ autocmds.create('ColorScheme', {
 })
 local cursorline_bg_hex = string.format('%06x', vim.api.nvim_get_hl_by_name('CursorLine', true).background)
 vim.api.nvim_set_hl(0, 'ModeCursorLine', { bg = '#' .. cursorline_bg_hex })
-vim.api.nvim_create_autocmd({ 'VimEnter', 'ModeChanged' }, {
+autocmds.create({ 'VimEnter', 'ModeChanged' }, {
   callback = function()
     local heirline_color = heirline_colors.loaded[heirline_colors.mode[vim.fn.mode()]]
     local hex
@@ -66,11 +65,11 @@ vim.api.nvim_create_autocmd({ 'VimEnter', 'ModeChanged' }, {
   end,
   desc = 'Change mode cursorline',
 })
-vim.api.nvim_create_autocmd({ 'BufWinEnter', 'WinEnter', 'CmdLineLeave'}, {
+autocmds.create({ 'BufWinEnter', 'WinEnter', 'CmdLineLeave'}, {
   callback = function() vim.opt_local.winhighlight:append('CursorLine:ModeCursorLine') end,
   desc = 'Enable mode cursorline for current windows',
 })
-vim.api.nvim_create_autocmd({ 'WinLeave', 'CmdLineEnter' }, {
+autocmds.create({ 'WinLeave', 'CmdLineEnter' }, {
   callback = function() vim.opt_local.winhighlight:remove({ 'CursorLine' }) end,
   desc = 'Disable mode cursorline for non-current windows',
 })

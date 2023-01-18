@@ -10,7 +10,6 @@ local M = {
       if self.lfilename == '' then self.lfilename = '[No Name]' end
     end,
     hl = vim.bo.modified and { italic = true, force = true } or nil,
-    update = { 'BufEnter', 'BufWritePost', 'WinResized', 'VimResized' },
     provider = function(self) return vim.fn.pathshorten(self.lfilename) end,
   },
   tabline_file_flags = {
@@ -24,7 +23,6 @@ local M = {
       provider = function(self) return vim.bo[self.bufnr].filetype == 'terminal' and '  ' or '' end,
       hl = { fg = 'orange' },
     },
-    update = { 'BufWritePost', 'BufEnter', 'InsertEnter', 'TextChanged' },
   },
   tabline_close_button = {
     condition = function(self) return not vim.bo[self.bufnr].modified end,

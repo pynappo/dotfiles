@@ -100,20 +100,6 @@ vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 local commands = {
   {"CDhere", "cd %:p:h"},
   {
-    "Trim",
-    function()
-      local curpos = vim.api.nvim_win_get_cursor(0)
-      -- Trail whitespace
-      vim.cmd([[keeppatterns %s/\s\+$//e]])
-      vim.api.nvim_win_set_cursor(0, curpos)
-
-      --- Trim last blank lines
-      local n_lines = vim.api.nvim_buf_line_count(0)
-      local last_nonblank = vim.fn.prevnonblank(n_lines)
-      if last_nonblank < n_lines then vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, {}) end
-    end,
-  },
-  {
     "DotfilesGit",
     function()
       vim.env.GIT_WORK_TREE = vim.fn.expand("~")

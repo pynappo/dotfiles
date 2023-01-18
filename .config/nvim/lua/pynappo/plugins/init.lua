@@ -236,26 +236,30 @@ require('lazy').setup({
     'lukas-reineke/indent-blankline.nvim',
     event = 'BufReadPre',
     config = function()
+      local hl_list = {}
+      local colors = { '#4b2121', '#464421', '#21492a', '#284043', '#223b4b', '#463145' }
+      for i, color in pairs(colors) do
+        local name = 'IndentBlanklineIndent' .. i
+        vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
+        table.insert(hl_list, name)
+      end
+      vim.api.nvim_set_hl(0, 'IndentBlanklineContextChar', { fg='#777777', bold = true, nocombine = true })
       require('pynappo/autocmds').create('ColorScheme', {
         callback = function()
-          local hl_list = {}
-          for i, color in pairs({ '#4b2121', '#464421', '#21492a', '#284043', '#223b4b', '#463145' }) do
-            local name = 'IndentBlanklineIndent' .. i
-            vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
-            table.insert(hl_list, name)
+          for i, color in pairs(colors) do
+            vim.api.nvim_set_hl(0, 'IndentBlanklineIndent' .. i, { fg = color, nocombine = true })
           end
-          vim.cmd.highlight('IndentBlanklineContextChar guifg=#777777 gui=bold,nocombine')
-          require('indent_blankline').setup({
-            filetype_exclude = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
-            show_trailing_blankline_indent = false,
-            space_char_blankline = ' ',
-            char_highlight_list = hl_list,
-            use_treesitter = true,
-            use_treesitter_scope = true,
-            show_current_context = true,
-          })
+          vim.api.nvim_set_hl(0, 'IndentBlanklineContextChar', { fg='#777777', bold = true, nocombine = true })
         end,
         desc = 'Persist rainbow indent lines across colorschemes'
+      })
+      require('indent_blankline').setup({
+        filetype_exclude = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
+        show_trailing_blankline_indent = true,
+        space_char_blankline = ' ',
+        char_highlight_list = hl_list,
+        use_treesitter = true,
+        use_treesitter_scope = true,
       })
     end,
   },
@@ -283,7 +287,7 @@ require('lazy').setup({
   },
   {
     'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
+    event = { 'InsertEnter', 'CmdLineEnter' },
     config = function() require('pynappo/plugins/cmp') end,
     dependencies = {
       'onsails/lspkind.nvim',
@@ -407,6 +411,7 @@ require('lazy').setup({
       vim.g.matchup_surround_enabled = 1
       vim.g.matchup_transmute = 1
       vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_offscreen = {}
     end,
   },
   { 'nmac427/guess-indent.nvim', config = function() require('guess-indent').setup({}) end },
@@ -527,7 +532,6 @@ require('lazy').setup({
   {
     'rebelot/heirline.nvim',
     config = function() require('pynappo/plugins/heirline') end,
-    event = 'ColorScheme', -- helps prevent colorscheme errors and stuff
     dependencies = {
       {
         'SmiteshP/nvim-navic',
@@ -559,7 +563,7 @@ require('lazy').setup({
         },
         attach_to_untracked = true,
         current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-        current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+        current_line_blame_formatter = '<author>@<author_time:%Y-%m-%d>: <summary>',
         max_file_length = 40000, -- Disable if file is longer than this (in lines)
       }
     end,
@@ -718,6 +722,25 @@ require('lazy').setup({
     config = function()
       require('mini.pairs').setup()
       require('mini.ai').setup()
-    end
+      require('mini.move').setup()
+      require('mini.bufremove').setup()
+      require('mini.sessions').setup()
+      local indentscope = require('mini.indentscope')
+      indentscope.setup({
+        draw = {
+          animation = indentscope.gen_animation.quadratic({easing = 'out', duration = 15, unit = 'step'})
+        },
+        options = { try_as_border = true }
+      })
+      vim.cmd.highlight('MiniIndentscopeSymbol guifg=#888888 gui=nocombine')
+      local trailspace = require('mini.trailspace')
+      trailspace.setup()
+      vim.cmd.highlight('MiniTrailspace guifg=#444444 gui=undercurl,nocombine')
+      vim.api.nvim_create_user_command('Trim', function()
+        trailspace.trim()
+        trailspace.trim_last_lines()
+      end, {})
+      keymaps.setup.mini()
+    end,
   }
 }, lazy_opts)
