@@ -156,5 +156,24 @@ require('heirline').setup({
     { c.navic, align, c.diagnostics, c.gitsigns, space, c.file_info },
   } ,
   tabline = { t.tabline_offset, t.bufferline, align, t.tabpages },
+  statuscolumn = {
+    condition = function()
+      return not conditions.buffer_matches({
+        buftype = { 'nofile', 'prompt', 'quickfix' },
+        filetype = { '^git.*', 'fugitive' },
+      })
+    end,
+    { provider = [[%s]] },
+    { 
+      init = function(self) self.current_line = vim.api.nvim_win_get_cursor(0)[1] end,
+      fallthrough = false,
+      {
+        condition = function(self) return vim.v.lnum == self.current_line end,
+        provider = function() return vim.v.lnum end
+      },
+      { provider = function() return vim.v.relnum end },
+    },
+    { provider = [[%C]] },
+  }
 })
 return M
