@@ -160,11 +160,11 @@ require('heirline').setup({
     condition = function()
       return not conditions.buffer_matches({
         buftype = { 'nofile', 'prompt', 'quickfix' },
-        filetype = { '^git.*', 'fugitive' },
       })
     end,
+    init = function(self) self.signs = vim.fn.sign_getplaced(vim.api.nvim_buf_get_name(0), {lnum = vim.v.lnum}) end,
     { provider = [[%s]] },
-    { 
+    {
       init = function(self) self.current_line = vim.api.nvim_win_get_cursor(0)[1] end,
       fallthrough = false,
       {
