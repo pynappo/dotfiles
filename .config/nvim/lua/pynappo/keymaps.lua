@@ -86,7 +86,21 @@ M.setup = {
         { '<leader>D', vim.lsp.buf.type_definition, {desc = '(LSP) Get type'} },
         { 'ga', vim.lsp.buf.code_action, {desc = '(LSP) Get code actions'}},
         { 'gr', vim.lsp.buf.references, {desc = '(LSP) Get references'}},
-        { '<leader>f', function() vim.lsp.buf.format({ async = true }) end, {desc = '(LSP) Format'}},
+        {
+          '<leader>f',
+          function()
+            local buf = vim.api.nvim_get_current_buf()
+            local ft = vim.bo[buf].filetype
+            local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+            vim.lsp.buf.format({
+              async = true,
+              filter = function(client)
+                return have_nls and client.name == "null-ls" or client.name ~= "null-ls"
+              end
+            })
+          end,
+          { desc = '(LSP) Format (priority to null-ls)' },
+        },
       },
     }, { remap = false, silent = true, buffer = bufnr })
   end,
