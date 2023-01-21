@@ -97,6 +97,7 @@ vim.cmd.colorscheme('ayu')
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 vim.cmd.amenu([[PopUp.:Inspect <Cmd>Inspect<CR>]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
+ 
 local commands = {
   {"CDhere", "cd %:p:h"},
   {

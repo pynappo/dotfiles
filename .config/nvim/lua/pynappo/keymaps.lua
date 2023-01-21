@@ -17,8 +17,6 @@ end
 
 M.setup = {
   regular = function()
-    vim.g.mapleader = ' '
-    vim.g.maplocalleader = ' '
     map({
       [{ 'n', 't' }] = {
         -- Better tabs
@@ -334,7 +332,7 @@ M.cmp = {
     return cmp.mapping.preset.insert({
       ['<C-d>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto }),
+      ['<C-s>'] = cmp.mapping(function(_) cmp.mapping.complete({ reason = cmp.ContextReason.Auto }) end, {'i'}),
       ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
       ['<Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then cmp.select_next_item()
