@@ -21,10 +21,10 @@ local configs = {
           callSnippet = 'Both',
         },
         diagnostics = {
-          globals = {'vim'}
+          -- globals = {'vim'}
         },
         workspace = {
-          library = vim.api.nvim_get_runtime_file('', true),
+          -- library = vim.api.nvim_get_runtime_file('', true),
           checkThirdParty = false,
         },
       }
@@ -78,7 +78,7 @@ vim.diagnostic.config({
   },
 })
 
-require('neodev').setup()
+require('neodev').setup({})
 require('mason-tool-installer').setup {
   ensure_installed = {
     'codespell',
@@ -110,9 +110,6 @@ mason_lspconfig.setup()
 mason_lspconfig.setup_handlers {
   function(ls) lspconfig[ls].setup(M.get_config(ls)) end,
   rust_analyzer = function() require('rust-tools').setup() end,
-  sumneko_lua = function()
-    lspconfig.sumneko_lua.setup(M.get_config('sumneko_lua'))
-  end,
   jdtls = function() end, -- use method recommended by nvim-jdtls @ ../../../ftplugin/java.lua
 }
 

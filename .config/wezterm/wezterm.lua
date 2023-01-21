@@ -67,6 +67,7 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
 end
 
 local config = {
+  debug_key_events = true,
   max_fps = 144,
   color_scheme = 'Ayu Mirage',
   font = wezterm.font_with_fallback({

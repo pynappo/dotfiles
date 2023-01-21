@@ -57,8 +57,8 @@ cmp.setup {
       { name = 'emoji' },
       { name = 'calc'},
       { name = 'copilot' },
-      { name = "nvim_lua" },
       { name = "path"},
+      { name = "nvim_lua" },
     },
     {
       {
@@ -112,19 +112,3 @@ cmp.setup.cmdline('/', {
     { name = 'buffer' }
   },
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
