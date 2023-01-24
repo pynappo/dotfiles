@@ -1,4 +1,3 @@
-local M = {}
 local utils = require('heirline.utils')
 local get_hl = utils.get_highlight
 local conditions = require('heirline.conditions')
@@ -50,6 +49,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   group = 'Heirline',
 })
 
+
 vim.api.nvim_create_autocmd('User', {
   group = 'Heirline',
   pattern = 'HeirlineInitWinbar',
@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
-M.mode_colors = {
+local mode_colors = {
   n = 'type',
   i = 'string',
   v = 'func',
@@ -104,7 +104,7 @@ require('heirline').setup({
   statusline = {
     hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' end,
     static = {
-      mode_colors = M.mode_colors,
+      mode_colors = mode_colors,
       get_mode_color = get_mode_color,
     },
     { c.vi_mode },
@@ -176,4 +176,5 @@ require('heirline').setup({
     { provider = [[%C]] },
   }
 })
-return M
+
+require('pynappo/autocmds').heirline_mode_cursorline(mode_colors)
