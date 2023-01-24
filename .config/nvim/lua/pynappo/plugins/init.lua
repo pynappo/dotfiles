@@ -742,5 +742,5 @@ require('lazy').setup({
       end, {})
       keymaps.setup.mini()
     end,
-  }
+  },
 }, lazy_opts)
