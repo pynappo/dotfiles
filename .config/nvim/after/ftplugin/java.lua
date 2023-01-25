@@ -42,6 +42,6 @@ local config = {
     bundles = bundles
   },
 }
-config = vim.tbl_extend('force', config, require('pynappo/plugins/lsp').get_config('jdtls'))
+config = vim.tbl_extend('force', config, pynappo.get_lsp_config('jdtls'))
 require('jdtls').start_or_attach(config)
 require('jdtls.setup').add_commands()
