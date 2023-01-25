@@ -1,5 +1,5 @@
+local keymaps = require("pynappo/keymaps")
 return {
-
   { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
   {
     'ggandor/leap.nvim',
