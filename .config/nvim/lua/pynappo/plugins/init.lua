@@ -19,37 +19,12 @@ return {
       })
     end,
   },
-  { 'folke/tokyonight.nvim' },
-  {
-    'TimUntersberger/neogit',
-    cmd = 'Neogit',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-  },
-  {
-    'pwntester/octo.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-    },
-    cmd = 'Octo',
-    config = function() require('octo').setup() end,
-  },
   {
     'ludovicchabant/vim-gutentags',
     cond = false,
     init = function() vim.g.gutentags_cache_dir = vim.fn.expand('~/.cache/nvim/ctags/') end,
     config = function() vim.api.nvim_create_user_command('GutentagsClearCache', function() vim.fn.system('rm', vim.g.gutentags_cache_dir .. '/*') end, {}) end,
   },
-  { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
-  {
-    'ggandor/leap.nvim',
-    dependencies = {
-      { 'ggandor/leap-spooky.nvim', config = function() require('leap-spooky').setup() end },
-      { 'ggandor/flit.nvim', config = function() require('flit').setup({ labeled_modes = 'v' }) end },
-    },
-    config = function() require('leap').add_default_mappings() end,
-  },
-  { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
     'lukas-reineke/indent-blankline.nvim',
     event = 'BufReadPre',
@@ -81,14 +56,6 @@ return {
       })
     end,
   },
-  {
-    'Wansmer/treesj',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    cmd = "TSJToggle",
-    config = function() require('treesj').setup({ use_default_keymaps = false }) end,
-    keys = keymaps.setup.treesj({ lazy = true }),
-  },
-  
   { 'folke/which-key.nvim', config = function() require('which-key').setup({ window = { border = 'single' } }) end },
   { 'folke/trouble.nvim', config = function() require('trouble').setup({}) end },
   {
@@ -212,17 +179,6 @@ return {
     end,
   },
   { 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
-  { 'nacro90/numb.nvim', config = function() require('numb').setup() end, event = 'CmdlineEnter' },
-  {
-    'max397574/better-escape.nvim',
-    config = function()
-      require('better_escape').setup({
-        mapping = { 'jk', 'kj' },
-        keys = function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end,
-      })
-    end,
-  },
-  { 'RRethy/vim-illuminate', event = 'BufRead' },
   -- {
   --   'nyngwang/murmur.lua',
   --   config = function()
@@ -250,48 +206,13 @@ return {
   --   end,
   -- },
   {
-    'kevinhwang91/nvim-hlslens',
-    config = function() require('hlslens').setup() end,
-    event = 'CmdlineEnter',
-    cmd = { 'HlSearchLensEnable', 'HlSearchLensDisable', 'HlSearchLensToggle' },
-    keys = keymaps.setup.hlslens({ lazy = true }),
-  },
-  {
     'nvim-neorg/neorg',
     ft = 'norg',
     cmd = 'Neorg',
     priority = 30,
     config = function() require('neorg').setup({ load = { ['core.defaults'] = {} } }) end,
   },
-  {
-    'lewis6991/gitsigns.nvim',
-    event = "BufReadPre",
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('gitsigns').setup {
-        signs = {
-          add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-          change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-          delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-          topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-          changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-        },
-        signcolumn = false,  -- Toggle with `:Gitsigns toggle_signs`
-        numhl      = true, -- Toggle with `:Gitsigns toggle_numhl`
-        linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-        word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
-        watch_gitdir = {
-          interval = 1000,
-          follow_files = true
-        },
-        attach_to_untracked = true,
-        current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-        current_line_blame_formatter = '<author>@<author_time:%Y-%m-%d>: <summary>',
-        max_file_length = 40000, -- Disable if file is longer than this (in lines)
-      }
-    end,
-  },
-  { 'tiagovla/scope.nvim', config = function() require('scope').setup() end },
+    { 'tiagovla/scope.nvim', config = function() require('scope').setup() end },
   -- { url = 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', config = function() require("lsp_lines").setup() end, },
   {
     'nvim-neotest/neotest',
@@ -301,30 +222,6 @@ return {
       'rouge8/neotest-rust',
     },
     lazy = true
-  },
-  {
-    'monaqa/dial.nvim',
-    config = function()
-      local augend = require('dial.augend')
-      require('dial.config').augends:register_group({
-        default = {
-          augend.integer.alias.decimal,
-          augend.integer.alias.hex,
-          augend.date.alias['%Y/%m/%d'],
-          augend.hexcolor.new({ case = 'lower' }),
-          augend.constant.alias.bool,
-        },
-        visual = {
-          augend.integer.alias.decimal,
-          augend.integer.alias.hex,
-          augend.date.alias['%Y/%m/%d'],
-          augend.constant.alias.alpha,
-          augend.constant.alias.Alpha,
-          augend.constant.alias.bool,
-        },
-      })
-    end,
-    keys = keymaps.setup.dial({lazy=true})
   },
   {
     'kosayoda/nvim-lightbulb',
@@ -382,11 +279,6 @@ return {
     end,
   },
   {
-    'mrjones2014/smart-splits.nvim',
-    init = function() keymaps.setup.smart_splits() end,
-    config = function() require('smart-splits').setup({}) end,
-  },
-  {
     'chentoast/marks.nvim',
     config = function() require('marks').setup() end,
     keys = keymaps.setup.marks({lazy=true})
@@ -407,32 +299,5 @@ return {
       })
       keymaps.setup.yanky()
     end
-  },
-  {
-    'echasnovski/mini.nvim',
-    event = 'VeryLazy',
-    config = function()
-      require('mini.pairs').setup()
-      require('mini.ai').setup()
-      require('mini.move').setup()
-      require('mini.bufremove').setup()
-      require('mini.sessions').setup()
-      local indentscope = require('mini.indentscope')
-      indentscope.setup({
-        draw = {
-          animation = indentscope.gen_animation.quadratic({easing = 'out', duration = 15, unit = 'step'})
-        },
-        options = { try_as_border = true }
-      })
-      vim.cmd.highlight('MiniIndentscopeSymbol guifg=#888888 gui=nocombine')
-      local trailspace = require('mini.trailspace')
-      trailspace.setup()
-      vim.cmd.highlight('MiniTrailspace guifg=#444444 gui=undercurl,nocombine')
-      vim.api.nvim_create_user_command('Trim', function()
-        trailspace.trim()
-        trailspace.trim_last_lines()
-      end, {})
-      keymaps.setup.mini()
-    end,
   },
 }
