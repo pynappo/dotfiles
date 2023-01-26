@@ -1,4 +1,5 @@
 return {
+  'tpope/vim-fugitive',
   {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
@@ -41,4 +42,5 @@ return {
       }
     end,
   },
+  { 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
 }

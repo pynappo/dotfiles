@@ -10,41 +10,51 @@ return {
       })
     end,
   },
-  { 'RRethy/vim-illuminate', event = 'BufRead' },
-  {
-    'kevinhwang91/nvim-hlslens',
-    config = function() require('hlslens').setup() end,
-    event = 'CmdlineEnter',
-    cmd = { 'HlSearchLensEnable', 'HlSearchLensDisable', 'HlSearchLensToggle' },
-    keys = keymaps.setup.hlslens({ lazy = true }),
-  },
   {
     'mrjones2014/smart-splits.nvim',
     init = function() keymaps.setup.smart_splits() end,
     config = function() require('smart-splits').setup({}) end,
   },
   {
-    'monaqa/dial.nvim',
+    "gbprod/yanky.nvim",
+    dependencies = { "kkharji/sqlite.lua" },
     config = function()
-      local augend = require('dial.augend')
-      require('dial.config').augends:register_group({
-        default = {
-          augend.integer.alias.decimal,
-          augend.integer.alias.hex,
-          augend.date.alias['%Y/%m/%d'],
-          augend.hexcolor.new({ case = 'lower' }),
-          augend.constant.alias.bool,
-        },
-        visual = {
-          augend.integer.alias.decimal,
-          augend.integer.alias.hex,
-          augend.date.alias['%Y/%m/%d'],
-          augend.constant.alias.alpha,
-          augend.constant.alias.Alpha,
-          augend.constant.alias.bool,
+      require("yanky").setup({
+        picker = {
+          select = {
+            action = nil, -- nil to use default put action
+          },
+          telescope = {
+            mappings = nil, -- nil to use default mappings
+          },
         },
       })
+      keymaps.setup.yanky()
+    end
+  },
+  {
+    'chentoast/marks.nvim',
+    config = function() require('marks').setup() end,
+    keys = keymaps.setup.marks({lazy=true})
+  },
+  { 'tiagovla/scope.nvim', config = function() require('scope').setup() end },
+  {
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup({ easing_function = 'quadratic' })
+      require('neoscroll.config').set_mappings(keymaps.neoscroll)
     end,
-    keys = keymaps.setup.dial({lazy=true})
+  },
+  'tpope/vim-repeat',
+  { 'nmac427/guess-indent.nvim', config = function() require('guess-indent').setup({}) end },
+  {
+    'andymass/vim-matchup',
+    event = 'BufRead',
+    init = function()
+      vim.g.matchup_surround_enabled = 1
+      vim.g.matchup_transmute = 1
+      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_offscreen = {}
+    end,
   },
 }
