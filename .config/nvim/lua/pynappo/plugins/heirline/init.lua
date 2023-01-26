@@ -182,6 +182,7 @@ return {
     require('pynappo/autocmds').heirline_mode_cursorline(mode_colors)
   end,
   dependencies = {
+    'nvim-tree/nvim-web-devicons',
     {
       'SmiteshP/nvim-navic',
       -- dependencies = { 'neovim/nvim-lspconfig' },
