@@ -10,7 +10,7 @@ return {
     local indentscope = require('mini.indentscope')
     indentscope.setup({
       draw = {
-        animation = indentscope.gen_animation.quadratic({easing = 'out', duration = 15, unit = 'step'})
+        animation = indentscope.gen_animation.quadratic({easing = 'out', duration = 12, unit = 'step'})
       },
       options = { try_as_border = true }
     })

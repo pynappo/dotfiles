@@ -3,12 +3,6 @@ return {
   { import = 'pynappo.plugins.heirline' },
   -- Misc plugins
   {
-    'ludovicchabant/vim-gutentags',
-    cond = false,
-    init = function() vim.g.gutentags_cache_dir = vim.fn.expand('~/.cache/nvim/ctags/') end,
-    config = function() vim.api.nvim_create_user_command('GutentagsClearCache', function() vim.fn.system('rm', vim.g.gutentags_cache_dir .. '/*') end, {}) end,
-  },
-  {
     'goolord/alpha-nvim',
     config = function() require('alpha').setup(require('alpha.themes.startify').config) end,
   },
