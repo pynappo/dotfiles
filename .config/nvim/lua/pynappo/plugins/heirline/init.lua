@@ -170,6 +170,10 @@ return {
           init = function(self) self.current_line = vim.api.nvim_win_get_cursor(0)[1] end,
           fallthrough = false,
           {
+            condition = function(self) return vim.v.wrap end,
+            provider = function() return nil end,
+          },
+          {
             condition = function(self) return vim.v.lnum == self.current_line end,
             provider = function() return vim.v.lnum end
           },
