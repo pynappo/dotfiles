@@ -1,0 +1,5 @@
+default_provider: gogoanime
+fzf:
+    executable: fzf
+    opts: []
+    state: true
