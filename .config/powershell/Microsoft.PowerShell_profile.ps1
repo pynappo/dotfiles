@@ -15,6 +15,8 @@ $env:FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git --color=always --s
 $env:FZF_CTRL_T_COMMAND=$env:FZF_DEFAULT_COMMAND
 $env:FZF_DEFAULT_OPTS = "--height=80% --layout=reverse --ansi --info=inline --tabstop=2 -m --cycle --scroll-off=4"
 $env:XDG_CONFIG_HOME = "$HOME/.config"
+$env:MPV_HOME = "$HOME/.config/mpv"
+$env:ANIMDL_CONFIG = "$HOME/.config/animdl/config.yml"
 Function fzfb { fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' @Args }
 Set-Alias -Name f -Value fzfb
 $env:PYTHONIOENCODING="utf-8"
