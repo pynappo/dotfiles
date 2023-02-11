@@ -36,7 +36,7 @@ return {
     },
     lazy = true
   },
-  'ellisonleao/glow.nvim',
+  { 'ellisonleao/glow.nvim', config = true },
   -- { 'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
   { 'AckslD/nvim-FeMaco.lua', config = function() require('femaco').setup() end },
   {

@@ -1,0 +1,94 @@
+/* ==================================================
+ * Zoom indicator
+ * ================================================== */
+#zoom-hover-target {
+  transition: 0.5s;
+}
+
+#zoom-hover-target {
+  height: 22px;
+  --BorderRadius: 4px;
+  font-size: 11.5px;
+  display: flex;
+}
+
+.ZoomButton-Button {
+  height: 100%;
+  border-radius: var(--BorderRadius);
+  border: 1px solid transparent;
+}
+
+.ZoomButton-Button:hover,
+.zoom-hover-target--active {
+  background-color: var(--colorBgDark);
+}
+
+.ZoomButton-Button:hover {
+  border-color: var(--colorBorder);
+}
+
+.ZoomButton-Button .ToolbarButton-Button {
+  border: none;
+  width: auto;
+  height: 100%;
+  margin: 0;
+  padding: 0 6px;
+  margin: auto -3px;
+}
+
+/* ==================================================
+ * Zoom slide out controls
+ * ================================================== */
+.zoom-parent {
+  position: relative;
+}
+
+.zoom-panel {
+  background: linear-gradient(90deg, var(--colorBgDark) 0%, var(--colorBgDark) 96%, rgba(0, 0, 0, 0) 100%);
+  border-radius: var(--radiusHalf);
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: absolute;
+  right: 0;
+  transition: 0.5s;
+  /* hide */
+  width: 0;
+  opacity: 0;
+}
+
+.page-zoom-controls-c {
+  height: 100%;
+}
+
+.button-toolbar-c > button {
+  border-radius: var(--radiusHalf);
+  border: unset !important;
+  display: inline-block;
+  height: 100%;
+}
+
+.button-toolbar-c {
+  display: inline-block;
+  height: 100%;
+}
+
+.button-toolbar-c > button:hover {
+  background-color: var(--colorFgAlpha);
+}
+
+#zoom-percent-c {
+  text-align: center;
+  vertical-align: middle;
+  width: 40px;
+  display: inline-block;
+}
+
+.expanded-nav-c {
+  width: 150px !important;
+  opacity: 1;
+}
+
+.expanded-left-c {
+  margin-right: 150px !important;
+}
