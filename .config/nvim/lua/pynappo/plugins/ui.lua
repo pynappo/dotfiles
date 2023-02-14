@@ -40,7 +40,6 @@ return {
   },
   {
     'folke/noice.nvim',
-    cond = false,
     config = function()
       require('noice').setup({
         cmdline = { enabled = false },
