@@ -5,7 +5,7 @@ return {
     'nvim-lua/plenary.nvim',
     'nvim-telescope/telescope-file-browser.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-    'debugloop/telescope-undo.nvim',
+    'pynappo/telescope-undo.nvim', -- debugloop is original dev
     'nvim-telescope/telescope-ui-select.nvim'
   },
   init = function()
@@ -80,7 +80,7 @@ return {
     ts.load_extension('fzf')
     ts.load_extension('file_browser')
     ts.load_extension('notify')
-    -- ts.load_extension('undo')
+    ts.load_extension('undo')
     ts.load_extension('ui-select')
     ts.load_extension('yank_history')
   end,

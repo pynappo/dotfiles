@@ -14,14 +14,18 @@ return {
       },
       options = { try_as_border = true }
     })
-    vim.cmd.highlight('MiniIndentscopeSymbol guifg=#888888 gui=nocombine')
     local trailspace = require('mini.trailspace')
     trailspace.setup()
-    vim.cmd.highlight('MiniTrailspace guifg=#444444 gui=undercurl,nocombine')
     vim.api.nvim_create_user_command('Trim', function()
       trailspace.trim()
       trailspace.trim_last_lines()
     end, {})
     require('pynappo/keymaps').setup.mini()
+    local function set_mini_highlights()
+        vim.cmd.highlight('MiniIndentscopeSymbol guifg=#888888 gui=nocombine')
+        vim.cmd.highlight('MiniTrailspace guifg=#444444 gui=undercurl,nocombine')
+    end
+    set_mini_highlights()
+    require('pynappo/autocmds').create('ColorScheme', { callback = set_mini_highlights })
   end,
 }
