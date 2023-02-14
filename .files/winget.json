@@ -1,41 +1,14 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-11-28T12:53:58.615-00:00",
+	"CreationDate" : "2023-02-14T02:03:39.813-00:00",
 	"Sources" : 
 	[
 		{
 			"Packages" : 
 			[
 				{
-					"PackageIdentifier" : "9NTM2QC6QWS7"
+					"PackageIdentifier" : "MKLabs.StarUML"
 				},
-				{
-					"PackageIdentifier" : "9NHL4NSC67WM"
-				},
-				{
-					"PackageIdentifier" : "9PC3H3V7Q9CH"
-				},
-				{
-					"PackageIdentifier" : "9N64SQZTB3LM"
-				},
-				{
-					"PackageIdentifier" : "9NBLGGH5L9XT"
-				},
-				{
-					"PackageIdentifier" : "9PJPW5LDXLZ5"
-				}
-			],
-			"SourceDetails" : 
-			{
-				"Argument" : "https://storeedgefd.dsx.mp.microsoft.com/v9.0",
-				"Identifier" : "StoreEdgeFD",
-				"Name" : "msstore",
-				"Type" : "Microsoft.Rest"
-			}
-		},
-		{
-			"Packages" : 
-			[
 				{
 					"PackageIdentifier" : "NexusMods.Vortex"
 				},
@@ -172,7 +145,7 @@
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
 				},
 				{
-					"PackageIdentifier" : "HottaStudio.TowerofFantasy"
+					"PackageIdentifier" : "PerfectWorld.TowerOfFantasy"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
@@ -190,13 +163,28 @@
 					"PackageIdentifier" : "DominikReichl.KeePass"
 				},
 				{
+					"PackageIdentifier" : "Google.Chrome"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
+				},
+				{
 					"PackageIdentifier" : "ElectronicArts.EADesktop"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
 				},
 				{
 					"PackageIdentifier" : "GitHub.cli"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
 					"PackageIdentifier" : "Nushell.Nushell"
@@ -214,13 +202,13 @@
 					"PackageIdentifier" : "Tyrrrz.LightBulb"
 				},
 				{
-					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Nvidia.PhysXLegacy"
 				},
 				{
 					"PackageIdentifier" : "wez.wezterm"
@@ -232,22 +220,28 @@
 					"PackageIdentifier" : "Yarn.Yarn"
 				},
 				{
+					"PackageIdentifier" : "valinet.ExplorerPatcher"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.XNARedist"
 				},
 				{
 					"PackageIdentifier" : "GoLang.Go.1.18"
 				},
 				{
-					"PackageIdentifier" : "Google.EarthPro"
+					"PackageIdentifier" : "Inkscape.Inkscape"
 				},
 				{
-					"PackageIdentifier" : "Inkscape.Inkscape"
+					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
 				},
 				{
 					"PackageIdentifier" : "JetBrains.ReSharper"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
+				},
+				{
+					"PackageIdentifier" : "Google.EarthPro"
 				},
 				{
 					"PackageIdentifier" : "Nvidia.PhysXLegacy"
@@ -262,13 +256,10 @@
 					"PackageIdentifier" : "Peppy.Osu!"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
+					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerToys"
@@ -284,7 +275,31 @@
 				"Name" : "winget",
 				"Type" : "Microsoft.PreIndexed.Package"
 			}
+		},
+		{
+			"Packages" : 
+			[
+				{
+					"PackageIdentifier" : "9NTM2QC6QWS7"
+				},
+				{
+					"PackageIdentifier" : "9NHL4NSC67WM"
+				},
+				{
+					"PackageIdentifier" : "9PC3H3V7Q9CH"
+				},
+				{
+					"PackageIdentifier" : "9NBLGGH5L9XT"
+				}
+			],
+			"SourceDetails" : 
+			{
+				"Argument" : "https://storeedgefd.dsx.mp.microsoft.com/v9.0",
+				"Identifier" : "StoreEdgeFD",
+				"Name" : "msstore",
+				"Type" : "Microsoft.Rest"
+			}
 		}
 	],
-	"WinGetVersion" : "1.4.3132-preview"
+	"WinGetVersion" : "1.5.101-preview"
 }
