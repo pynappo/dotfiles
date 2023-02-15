@@ -31,7 +31,6 @@ return {
                 luasnip = "[Snip]",
                 nvim_lsp = "[LSP]",
                 nvim_lsp_signature_help = "[Sign]",
-                nvim_lua =  "[Lua]",
                 emoji = "[Emoji]",
                 buffer = "[Buf]",
                 copilot = "[GHub]",
@@ -122,7 +121,6 @@ return {
     dependencies = {
       'onsails/lspkind.nvim',
       'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-calc',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
