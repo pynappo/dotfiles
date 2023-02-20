@@ -183,7 +183,7 @@
       "RGB_VAI",
       "RGB_TOG",
       "KC_TRNS",
-      "0x700b",
+      "KC_NO",
       "KC_TRNS",
       "KC_NO",
       "KC_NO",
@@ -229,7 +229,7 @@
       "KC_F10",
       "KC_F11",
       "KC_F12",
-      "KC_TRNS",
+      "KC_DEL",
       "KC_NO",
       "KC_TRNS",
       "KC_TRNS",
@@ -247,7 +247,6 @@
       "KC_TRNS",
       "KC_TRNS",
       "KC_NO",
-      "KC_TRNS",
       "KC_TRNS",
       "KC_TRNS",
       "KC_TRNS",
@@ -259,6 +258,7 @@
       "KC_DOWN",
       "KC_UP",
       "KC_RGHT",
+      "KC_TRNS",
       "KC_TRNS",
       "KC_NO",
       "KC_TRNS",
@@ -400,7 +400,7 @@
     [
       ["KC_VOLD", "KC_VOLU"],
       ["KC_TRNS", "KC_TRNS"],
-      ["KC_TRNS", "KC_TRNS"],
+      ["KC_MS_WH_LEFT", "KC_MS_WH_RIGHT"],
       ["KC_TRNS", "KC_TRNS"]
     ]
   ]
