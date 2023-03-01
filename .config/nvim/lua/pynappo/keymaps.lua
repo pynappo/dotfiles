@@ -49,6 +49,10 @@ M.setup = {
         {'<leader>y', '"+y'},
         { 'x', '"_x' },
       },
+      [{'v'}] = {
+        {'I', function() return vim.fn.mode == [[\22n]] and 'I' or [[<Esc>`<i]] end, {expr = true} },
+        {'A', function() return vim.fn.mode == [[\22n]] and 'A' or [[<Esc>`>a]] end, {expr = true} }
+      }
     }, { silent = true })
   end,
   smart_splits = function()

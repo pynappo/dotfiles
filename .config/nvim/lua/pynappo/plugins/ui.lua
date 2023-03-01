@@ -31,7 +31,7 @@ return {
       })
     end,
   },
-  { 'folke/which-key.nvim', config = function() require('which-key').setup({ window = { border = 'single' } }) end },
+  { 'folke/which-key.nvim', config = function() require('which-key').setup({ window = { border = 'single' } }) end, cond = false },
   { 'folke/trouble.nvim', config = function() require('trouble').setup({}) end },
   {
     'folke/todo-comments.nvim',
@@ -89,7 +89,7 @@ return {
           },
         },
         config = function()
-          require('inc_rename').setup({ input_buffer_type = 'dressing' })
+          require('inc_rename').setup()
           keymaps.setup.incremental_rename()
         end,
       },
