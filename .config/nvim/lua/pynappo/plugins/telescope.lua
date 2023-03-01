@@ -5,7 +5,7 @@ return {
     'nvim-lua/plenary.nvim',
     'nvim-telescope/telescope-file-browser.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-    'pynappo/telescope-undo.nvim', -- debugloop is original dev
+    'debugloop/telescope-undo.nvim', -- debugloop is original dev
     'nvim-telescope/telescope-ui-select.nvim'
   },
   init = function()

@@ -2,6 +2,29 @@ return {
   {
     'hrsh7th/nvim-cmp',
     event = { 'InsertEnter', 'CmdLineEnter' },
+    dependencies = {
+      'onsails/lspkind.nvim',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-calc',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'dmitmel/cmp-cmdline-history',
+      'hrsh7th/cmp-emoji',
+      'hrsh7th/cmp-nvim-lsp',
+      'f3fora/cmp-spell',
+      'hrsh7th/cmp-nvim-lsp-document-symbol',
+      'octaltree/cmp-look',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'davidsierradz/cmp-conventionalcommits',
+      {
+        'L3MON4D3/LuaSnip',
+        config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
+        dependencies = {
+          'rafamadriz/friendly-snippets',
+          'saadparwaiz1/cmp_luasnip',
+        },
+      },
+    },
     config = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")
@@ -53,6 +76,7 @@ return {
         },
         completion = { completeopt = 'menu,menuone,noinsert,noselect' },
         mapping = require("pynappo/keymaps").cmp.insert(),
+        preselect = cmp.PreselectMode.None,
         sources = cmp.config.sources(
           {
             { name = "nvim_lsp" },
@@ -118,29 +142,6 @@ return {
       })
 
     end,
-    dependencies = {
-      'onsails/lspkind.nvim',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-calc',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'dmitmel/cmp-cmdline-history',
-      'hrsh7th/cmp-emoji',
-      'hrsh7th/cmp-nvim-lsp',
-      'f3fora/cmp-spell',
-      'hrsh7th/cmp-nvim-lsp-document-symbol',
-      'octaltree/cmp-look',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      'davidsierradz/cmp-conventionalcommits',
-      {
-        'L3MON4D3/LuaSnip',
-        config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
-        dependencies = {
-          'rafamadriz/friendly-snippets',
-          'saadparwaiz1/cmp_luasnip',
-        },
-      },
-    },
   },
   {
     'zbirenbaum/copilot-cmp',

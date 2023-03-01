@@ -71,7 +71,7 @@ return {
     function _G.pynappo.get_lsp_config(ls)
       local config = vim.tbl_deep_extend("force", default_config, configs[ls] or {})
       config.on_attach = function(client, bufnr)
-        if configs[ls].on_attach then configs[ls].on_attach(client, bufnr) end
+        if configs[ls] and configs[ls].on_attach then configs[ls].on_attach(client, bufnr) end
         default_config.on_attach(client, bufnr)
       end
       return config
