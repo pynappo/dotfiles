@@ -34,12 +34,6 @@ autocmds.create('BufReadPost', {
   desc = 'Restore cursor position',
 })
 
-autocmds.create('ModeChanged', {
-  pattern = "*o*:*",
-  callback = function()
-    vim.pretty_print({vim.v.event.new_mode, vim.v.event.old_mode})
-  end,
-})
 autocmds.create('DiagnosticChanged', {
   callback = function() vim.diagnostic.setloclist({ open = false }) end,
   desc = 'Update loclist',
