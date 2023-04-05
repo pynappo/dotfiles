@@ -46,6 +46,24 @@ o.wrap = true
 -- Pop up menu stuff
 o.pumblend = 20
 o.updatetime = 500
+o.completeopt = 'menu,menuone,noinsert,noselect'
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = {only_current_line = true},
+  signs = true,
+  float = {
+    border = "single",
+    format = function(diagnostic)
+      return string.format(
+        "%s (%s) [%s]",
+        diagnostic.message,
+        diagnostic.source,
+        diagnostic.code or diagnostic.user_data.lsp.code
+      )
+    end,
+  },
+})
 
 -- Misc.
 o.showmode = false
@@ -75,8 +93,14 @@ opt.listchars = {
   nbsp = '␣',
 }
 o.cursorline = true
-o.formatoptions = "jcrql"
-opt.formatoptions:remove('o')
+opt.formatoptions = {
+  c = true,
+  j = true,
+  l = true,
+  o = false,
+  q = true,
+  r = true,
+}
 
 local signs = {
   DiagnosticSignError = {text = "", texthl = "DiagnosticSignError"},
@@ -148,30 +172,6 @@ local lazy_opts = {
         '‒',
       },
     },
-    custom_keys = {
-      -- you can define custom key maps here.
-      -- To disable one of the defaults, set it to false
-
-      -- open lazygit log
-      ['<localleader>l'] = function(plugin)
-        require('lazy.util').open_cmd({ 'lazygit', 'log' }, {
-          cwd = plugin.dir,
-          terminal = true,
-          close_on_exit = true,
-          enter = true,
-        })
-      end,
-
-      -- open a terminal for the plugin dir
-      ['<localleader>t'] = function(plugin)
-        require('lazy.util').open_cmd({ vim.go.shell }, {
-          cwd = plugin.dir,
-          terminal = true,
-          close_on_exit = true,
-          enter = true,
-        })
-      end,
-    },
   },
   diff = { cmd = 'diffview.nvim' },
   checker = {
@@ -236,7 +236,7 @@ vim.cmd.colorscheme('ayu')
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 vim.cmd.amenu([[PopUp.:Inspect <Cmd>Inspect<CR>]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
- 
+
 local commands = {
   {"CDhere", "cd %:p:h"},
   {
