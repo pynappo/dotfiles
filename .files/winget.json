@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2023-02-28T18:47:49.347-00:00",
+	"CreationDate" : "2023-04-05T03:41:28.171-00:00",
 	"Sources" : 
 	[
 		{
@@ -10,13 +10,16 @@
 					"PackageIdentifier" : "MKLabs.StarUML"
 				},
 				{
+					"PackageIdentifier" : "JackieLiu.NotepadsApp"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VisualStudio.2022.BuildTools"
+				},
+				{
 					"PackageIdentifier" : "NexusMods.Vortex"
 				},
 				{
 					"PackageIdentifier" : "7zip.7zip"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
 				},
 				{
 					"PackageIdentifier" : "ShareX.ShareX"
@@ -106,6 +109,12 @@
 					"PackageIdentifier" : "Ubisoft.Connect"
 				},
 				{
+					"PackageIdentifier" : "VivaldiTechnologies.Vivaldi"
+				},
+				{
+					"PackageIdentifier" : "Zoom.Zoom"
+				},
+				{
 					"PackageIdentifier" : "DigitalScholar.Zotero"
 				},
 				{
@@ -118,13 +127,13 @@
 					"PackageIdentifier" : "Obsidian.Obsidian"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
+				},
+				{
 					"PackageIdentifier" : "code52.Carnac"
 				},
 				{
 					"PackageIdentifier" : "chrisant996.Clink"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.BuildTools"
 				},
 				{
 					"PackageIdentifier" : "ItchIo.Itch"
@@ -139,37 +148,40 @@
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "Starship.Starship"
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "GitHub.cli"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.WindowsADK"
-				},
-				{
-					"PackageIdentifier" : "DominikReichl.KeePass"
-				},
-				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.WindowsSDK"
-				},
-				{
-					"PackageIdentifier" : "MSYS2.MSYS2"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
-					"PackageIdentifier" : "Hirschmann.NotebookFanControl"
+					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
 				},
 				{
-					"PackageIdentifier" : "GoLang.Go.1.18"
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
+				},
+				{
+					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.7"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.WindowsADK"
+				},
+				{
+					"PackageIdentifier" : "GitHub.cli"
+				},
+				{
+					"PackageIdentifier" : "Starship.Starship"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
+				},
+				{
+					"PackageIdentifier" : "Hirschmann.NotebookFanControl"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.Runtime.3_1"
@@ -178,7 +190,16 @@
 					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.PowerShell"
+				},
+				{
+					"PackageIdentifier" : "Nushell.Nushell"
+				},
+				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.16.JDK"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
 				},
 				{
 					"PackageIdentifier" : "Nvidia.GeForceExperience"
@@ -187,10 +208,10 @@
 					"PackageIdentifier" : "Nvidia.PhysX"
 				},
 				{
-					"PackageIdentifier" : "wez.wezterm"
+					"PackageIdentifier" : "Inkscape.Inkscape"
 				},
 				{
-					"PackageIdentifier" : "Zoom.Zoom"
+					"PackageIdentifier" : "wez.wezterm"
 				},
 				{
 					"PackageIdentifier" : "EclipseAdoptium.Temurin.18.JDK"
@@ -199,43 +220,43 @@
 					"PackageIdentifier" : "Yarn.Yarn"
 				},
 				{
-					"PackageIdentifier" : "Nushell.Nushell"
+					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
+				},
+				{
+					"PackageIdentifier" : "valinet.ExplorerPatcher"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.XNARedist"
 				},
 				{
+					"PackageIdentifier" : "GoLang.Go.1.18"
+				},
+				{
 					"PackageIdentifier" : "Google.EarthPro"
 				},
 				{
-					"PackageIdentifier" : "Inkscape.Inkscape"
-				},
-				{
-					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
+					"PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
 				},
 				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
 				},
 				{
-					"PackageIdentifier" : "ElectronicArts.EADesktop"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Microsoft.WindowsSDK"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
+					"PackageIdentifier" : "MSYS2.MSYS2"
 				},
 				{
-					"PackageIdentifier" : "Intel.IntelDriverAndSupportAssistant"
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
 				}
 			],
 			"SourceDetails" : 
@@ -251,9 +272,6 @@
 			[
 				{
 					"PackageIdentifier" : "9NTM2QC6QWS7"
-				},
-				{
-					"PackageIdentifier" : "9NHL4NSC67WM"
 				},
 				{
 					"PackageIdentifier" : "9PC3H3V7Q9CH"
