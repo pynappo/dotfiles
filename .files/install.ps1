@@ -46,6 +46,9 @@ winget import .\.files\winget.json
 
 Reload-Path
 
+. $PROFILE
+df config --local status.showUntrackedFiles no
+
 "Removing notepad"
 winget uninstall 9MSMLRH6LZF3
 gsudo {Remove-WindowsCapability -Online -Name Microsoft.Windows.Notepad.System~~~~0.0.1.0}
