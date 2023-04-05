@@ -1,9 +1,4 @@
-Unblock-File $profile
-
-
 oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.json" | Invoke-Expression
-Import-Module posh-git
-$env:POSH_GIT_ENABLED = $true
 Import-Module -Name Terminal-Icons
 Import-Module scoop-completion
 Import-Module cd-extras
@@ -56,17 +51,6 @@ Function Pacup ([string]$Path = "$Home\.files\"){
     pip freeze > ($Path + 'requirements.txt')
 }
 
-Function C {
-    cd @Args
-    ls
-}
-Function Mc {
-    mkdir @Args
-    cd @Args
-}
-Function Rmf {
-    rm -Force @Args
-}
 Function New-Link ($Path, $Target) {
     New-Item -ItemType SymbolicLink -Path $Path -Value $Target
 }
@@ -102,11 +86,23 @@ function Remove-Item-ToRecycleBin($Path) {
         }
     }
 }
+"hi"
 Set-Alias -Name df -Value Dotfiles
 Set-Alias -Name dw -Value Dotwindows
 Set-Alias -Name ldf -Value Lazy-Dotfiles
 Set-Alias -Name ldw -Value Lazy-Dotwindows
 Set-Alias -Name trash -Value Remove-Item-ToRecycleBin
+Function C {
+    cd @Args
+    ls
+}
+Function Mc {
+    mkdir @Args
+    cd @Args
+}
+Function Rmf {
+    rm -Force @Args
+}
 # powershell completion for gh                                   -*- shell-script -*-
 
 function __gh_debug {

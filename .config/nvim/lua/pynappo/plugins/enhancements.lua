@@ -13,7 +13,7 @@ return {
   {
     'mrjones2014/smart-splits.nvim',
     init = function() keymaps.setup.smart_splits() end,
-    config = function() require('smart-splits').setup({}) end,
+    config = true,
   },
   {
     "gbprod/yanky.nvim",
@@ -32,12 +32,12 @@ return {
       keymaps.setup.yanky()
     end
   },
+  { 'backdround/tabscope.nvim', config = true },
   {
     'chentoast/marks.nvim',
     config = function() require('marks').setup() end,
     keys = keymaps.setup.marks({lazy=true})
   },
-  { 'tiagovla/scope.nvim', config = function() require('scope').setup() end },
   {
     'karb94/neoscroll.nvim',
     config = function()

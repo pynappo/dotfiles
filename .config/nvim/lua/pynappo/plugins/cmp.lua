@@ -1,7 +1,7 @@
 return {
   {
     'hrsh7th/nvim-cmp',
-    event = { 'InsertEnter', 'CmdLineEnter' },
+    -- event = { 'InsertEnter', 'CmdLineEnter' },
     dependencies = {
       'onsails/lspkind.nvim',
       'hrsh7th/cmp-buffer',
@@ -74,7 +74,7 @@ return {
         snippet = {
           expand = function(args) require('luasnip').lsp_expand(args.body) end,
         },
-        completion = { completeopt = 'menu,menuone,noinsert,noselect' },
+        completion = { completeopt = vim.o.completeopt },
         mapping = require("pynappo/keymaps").cmp.insert(),
         preselect = cmp.PreselectMode.None,
         sources = cmp.config.sources(
@@ -120,7 +120,7 @@ return {
       }
 
       cmp.setup.filetype('gitcommit', {
-        sources = cmp.config.sources( {
+        sources = cmp.config.sources({
           { name = 'git' },
           { name = 'buffer' },
           { name = 'conventionalcommits' },
@@ -136,11 +136,15 @@ return {
         })
       })
       cmp.setup.cmdline('/', {
-        sources = {
-          { name = 'buffer' }
-        },
+        sources = cmp.config.sources(
+          {
+            { name = 'nvim_lsp_document_symbol' }
+          },
+          {
+            { name = 'buffer' }
+          }
+        )      
       })
-
     end,
   },
   {

@@ -15,84 +15,7 @@ return {
   init = function() require('pynappo/keymaps').setup.diagnostics() end,
   config = function()
     require('mason').setup({ ui = { border = 'single' } })
-    local default_config = {
-      on_attach = function(client, bufnr)
-        vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-        require('pynappo/keymaps').setup.lsp(bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-          require('nvim-navic').attach(client, bufnr)
-        end
-      end,
-      capabilities = require("cmp_nvim_lsp").default_capabilities(),
-      flags = {debounce_text_changes = 200}
-    }
-    local configs = {
-      sumneko_lua = {
-        on_attach = function(client, bufnr)
-          client.server_capabilities.document_formatting = false
-        end,
-        settings = {
-          Lua = {
-            completion = {
-              callSnippet = 'Both',
-            },
-            diagnostics = {
-              -- globals = {'vim'}
-            },
-            workspace = {
-              -- library = vim.api.nvim_get_runtime_file('', true),
-              checkThirdParty = false,
-            },
-          }
-        }
-      },
-      ltex = {
-        filetypes = {
-          "bib",
-          "gitcommit",
-          -- "markdown",
-          "org",
-          "plaintex",
-          "rst",
-          "rnoweb",
-          "tex",
-        }
-      },
-      jdtls = {
-        on_attach = function(client, bufnr)
-          require('pynappo/keymaps').setup.jdtls(bufnr)
-          require('jdtls').setup_dap({ hotcodereplace = 'auto' })
-        end,
-        settings = {
-          java = {}
-        }
-      }
-    }
-    function _G.pynappo.get_lsp_config(ls)
-      local config = vim.tbl_deep_extend("force", default_config, configs[ls] or {})
-      config.on_attach = function(client, bufnr)
-        if configs[ls] and configs[ls].on_attach then configs[ls].on_attach(client, bufnr) end
-        default_config.on_attach(client, bufnr)
-      end
-      return config
-    end
 
-    vim.diagnostic.config({
-      virtual_text = false,
-      virtual_lines = {only_current_line = true},
-      signs = true,
-      float = {
-        border = "single",
-        format = function(diagnostic)
-          return string.format(
-            "%s (%s) [%s]",
-            diagnostic.message,
-            diagnostic.source,
-            diagnostic.code or diagnostic.user_data.lsp.code
-          )
-        end,
-      },
-    })
 
     require('neodev').setup({})
     require('mason-tool-installer').setup {
@@ -124,7 +47,7 @@ return {
     local lspconfig = require('lspconfig')
     mason_lspconfig.setup()
     mason_lspconfig.setup_handlers {
-      function(ls) lspconfig[ls].setup(pynappo.get_lsp_config(ls)) end,
+      function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
       rust_analyzer = function() require('rust-tools').setup() end,
       jdtls = function() end, -- use method recommended by nvim-jdtls @ ../../../ftplugin/java.lua
     }

@@ -1,7 +1,6 @@
 local mason_packages_path = vim.fn.stdpath('data') .. '/mason/packages'
 local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'})
 local workspace_dir = vim.fn.expand('~/code/jdtls_workspaces/') .. vim.fn.fnamemodify(root_dir, ':p:h:t')
-local is_win = vim.fn.has('win32') == 1
 
 local bundles = { vim.fn.glob(mason_packages_path .. '/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar'), }
 vim.list_extend(bundles, vim.split(vim.fn.glob(mason_packages_path .. '/java-test/extension/server/com.microsoft.java.test.plugin-*.jar'), "\n"))
@@ -20,7 +19,7 @@ local config = {
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
 
     '-jar', vim.fn.glob(mason_packages_path .. '/jdtls/plugins/org.eclipse.equinox.launcher_*.jar'),
-    '-configuration', mason_packages_path .. '/jdtls/config_' .. (is_win and 'win' or 'linux'),
+    '-configuration', mason_packages_path .. '/jdtls/config_' .. (vim.fn.has('win32') == 1 and 'win' or 'linux'),
     '-data', workspace_dir,
   },
   -- on_attach = jdtls_config.on_attach
@@ -42,6 +41,6 @@ local config = {
     bundles = bundles
   },
 }
-config = vim.tbl_extend('force', config, pynappo.get_lsp_config('jdtls'))
+config = vim.tbl_extend('force', config, require('pynappo/lsp/configs').jdtls)
 require('jdtls').start_or_attach(config)
 require('jdtls.setup').add_commands()
