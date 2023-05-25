@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2023-04-05T03:41:28.171-00:00",
+	"CreationDate" : "2023-05-25T02:38:33.323-00:00",
 	"Sources" : 
 	[
 		{
@@ -8,12 +8,6 @@
 			[
 				{
 					"PackageIdentifier" : "MKLabs.StarUML"
-				},
-				{
-					"PackageIdentifier" : "JackieLiu.NotepadsApp"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.BuildTools"
 				},
 				{
 					"PackageIdentifier" : "NexusMods.Vortex"
@@ -31,13 +25,13 @@
 					"PackageIdentifier" : "Audacity.Audacity"
 				},
 				{
-					"PackageIdentifier" : "Lexikos.AutoHotkey"
-				},
-				{
 					"PackageIdentifier" : "CrystalDewWorld.CrystalDiskMark"
 				},
 				{
 					"PackageIdentifier" : "Discord.Discord"
+				},
+				{
+					"PackageIdentifier" : "DiskInternals.LinuxReader"
 				},
 				{
 					"PackageIdentifier" : "GitHub.GitHubDesktop"
@@ -70,7 +64,13 @@
 					"PackageIdentifier" : "Microsoft.WindowsTerminal"
 				},
 				{
+					"PackageIdentifier" : "Anaconda.Miniconda3"
+				},
+				{
 					"PackageIdentifier" : "Mozilla.Firefox"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Office"
 				},
 				{
 					"PackageIdentifier" : "OBSProject.OBSStudio"
@@ -85,6 +85,9 @@
 					"PackageIdentifier" : "Playnite.Playnite"
 				},
 				{
+					"PackageIdentifier" : "Piriform.Recuva"
+				},
+				{
 					"PackageIdentifier" : "RubyInstallerTeam.RubyWithDevKit.3.1"
 				},
 				{
@@ -97,10 +100,13 @@
 					"PackageIdentifier" : "StefanSundin.Superf4"
 				},
 				{
+					"PackageIdentifier" : "Unigine.SuperpositionBenchmark"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
-					"PackageIdentifier" : "Ultimaker.Cura"
+					"PackageIdentifier" : "JetBrains.Toolbox"
 				},
 				{
 					"PackageIdentifier" : "Unigine.HeavenBenchmark"
@@ -112,10 +118,7 @@
 					"PackageIdentifier" : "VivaldiTechnologies.Vivaldi"
 				},
 				{
-					"PackageIdentifier" : "Zoom.Zoom"
-				},
-				{
-					"PackageIdentifier" : "DigitalScholar.Zotero"
+					"PackageIdentifier" : "AntibodySoftware.WizTree"
 				},
 				{
 					"PackageIdentifier" : "Ytmdesktop.Ytmdesktop"
@@ -127,13 +130,13 @@
 					"PackageIdentifier" : "Obsidian.Obsidian"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
-				},
-				{
 					"PackageIdentifier" : "code52.Carnac"
 				},
 				{
 					"PackageIdentifier" : "chrisant996.Clink"
+				},
+				{
+					"PackageIdentifier" : "ThaUnknown.Miru"
 				},
 				{
 					"PackageIdentifier" : "ItchIo.Itch"
@@ -145,67 +148,67 @@
 					"PackageIdentifier" : "qBittorrent.qBittorrent"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
+					"PackageIdentifier" : "PerfectWorld.TowerOfFantasy"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
+					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerToys"
+					"PackageIdentifier" : "Alacritty.Alacritty"
+				},
+				{
+					"PackageIdentifier" : "Google.Chrome"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
-				},
-				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.17.JDK"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.7"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.WindowsADK"
+					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
 				},
 				{
 					"PackageIdentifier" : "GitHub.cli"
 				},
 				{
+					"PackageIdentifier" : "ElectronicArts.EADesktop"
+				},
+				{
+					"PackageIdentifier" : "bozbez.WinCaptureAudio.beta"
+				},
+				{
 					"PackageIdentifier" : "Starship.Starship"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
+					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
-					"PackageIdentifier" : "Hirschmann.NotebookFanControl"
+					"PackageIdentifier" : "Microsoft.Teams"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.Runtime.3_1"
+					"PackageIdentifier" : "Eraser.Eraser"
+				},
+				{
+					"PackageIdentifier" : "Tyrrrz.LightBulb"
 				},
 				{
 					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
-				},
-				{
 					"PackageIdentifier" : "Nushell.Nushell"
 				},
 				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.16.JDK"
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "Nvidia.GeForceExperience"
+					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
 				},
 				{
-					"PackageIdentifier" : "Nvidia.PhysX"
+					"PackageIdentifier" : "Nvidia.PhysXLegacy"
 				},
 				{
 					"PackageIdentifier" : "Inkscape.Inkscape"
@@ -220,43 +223,46 @@
 					"PackageIdentifier" : "Yarn.Yarn"
 				},
 				{
-					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
-				},
-				{
 					"PackageIdentifier" : "valinet.ExplorerPatcher"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.XNARedist"
 				},
 				{
-					"PackageIdentifier" : "GoLang.Go.1.18"
+					"PackageIdentifier" : "GoLang.Go"
 				},
 				{
-					"PackageIdentifier" : "Google.EarthPro"
+					"PackageIdentifier" : "Zoom.Zoom"
+				},
+				{
+					"PackageIdentifier" : "JetBrains.ReSharper"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
 				},
 				{
+					"PackageIdentifier" : "Google.EarthPro"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.PhysXLegacy"
+				},
+				{
 					"PackageIdentifier" : "EpicGames.EpicGamesLauncher"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.WindowsSDK"
+					"PackageIdentifier" : "Peppy.Osu!"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
+					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
 				},
 				{
-					"PackageIdentifier" : "MSYS2.MSYS2"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.3_1"
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				}
 			],
 			"SourceDetails" : 
@@ -274,16 +280,13 @@
 					"PackageIdentifier" : "9NTM2QC6QWS7"
 				},
 				{
+					"PackageIdentifier" : "9NHL4NSC67WM"
+				},
+				{
 					"PackageIdentifier" : "9PC3H3V7Q9CH"
 				},
 				{
-					"PackageIdentifier" : "9N64SQZTB3LM"
-				},
-				{
 					"PackageIdentifier" : "9NBLGGH5L9XT"
-				},
-				{
-					"PackageIdentifier" : "9PGZKJC81Q7J"
 				}
 			],
 			"SourceDetails" : 
@@ -295,5 +298,5 @@
 			}
 		}
 	],
-	"WinGetVersion" : "1.5.441-preview"
+	"WinGetVersion" : "1.5.1361-preview"
 }

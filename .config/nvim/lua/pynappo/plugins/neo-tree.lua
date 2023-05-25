@@ -38,7 +38,7 @@ return {
       }
     end
 
-    require("neo-tree").setup({
+    require("neo-tree").setup(vim.tbl_deep_extend('force', {
       sources = { "filesystem", "buffers", "git_status" },
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
       close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
@@ -53,7 +53,7 @@ return {
         statusline = false, -- toggle to show selector on statusline
         show_scrolled_off_parent_node = false, -- this will replace the tabs with the parent path
         -- of the top visible node when scrolled down.
-        tab_labels = { -- falls back to source_name if nil
+        sources = { -- falls back to source_name if nil
           filesystem = "  Files ",
           buffers =    "  Buffers ",
           git_status = "  Git ",
@@ -96,10 +96,8 @@ return {
           -- the global popup_border_style.
         },
         mapping_options = { noremap = true, nowait = true, },
-        mappings = keymaps.neotree.default,
       },
       filesystem = {
-        window = { mappings = keymaps.neotree.filesystem, },
         commands = {
           telescope_find = function(state)
             local node = state.tree:get_node()
@@ -153,10 +151,8 @@ return {
         follow_current_file = true, -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
         group_empty_dirs = true, -- when true, empty directories will be grouped together
-        window = { mappings = keymaps.neotree.buffers, },
       },
-      git_status = { window = { mappings = keymaps.neotree.git_status, }, },
-    })
+    }, require('pynappo.keymaps').neotree))
   end,
   keys = require('pynappo/keymaps').setup.neotree({ lazy = true }),
 }

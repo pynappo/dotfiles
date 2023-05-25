@@ -252,6 +252,12 @@ local commands = {
       print(vim.fn.system('rm ' .. vim.fn.stdpath('data') .. '/swap/*' .. (jit.os == "Windows" and ' -Force' or ' -f')))
     end
   },
+  {
+    'Config',
+    function()
+      vim.cmd.cd('~/.config/nvim')
+    end
+  }
 }
 for _, cmd in ipairs(commands) do vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {}) end
 if vim.fn.getcwd():find(vim.fn.expand("~/.config")) then vim.cmd('DotfilesGit') end

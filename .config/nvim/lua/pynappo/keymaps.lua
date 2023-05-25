@@ -17,6 +17,9 @@ end
 
 M.setup = {
   regular = function()
+    local autoindent = function(key)
+      return function() return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or key end
+    end
     map({
       [{ 'n', 't' }] = {
         -- Better tabs
@@ -33,27 +36,48 @@ M.setup = {
         { '<leader>9', '9gt' },
         { '<leader>0', '10gt' },
 
-        { '<Esc>', function() vim.cmd.nohlsearch() end },
-        { '<leader>q', function() vim.cmd.bdelete() end },
-        -- Autoindent on insert
-        {
-          'i',
-          function() return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or 'i' end,
-          { expr = true },
-        },
+        { '<Esc>', vim.cmd.nohlsearch },
+        { '<leader>q', vim.cmd.bdelete },
+        -- Autoindent on insert/append
+        { 'I', autoindent('I'), { expr = true } },
+        { 'i', autoindent('i'), { expr = true } },
+        { 'a', autoindent('a'), { expr = true } },
+        { 'A', autoindent('A'), { expr = true } }
       },
       [{ 'n', 'v' }] = {
         { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, {expr = true} },
         { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, {expr = true} },
+        { 'p', 'p=`]`' },
+        { 'P', 'P=`]`' },
         {'<leader>p', '"+p'},
         {'<leader>y', '"+y'},
         { 'x', '"_x' },
       },
       [{'v'}] = {
-        {'I', function() return vim.fn.mode == [[\22n]] and 'I' or [[<Esc>`<i]] end, {expr = true} },
-        {'A', function() return vim.fn.mode == [[\22n]] and 'A' or [[<Esc>`>a]] end, {expr = true} }
+        {'I', function()
+          local old = vim.o.cursorcolumn
+          if vim.fn.mode() == "\22" then vim.o.cursorcolumn = true end
+          vim.api.nvim_create_autocmd('InsertLeave', { once = true, callback = function() vim.o.cursorcolumn = old end })
+          return vim.fn.mode() == [[\22n]] and 'I' or [[<Esc>`<i]]
+        end, {expr = true} },
+        {'A', function() return vim.fn.mode() == [[\22n]] and 'A' or [[<Esc>`>a]] end, {expr = true} },
       }
     }, { silent = true })
+  end,
+  substitute = function(opts)
+    return map({
+      [{'n'}] = {
+        { "r", function() require('substitute').operator() end, },
+        { "rr", function() require('substitute').line() end, },
+        { "R", function() require('substitute').eol() end, },
+        { "<leader>r", function() require('substitute.range').operator() end, },
+        { "<leader>rr", function() require('substitute.range').word() end, },
+      },
+      [{'x'}] = {
+        { 'r', function() require('substitute').visual() end },
+        { "<leader>r", function() require('substitute.range').visual() end, },
+      }
+    }, {}, opts)
   end,
   smart_splits = function()
     map({
@@ -75,26 +99,27 @@ M.setup = {
     }, {}, opts)
   end,
   lsp = function(bufnr)
+    local lsp = vim.lsp.buf
     map({
       [{ 'n' }] = {
-        { 'gD', vim.lsp.buf.declaration, {desc = '(LSP) Get declaration'} },
-        { 'gd', vim.lsp.buf.definition, {desc = '(LSP) Get definition'} },
-        { 'K', vim.lsp.buf.hover, {desc = '(LSP) Get definition'}},
-        { 'gi', vim.lsp.buf.implementation, {desc = '(LSP) Get implementation'}},
-        { '<C-k>', vim.lsp.buf.signature_help, {desc = '(LSP) Get signature help'}},
-        { '<leader>wa', vim.lsp.buf.add_workspace_folder, {desc = '(LSP) Add workspace folder'}},
-        { '<leader>wr', vim.lsp.buf.remove_workspace_folder, {desc = '(LSP) Remove workspace folder'}},
-        { '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, {desc = '(LSP) Get workspace folders'} },
-        { '<leader>D', vim.lsp.buf.type_definition, {desc = '(LSP) Get type'} },
-        { 'ga', vim.lsp.buf.code_action, {desc = '(LSP) Get code actions'}},
-        { 'gr', vim.lsp.buf.references, {desc = '(LSP) Get references'}},
+        { 'gD', lsp.declaration, {desc = '(LSP) Get declaration'} },
+        { 'gd', lsp.definition, {desc = '(LSP) Get definition'} },
+        { 'K', lsp.hover, {desc = '(LSP) Get definition'}},
+        { 'gi', lsp.implementation, {desc = '(LSP) Get implementation'}},
+        { '<C-k>', lsp.signature_help, {desc = '(LSP) Get signature help'}},
+        { '<leader>wa', lsp.add_workspace_folder, {desc = '(LSP) Add workspace folder'}},
+        { '<leader>wr', lsp.remove_workspace_folder, {desc = '(LSP) Remove workspace folder'}},
+        { '<leader>wl', function() print(vim.inspect(lsp.list_workspace_folders())) end, {desc = '(LSP) Get workspace folders'} },
+        { '<leader>D', lsp.type_definition, {desc = '(LSP) Get type'} },
+        { 'ga', lsp.code_action, {desc = '(LSP) Get code actions'}},
+        { 'gr', lsp.references, {desc = '(LSP) Get references'}},
         {
           '<leader>f',
           function()
             local buf = vim.api.nvim_get_current_buf()
             local ft = vim.bo[buf].filetype
             local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
-            vim.lsp.buf.format({
+            lsp.format({
               async = true,
               filter = function(client)
                 return have_nls and client.name == "null-ls" or client.name ~= "null-ls"
@@ -123,21 +148,21 @@ M.setup = {
     }, { buffer = bufnr })
   end,
   dap = function()
-    local d = require('dap')
+    local dap = require('dap')
     map({
       [{ 'n' }] = {
-        { '<F5>', d.continue },
-        { '<leader>db', d.toggle_breakpoint },
-        { '<leader>dB', d.set_breakpoint },
-        { '<leader>dc', d.disconnect },
-        { '<leader>dk', d.up },
-        { '<leader>dj', d.down },
-        { '<leader>di', d.step_into },
-        { '<leader>do', d.step_out },
-        { '<leader>du', d.step_over },
-        { '<leader>ds', d.stop },
-        { '<leader>dn', d.run_to_cursor },
-        { '<leader>de', d.set_exception_breakpoints },
+        { '<F5>', dap.continue },
+        { '<leader>db', dap.toggle_breakpoint },
+        { '<leader>dB', dap.set_breakpoint },
+        { '<leader>dc', dap.disconnect },
+        { '<leader>dk', dap.up },
+        { '<leader>dj', dap.down },
+        { '<leader>di', dap.step_into },
+        { '<leader>do', dap.step_out },
+        { '<leader>du', dap.step_over },
+        { '<leader>ds', dap.stop },
+        { '<leader>dn', dap.run_to_cursor },
+        { '<leader>de', dap.set_exception_breakpoints },
       },
     })
   end,
@@ -152,12 +177,13 @@ M.setup = {
     })
   end,
   diagnostics = function()
+    local diag = vim.diagnostic
     map({
       [{ 'n' }] = {
-        { '<leader>e', vim.diagnostic.open_float, { desc = 'Floating Diagnostics' } },
-        { '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' } },
-        { ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' } },
-        { '<leader>q', vim.diagnostic.setloclist, { desc = 'Add diagnostics to location list' } },
+        { '<leader>e', diag.open_float, { desc = 'Floating Diagnostics' } },
+        { '[d', diag.goto_prev, { desc = 'Previous diagnostic' } },
+        { ']d', diag.goto_next, { desc = 'Next diagnostic' } },
+        { '<leader>q', diag.setloclist, { desc = 'Add diagnostics to location list' } },
       },
     })
   end,
@@ -304,7 +330,7 @@ M.setup = {
   end,
   yanky = function(opts)
     return map({
-      [{'n', 'v'}] = { 
+      [{'n', 'v'}] = {
         { "p", "<Plug>(YankyPutAfter)" },
         { "P", "<Plug>(YankyPutBefore)" },
         { "gp", "<Plug>(YankyGPutAfter)" },
@@ -354,94 +380,108 @@ M.cmp = {
 
 M.toggleterm = { open_mapping = [[<C-\>]] }
 M.neotree = {
-  default = {
-    ['<tab>'] = function(state)
-      local node = state.tree:get_node()
-      if require('neo-tree.utils').is_expandable(node) then
-        state.commands['toggle_node'](state)
-      else
-        state.commands['open'](state)
-        vim.cmd('Neotree reveal')
-      end
-    end,
-    ['<space>'] = {
-      'toggle_node',
-      nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
-    },
-    ['<2-LeftMouse>'] = 'open',
-    ['<cr>'] = 'open',
-    ['S'] = 'split_with_window_picker',
-    ['s'] = 'vsplit_with_window_picker',
-    ['t'] = 'open_tabnew',
-    ['w'] = 'open_with_window_picker',
-    ['P'] = { 'toggle_preview', config = { use_float = true } },
-    ['C'] = 'close_node',
-    ['z'] = 'close_all_nodes',
-    ['Z'] = 'expand_all_nodes',
-    ['a'] = { 'add', config = { show_path = 'relative' } },
-    ['A'] = { 'add_directory', config = { show_path = 'relative' } },
-    ['h'] = function(state)
-      local node = state.tree:get_node()
-      if node.type == 'directory' and node:is_expanded() then
-        require('neo-tree.sources.filesystem').toggle_directory(state, node)
-      else
-        require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
-      end
-    end,
-    ['l'] = function(state)
-      local node = state.tree:get_node()
-      if node.type == 'directory' then
-        if not node:is_expanded() then
-          require('neo-tree.sources.filesystem').toggle_directory(state, node)
-        elseif node:has_children() then
-          require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
+  window = {
+    mappings = {
+      ['<tab>'] = function(state)
+        local node = state.tree:get_node()
+        if require('neo-tree.utils').is_expandable(node) then
+          state.commands['toggle_node'](state)
+        else
+          state.commands['open'](state)
+          vim.cmd('Neotree reveal')
         end
-      end
-    end,
-    ['d'] = 'delete',
-    ['r'] = 'rename',
-    ['y'] = 'copy_to_clipboard',
-    ['x'] = 'cut_to_clipboard',
-    ['p'] = 'paste_from_clipboard',
-    ['c'] = 'copy',
-    ['m'] = 'move',
-    ['q'] = 'close_window',
-    ['R'] = 'refresh',
-    ['?'] = 'show_help',
-    ['<'] = 'prev_source',
-    ['>'] = 'next_source',
-    ['e'] = function() vim.cmd('Neotree focus filesystem left') end,
-    ['b'] = function() vim.cmd('Neotree focus buffers left') end,
-    ['g'] = function() vim.cmd('Neotree focus git_status left') end,
+      end,
+      ['<space>'] = {
+        'toggle_node',
+        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
+      },
+      ['<2-LeftMouse>'] = 'open',
+      ['<cr>'] = 'open',
+      ['S'] = 'split_with_window_picker',
+      ['s'] = 'vsplit_with_window_picker',
+      ['t'] = 'open_tabnew',
+      ['w'] = 'open_with_window_picker',
+      ['P'] = { 'toggle_preview', config = { use_float = true } },
+      ['C'] = 'close_node',
+      ['z'] = 'close_all_nodes',
+      ['Z'] = 'expand_all_nodes',
+      ['a'] = { 'add', config = { show_path = 'relative' } },
+      ['A'] = { 'add_directory', config = { show_path = 'relative' } },
+      ['h'] = function(state)
+        local node = state.tree:get_node()
+        if node.type == 'directory' and node:is_expanded() then
+          require('neo-tree.sources.filesystem').toggle_directory(state, node)
+        else
+          require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
+        end
+      end,
+      ['l'] = function(state)
+        local node = state.tree:get_node()
+        if node.type == 'directory' then
+          if not node:is_expanded() then
+            require('neo-tree.sources.filesystem').toggle_directory(state, node)
+          elseif node:has_children() then
+            require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
+          end
+        end
+      end,
+      ['d'] = 'delete',
+      ['r'] = 'rename',
+      ['y'] = 'copy_to_clipboard',
+      ['x'] = 'cut_to_clipboard',
+      ['p'] = 'paste_from_clipboard',
+      ['c'] = 'copy',
+      ['m'] = 'move',
+      ['q'] = 'close_window',
+      ['R'] = 'refresh',
+      ['?'] = 'show_help',
+      ['<'] = 'prev_source',
+      ['>'] = 'next_source',
+      ['e'] = function() vim.cmd('Neotree focus filesystem left') end,
+      ['b'] = function() vim.cmd('Neotree focus buffers left') end,
+      ['g'] = function() vim.cmd('Neotree focus git_status left') end,
+    },
   },
   filesystem = {
-    ['tf'] = 'telescope_find',
-    ['tg'] = 'telescope_grep',
-    ['<bs>'] = 'navigate_up',
-    ['.'] = 'set_root',
-    ['i'] = 'run_command',
-    ['o'] = 'system_open',
-    ['H'] = 'toggle_hidden',
-    ['/'] = 'fuzzy_finder',
-    ['D'] = 'fuzzy_finder_directory',
-    ['f'] = 'filter_on_submit',
-    ['<c-x>'] = 'clear_filter',
-    ['[g'] = 'prev_git_modified',
-    [']g'] = 'next_git_modified',
+    window = {
+      mappings = {
+        ['tf'] = 'telescope_find',
+        ['tg'] = 'telescope_grep',
+        ['<bs>'] = 'navigate_up',
+        ['.'] = 'set_root',
+        ['i'] = 'run_command',
+        ['o'] = 'system_open',
+        ['H'] = 'toggle_hidden',
+        ['/'] = 'fuzzy_finder',
+        ['D'] = 'fuzzy_finder_directory',
+        ['f'] = 'filter_on_submit',
+        ['<c-x>'] = 'clear_filter',
+        ['[g'] = 'prev_git_modified',
+        [']g'] = 'next_git_modified',
+      }
+    }
   },
-  buffer = {
-    ['bd'] = 'buffer_delete',
-    ['<bs>'] = 'navigate_up',
-    ['.'] = 'set_root',
+  buffers = {
+    window = {
+      mappings = {
+        ['bd'] = 'buffer_delete',
+        ['<bs>'] = 'navigate_up',
+        ['.'] = 'set_root',
+      }
+    }
   },
   git_status = {
-    ['A'] = 'git_add_all',
-    ['gu'] = 'git_unstage_file',
-    ['ga'] = 'git_add_file',
-    ['gr'] = 'git_revert_file',
-    ['gc'] = 'git_commit',
-    ['gp'] = 'git_push',
-    ['gg'] = 'git_commit_and_push',
+    window = {
+      mappings = {
+        ['A'] = 'git_add_all',
+        ['gu'] = 'git_unstage_file',
+        ['ga'] = 'git_add_file',
+        ['gr'] = 'git_revert_file',
+        ['gc'] = 'git_commit',
+        ['gp'] = 'git_push',
+        ['gg'] = 'git_commit_and_push',
+      }
+    }
   },
 }
 M.neoscroll = {
@@ -454,5 +494,58 @@ M.neoscroll = {
   ['zt'] = { 'zt', { '100' } },
   ['zz'] = { 'zz', { '100' } },
   ['zb'] = { 'zb', { '100' } },
+}
+
+M.treesitter = {
+  textsubjects = {
+    keymaps = {
+      ['.'] = 'textsubjects-smart',
+      ['a.'] = 'textsubjects-container-outer',
+      ['i.'] = 'textsubjects-container-inner',
+    },
+  },
+  incremental_selection = {
+    keymaps = {
+      init_selection = "gnn", -- set to `false` to disable one of the mappings
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+  textobjects = {
+    keymaps = {
+      -- You can use the capture groups defined in textobjects.scm
+      ['af'] = '@function.outer',
+      ['if'] = '@function.inner',
+      ['ac'] = '@class.outer',
+      ['ic'] = '@class.inner',
+    },
+  },
+  swap = {
+    swap_next = {
+      ["<leader>a"] = "@parameter.inner",
+    },
+    swap_previous = {
+      ["<leader>A"] = "@parameter.inner",
+    },
+  },
+  move = {
+    goto_next_start = {
+      [']m'] = '@function.outer',
+      [']]'] = '@class.outer',
+    },
+    goto_next_end = {
+      [']M'] = '@function.outer',
+      [']['] = '@class.outer',
+    },
+    goto_previous_start = {
+      ['[m'] = '@function.outer',
+      ['[['] = '@class.outer',
+    },
+    goto_previous_end = {
+      ['[M'] = '@function.outer',
+      ['[]'] = '@class.outer',
+    },
+  },
 }
 return M
