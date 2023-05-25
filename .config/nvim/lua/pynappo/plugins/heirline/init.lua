@@ -93,7 +93,7 @@ return {
     )
     c.lsp = {
       { provider = 'LSP: ', hl = { fg = 'string' } },
-      utils.surround({ '', '' }, 'string', { c.lsp, hl = { fg = 'black' } }),
+      utils.surround({ '', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
     }
     c.ruler = utils.surround(
       { '', '' },
@@ -182,7 +182,6 @@ return {
         { provider = [[%C]] },
       }
     })
-
     require('pynappo/autocmds').heirline_mode_cursorline(mode_colors)
   end,
   dependencies = {

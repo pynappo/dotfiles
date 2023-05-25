@@ -1,7 +1,5 @@
 local keymaps = require('pynappo.keymaps')
 return {
-  { import = 'pynappo.plugins.heirline' },
-  -- Misc plugins
   {
     'goolord/alpha-nvim',
     config = function() require('alpha').setup(require('alpha.themes.startify').config) end,
@@ -55,4 +53,5 @@ return {
     config = function() require('competitest').setup({ runner_ui = { interface = 'popup' } }) end,
   },
   { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = function() vim.g.startuptime_tries = 3 end },
+  'preservim/vim-pencil'
 }

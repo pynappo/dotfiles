@@ -54,7 +54,7 @@ local M = {
     },
     provider = function(self) return '%2(' .. self.mode_names[self.mode] .. '%)' end,
     hl = { bold = true },
-    update = { 'ModeChanged' },
+    update = { 'ModeChanged', 'CmdlineEnter', 'CmdlineLeave' },
   },
   cwd = {
     init = function(self)
@@ -211,7 +211,6 @@ local M = {
       hl = { fg = 'normal' },
     },
     { provider = '' },
-    update = 'CursorHold'
   },
   diagnostics = {
     {
@@ -335,7 +334,7 @@ local M = {
     update = 'CursorMoved',
     hl = { fg = 'func', bg = 'bright_bg' },
   },
-  lsp = {
+  lsp_icons = {
     update = { 'LspAttach', 'LspDetach' },
     init = function(self)
       self.servers = vim.lsp.get_active_clients()

@@ -18,6 +18,7 @@ return {
   {
     "gbprod/yanky.nvim",
     dependencies = { "kkharji/sqlite.lua" },
+    init = keymaps.setup.yanky,
     config = function()
       require("yanky").setup({
         picker = {
@@ -29,7 +30,6 @@ return {
           },
         },
       })
-      keymaps.setup.yanky()
     end
   },
   { 'backdround/tabscope.nvim', config = true },
