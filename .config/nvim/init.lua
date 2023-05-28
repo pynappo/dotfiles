@@ -106,7 +106,7 @@ local signs = {
   DiagnosticSignError = {text = "", texthl = "DiagnosticSignError"},
   DiagnosticSignWarn = {text = "", texthl = "DiagnosticSignWarn"},
   DiagnosticSignInfo = {text = "", texthl = "DiagnosticSignInfo"},
-  DiagnosticSignHint = {text = "", texthl = "DiagnosticSignHint"}
+  DiagnosticSignHint = {text = "󰌵", texthl = "DiagnosticSignHint"}
 }
 for name, sign in pairs(signs) do vim.fn.sign_define(name, sign) end
 o.termguicolors = true
@@ -164,7 +164,7 @@ local lazy_opts = {
       source = ' ',
       start = '',
       task = '✔ ',
-      lazy = '鈴 ',
+      lazy = '󰒲 ',
       list = {
         '●',
         '➜',
@@ -290,3 +290,5 @@ elseif g.neovide then
   g.neovide_cursor_trail_size = 0.9
   g.neovide_remember_window_size = true
 end
+
+vim.pretty_print(vim.tbl)

@@ -128,6 +128,7 @@ return {
         })
       })
       cmp.setup.cmdline(':', {
+        mapping = require('pynappo.keymaps').cmp.insert(),
         confirmation = { completeopt = 'menu,menuone,noinsert' },
         sources = cmp.config.sources( {
           { name = 'cmdline' },
@@ -136,6 +137,7 @@ return {
         })
       })
       cmp.setup.cmdline('/', {
+        mapping = require('pynappo.keymaps').cmp.insert(),
         sources = cmp.config.sources(
           {
             { name = 'nvim_lsp_document_symbol' }
@@ -143,7 +145,7 @@ return {
           {
             { name = 'buffer' }
           }
-        )      
+        )
       })
     end,
   },

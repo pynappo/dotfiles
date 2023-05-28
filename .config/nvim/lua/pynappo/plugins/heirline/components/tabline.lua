@@ -27,7 +27,7 @@ local M = {
   tabline_close_button = {
     condition = function(self) return not vim.bo[self.bufnr].modified end,
     {
-      provider = ' ',
+      provider = ' 󰅖',
       hl = { fg = 'gray' },
       on_click = {
         callback = function(_, minwid) vim.api.nvim_buf_delete(minwid, { force = false }) end,
@@ -127,7 +127,7 @@ M.tabpages = {
       hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
     }),
     {
-      provider = '%999X  %X',
+      provider = '%999X 󰅖 %X',
       hl = 'TabLine',
     },
   },
