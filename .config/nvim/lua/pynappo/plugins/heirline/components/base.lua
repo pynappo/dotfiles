@@ -263,7 +263,7 @@ local M = {
       provider = function() return ' ' .. require('dap').status() .. ' ' end,
       hl = 'Debug',
       {
-        provider = '',
+        provider = '󰆹',
         on_click = {
           callback = function() require('dap').step_into() end,
           name = 'heirline_dap_step_into',
@@ -271,7 +271,7 @@ local M = {
       },
       { provider = ' ' },
       {
-        provider = '',
+        provider = '󰆸',
         on_click = {
           callback = function() require('dap').step_out() end,
           name = 'heirline_dap_step_out',
@@ -279,7 +279,7 @@ local M = {
       },
       { provider = ' ' },
       {
-        provider = ' ',
+        provider = '󰆷',
         on_click = {
           callback = function() require('dap').step_over() end,
           name = 'heirline_dap_step_over',
@@ -287,7 +287,7 @@ local M = {
       },
       { provider = ' ' },
       {
-        provider = 'ﰇ',
+        provider = '󰜉',
         on_click = {
           callback = function() require('dap').run_last() end,
           name = 'heirline_dap_run_last',
@@ -295,7 +295,7 @@ local M = {
       },
       { provider = ' ' },
       {
-        provider = '',
+        provider = '󰅖',
         on_click = {
           callback = function()
             require('dap').terminate()
@@ -349,7 +349,7 @@ local M = {
     static = {
       ls_icons = {
         copilot = '',
-        ['null-ls'] = 'ﳠ',
+        ['null-ls'] = '󰟢',
         jdtls = '',
       },
     },

@@ -35,11 +35,6 @@ return {
       matchup = {
         enable = true
       },
-      rainbow = {
-        enable = false,
-        extended_mode = false,
-        max_file_lines = nil
-      },
       autotag = {
         enable = true,
       },
@@ -61,6 +56,7 @@ return {
     'windwp/nvim-ts-autotag',
     {
       'nvim-treesitter/nvim-treesitter-context',
+      enabled = false,
       config = function() require('treesitter-context').setup({ min_window_height = 30 }) end,
     },
     'nvim-treesitter/playground',

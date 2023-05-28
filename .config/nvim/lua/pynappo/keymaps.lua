@@ -109,7 +109,7 @@ M.setup = {
         { '<C-k>', lsp.signature_help, {desc = '(LSP) Get signature help'}},
         { '<leader>wa', lsp.add_workspace_folder, {desc = '(LSP) Add workspace folder'}},
         { '<leader>wr', lsp.remove_workspace_folder, {desc = '(LSP) Remove workspace folder'}},
-        { '<leader>wl', function() print(vim.inspect(lsp.list_workspace_folders())) end, {desc = '(LSP) Get workspace folders'} },
+        { '<leader>wl', function() vim.pretty_print(lsp.list_workspace_folders()) end, {desc = '(LSP) Get workspace folders'} },
         { '<leader>D', lsp.type_definition, {desc = '(LSP) Get type'} },
         { 'ga', lsp.code_action, {desc = '(LSP) Get code actions'}},
         { 'gr', lsp.references, {desc = '(LSP) Get references'}},
@@ -191,7 +191,7 @@ M.setup = {
     map({
       [{ 'n' }] = {
         {
-          '<leader>rn',
+          '<leader>',
           function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
           { expr = true, desc = 'Rename (incrementally)' },
         },

@@ -17,8 +17,6 @@ return {
   },
   init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
   config = function()
-    -- If you want icons for diagnostic errors, you'll need to define them somewhere:
-    local keymaps = require("pynappo/keymaps")
     local function getTelescopeOpts(state, path)
       return {
         cwd = path,
@@ -54,10 +52,10 @@ return {
         show_scrolled_off_parent_node = false, -- this will replace the tabs with the parent path
         -- of the top visible node when scrolled down.
         sources = { -- falls back to source_name if nil
-          filesystem = "  Files ",
-          buffers =    "  Buffers ",
-          git_status = "  Git ",
-          diagnostics = " 裂Diagnostics ",
+          filesystem = " 󰉓 Files ",
+          buffers =    " 󰈙 Buffers ",
+          git_status = " 󰊢 Git ",
+          diagnostics = " 󰒡Diagnostics ",
         },
         content_layout = "center", -- only with `tabs_layout` = "equal", "focus"
         tabs_layout = "equal", -- start, end, center, equal, focus

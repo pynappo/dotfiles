@@ -53,5 +53,4 @@ return {
     config = function() require('competitest').setup({ runner_ui = { interface = 'popup' } }) end,
   },
   { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = function() vim.g.startuptime_tries = 3 end },
-  'preservim/vim-pencil'
 }
