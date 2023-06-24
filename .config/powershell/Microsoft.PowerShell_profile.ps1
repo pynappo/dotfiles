@@ -86,7 +86,6 @@ function Remove-Item-ToRecycleBin($Path) {
         }
     }
 }
-"hi"
 Set-Alias -Name df -Value Dotfiles
 Set-Alias -Name dw -Value Dotwindows
 Set-Alias -Name ldf -Value Lazy-Dotfiles
