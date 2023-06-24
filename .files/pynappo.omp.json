@@ -22,7 +22,7 @@
           "foreground": "#ffffff",
           "background": "#c386f1",
           "powerline_symbol": "\ue0b0",
-          "template": " {{if .SSHSession}}\uF817 {{ .UserName }}@{{ .HostName }}{{end}}"
+          "template": " {{if .SSHSession}}\udb80\udf18 {{ .UserName }}@{{ .HostName }}{{end}}"
         },
         {
           "background": "darkGray",
@@ -32,7 +32,7 @@
           },
           "powerline_symbol": "\ue0b0",
           "style": "powerline",
-          "template": " \uf74a {{ path .Path .Location }}",
+          "template": " \udb80\ude4b {{ path .Path .Location }}",
           "type": "path"
         },
         {
