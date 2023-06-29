@@ -1,10 +1,33 @@
-oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.json" | Invoke-Expression
-Import-Module -Name Terminal-Icons
+oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.yaml" | Invoke-Expression
 Import-Module scoop-completion
 Import-Module cd-extras
+function IsVirtualTerminalProcessingEnabled {
+	$MethodDefinitions = @'
+[DllImport("kernel32.dll", SetLastError = true)]
+public static extern IntPtr GetStdHandle(int nStdHandle);
+[DllImport("kernel32.dll", SetLastError = true)]
+public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
+'@
+	$Kernel32 = Add-Type -MemberDefinition $MethodDefinitions -Name 'Kernel32' -Namespace 'Win32' -PassThru
+	$hConsoleHandle = $Kernel32::GetStdHandle(-11) # STD_OUTPUT_HANDLE
+	$mode = 0
+	$Kernel32::GetConsoleMode($hConsoleHandle, [ref]$mode) >$null
+	if ($mode -band 0x0004) { # 0x0004 ENABLE_VIRTUAL_TERMINAL_PROCESSING
+		return $true
+	}
+	return $false
+}
 
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-Set-PSReadLineOption -PredictionViewStyle ListView
+function CanUsePredictionSource {
+	return (! [System.Console]::IsOutputRedirected) -and (IsVirtualTerminalProcessingEnabled)
+}
+
+if (CanUsePredictionSource){ 
+  Import-Module -Name Terminal-Icons
+  Import-Module PSReadLine
+  Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin -HistoryNoDuplicates
+  Import-Module -Name Terminal-Icons
+}
 
 $env:FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git --color=always --strip-cwd-prefix"
 $env:FZF_CTRL_T_COMMAND=$env:FZF_DEFAULT_COMMAND
@@ -68,7 +91,7 @@ Add-Type -AssemblyName Microsoft.VisualBasic
 
 function Remove-Item-ToRecycleBin($Path) {
     $item = Get-Item -Path $Path -ErrorAction SilentlyContinue
-    if ($item -eq $null)
+    if ($null -eq $item)
     {
         Write-Error("'{0}' not found" -f $Path)
     }
@@ -92,15 +115,15 @@ Set-Alias -Name ldf -Value Lazy-Dotfiles
 Set-Alias -Name ldw -Value Lazy-Dotwindows
 Set-Alias -Name trash -Value Remove-Item-ToRecycleBin
 Function C {
-    cd @Args
-    ls
+    Set-Location @Args
+    Get-ChildItem
 }
 Function Mc {
     mkdir @Args
-    cd @Args
+    Set-Location @Args
 }
 Function Rmf {
-    rm -Force @Args
+    Remove-Item -Force @Args
 }
 # powershell completion for gh                                   -*- shell-script -*-
 

@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json--
+blocks:
+- alignment: left
+  segments:
+  - type: os
+    style: diamond
+    leading_diamond: ""
+    foreground: darkGray
+    background: white
+    template: "{{ if .WSL }}WSL at {{ end }}{{.Icon}}"
+    properties:
+      macos: mac
+  - type: session
+    style: powerline
+    foreground: "#ffffff"
+    background: "#c386f1"
+    powerline_symbol: ""
+    template: " {{if .SSHSession}}\U000F0318 {{ .UserName }}@{{ .HostName }}{{end}}"
+  - type: path
+    background: darkGray
+    foreground: p:white
+    properties:
+      style: unique
+    powerline_symbol: ""
+    style: powerline
+    template: " \U000F024B {{ path .Path .Location }}"
+  - background: lightBlue
+    background_templates:
+    - "{{ if gt .Ahead 0 }}p:green{{ end }}"
+    - "{{ if gt .Behind 0 }}p:red{{ end }}"
+    foreground: black
+    powerline_symbol: ""
+    properties:
+      fetch_status: true
+      fetch_upstream_icon: true
+    style: powerline
+    template: " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus
+      }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and
+      (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}
+       {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{
+      end }}"
+    type: git
+  - background: yellow
+    foreground: black
+    powerline_symbol: ""
+    style: powerline
+    template: "  "
+    type: root
+  - type: java
+    style: powerline
+    powerline_symbol: ""
+    foreground: p:white
+    background: blue
+    template: "  {{ .Full }}"
+  type: prompt
+- alignment: right
+  segments:
+  - background: yellow
+    background_templates:
+    - '{{if eq "Charging" .State.String}}p:blue{{end}}'
+    - '{{if eq "Discharging" .State.String}}p:red{{end}}'
+    - '{{if eq "Full" .State.String}}p:green{{end}}'
+    foreground: black
+    leading_diamond: ""
+    properties:
+      charged_icon: "\U0001F50B"
+      charging_icon: ""
+      discharging_icon: "⌁"
+    style: diamond
+    template: " {{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error
+      }} "
+    trailing_diamond: ""
+    type: battery
+  - foreground: darkGray
+    style: plain
+    template: " {{ .CurrentDate | date .Format }} "
+    type: time
+  type: rprompt
+console_title_template: "{{.UserName}} @ {{.Folder}} ({{.Shell}}{{if .Root}} [Admin]{{end}}) "
+final_space: true
+osc99: true
+palette:
+  black: "#000000"
+  blue: "#4560f9"
+  cyan: "#72c2ea"
+  gray: "#666666"
+  green: "#76ef76"
+  orange: "#e7b165"
+  pink: "#eaa1ea"
+  purple: "#ab9aed"
+  white: "#ffffff"
+  yellow: "#dcdc42"
+version: 2
