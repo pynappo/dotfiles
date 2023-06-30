@@ -88,13 +88,15 @@ end
 M.setup = {
   regular = function()
     local autoindent = function(key)
-      return function() return string.match(vim.api.nvim_get_current_line(), '%g') == nil and 'cc' or key end
+      return function() return not vim.api.nvim_get_current_line():match('%g') and 'cc' or key end
     end
     map({
+      [{ 'n' }] = {
+        {'<Tab>', vim.cmd.bnext},
+        {'<S-Tab>', vim.cmd.bprevious}
+      },
       [{ 'n', 't' }] = {
         -- Better tabs
-        { '<C-S-h>', '<Cmd>:tabprev<CR>' },
-        { '<C-S-l>', '<Cmd>:tabnext<CR>' },
         { '<leader>1', '1gt' },
         { '<leader>2', '2gt' },
         { '<leader>3', '3gt' },
@@ -105,23 +107,25 @@ M.setup = {
         { '<leader>8', '8gt' },
         { '<leader>9', '9gt' },
         { '<leader>0', '10gt' },
-
         { '<Esc>', vim.cmd.nohlsearch },
         { '<leader>q', vim.cmd.bdelete },
         -- Autoindent on insert/append
         { 'I', autoindent('I'), { expr = true } },
         { 'i', autoindent('i'), { expr = true } },
         { 'a', autoindent('a'), { expr = true } },
-        { 'A', autoindent('A'), { expr = true } }
-      },
-      [{ 'n', 'v' }] = {
+        { 'A', autoindent('A'), { expr = true } },
         { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, {expr = true} },
         { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, {expr = true} },
+        { 'x', '"_dl' },
+        { 'X', '"_dh' },
+      },
+      [{ 'n', 'v' }] = {
         { 'p', 'p=`]`' },
         { 'P', 'P=`]`' },
         {'<leader>p', '"+p'},
+        {'<leader>P', '"+P'},
         {'<leader>y', '"+y'},
-        { 'x', '"_x' },
+        {'<leader>Y', '"+Y'},
       },
       [{'v'}] = {
         {'I', function()
@@ -131,13 +135,18 @@ M.setup = {
           return vim.fn.mode() == [[\22n]] and 'I' or [[<Esc>`<i]]
         end, {expr = true} },
         {'A', function() return vim.fn.mode() == [[\22n]] and 'A' or [[<Esc>`>a]] end, {expr = true} },
+        { 'x', '"_x' },
+        { 'X', '"_X' },
+      },
+      [{'i'}] = {
+        {'<Esc>', function() return (vim.api.nvim_win_get_cursor(0)[2] > 1 or vim.api.nvim_get_current_line():match('%g')) and '<esc>l' or '<esc>' end, {expr = true}}
       }
     }, { silent = true })
   end,
   substitute = function(opts)
     return map({
       [{'n'}] = {
-        { "r", function() require('substitute').operator() end, },
+        -- { "r", function() require('substitute').operator() end, },
         { "rr", function() require('substitute').line() end, },
         { "R", function() require('substitute').eol() end, },
         { "<leader>r", function() require('substitute.range').operator() end, },
@@ -165,7 +174,7 @@ M.setup = {
   end,
   treesj = function(opts)
     return map({
-      [{ 'n' }] = { { 'gJ', '<Cmd>TSJToggle<CR>', { desc = 'Split/join line' } } },
+      [{ 'n' }] = { { 'gJ', vim.cmd.TSJToggle, { desc = 'Split/join line' } } },
     }, {}, opts)
   end,
   lsp = function(bufnr)
@@ -179,7 +188,7 @@ M.setup = {
         { '<C-k>', lsp.signature_help, {desc = '(LSP) Get signature help'}},
         { '<leader>wa', lsp.add_workspace_folder, {desc = '(LSP) Add workspace folder'}},
         { '<leader>wr', lsp.remove_workspace_folder, {desc = '(LSP) Remove workspace folder'}},
-        { '<leader>wl', function() vim.pretty_print(lsp.list_workspace_folders()) end, {desc = '(LSP) Get workspace folders'} },
+        { '<leader>wl', function() vim.print(lsp.list_workspace_folders()) end, {desc = '(LSP) Get workspace folders'} },
         { '<leader>D', lsp.type_definition, {desc = '(LSP) Get type'} },
         { 'ga', lsp.code_action, {desc = '(LSP) Get code actions'}},
         { 'gr', lsp.references, {desc = '(LSP) Get references'}},
@@ -261,7 +270,7 @@ M.setup = {
     map({
       [{ 'n' }] = {
         {
-          '<leader>',
+          '<leader>rn',
           function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
           { expr = true, desc = 'Rename (incrementally)' },
         },
@@ -280,11 +289,6 @@ M.setup = {
         { '<Leader>l', ':noh<CR>' },
       },
     }, { noremap = true, silent = true }, opts)
-  end,
-  matchup = function()
-    map({
-      [{ 'n' }] = { { '<c-K>', [[<Cmd><C-u>MatchupWhereAmI?<cr>]], { desc = '(Matchup) Where am I?' } } },
-    })
   end,
   marks = function(opts)
     local normal = {'n'}
@@ -305,68 +309,71 @@ M.setup = {
       }
     }
     for i=0,9 do
-      local stri = tostring(i)
-      local temp = {
-        ['m'..stri] = '<Plug>(Marks-set-bookmark'..stri..')',
-        ['dm'..stri] = '<Plug>(Marks-delete-bookmark'..stri..')',
-        ['m}'..stri] = '<Plug>(Marks-next-bookmark'..stri..')',
-        ['m{'..stri] = '<Plug>(Marks-prev-bookmark'..stri..')'
-      }
-      for k, v in pairs(temp) do table.insert(keymaps[normal], {k,v}) end
+      vim.list_extend(keymaps[normal], {
+        { 'm'..i, '<Plug>(Marks-set-bookmark'..i..')', },
+        { 'dm'..i, '<Plug>(Marks-delete-bookmark'..i..')', },
+        { 'm}'..i, '<Plug>(Marks-next-bookmark'..i..')', },
+        { 'm{'..i, '<Plug>(Marks-prev-bookmark'..i..')' }
+      })
     end
     return map(keymaps, {}, opts)
   end,
   mini = function()
     return map({
       [{'n'}] = {
-        {'<M-h>', function() require('mini.move').move_line('left') end, desc = 'Move line left'},
-        {'<M-j>', function() require('mini.move').move_line('down') end, desc = 'Move line down'},
-        {'<M-k>', function() require('mini.move').move_line('up') end, desc = 'Move line up'},
-        {'<M-l>', function() require('mini.move').move_line('right') end, desc = 'Move line right'}
+        {'<M-h>', function() require('mini.move').move_line('left') end, { desc = 'Move line left' }},
+        {'<M-j>', function() require('mini.move').move_line('down') end, { desc = 'Move line down' }},
+        {'<M-k>', function() require('mini.move').move_line('up') end, { desc = 'Move line up' }},
+        {'<M-l>', function() require('mini.move').move_line('right') end, { desc = 'Move line right' }},
+        { "yss", "ys_", { remap = true } },
       },
-      [{'v'}] = {
-        {'<M-h>', function() require('mini.move').move_selection('left') end, desc = 'Move selection left'},
-        {'<M-j>', function() require('mini.move').move_selection('down') end, desc = 'Move selection down'},
-        {'<M-k>', function() require('mini.move').move_selection('up') end, desc = 'Move selection up'},
-        {'<M-l>', function() require('mini.move').move_selection('right') end, desc = 'Move selection right'},
-      }
+      [{'x'}] = {
+        {'<M-h>', function() require('mini.move').move_selection('left') end, { desc = 'Move selection left' }},
+        {'<M-j>', function() require('mini.move').move_selection('down') end, { desc = 'Move selection down' }},
+        {'<M-k>', function() require('mini.move').move_selection('up') end, { desc = 'Move selection up' }},
+        {'<M-l>', function() require('mini.move').move_selection('right') end, { desc = 'Move selection right' }},
+        { "S", ":<C-u>lua MiniSurround.add('visual')<CR>", { silent = true } },
+      },
     })
   end,
   dial = function(opts)
     return map({
       [{ 'n' }] = {
-        { '<C-a>', function() require('dial.map').inc_normal() end },
-        { '<C-x>', function() require('dial.map').dec_normal() end },
+        { '<C-a>', function() return require('dial.map').inc_normal() end },
+        { '<C-x>', function() return require('dial.map').dec_normal() end },
+        { "g<C-a>", function() return require("dial.map").inc_gnormal() end },
+        { "g<C-x>", function() return require("dial.map").dec_gnormal() end }
       },
       [{ 'v' }] = {
-        { '<C-a>', function() require('dial.map').inc_visual() end },
-        { '<C-x>', function() require('dial.map').dec_visual() end },
-        { 'g<C-a>', function() require('dial.map').inc_gvisual() end },
-        { 'g<c-x>', function() require('dial.map').dec_gvisual() end },
+        { '<C-a>', function() return require('dial.map').inc_visual() end },
+        { '<C-x>', function() return require('dial.map').dec_visual() end },
+        { 'g<C-a>', function() return require('dial.map').inc_gvisual() end },
+        { 'g<c-x>', function() return require('dial.map').dec_gvisual() end },
       },
-    }, {}, opts)
+    }, {noremap = true, expr = true}, opts)
   end,
   telescope = function(opts)
     return map({
       [{ 'n' }] = {
+        { '<CR><CR>', function() require('telescope.builtin').builtin(require('telescope.themes').get_ivy()) end, { desc = '(TS) Telescope', remap = false }},
         { '<leader><space>', function() require('telescope.builtin').buffers() end, { desc = '(TS) Buffers' } },
-        { '<leader>ff', function() require('telescope.builtin').find_files() end, { desc = '(TS) Find files' } },
+        { '<CR>f', function() require('telescope.builtin').find_files() end, { desc = '(TS) Find files' } },
         {
-          '<leader>f/',
+          '<CR>/',
           function() require('telescope.builtin').current_buffer_fuzzy_find() end,
           { desc = '(TS) Fuzzy find in buffer' },
         },
-        { '<leader>fh', function() require('telescope.builtin').help_tags() end, { desc = '(TS) Neovim help' } },
-        { '<leader>ft', function() require('telescope.builtin').tags() end, { desc = '(TS) Tags' } },
-        { '<leader>fd', function() require('telescope.builtin').grep_string() end, { desc = '(TS) grep current string' } },
-        { '<leader>fp', function() require('telescope.builtin').live_grep() end, { desc = '(TS) live grep a string' } },
+        { '<CR>h', function() require('telescope.builtin').help_tags() end, { desc = '(TS) Neovim help' } },
+        { '<CR>t', function() require('telescope.builtin').tags() end, { desc = '(TS) Tags' } },
+        { '<CR>d', function() require('telescope.builtin').grep_string() end, { desc = '(TS) grep current string' } },
+        { '<CR>p', function() require('telescope.builtin').live_grep() end, { desc = '(TS) live grep a string' } },
         {
-          '<leader>fo',
+          '<CR>o',
           function() require('telescope.builtin').tags({ only_current_buffer = true }) end,
           { desc = '(TS) Tags in buffer' },
         },
-        { '<leader>?', function() require('telescope.builtin').oldfiles() end, { desc = '(TS) Oldfiles' } },
-        { '<leader>fb', '<Cmd>Telescope file_browser<CR>', { desc = '(TS) Browse files' } },
+        { '<CR>?', function() require('telescope.builtin').oldfiles() end, { desc = '(TS) Oldfiles' } },
+        { '<CR>b', '<Cmd>Telescope file_browser<CR>', { desc = '(TS) Browse files' } },
       },
     }, {}, opts)
   end,
@@ -382,25 +389,9 @@ M.setup = {
       },
     }, {}, opts)
   end,
-  move = function(opts)
-    return map({
-      [{'i'}] = {
-        { '<A-j>', '<Cmd>MoveLine(1)<CR>' },
-        { '<A-k>', '<Cmd>MoveLine(-1)<CR>' },
-        { '<A-h>', '<Cmd>MoveHChar(-1)<CR>' },
-        { '<A-l>', '<Cmd>MoveHChar(1)<CR>' }
-      },
-      [{'v'}] = {
-        { '<A-j>', '<Cmd>MoveBlock(1)<CR>', },
-        { '<A-k>', '<Cmd>MoveBlock(-1)<CR>' },
-        { '<A-h>', '<Cmd>MoveHBlock(-1)<CR>' },
-        { '<A-l>', '<Cmd>MoveHBlock(1)<CR>' }
-      }
-    }, {}, opts)
-  end,
   yanky = function(opts)
     return map({
-      [{'n', 'v'}] = {
+      [{'n', 'x'}] = {
         { "p", "<Plug>(YankyPutAfter)" },
         { "P", "<Plug>(YankyPutBefore)" },
         { "gp", "<Plug>(YankyGPutAfter)" },
@@ -420,6 +411,47 @@ M.setup = {
         { "=p", "<Plug>(YankyPutAfterFilter)" },
         { "=P", "<Plug>(YankyPutBeforeFilter)" },
       }
+    }, {remap = true}, opts)
+  end,
+  leap = function(opts)
+    return map({
+      [{"n", "o"}] = {
+        { "s", "<Plug>(leap-forward-to)", { desc = "Leap forward to" }},
+        { "S", "<Plug>(leap-backward-to)", { desc = "Leap backward to" }},
+        { "gs", "<Plug>(leap-from-window)", { desc = "Leap from window" }},
+        { "gs", "<Plug>(leap-cross-window)", { desc = "Leap from window" }},
+      },
+      [{"x","o"}] = {
+        { "x", "<Plug>(leap-forward-till)", { desc = "Leap forward till" }},
+        { "X", "<Plug>(leap-backward-till)", { desc = "Leap backward till" }},
+      }
+    }, {}, opts)
+  end,
+  heirline = function()
+    map({
+      [{'n'}] = {
+        {
+          'gbp',
+          function()
+            local tabline = require("heirline").tabline
+            local buflist = tabline._buflist[1]
+            buflist._picker_labels = {}
+            buflist._show_picker = true
+            vim.cmd.redrawtabline()
+            local char = vim.fn.getcharstr()
+            local bufnr = buflist._picker_labels[char]
+            if bufnr then
+              vim.api.nvim_win_set_buf(0, bufnr)
+            end
+            buflist._show_picker = false
+            vim.cmd.redrawtabline()
+            vim.cmd.redraw()
+          end,
+          {expr = true}
+        }
+      }
+    })
+  end,
   flash = function(opts)
     map({
       [{ "n", "o", "x" }] = {
@@ -432,6 +464,8 @@ M.setup = {
     }, {}, opts)
   end
 }
+
+
 -- Other random plugin-specific mapping tables go here: --
 
 M.cmp = {
@@ -564,15 +598,15 @@ M.neotree = {
   },
 }
 M.neoscroll = {
-  ['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '150', [["sine"]] } },
-  ['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '150', [["sine"]] } },
-  ['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '250', [["circular"]] } },
-  ['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '250', [["circular"]] } },
-  ['<C-y>'] = { 'scroll', { '-0.10', 'false', '100', nil } },
-  ['<C-e>'] = { 'scroll', { '0.10', 'false', '100', nil } },
-  ['zt'] = { 'zt', { '100' } },
-  ['zz'] = { 'zz', { '100' } },
-  ['zb'] = { 'zb', { '100' } },
+  ['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '100', [["sine"]] } },
+  ['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '100', [["sine"]] } },
+  ['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '150', [["circular"]] } },
+  ['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '150', [["circular"]] } },
+  ['<C-y>'] = { 'scroll', { '-0.10', 'false', '50', nil } },
+  ['<C-e>'] = { 'scroll', { '0.10', 'false', '50', nil } },
+  ['zt'] = { 'zt', { '50' } },
+  ['zz'] = { 'zz', { '50' } },
+  ['zb'] = { 'zb', { '50' } },
 }
 
 M.treesitter = {
@@ -585,7 +619,7 @@ M.treesitter = {
   },
   incremental_selection = {
     keymaps = {
-      init_selection = "gnn", -- set to `false` to disable one of the mappings
+      init_selection = "gcn", -- set to `false` to disable one of the mappings
       node_incremental = "grn",
       scope_incremental = "grc",
       node_decremental = "grm",
@@ -626,5 +660,19 @@ M.treesitter = {
       ['[]'] = '@class.outer',
     },
   },
+}
+
+M.mini = {
+  surround = {
+    add = 'ys', -- Add surrounding in Normal and Visual modes
+    delete = 'ds', -- Delete surrounding
+    find = '<leader>sf', -- Find surrounding (to the right)
+    find_left = '<leader>sF', -- Find surrounding (to the left)
+    highlight = '<leader>sh', -- Highlight surrounding
+    replace = 'cs', -- Replace surrounding
+    update_n_lines = '<leader>sn', -- Update `n_lines`
+    suffix_last = 'l', -- Suffix to search with "prev" method
+    suffix_next = 'n', -- Suffix to search with "next" method
+  }
 }
 return M

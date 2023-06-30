@@ -1,16 +1,53 @@
 return {
   'rebelot/heirline.nvim',
+  dependencies = {
+    'nvim-tree/nvim-web-devicons',
+    {
+      'Bekaboo/dropbar.nvim',
+      opts = {
+        general = { enable = false },
+        icons = {
+          ui = {
+            bar = {
+              separator = '  ',
+              extends = '…',
+            }
+          }
+        },
+        bar = {
+          sources = function()
+            local sources = require('dropbar.sources')
+            return {
+              -- sources.path,
+              {
+                get_symbols = function(buf, win, cursor)
+                  if vim.bo[buf].ft == 'markdown' then
+                    return sources.markdown.get_symbols(buf, win, cursor)
+                  end
+                  for _, source in ipairs({ sources.lsp, sources.treesitter }) do
+                    local symbols = source.get_symbols(buf, win, cursor)
+                    if not vim.tbl_isempty(symbols) then
+                      return symbols
+                    end
+                  end
+                  return {}
+                end,
+              },
+            }
+          end
+        }
+      },
+    },
+  },
+  init = require('pynappo.keymaps').setup.heirline,
   config = function() 
     local utils = require('heirline.utils')
-    local get_hl = utils.get_highlight
+    local get_hl = function(...) return utils.get_highlight(...) or {} end -- makes usage a bit simpler
     local conditions = require('heirline.conditions')
-    -- These are default colors that builtin colorschemes should already have
-    local function default_colors()
-      return {
-        panel_border = get_hl('CursorLineNr').fg,
+
+    local function heirline_colors()
+      local colors = {
         string = get_hl('String').fg,
-        bright_bg = get_hl('StatusLine').bg,
-        bright_fg = get_hl('StatusLineNC').fg,
         normal = get_hl('Normal').fg,
         func = get_hl('Function').fg,
         type = get_hl('Type').fg,
@@ -20,48 +57,23 @@ return {
         constant = get_hl('Constant').fg,
         statement = get_hl('Statement').fg,
         special = get_hl('Special').fg,
-        tabline_sel = get_hl('TabLineSel').bg,
-        tabline = get_hl('TabLine').bg,
         diag_warn = get_hl('DiagnosticWarn').fg,
         diag_error = get_hl('DiagnosticError').fg,
         diag_hint = get_hl('DiagnosticHint').fg,
         diag_info = get_hl('DiagnosticInfo').fg,
-        git_del = get_hl('DiffDelete').bg,
-        git_add = get_hl('DiffAdd').bg,
-        git_change = get_hl('DiffChange').bg,
+        git_del = get_hl('DiffRemoved').fg or get_hl('DiffDelete').bg,
+        git_add = get_hl('DiffAdded').fg or get_hl('DiffAdded').bg,
+        git_change = get_hl('GitsignsChange').fg or get_hl('DiffChange').fg,
+        tabline_sel = get_hl('TabLineSel').bg or vim.NIL,
+        tabline = get_hl('TabLine').bg,
       }
+      return colors
     end
-
-    local function plugin_colors()
-      return {
-        git_del = get_hl('DiffRemoved').fg,
-        git_add = get_hl('DiffAdded').fg,
-        git_change = get_hl('GitsignsChange').fg,
-      }
-    end
-
-    require('heirline').load_colors(default_colors())
-
-    vim.api.nvim_create_augroup('Heirline', { clear = true })
+    local heirline_augroup = vim.api.nvim_create_augroup('Heirline', { clear = true })
 
     vim.api.nvim_create_autocmd('ColorScheme', {
-      callback = function()
-        local plugin_support, extra_colors = pcall(plugin_colors)
-        utils.on_colorscheme(vim.tbl_extend('force', default_colors(), plugin_support and extra_colors or {}))
-      end,
-      group = 'Heirline',
-    })
-
-
-    vim.api.nvim_create_autocmd('User', {
-      group = 'Heirline',
-      pattern = 'HeirlineInitWinbar',
-      callback = function(args)
-        local buftype = vim.tbl_contains({ 'prompt', 'nofile', 'help', 'quickfix' }, vim.bo[args.buf].buftype)
-        local filetype = vim.tbl_contains({ 'gitcommit', 'fugitive' }, vim.bo[args.buf].filetype)
-
-        if buftype or filetype then vim.wo.winbar = nil end
-      end,
+      callback = function() utils.on_colorscheme(heirline_colors()) end,
+      group = heirline_augroup,
     })
 
     local mode_colors = {
@@ -86,20 +98,10 @@ return {
     local c = require('pynappo/plugins/heirline/components/base')
     local align = { provider = '%=' }
     local space = { provider = ' ' }
-    c.vi_mode = utils.surround(
-      { '', ' ' },
-      function(self) return self:get_mode_color() end,
-      { c.vi_mode, hl = { fg = 'black' } }
-    )
-    c.lsp = {
-      { provider = 'LSP: ', hl = { fg = 'string' } },
-      utils.surround({ '', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
-    }
-    c.ruler = utils.surround(
-      { '', '' },
-      function(self) return self:get_mode_color() end,
-      { c.ruler, hl = { fg = 'black' } }
-    )
+    c.vi_mode = utils.surround( { '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
+    c.lsp = utils.surround({ 'LSP: ', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } })
+    c.ruler = utils.surround( { '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
+    c.lazy = utils.surround( { 'Plugin updates: ', '' }, 'diag_info', { c.lazy, hl = {fg = 'black'}})
 
     local t = require('pynappo/plugins/heirline/components/tabline')
     require('heirline').setup({
@@ -120,111 +122,56 @@ return {
                 filetype = { '^git.*', 'fugitive' },
               })
             end,
-            c.cwd,
-            c.filetype,
-            space,
-            c.help_filename,
+            c.cwd, c.filetype, space, c.help_filename,
           },
           {
             condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
-            c.file_icon,
-            space,
-            c.termname,
+            c.file_icon, space, c.termname,
           },
           { c.cwd, c.file_info },
         },
         align,
+        {
+          condition = function() return conditions.buffer_matches({filetype = { 'alpha' }}) end,
+          c.lazy, space
+        },
         { c.dap, c.lsp, space, c.ruler },
       },
       winbar = {
-        hl = 'Tabline',
         fallthrough = false,
-        {
-          condition = function()
-            return conditions.buffer_matches({
-              buftype = { 'nofile', 'prompt', 'quickfix' },
-              filetype = { '^git.*', 'fugitive' },
-            })
-          end,
-          init = function() vim.opt_local.winbar = nil end,
-        },
+        hl = 'WinBar',
         {
           condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
-          align,
-          c.file_icon,
-          space,
-          c.termname,
+          align, c.file_icon, space, c.termname,
         },
-        { c.navic, align, c.diagnostics, c.gitsigns, space, c.file_info },
+        { c.dropbar, align, c.diagnostics, c.gitsigns, space, c.file_info },
       } ,
-      tabline = { t.tabline_offset, t.bufferline, align, t.tabpages },
+      tabline = { t.offset, t.bufferline, align, t.tabpages },
       statuscolumn = {
-        condition = function()
-          return not conditions.buffer_matches({
-            buftype = { 'nofile', 'prompt', 'quickfix' },
-          })
-        end,
-        init = function(self) self.signs = vim.fn.sign_getplaced(vim.api.nvim_buf_get_name(0), {lnum = vim.v.lnum}) end,
+        condition = function() return not conditions.buffer_matches({ buftype = { 'nofile', 'prompt', 'quickfix', 'help' }, }) end,
         { provider = [[%s]] },
         {
           init = function(self) self.current_line = vim.api.nvim_win_get_cursor(0)[1] end,
           fallthrough = false,
-          {
-            condition = function() return vim.v.wrap end,
-            provider = '|'
-          },
+          { condition = function() return vim.v.virtnum ~= 0 end },
           {
             condition = function(self) return vim.v.lnum == self.current_line end,
-            provider = function() return vim.v.lnum end
+            { provider = function() return vim.v.lnum end, }, align
           },
-          { provider = function() return vim.v.relnum end },
+          { align, { provider = function() return vim.v.relnum end, } },
         },
-        { provider = [[%C]] },
+        { provider = [[%1(%C%)]] },
+      },
+      opts = {
+        disable_winbar_cb = function(args)
+          return conditions.buffer_matches({
+            buftype = { "nofile", "prompt", "help", "quickfix" },
+            filetype = { "^git.*", "fugitive", "Trouble", "dashboard" },
+          }, args.buf)
+        end,
+        colors = heirline_colors()
       }
     })
     require('pynappo/autocmds').heirline_mode_cursorline(mode_colors)
   end,
-  dependencies = {
-    'nvim-tree/nvim-web-devicons',
-    {
-      'SmiteshP/nvim-navic',
-      -- dependencies = { 'neovim/nvim-lspconfig' },
-      config = function()
-        require('nvim-navic').setup {
-          icons = {
-            File          = "󰈙 ",
-            Module        = " ",
-            Namespace     = "󰌗 ",
-            Package       = " ",
-            Class         = "󰌗 ",
-            Method        = "󰆧 ",
-            Property      = " ",
-            Field         = " ",
-            Constructor   = " ",
-            Enum          = "󰕘",
-            Interface     = "󰕘",
-            Function      = "󰊕 ",
-            Variable      = "󰆧 ",
-            Constant      = "󰏿 ",
-            String        = " ",
-            Number        = "󰎠 ",
-            Boolean       = "◩ ",
-            Array         = "󰅪 ",
-            Object        = "󰅩 ",
-            Key           = "󰌋 ",
-            Null          = "󰟢 ",
-            EnumMember    = " ",
-            Struct        = "󰌗 ",
-            Event         = " ",
-            Operator      = "󰆕 ",
-            TypeParameter = "󰊄 ",
-          },
-          highlight = false,
-          separator = " > ",
-          depth_limit = 0,
-          depth_limit_indicator = "..",
-        }
-      end,
-    },
-  },
 }
