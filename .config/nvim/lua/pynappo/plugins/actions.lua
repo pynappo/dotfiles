@@ -67,5 +67,6 @@ return {
       },
     },
     init = keymaps.setup.substitute
-  }
+  },
+  { 'abecodes/tabout.nvim' }
 }
