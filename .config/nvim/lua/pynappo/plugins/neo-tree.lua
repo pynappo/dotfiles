@@ -1,19 +1,17 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
-  branch = 'v2.x',
   cmd = 'Neotree',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
     {
       's1n7ax/nvim-window-picker',
-      config = function()
-        require('window-picker').setup({
-          fg_color = '#ededed',
-          other_win_hl_color = '#226622',
-        })
-      end,
+      opts = {
+        fg_color = '#ededed',
+        other_win_hl_color = '#226622',
+      }
     },
+    'mrbjarksen/neo-tree-diagnostics.nvim'
   },
   init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
   config = function()
@@ -37,7 +35,8 @@ return {
     end
 
     require("neo-tree").setup(vim.tbl_deep_extend('force', {
-      sources = { "filesystem", "buffers", "git_status" },
+      sources = { "filesystem", "buffers", "git_status", "document_symbols" },
+      hide_root_node = true,
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
       close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       close_floats_on_escape_key = true,
@@ -45,6 +44,7 @@ return {
       sort_case_insensitive = true,
       enable_diagnostics = true,
       use_default_mappings = true,
+      open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "edgy" },
       -- source_selector provides clickable tabs to switch between sources.
       source_selector = {
         winbar = true, -- toggle to show selector on winbar
@@ -52,10 +52,10 @@ return {
         show_scrolled_off_parent_node = false, -- this will replace the tabs with the parent path
         -- of the top visible node when scrolled down.
         sources = { -- falls back to source_name if nil
-          filesystem = " 󰉓 Files ",
-          buffers =    " 󰈙 Buffers ",
-          git_status = " 󰊢 Git ",
-          diagnostics = " 󰒡Diagnostics ",
+          { source = 'filesystem', display_name = " 󰉓 Files ", },
+          { source = 'buffers', display_name = " 󰈙 Buffers ", },
+          { source = 'git_status', display_name = " 󰊢 Git ", },
+          { source = 'diagnostics' , display_name = " 󰒡 Diagnostics ", }
         },
         content_layout = "center", -- only with `tabs_layout` = "equal", "focus"
         tabs_layout = "equal", -- start, end, center, equal, focus
@@ -77,7 +77,22 @@ return {
           highlight = "NeoTreeModified",
         },
         name = { use_git_status_colors = true, },
-        git_status = { align = "right", },
+        git_status = {
+          symbols = {
+            -- Change type
+            added     = "✚", -- NOTE: you can set any of these to an empty string to not show them
+            deleted   = "✖",
+            modified  = "",
+            renamed   = "󰁕",
+            -- Status type
+            untracked = "",
+            ignored   = "",
+            unstaged  = "󰄱",
+            staged    = "",
+            conflict  = "",
+          },
+          align = "right",
+        },
       },
       window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
         -- possible options. These can also be functions that return these options.
@@ -132,14 +147,14 @@ return {
         cwd_target = { sidebar = "tab", current = "window" },
         filtered_items = {
           visible = true, -- when true, they will just be displayed differently than normal items
-          force_visible_in_empty_folder = false, -- when true, hidden files will be shown if the root folder is otherwise empty
+          force_visible_in_empty_folder = true, -- when true, hidden files will be shown if the root folder is otherwise empty
           show_hidden_count = true, -- when true, the number of hidden items in each folder will be shown as the last entry
           hide_dotfiles = true,
           hide_gitignored = true,
           hide_hidden = true, -- only works on Windows for hidden files/directories
         },
         find_by_full_path_words = false,  -- `false` means it only searches the tail of a path.
-        group_empty_dirs = false, -- when true, empty folders will be grouped together
+        group_empty_dirs = true, -- when true, empty folders will be grouped together
         search_limit = 50, -- max number of search results when using filters
         follow_current_file = true, -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
