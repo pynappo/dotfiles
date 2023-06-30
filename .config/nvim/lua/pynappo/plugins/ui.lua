@@ -16,13 +16,9 @@ return {
       })
     end,
   },
-  { 'folke/which-key.nvim', config = function() require('which-key').setup({ window = { border = 'single' } }) end, cond = false },
-  { 'folke/trouble.nvim', config = function() require('trouble').setup({}) end },
-  {
-    'folke/todo-comments.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function() require('todo-comments').setup({ highlight = { keyword = 'fg' } }) end,
-  },
+  { 'folke/which-key.nvim', opts = {window = {border = 'single'}} },
+  { 'folke/trouble.nvim', config = true, cmd = 'Trouble' },
+  { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
   {
     'folke/noice.nvim',
     config = function()
@@ -54,7 +50,7 @@ return {
     end,
     dependencies = {
       'MunifTanjim/nui.nvim',
-      { 'rcarriga/nvim-notify', config = function() require('notify').setup({ background_colour = '#000000' }) end },
+      'rcarriga/nvim-notify',
       {
         'smjonas/inc-rename.nvim',
         dependencies = {
@@ -73,17 +69,62 @@ return {
             end,
           },
         },
-        config = function()
-          require('inc_rename').setup()
-          keymaps.setup.incremental_rename()
-        end,
+        init = keymaps.setup.incremental_rename,
+        config = true
       },
     },
   },
-  { 'RRethy/vim-illuminate', event = 'BufRead' },
+  {
+    'RRethy/vim-illuminate',
+    event = 'BufRead',
+    config = function()
+      require('illuminate').configure({
+        filetypes_denylist = {
+          'dropbar_menu'
+        }
+      })
+    end
+  },
   {
     'kevinhwang91/nvim-hlslens',
-    config = function() require('hlslens').setup() end,
+    config = function()
+      require('hlslens').setup({
+        override_lens = function(render, pos_list, nearest, idx, rel_idx)
+          local sfw = vim.v.searchforward == 1
+          local indicator, text, chunks
+          local abs_rel_idx = math.abs(rel_idx)
+          if abs_rel_idx > 1 then
+            indicator = ('%d %s'):format(abs_rel_idx, sfw ~= (rel_idx > 1) and '' or '')
+          elseif abs_rel_idx == 1 then
+            indicator = sfw ~= (rel_idx == 1) and '' or ''
+          end
+
+          local lnum, col = unpack(pos_list[idx])
+          if nearest then
+            local cnt = #pos_list
+            if indicator then
+              text = ('%s %d'):format(indicator, idx)
+            else
+              text = ('%d/%d'):format(idx, cnt)
+            end
+            chunks = {{' ', 'Ignore'}, {' ', 'HlSearchLensNearSurround'}, {text, 'HlSearchLensNear'}, {'', 'HlSearchLensNearSurround'}, }
+          else
+            text = indicator
+            chunks = {{' ', 'Ignore'}, {'', 'HlSearchLensSurround'}, {text, 'HlSearchLens'}, {'', 'HlSearchLensSurround'}, }
+          end
+          render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
+        end
+      })
+      local function set_highlights()
+        for _, hl in ipairs({'HlSearchLensNear', 'HlSearchLens'}) do
+          vim.api.nvim_set_hl(0, hl .. 'Surround', {fg = ("#%06x"):format(vim.api.nvim_get_hl(0, {name = hl, link = false}).bg)})
+        end
+      end
+      set_highlights()
+      require('pynappo.autocmds').create('ColorScheme', {
+        callback = set_highlights
+      })
+    end,
     event = 'CmdlineEnter',
     cmd = { 'HlSearchLensEnable', 'HlSearchLensDisable', 'HlSearchLensToggle' },
     keys = keymaps.setup.hlslens({ lazy = true }),
@@ -94,8 +135,19 @@ return {
       require('scrollview').setup({
         excluded_filetypes = { 'neo-tree' },
         winblend = 75,
+        signs_on_startup = {
+          'conflicts',
+          'spell',
+          'marks',
+          'loclist',
+          'diagnostics',
+          'search',
+          'quickfix',
+          'trail',
+        },
         base = 'right',
       })
+      vim.cmd.highlight('ScrollViewMarks guibg=NONE')
     end,
   },
   {

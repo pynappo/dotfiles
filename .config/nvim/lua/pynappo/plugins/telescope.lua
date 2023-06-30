@@ -36,7 +36,7 @@ return {
         end)
       end,
       once = true,
-      desc = 'lazy-loaded telescope-file-browser.nvimw',
+      desc = 'lazy-loaded telescope-file-browser.nvim',
     })
   end,
   config = function()
@@ -77,12 +77,15 @@ return {
         },
       },
     })
-    ts.load_extension('fzf')
-    ts.load_extension('file_browser')
-    ts.load_extension('notify')
-    ts.load_extension('undo')
-    ts.load_extension('ui-select')
-    ts.load_extension('yank_history')
+    local extensions = {
+      'fzf',
+      'file_browser',
+      'notify',
+      'undo',
+      'ui-select',
+      'yank_history',
+    }
+    for _, e in pairs(extensions) do ts.load_extension(e) end 
   end,
   keys = require('pynappo/keymaps').setup.telescope({ lazy = true }),
 }

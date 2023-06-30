@@ -15,16 +15,13 @@ return {
   init = function() require('pynappo/keymaps').setup.diagnostics() end,
   config = function()
     require('mason').setup({ ui = { border = 'single' } })
-
-
-    require('neodev').setup({})
+    require('neodev').setup()
     require('mason-tool-installer').setup {
       ensure_installed = {
         'codespell',
         'cpptools',
         'csharp-language-server',
         'gopls',
-        -- 'html-lsp',
         'java-debug-adapter',
         'java-test',
         'jdtls',
@@ -49,7 +46,7 @@ return {
     mason_lspconfig.setup_handlers {
       function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
       rust_analyzer = function() require('rust-tools').setup() end,
-      jdtls = function() end, -- use method recommended by nvim-jdtls @ ../../../ftplugin/java.lua
+      jdtls = function() end, -- use method recommended by nvim-jdtls
     }
 
     local null_ls = require('null-ls')
