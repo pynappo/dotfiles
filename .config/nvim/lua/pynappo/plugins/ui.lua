@@ -4,28 +4,13 @@ return {
     'lukas-reineke/indent-blankline.nvim',
     event = 'BufReadPre',
     config = function()
-      local hl_list = {}
-      local colors = { '#4b2121', '#464421', '#21492a', '#284043', '#223b4b', '#463145' }
-      for i, color in pairs(colors) do
-        local name = 'IndentBlanklineIndent' .. i
-        vim.api.nvim_set_hl(0, name, { fg = color, nocombine = true })
-        table.insert(hl_list, name)
-      end
-      vim.api.nvim_set_hl(0, 'IndentBlanklineContextChar', { fg='#777777', bold = true, nocombine = true })
-      require('pynappo/autocmds').create('ColorScheme', {
-        callback = function()
-          for i, color in pairs(colors) do
-            vim.api.nvim_set_hl(0, 'IndentBlanklineIndent' .. i, { fg = color, nocombine = true })
-          end
-          vim.api.nvim_set_hl(0, 'IndentBlanklineContextChar', { fg='#777777', bold = true, nocombine = true })
-        end,
-        desc = 'Persist rainbow indent lines across colorschemes'
-      })
+      local colors = { '#3b2727', '#464431', '#31493a', '#273b4b', '#303053', '#403040' }
+      local hl_list = require('pynappo.theme').set_rainbow_colors('IndentBlanklineContextChar', colors, 'Set rainbow indent lines')
       require('indent_blankline').setup({
         filetype_exclude = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
         show_trailing_blankline_indent = true,
         space_char_blankline = ' ',
-        char_highlight_list = hl_list,
+        char_highlight_list = vim.tbl_map(function(table) return table[1] end, hl_list),
         use_treesitter = true,
         use_treesitter_scope = true,
       })
