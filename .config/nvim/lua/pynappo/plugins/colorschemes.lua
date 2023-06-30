@@ -9,10 +9,9 @@ return {
       require('ayu').setup({
         mirage = mirage,
         overrides = function()
-          print('returning')
           return {
             WinBar = { link = 'TabLine' },
-            Wildmenu = { bg = colors.bg, fg = colors.markup },
+            WildMenu = { bg = colors.bg, fg = colors.markup },
             Comment = { fg = colors.fg_idle, italic = true },
             Search = { underline = true },
             LineNr = { fg = colors.fg_idle },
