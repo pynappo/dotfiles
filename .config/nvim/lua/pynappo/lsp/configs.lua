@@ -2,9 +2,6 @@ local default_config = {
   on_attach = function(client, bufnr)
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     require('pynappo/keymaps').setup.lsp(bufnr)
-    if client.server_capabilities.documentSymbolProvider then
-      require('nvim-navic').attach(client, bufnr)
-    end
   end,
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
   flags = {debounce_text_changes = 200}
@@ -22,6 +19,12 @@ local configs = {
         workspace = {
           checkThirdParty = false,
         },
+        hint = {
+          enable = true,
+        },
+        diagnostics = {
+          globals = {'vim'},
+        }
       }
     },
   },
@@ -37,15 +40,16 @@ local configs = {
     }
   },
   jdtls = {
-    on_attach = function(client, bufnr)
+    on_attach = function(_, bufnr)
       require('pynappo/keymaps').setup.jdtls(bufnr)
       require('jdtls').setup_dap({ hotcodereplace = 'auto' })
+      require('jdtls.setup').add_commands()
     end,
   }
 }
 
 for key, config in pairs(configs) do
-  config = vim.tbl_deep_extend("force", default_config, {})
+  config = vim.tbl_deep_extend("force", default_config, config)
   if config.on_attach then
     local on_attach = config.on_attach
     config.on_attach = function(client, bufnr)

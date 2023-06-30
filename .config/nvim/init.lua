@@ -1,12 +1,13 @@
 _G.pynappo = {}
 local o = vim.o
-local wo = vim.wo
 local opt = vim.opt
-if jit.os == "Windows" then
+local is_windows = vim.fn.has('win32') == 1
+local utils = require('pynappo.utils')
+if is_windows then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
-  o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-  o.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  o.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  o.shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
+  o.shellredir = [[2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode]]
+  o.shellpipe = [[2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode]]
   o.shellquote = ''
   o.shellxquote = ''
 end
@@ -16,13 +17,14 @@ o.showtabline = 2
 o.laststatus = 3
 
 -- Line numbers
-wo.signcolumn = "auto:2"
+o.signcolumn = "auto:2"
 o.relativenumber = true
 o.number = true
 
 -- Enable mouse
 o.mouse = "a"
-o.mousescroll = "ver:6,hor:6"
+o.mousescroll = "ver:8,hor:6"
+o.mousemoveevent = true
 
 -- Tabs
 o.tabstop = 2
@@ -46,7 +48,7 @@ o.wrap = true
 -- Pop up menu stuff
 o.pumblend = 20
 o.updatetime = 500
-o.completeopt = 'menu,menuone,noinsert,noselect'
+opt.completeopt = { 'menu','menuone','noinsert','noselect' }
 
 vim.diagnostic.config({
   virtual_text = false,
@@ -54,18 +56,12 @@ vim.diagnostic.config({
   signs = true,
   float = {
     border = "single",
-    format = function(diagnostic)
-      return string.format(
-        "%s (%s) [%s]",
-        diagnostic.message,
-        diagnostic.source,
-        diagnostic.code or diagnostic.user_data.lsp.code
-      )
-    end,
+    format = function(d) return ("%s (%s) [%s]"):format(d.message, d.source, d.code or d.user_data.lsp.code) end,
   },
 })
 
 -- Misc.
+o.confirm = true
 o.showmode = false
 o.history = 1000
 o.scrolloff = 4
@@ -93,15 +89,11 @@ opt.listchars = {
   nbsp = '␣',
 }
 o.cursorline = true
-opt.formatoptions = {
-  c = true,
-  j = true,
-  l = true,
-  o = false,
-  q = true,
-  r = true,
-}
-
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function()
+    vim.opt_local.formatoptions:remove({'o'})
+  end
+})
 local signs = {
   DiagnosticSignError = {text = "", texthl = "DiagnosticSignError"},
   DiagnosticSignWarn = {text = "", texthl = "DiagnosticSignWarn"},
@@ -127,110 +119,76 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
-local lazy_opts = {
-  git = {
-    -- defaults for the `Lazy log` command
-    -- log = { "-10" }, -- show the last 10 commits
-    log = { '--since=3 days ago' }, -- show commits from the last 3 days
-    timeout = 90, -- seconds
-    url_format = 'https://github.com/%s.git',
+require('lazy').setup(
+  {
+    { import = 'pynappo.plugins' },
+    { import = 'pynappo.plugins.testing' },
   },
-  dev = {
-    -- directory where you store your local plugin projects
-    path = '~/code/nvim',
-    ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-    patterns = {}, -- For example {"folke"}
-  },
-  install = {
-    -- install missing plugins on startup. This doesn't increase startup time.
-    missing = true,
-    -- try to load one of these colorschemes when starting an installation during startup
-    colorscheme = { 'habamax' },
-  },
-  ui = {
-    size = { width = 0.8, height = 0.8 },
-    border = 'none',
-    icons = {
-      loaded = '●',
-      not_loaded = '○',
-      cmd = ' ',
-      config = '',
-      event = '',
-      ft = ' ',
-      init = ' ',
-      keys = ' ',
-      plugin = ' ',
-      runtime = ' ',
-      source = ' ',
-      start = '',
-      task = '✔ ',
-      lazy = '󰒲 ',
-      list = {
-        '●',
-        '➜',
-        '★',
-        '‒',
-      },
+  {
+    git = {
+      log = { '--since=3 days ago' }, -- show commits from the last 3 days
+      timeout = 90, -- seconds
     },
-  },
-  diff = { cmd = 'diffview.nvim' },
-  checker = {
-    -- automatically check for plugin updates
-    enabled = false,
-    concurrency = nil, ---@type number? set to 1 to check for updates very slowly
-    notify = true, -- get a notification when new updates are found
-    frequency = 3600, -- check for updates every hour
-  },
-  change_detection = {
-    enabled = true,
-    notify = true, -- get a notification when changes are found
-  },
-  performance = {
-    cache = {
+    dev = {
+      path = '~/code/nvim',
+      ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
+      patterns = {"pynappo"}, -- For example {"folke"}
+    },
+    install = {
+      missing = true,
+      colorscheme = { 'ayu' },
+    },
+    ui = {
+      size = { width = 0.8, height = 0.8 },
+    },
+    diff = { cmd = 'diffview.nvim' },
+    checker = {
+      -- automatically check for plugin updates
       enabled = true,
-      path = vim.fn.stdpath('cache') .. '/lazy/cache',
-      disable_events = { 'VimEnter', 'BufReadPre' },
-      ttl = 3600 * 24 * 5, -- keep unused modules for up to 5 days
+      notify = true, -- get a notification when new updates are found
+      frequency = 3600, -- check for updates every hour
     },
-    reset_packpath = true, -- reset the package path to improve startup time
-    rtp = {
-      reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
-      ---@type string[]
-      paths = {}, -- add any custom paths here that you want to incluce in the rtp
-      ---@type string[] list any plugins you want to disable here
-      disabled_plugins = {
-        "matchit",
-        "netrw",
-        "netrwPlugin",
-        "netrwSettings",
-        "netrwFileHandlers",
-        "gzip",
-        "zip",
-        "zipPlugin",
-        "tar",
-        "tarPlugin",
-        "getscript",
-        "getscriptPlugin",
-        "vimball",
-        "vimballPlugin",
-        -- "2html_plugin",
-        "logipat",
-        "rrhelper",
-        "matchparen"
+    change_detection = {
+      enabled = true,
+      notify = true, -- get a notification when changes are found
+    },
+    performance = {
+      rtp = {
+        reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
+        ---@type string[]
+        paths = {}, -- add any custom paths here that you want to incluce in the rtp
+        ---@type string[] list any plugins you want to disable here
+        disabled_plugins = {
+          "matchit",
+          "netrw",
+          "netrwPlugin",
+          "netrwSettings",
+          "netrwFileHandlers",
+          "gzip",
+          "zip",
+          "zipPlugin",
+          "tar",
+          "tarPlugin",
+          "getscript",
+          "getscriptPlugin",
+          "vimball",
+          "vimballPlugin",
+          "2html_plugin",
+          "logipat",
+          "rrhelper",
+          "matchparen"
+        },
       },
     },
-  },
-  readme = {
-    root = vim.fn.stdpath('state') .. '/lazy/readme',
-    files = { 'README.md' },
-    -- only generate markdown helptags for plugins that dont have docs
-    skip_if_doc_exists = true,
-  },
-}
-require('lazy').setup('pynappo.plugins', lazy_opts)
+    readme = {
+      root = vim.fn.stdpath('state') .. '/lazy/readme',
+      files = { 'README.md' },
+      skip_if_doc_exists = true,
+    },
+  }
+)
 require("pynappo/keymaps").setup.regular()
 require("pynappo/autocmds")
-require("pynappo/theme").transparent_override()
 vim.cmd.colorscheme('ayu')
 
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
@@ -332,5 +290,3 @@ elseif g.neovide then
   g.neovide_cursor_trail_size = 0.9
   g.neovide_remember_window_size = true
 end
-
-vim.pretty_print(vim.tbl)
