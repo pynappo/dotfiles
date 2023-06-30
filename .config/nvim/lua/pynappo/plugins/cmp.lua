@@ -1,7 +1,7 @@
 return {
   {
     'hrsh7th/nvim-cmp',
-    -- event = { 'InsertEnter', 'CmdLineEnter' },
+    event = { 'VeryLazy' },
     dependencies = {
       'onsails/lspkind.nvim',
       'hrsh7th/cmp-buffer',
@@ -41,7 +41,6 @@ return {
             winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
             col_offset = -3,
             side_padding = 0,
-            border = nil,
             scrollbar = '║'
           },
         },
@@ -131,20 +130,16 @@ return {
         mapping = require('pynappo.keymaps').cmp.insert(),
         confirmation = { completeopt = 'menu,menuone,noinsert' },
         sources = cmp.config.sources( {
-          { name = 'cmdline' },
           { name = 'cmdline_history' },
           { name = 'path' },
+          { name = 'cmdline' },
         })
       })
       cmp.setup.cmdline('/', {
         mapping = require('pynappo.keymaps').cmp.insert(),
         sources = cmp.config.sources(
-          {
-            { name = 'nvim_lsp_document_symbol' }
-          },
-          {
-            { name = 'buffer' }
-          }
+          { { name = 'nvim_lsp_document_symbol' } },
+          { { name = 'buffer' } }
         )
       })
     end,
