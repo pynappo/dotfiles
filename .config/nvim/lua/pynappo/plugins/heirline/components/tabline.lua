@@ -1,10 +1,10 @@
 local utils = require('heirline.utils')
-local M = {
-  tabline_bufnr = {
+local tabline = {
+  bufnr = {
     provider = function(self) return tostring(self.bufnr) .. '. ' end,
     hl = function(self) return { fg = 'comment', bold = self.is_visible } end,
   },
-  tabline_filename = {
+  filename = {
     init = function(self)
       self.lfilename = vim.fn.fnamemodify(self.filename, ':.')
       if self.lfilename == '' then self.lfilename = '[No Name]' end
@@ -12,7 +12,7 @@ local M = {
     hl = vim.bo.modified and { italic = true, force = true } or nil,
     provider = function(self) return vim.fn.pathshorten(self.lfilename) end,
   },
-  tabline_file_flags = {
+  file_flags = {
     {
       condition = function(self) return vim.bo[self.bufnr].modified end,
       provider = ' [+]',
@@ -24,7 +24,7 @@ local M = {
       hl = { fg = 'orange' },
     },
   },
-  tabline_close_button = {
+  close_button = {
     condition = function(self) return not vim.bo[self.bufnr].modified end,
     {
       provider = ' 󰅖',
@@ -36,7 +36,7 @@ local M = {
       },
     },
   },
-  tabline_picker = {
+  picker = {
     condition = function(self)
       return self._show_picker
     end,
@@ -59,15 +59,24 @@ local M = {
       return self.label
     end,
     hl = { fg = 'diag_warn', bold = true },
+  },
+  tabpage = {
+    init = function(self) self.name = vim.t[self.tabnr].name end,
+    provider = function(self) return '%' .. self.tabnr .. 'T ' .. self.tabnr .. (self.name and ' ' .. self.name or '') .. ' %T' end,
+    hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   }
 }
 
 local file_icon = require('pynappo/plugins/heirline/components/base').file_icon
-M.tabline_filename_block = {
+
+tabline.filename_block = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
-    self.icon, self.icon_color =
-    require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+    self.icon, self.icon_color = require('nvim-web-devicons').get_icon_color(
+      self.filename,
+      self.extension,
+      { default = true }
+    )
   end,
   hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   on_click = {
@@ -81,21 +90,23 @@ M.tabline_filename_block = {
     minwid = function(self) return self.bufnr end,
     name = 'heirline_tabline_buffer_callback',
   },
-  M.tabline_bufnr,
+  tabline.bufnr,
   file_icon,
-  M.tabline_filename,
-  M.tabline_file_flags,
+  tabline.filename,
+  tabline.file_flags,
 }
-M.tabline_buffer_block = utils.surround(
+
+tabline.tabline_buffer_block = utils.surround(
   { '', '' },
   function(self) return self.is_active and 'tabline_sel' or 'tabline' end,
   {
-    M.tabline_filename_block,
-    M.tabline_close_button,
+    tabline.picker,
+    tabline.filename_block,
+    tabline.close_button,
   }
 )
 
-M.tabline_offset = {
+tabline.offset = {
   condition = function(self)
     local win = vim.api.nvim_tabpage_list_wins(0)[1]
     local bufnr = vim.api.nvim_win_get_buf(win)
@@ -114,23 +125,20 @@ M.tabline_offset = {
   end,
   hl = function(self) return vim.api.nvim_get_current_win() == self.winid and 'TablineSel' or 'Tabline' end,
 }
-M.bufferline = utils.make_buflist(
-  M.tabline_buffer_block,
+tabline.bufferline = utils.make_buflist(
+  tabline.tabline_buffer_block,
   { provider = '', hl = { fg = 'gray' } },
   { provider = '', hl = { fg = 'gray' } }
 )
-M.tabpages = {
+tabline.tabpages = {
   {
     condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
-    utils.make_tablist({
-      provider = function(self) return '%' .. self.tabnr .. 'T ' .. self.tabnr .. ' %T' end,
-      hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
-    }),
+    utils.make_tablist(tabline.tabpage),
     {
       provider = '%999X 󰅖 %X',
       hl = 'TabLine',
     },
   },
-  update = {'TabEnter', 'TabLeave', 'TabNew', 'TabNewEntered', 'TabClosed'}
+  update = { 'TabEnter', 'TabLeave', 'TabNew', 'TabNewEntered', 'TabClosed', 'User' }
 }
-return M
+return tabline
