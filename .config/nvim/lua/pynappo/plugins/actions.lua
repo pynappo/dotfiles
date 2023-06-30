@@ -5,8 +5,10 @@ return {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {
-      search = {
-        enabled = false
+      modes = {
+        search = {
+          enabled = false
+        }
       }
     },
     keys = require('pynappo.keymaps').setup.flash({lazy = true})
