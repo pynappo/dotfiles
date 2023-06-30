@@ -420,6 +420,15 @@ M.setup = {
         { "=p", "<Plug>(YankyPutAfterFilter)" },
         { "=P", "<Plug>(YankyPutBeforeFilter)" },
       }
+  flash = function(opts)
+    map({
+      [{ "n", "o", "x" }] = {
+        { "s", function() require("flash").jump() end, { desc = "Flash" } },
+        { "S", function() require("flash").treesitter() end, { desc = "Flash Treesitter" } },
+      },
+      [{ "c" }] = { { "<c-s>", function() require("flash").toggle() end, { desc = "Toggle Flash Search" } } },
+      [{ "o", "x" }] = { { "R", function() require("flash").treesitter_search() end, { desc = "Flash Treesitter Search" } } },
+      [{ "o" }] = { { "r", function() require("flash").remote() end, { desc = "Remote Flash" } } }
     }, {}, opts)
   end
 }
