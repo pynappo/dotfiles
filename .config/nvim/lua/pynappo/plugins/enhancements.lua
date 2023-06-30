@@ -32,10 +32,10 @@ return {
       })
     end
   },
-  { 'backdround/tabscope.nvim', config = true },
+  { 'tiagovla/scope.nvim' },
   {
     'chentoast/marks.nvim',
-    config = function() require('marks').setup() end,
+    config = function() require('marks').setup({default_mappings = false}) end,
     keys = keymaps.setup.marks({lazy=true})
   },
   {
