@@ -28,7 +28,7 @@ return {
     opts = {
       saturation = 0.8,
       tint = -20,
-      tint_background_colors = true,
+      tint_background_colors = false,
       highlight_ignore_patterns = {
         "WinSeparator",
         "Status.*",
