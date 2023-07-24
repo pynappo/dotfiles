@@ -2,6 +2,7 @@ return {
   {
     'hrsh7th/nvim-cmp',
     event = { 'VeryLazy' },
+    version = false,
     dependencies = {
       'onsails/lspkind.nvim',
       'hrsh7th/cmp-buffer',

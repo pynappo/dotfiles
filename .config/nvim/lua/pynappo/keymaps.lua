@@ -7,7 +7,8 @@ local function map(keymaps, keymap_opts, extra_opts)
   for modes, maps in pairs(keymaps) do
     for _, m in pairs(maps) do
       local opts = vim.tbl_extend('force', keymap_opts, m[3] or {})
-      if extra_opts.lazy then table.insert(lazy_keymaps, vim.tbl_extend('force', {m[1], m[2], mode = modes}, opts))
+      if extra_opts.lazy then
+        table.insert(lazy_keymaps, vim.tbl_extend('force', { m[1], m[2], mode = modes }, opts))
       else
         vim.keymap.set(modes, m[1], m[2], opts)
       end
@@ -19,11 +20,11 @@ end
 local mode_tables = {}
 
 local KeymapTable = {
-  keymaps = {}
+  keymaps = {},
 }
 
 function KeymapTable:new(object, keymaps)
-  local object = {} or object
+  local object = object or {}
   setmetatable(object, self)
   self.__index = self
   self.__tostring = function() return (vim.inspect(self:get_keymaps(true)):gsub([[\n]], '\n')) end
@@ -32,20 +33,20 @@ function KeymapTable:new(object, keymaps)
 end
 
 function KeymapTable:insert(modes, lhs, rhs, opts, function_code)
-  local mode_table = type(modes) == 'table' and modes or {modes}
+  local mode_table = type(modes) == 'table' and modes or { modes }
   table.sort(mode_table)
   local mode_string = table.concat(mode_table, '')
   mode_tables[mode_string] = mode_tables[mode_string] or mode_table
   local m = mode_tables[mode_string]
   if not self.keymaps[m] then self.keymaps[m] = {} end
-  table.insert(self.keymaps[m], {lhs, rhs, opts, function_code})
+  table.insert(self.keymaps[m], { lhs, rhs, opts, function_code })
 end
 
 function KeymapTable:get_keymaps(function_code)
   if not function_code then return self.keymaps end
   local new_keymaps = vim.deepcopy(self.keymaps)
   for modes, mappings in pairs(new_keymaps) do
-    new_keymaps[modes] = vim.tbl_map(function(mapping) return {mapping[1], mapping[4], mapping[3]} end, mappings)
+    new_keymaps[modes] = vim.tbl_map(function(mapping) return { mapping[1], mapping[4], mapping[3] } end, mappings)
   end
   return new_keymaps
 end
@@ -54,7 +55,7 @@ end
 function M.convert_from_api(from_register, to_register)
   local register_text = vim.fn.getreg(from_register or '+')
   local keymap_table = KeymapTable:new()
-  for args_string in (register_text):gmatch("set(%b())") do
+  for args_string in (register_text):gmatch('set(%b())') do
     local args_table = (loadstring('return {' .. args_string:sub(2, -2) .. '}'))()
     if type(args_table[3]) == 'function' then args_table[3] = args_string:match('.-,.-,(.-),') end
     keymap_table:insert(unpack(args_table))
@@ -66,10 +67,12 @@ end
 function M.convert_from_lazy(lazy_keys, from_register, to_register)
   local functions, register_text
   if not lazy_keys then
-    -- HACK: idk how packer.nvim is able to copy function code but this gmatch will do for now
     functions = {}
-    register_text = vim.fn.getreg(from_register or '+'):match("keys.-(%b{})")
-    for func in register_text:gmatch("(function.-end,)") do table.insert(functions, func) end
+    register_text = vim.fn.getreg(from_register or '+'):match('keys.-(%b{})')
+    -- HACK: idk how packer.nvim is able to copy function code but this gmatch will do for now
+    for func in register_text:gmatch('(function.-end,)') do
+      table.insert(functions, func)
+    end
   end
   lazy_keys = lazy_keys or (loadstring('return ' .. register_text))()
   local keymap_table = KeymapTable:new()
@@ -92,8 +95,9 @@ M.setup = {
     end
     map({
       [{ 'n' }] = {
-        {'<Tab>', vim.cmd.bnext},
-        {'<S-Tab>', vim.cmd.bprevious}
+        { '<Tab>', vim.cmd.bnext },
+        { '<S-Tab>', vim.cmd.bprevious },
+        { '<leader>hi', function() print(vim.cmd.highlight('ModeCursorLine')) end}
       },
       [{ 'n', 't' }] = {
         -- Better tabs
@@ -114,51 +118,65 @@ M.setup = {
         { 'i', autoindent('i'), { expr = true } },
         { 'a', autoindent('a'), { expr = true } },
         { 'A', autoindent('A'), { expr = true } },
-        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, {expr = true} },
-        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, {expr = true} },
+        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, { expr = true } },
+        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, { expr = true } },
         { 'x', '"_dl' },
         { 'X', '"_dh' },
       },
       [{ 'n', 'v' }] = {
         { 'p', 'p=`]`' },
         { 'P', 'P=`]`' },
-        {'<leader>p', '"+p'},
-        {'<leader>P', '"+P'},
-        {'<leader>y', '"+y'},
-        {'<leader>Y', '"+Y'},
+        { '<leader>p', '"+p' },
+        { '<leader>P', '"+P' },
+        { '<leader>y', '"+y' },
+        { '<leader>Y', '"+Y' },
       },
-      [{'v'}] = {
-        {'I', function()
-          local old = vim.o.cursorcolumn
-          if vim.fn.mode() == "\22" then vim.o.cursorcolumn = true end
-          vim.api.nvim_create_autocmd('InsertLeave', { once = true, callback = function() vim.o.cursorcolumn = old end })
-          return vim.fn.mode() == [[\22n]] and 'I' or [[<Esc>`<i]]
-        end, {expr = true} },
-        {'A', function() return vim.fn.mode() == [[\22n]] and 'A' or [[<Esc>`>a]] end, {expr = true} },
+      [{ 'v' }] = {
+        {
+          'I',
+          function()
+            local old = vim.o.cursorcolumn
+            if vim.fn.mode() == '\22' then vim.o.cursorcolumn = true end
+            vim.api.nvim_create_autocmd(
+              'InsertLeave',
+              { once = true, callback = function() vim.o.cursorcolumn = old end }
+            )
+            return vim.fn.mode() == [[\22n]] and 'I' or [[<Esc>`<i]]
+          end,
+          { expr = true },
+        },
+        { 'A', function() return vim.fn.mode() == [[\22n]] and 'A' or [[<Esc>`>a]] end, { expr = true } },
         { 'x', '"_x' },
         { 'X', '"_X' },
       },
-      [{'i'}] = {
-        {'<Esc>', function() return (vim.api.nvim_win_get_cursor(0)[2] > 1 or vim.api.nvim_get_current_line():match('%g')) and '<esc>l' or '<esc>' end, {expr = true}}
-      }
+      [{ 'i' }] = {
+        {
+          '<Esc>',
+          function()
+            local col = vim.api.nvim_win_get_cursor(0)[2]
+            return (col < 2) and '<esc>l' or '<esc>'
+          end,
+          { expr = true },
+        },
+      },
     }, { silent = true })
   end,
   substitute = function(opts)
     return map({
-      [{'n'}] = {
+      [{ 'n' }] = {
         -- { "r", function() require('substitute').operator() end, },
-        { "rr", function() require('substitute').line() end, },
-        { "R", function() require('substitute').eol() end, },
-        { "<leader>r", function() require('substitute.range').operator() end, },
-        { "<leader>rr", function() require('substitute.range').word() end, },
+        { 'rr', function() require('substitute').line() end },
+        { 'R', function() require('substitute').eol() end },
+        { '<leader>r', function() require('substitute.range').operator() end },
+        { '<leader>rr', function() require('substitute.range').word() end },
       },
-      [{'x'}] = {
+      [{ 'x' }] = {
         { 'r', function() require('substitute').visual() end },
-        { "<leader>r", function() require('substitute.range').visual() end, },
-      }
+        { '<leader>r', function() require('substitute.range').visual() end },
+      },
     }, {}, opts)
   end,
-  smart_splits = function()
+  smart_splits = function(opts)
     map({
       [{ 'n', 't' }] = {
         { '<A-h>', function() require('smart-splits').resize_left() end },
@@ -170,7 +188,7 @@ M.setup = {
         { '<C-k>', function() require('smart-splits').move_cursor_up() end },
         { '<C-l>', function() require('smart-splits').move_cursor_right() end },
       },
-    }, { silent = true })
+    }, { silent = true }, {lazy = true})
   end,
   treesj = function(opts)
     return map({
@@ -181,31 +199,51 @@ M.setup = {
     local lsp = vim.lsp.buf
     map({
       [{ 'n' }] = {
-        { 'gD', lsp.declaration, {desc = '(LSP) Get declaration'} },
-        { 'gd', lsp.definition, {desc = '(LSP) Get definition'} },
-        { 'K', lsp.hover, {desc = '(LSP) Get definition'}},
-        { 'gi', lsp.implementation, {desc = '(LSP) Get implementation'}},
-        { '<C-k>', lsp.signature_help, {desc = '(LSP) Get signature help'}},
-        { '<leader>wa', lsp.add_workspace_folder, {desc = '(LSP) Add workspace folder'}},
-        { '<leader>wr', lsp.remove_workspace_folder, {desc = '(LSP) Remove workspace folder'}},
-        { '<leader>wl', function() vim.print(lsp.list_workspace_folders()) end, {desc = '(LSP) Get workspace folders'} },
-        { '<leader>D', lsp.type_definition, {desc = '(LSP) Get type'} },
-        { 'ga', lsp.code_action, {desc = '(LSP) Get code actions'}},
-        { 'gr', lsp.references, {desc = '(LSP) Get references'}},
+        { 'gD', lsp.declaration, { desc = '(LSP) Get declaration' } },
+        { 'gd', lsp.definition, { desc = '(LSP) Get definition' } },
+        { 'K', lsp.hover, { desc = '(LSP) Get definition' } },
+        { 'gi', lsp.implementation, { desc = '(LSP) Get implementation' } },
+        { 'gk', lsp.signature_help, { desc = '(LSP) Get signature help' } },
+        { '<leader>wa', lsp.add_workspace_folder, { desc = '(LSP) Add workspace folder' } },
+        { '<leader>wr', lsp.remove_workspace_folder, { desc = '(LSP) Remove workspace folder' } },
+        {
+          '<leader>wl',
+          function() vim.print(lsp.list_workspace_folders()) end,
+          { desc = '(LSP) Get workspace folders' },
+        },
+        { '<leader>D', lsp.type_definition, { desc = '(LSP) Get type' } },
+        { 'ga', lsp.code_action, { desc = '(LSP) Get code actions' } },
+        { 'gr', lsp.references, { desc = '(LSP) Get references' } },
         {
           '<leader>f',
           function()
             local buf = vim.api.nvim_get_current_buf()
             local ft = vim.bo[buf].filetype
-            local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+            local have_nls = #require('null-ls.sources').get_available(ft, 'NULL_LS_FORMATTING') > 0
             lsp.format({
               async = true,
-              filter = function(client)
-                return have_nls and client.name == "null-ls" or client.name ~= "null-ls"
-              end
+              filter = function(client) return have_nls and client.name == 'null-ls' or client.name ~= 'null-ls' end,
             })
           end,
           { desc = '(LSP) Format (priority to null-ls)' },
+        },
+        {
+          '<leader>ff',
+          function()
+            local client_names = vim.tbl_map(
+              function(client) return client.name end,
+              vim.lsp.get_clients({ bufnr = 0 })
+            )
+            vim.ui.select(client_names, { prompt = 'Select a client to format current buffer:' }, function(client_name)
+              if vim.tbl_contains(client_names, client_name) then
+                local choice = client_name
+                lsp.format({ filter = function(client) return client.name == choice end })
+              else
+                vim.notify('invalid client name', vim.log.levels.INFO)
+              end
+            end)
+          end,
+          { desc = '(LSP) Format (choose)' },
         },
       },
     }, { remap = false, silent = true, buffer = bufnr })
@@ -259,7 +297,7 @@ M.setup = {
     local diag = vim.diagnostic
     map({
       [{ 'n' }] = {
-        { '<leader>e', diag.open_float, { desc = 'Floating Diagnostics' } },
+        { '<leader>k', diag.open_float, { desc = 'Floating Diagnostics' } },
         { '[d', diag.goto_prev, { desc = 'Previous diagnostic' } },
         { ']d', diag.goto_next, { desc = 'Next diagnostic' } },
         { '<leader>q', diag.setloclist, { desc = 'Add diagnostics to location list' } },
@@ -272,7 +310,12 @@ M.setup = {
         {
           '<leader>rn',
           function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
-          { expr = true, desc = 'Rename (incrementally)' },
+          { expr = true, desc = 'rename (incrementally)' },
+        },
+        {
+          '<F6>',
+          function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
+          { expr = true, desc = 'rename (incrementally)' },
         },
       },
     })
@@ -286,53 +329,52 @@ M.setup = {
         { '#', [[#<Cmd>lua require('hlslens').start()<CR>]] },
         { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]] },
         { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]] },
-        { '<Leader>l', ':noh<CR>' },
       },
-    }, { noremap = true, silent = true }, opts)
+    }, { remap = false, silent = true }, opts)
   end,
   marks = function(opts)
-    local normal = {'n'}
+    local normal = { 'n' }
     local keymaps = {
       [normal] = {
-        { 'm' , '<Plug>(Marks-set)' },
-        { 'm,' , '<Plug>(Marks-setnext)' },
-        { 'm;' , '<Plug>(Marks-toggle)' },
-        { 'dm' , '<Plug>(Marks-delete)' },
-        { 'dm-' , '<Plug>(Marks-deleteline)' },
-        { 'dm<Space>' , '<Plug>(Marks-deletebuf)' },
-        { 'm:' , '<Plug>(Marks-preview)' },
-        { 'm]' , '<Plug>(Marks-next)' },
-        { 'm[' , '<Plug>(Marks-prev)' },
-        { 'dm=' , '<Plug>(Marks-delete-bookmark)' },
-        { 'm}' , '<Plug>(Marks-next-bookmark)' },
-        { 'm{' , '<Plug>(Marks-prev-bookmark)' },
-      }
+        { 'm', '<Plug>(Marks-set)' },
+        { 'm,', '<Plug>(Marks-setnext)' },
+        { 'm;', '<Plug>(Marks-toggle)' },
+        { 'dm', '<Plug>(Marks-delete)' },
+        { 'dm-', '<Plug>(Marks-deleteline)' },
+        { 'dm<Space>', '<Plug>(Marks-deletebuf)' },
+        { 'm:', '<Plug>(Marks-preview)' },
+        { 'm]', '<Plug>(Marks-next)' },
+        { 'm[', '<Plug>(Marks-prev)' },
+        { 'dm=', '<Plug>(Marks-delete-bookmark)' },
+        { 'm}', '<Plug>(Marks-next-bookmark)' },
+        { 'm{', '<Plug>(Marks-prev-bookmark)' },
+      },
     }
-    for i=0,9 do
+    for i = 0, 9 do
       vim.list_extend(keymaps[normal], {
-        { 'm'..i, '<Plug>(Marks-set-bookmark'..i..')', },
-        { 'dm'..i, '<Plug>(Marks-delete-bookmark'..i..')', },
-        { 'm}'..i, '<Plug>(Marks-next-bookmark'..i..')', },
-        { 'm{'..i, '<Plug>(Marks-prev-bookmark'..i..')' }
+        { 'm' .. i, '<Plug>(Marks-set-bookmark' .. i .. ')' },
+        { 'dm' .. i, '<Plug>(Marks-delete-bookmark' .. i .. ')' },
+        { 'm}' .. i, '<Plug>(Marks-next-bookmark' .. i .. ')' },
+        { 'm{' .. i, '<Plug>(Marks-prev-bookmark' .. i .. ')' },
       })
     end
     return map(keymaps, {}, opts)
   end,
   mini = function()
     return map({
-      [{'n'}] = {
-        {'<M-h>', function() require('mini.move').move_line('left') end, { desc = 'Move line left' }},
-        {'<M-j>', function() require('mini.move').move_line('down') end, { desc = 'Move line down' }},
-        {'<M-k>', function() require('mini.move').move_line('up') end, { desc = 'Move line up' }},
-        {'<M-l>', function() require('mini.move').move_line('right') end, { desc = 'Move line right' }},
-        { "yss", "ys_", { remap = true } },
+      [{ 'n' }] = {
+        { '<M-h>', function() require('mini.move').move_line('left') end, { desc = 'Move line left' } },
+        { '<M-j>', function() require('mini.move').move_line('down') end, { desc = 'Move line down' } },
+        { '<M-k>', function() require('mini.move').move_line('up') end, { desc = 'Move line up' } },
+        { '<M-l>', function() require('mini.move').move_line('right') end, { desc = 'Move line right' } },
+        { 'yss', 'ys_', { remap = true } },
       },
-      [{'x'}] = {
-        {'<M-h>', function() require('mini.move').move_selection('left') end, { desc = 'Move selection left' }},
-        {'<M-j>', function() require('mini.move').move_selection('down') end, { desc = 'Move selection down' }},
-        {'<M-k>', function() require('mini.move').move_selection('up') end, { desc = 'Move selection up' }},
-        {'<M-l>', function() require('mini.move').move_selection('right') end, { desc = 'Move selection right' }},
-        { "S", ":<C-u>lua MiniSurround.add('visual')<CR>", { silent = true } },
+      [{ 'x' }] = {
+        { '<M-h>', function() require('mini.move').move_selection('left') end, { desc = 'Move selection left' } },
+        { '<M-j>', function() require('mini.move').move_selection('down') end, { desc = 'Move selection down' } },
+        { '<M-k>', function() require('mini.move').move_selection('up') end, { desc = 'Move selection up' } },
+        { '<M-l>', function() require('mini.move').move_selection('right') end, { desc = 'Move selection right' } },
+        { 'S', ":<C-u>lua MiniSurround.add('visual')<CR>", { silent = true } },
       },
     })
   end,
@@ -341,8 +383,8 @@ M.setup = {
       [{ 'n' }] = {
         { '<C-a>', function() return require('dial.map').inc_normal() end },
         { '<C-x>', function() return require('dial.map').dec_normal() end },
-        { "g<C-a>", function() return require("dial.map").inc_gnormal() end },
-        { "g<C-x>", function() return require("dial.map").dec_gnormal() end }
+        { 'g<C-a>', function() return require('dial.map').inc_gnormal() end },
+        { 'g<C-x>', function() return require('dial.map').dec_gnormal() end },
       },
       [{ 'v' }] = {
         { '<C-a>', function() return require('dial.map').inc_visual() end },
@@ -350,12 +392,16 @@ M.setup = {
         { 'g<C-a>', function() return require('dial.map').inc_gvisual() end },
         { 'g<c-x>', function() return require('dial.map').dec_gvisual() end },
       },
-    }, {noremap = true, expr = true}, opts)
+    }, { noremap = true, expr = true }, opts)
   end,
   telescope = function(opts)
     return map({
       [{ 'n' }] = {
-        { '<CR><CR>', function() require('telescope.builtin').builtin(require('telescope.themes').get_ivy()) end, { desc = '(TS) Telescope', remap = false }},
+        {
+          '<CR><CR>',
+          function() require('telescope.builtin').builtin(require('telescope.themes').get_ivy()) end,
+          { desc = '(TS) Telescope', remap = false },
+        },
         { '<leader><space>', function() require('telescope.builtin').buffers() end, { desc = '(TS) Buffers' } },
         { '<CR>f', function() require('telescope.builtin').find_files() end, { desc = '(TS) Find files' } },
         {
@@ -380,9 +426,14 @@ M.setup = {
   neotree = function(opts)
     return map({
       [{ 'n' }] = {
-        { '<leader>n', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', { desc = 'Toggle Neo-tree (left) ' } },
+        { '<leader>e', '<Cmd>Neotree toggle left reveal_force_cwd<CR>', { desc = 'Toggle Neo-tree (left)' } },
         {
-          '<leader>gn',
+          '<leader>ws',
+          '<Cmd>Neotree source=document_symbols toggle right<CR>',
+          { desc = 'Toggle Neo-tree (symbols, right)' },
+        },
+        {
+          '<leader>gf',
           '<Cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>',
           { desc = 'Popup Neo-tree for file under cursor' },
         },
@@ -391,80 +442,93 @@ M.setup = {
   end,
   yanky = function(opts)
     return map({
-      [{'n', 'x'}] = {
-        { "p", "<Plug>(YankyPutAfter)" },
-        { "P", "<Plug>(YankyPutBefore)" },
-        { "gp", "<Plug>(YankyGPutAfter)" },
-        { "gP", "<Plug>(YankyGPutBefore)" },
-        { "<c-n>", "<Plug>(YankyCycleForward)" },
-        { "<c-p>", "<Plug>(YankyCycleBackward)" },
-        { "]p", "<Plug>(YankyPutIndentAfterLinewise)" },
-        { "[p", "<Plug>(YankyPutIndentBeforeLinewise)" },
-        { "]P", "<Plug>(YankyPutIndentAfterLinewise)" },
-        { "[P", "<Plug>(YankyPutIndentBeforeLinewise)" },
+      [{ 'n', 'x' }] = {
+        { 'p', '<Plug>(YankyPutAfter)' },
+        { 'P', '<Plug>(YankyPutBefore)' },
+        { 'gp', '<Plug>(YankyGPutAfter)' },
+        { 'gP', '<Plug>(YankyGPutBefore)' },
+        { '<c-n>', '<Plug>(YankyCycleForward)' },
+        { '<c-p>', '<Plug>(YankyCycleBackward)' },
+        { ']p', '<Plug>(YankyPutIndentAfterLinewise)' },
+        { '[p', '<Plug>(YankyPutIndentBeforeLinewise)' },
+        { ']P', '<Plug>(YankyPutIndentAfterLinewise)' },
+        { '[P', '<Plug>(YankyPutIndentBeforeLinewise)' },
 
-        { ">p", "<Plug>(YankyPutIndentAfterShiftRight)" },
-        { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)" },
-        { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)" },
-        { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)" },
+        { '>p', '<Plug>(YankyPutIndentAfterShiftRight)' },
+        { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)' },
+        { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)' },
+        { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)' },
 
-        { "=p", "<Plug>(YankyPutAfterFilter)" },
-        { "=P", "<Plug>(YankyPutBeforeFilter)" },
-      }
-    }, {remap = true}, opts)
+        { '=p', '<Plug>(YankyPutAfterFilter)' },
+        { '=P', '<Plug>(YankyPutBeforeFilter)' },
+      },
+    }, { remap = true }, opts)
   end,
   leap = function(opts)
     return map({
-      [{"n", "o"}] = {
-        { "s", "<Plug>(leap-forward-to)", { desc = "Leap forward to" }},
-        { "S", "<Plug>(leap-backward-to)", { desc = "Leap backward to" }},
-        { "gs", "<Plug>(leap-from-window)", { desc = "Leap from window" }},
-        { "gs", "<Plug>(leap-cross-window)", { desc = "Leap from window" }},
+      [{ 'n', 'o' }] = {
+        { 's', '<Plug>(leap-forward-to)', { desc = 'Leap forward to' } },
+        { 'S', '<Plug>(leap-backward-to)', { desc = 'Leap backward to' } },
+        { 'gs', '<Plug>(leap-from-window)', { desc = 'Leap from window' } },
+        { 'gs', '<Plug>(leap-cross-window)', { desc = 'Leap from window' } },
       },
-      [{"x","o"}] = {
-        { "x", "<Plug>(leap-forward-till)", { desc = "Leap forward till" }},
-        { "X", "<Plug>(leap-backward-till)", { desc = "Leap backward till" }},
-      }
+      [{ 'x', 'o' }] = {
+        { 'x', '<Plug>(leap-forward-till)', { desc = 'Leap forward till' } },
+        { 'X', '<Plug>(leap-backward-till)', { desc = 'Leap backward till' } },
+      },
     }, {}, opts)
   end,
   heirline = function()
     map({
-      [{'n'}] = {
+      [{ 'n' }] = {
         {
           'gbp',
           function()
-            local tabline = require("heirline").tabline
+            local tabline = require('heirline').tabline
             local buflist = tabline._buflist[1]
             buflist._picker_labels = {}
             buflist._show_picker = true
             vim.cmd.redrawtabline()
-            local char = vim.fn.getcharstr()
-            local bufnr = buflist._picker_labels[char]
-            if bufnr then
-              vim.api.nvim_win_set_buf(0, bufnr)
-            end
+            local bufnr = buflist._picker_labels[vim.fn.getcharstr()]
+            if bufnr then vim.api.nvim_win_set_buf(0, bufnr) end
             buflist._show_picker = false
             vim.cmd.redrawtabline()
             vim.cmd.redraw()
           end,
-          {expr = true}
-        }
-      }
+          { expr = true },
+        },
+      },
     })
   end,
   flash = function(opts)
     map({
-      [{ "n", "o", "x" }] = {
-        { "s", function() require("flash").jump() end, { desc = "Flash" } },
-        { "S", function() require("flash").treesitter() end, { desc = "Flash Treesitter" } },
+      [{ 'n', 'o', 'x' }] = {
+        { 's', function() require('flash').jump() end, { desc = 'Flash' } },
+        { 'S', function() require('flash').treesitter() end, { desc = 'Flash Treesitter' } },
       },
-      [{ "c" }] = { { "<c-s>", function() require("flash").toggle() end, { desc = "Toggle Flash Search" } } },
-      [{ "o", "x" }] = { { "R", function() require("flash").treesitter_search() end, { desc = "Flash Treesitter Search" } } },
-      [{ "o" }] = { { "r", function() require("flash").remote() end, { desc = "Remote Flash" } } }
+      [{ 'c' }] = { { '<c-s>', function() require('flash').toggle() end, { desc = 'Toggle Flash Search' } } },
+      [{ 'o', 'x' }] = {
+        { 'R', function() require('flash').treesitter_search() end, { desc = 'Flash Treesitter Search' } },
+      },
+      [{ 'o' }] = { { 'r', function() require('flash').remote() end, { desc = 'Remote Flash' } } },
+    }, {}, opts)
+  end,
+  trouble = function(opts)
+    map({
+      [{ 'n' }] = {
+        { '<leader>t', '<Cmd>Trouble<CR>', { desc = 'Trouble' } },
+      },
+    }, {}, opts)
+  end,
+  gesture = function(opts)
+    map({
+      [{ "n" }] = {
+        { "<LeftDrag>", function() require("gesture").draw() end, { silent = true } },
+        { "<LeftRelease>", function() require("gesture").finish() end, { silent = true } },
+      }
     }, {}, opts)
   end
 }
-
 
 -- Other random plugin-specific mapping tables go here: --
 
@@ -475,17 +539,25 @@ M.cmp = {
     return cmp.mapping.preset.insert({
       ['<C-d>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-s>'] = cmp.mapping(function(_) cmp.mapping.complete({ reason = cmp.ContextReason.Auto }) end, {'i'}),
+      ['<C-s>'] = cmp.mapping(function(_) cmp.mapping.complete({ reason = cmp.ContextReason.Auto }) end, { 'i' }),
       ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
       ['<Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then cmp.select_next_item()
-        elseif luasnip.jumpable(1) then luasnip.jump(1)
-        else fallback() end
+        if cmp.visible() then
+          cmp.select_next_item()
+        elseif luasnip.jumpable(1) then
+          luasnip.jump(1)
+        else
+          fallback()
+        end
       end, { 'i', 's', 'c' }),
       ['<S-Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then luasnip.jump(-1)
-        else fallback() end
+        if cmp.visible() then
+          cmp.select_prev_item()
+        elseif luasnip.jumpable(-1) then
+          luasnip.jump(-1)
+        else
+          fallback()
+        end
       end, { 'i', 's', 'c' }),
     })
   end,
@@ -571,8 +643,8 @@ M.neotree = {
         ['<c-x>'] = 'clear_filter',
         ['[g'] = 'prev_git_modified',
         [']g'] = 'next_git_modified',
-      }
-    }
+      },
+    },
   },
   buffers = {
     window = {
@@ -580,8 +652,8 @@ M.neotree = {
         ['bd'] = 'buffer_delete',
         ['<bs>'] = 'navigate_up',
         ['.'] = 'set_root',
-      }
-    }
+      },
+    },
   },
   git_status = {
     window = {
@@ -593,15 +665,15 @@ M.neotree = {
         ['gc'] = 'git_commit',
         ['gp'] = 'git_push',
         ['gg'] = 'git_commit_and_push',
-      }
-    }
+      },
+    },
   },
 }
 M.neoscroll = {
   ['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '100', [["sine"]] } },
   ['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '100', [["sine"]] } },
-  ['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '150', [["circular"]] } },
-  ['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '150', [["circular"]] } },
+  ['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '100', [["circular"]] } },
+  ['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '100', [["circular"]] } },
   ['<C-y>'] = { 'scroll', { '-0.10', 'false', '50', nil } },
   ['<C-e>'] = { 'scroll', { '0.10', 'false', '50', nil } },
   ['zt'] = { 'zt', { '50' } },
@@ -619,10 +691,10 @@ M.treesitter = {
   },
   incremental_selection = {
     keymaps = {
-      init_selection = "gcn", -- set to `false` to disable one of the mappings
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      init_selection = 'gcn', -- set to `false` to disable one of the mappings
+      node_incremental = 'grn',
+      scope_incremental = 'grc',
+      node_decremental = 'grm',
     },
   },
   textobjects = {
@@ -636,10 +708,10 @@ M.treesitter = {
   },
   swap = {
     swap_next = {
-      ["<leader>a"] = "@parameter.inner",
+      ['<leader>a'] = '@parameter.inner',
     },
     swap_previous = {
-      ["<leader>A"] = "@parameter.inner",
+      ['<leader>A'] = '@parameter.inner',
     },
   },
   move = {
@@ -662,6 +734,7 @@ M.treesitter = {
   },
 }
 
+
 M.mini = {
   surround = {
     add = 'ys', -- Add surrounding in Normal and Visual modes
@@ -673,6 +746,6 @@ M.mini = {
     update_n_lines = '<leader>sn', -- Update `n_lines`
     suffix_last = 'l', -- Suffix to search with "prev" method
     suffix_next = 'n', -- Suffix to search with "next" method
-  }
+  },
 }
 return M

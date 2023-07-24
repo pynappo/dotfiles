@@ -1,5 +1,6 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
+  branch = 'v3.x',
   cmd = 'Neotree',
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -33,13 +34,11 @@ return {
         end
       }
     end
-
     require("neo-tree").setup(vim.tbl_deep_extend('force', {
       sources = { "filesystem", "buffers", "git_status", "document_symbols" },
       hide_root_node = true,
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
       close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-      close_floats_on_escape_key = true,
       default_source = "filesystem",
       sort_case_insensitive = true,
       enable_diagnostics = true,
@@ -156,12 +155,16 @@ return {
         find_by_full_path_words = false,  -- `false` means it only searches the tail of a path.
         group_empty_dirs = true, -- when true, empty folders will be grouped together
         search_limit = 50, -- max number of search results when using filters
-        follow_current_file = true, -- This will find and focus the file in the active buffer every time
+        follow_current_file = {
+          enabled = true
+        }, -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
       },
       buffers = {
         bind_to_cwd = true,
-        follow_current_file = true, -- This will find and focus the file in the active buffer every time
+        follow_current_file = {
+          enabled = true
+        }, -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
         group_empty_dirs = true, -- when true, empty directories will be grouped together
       },

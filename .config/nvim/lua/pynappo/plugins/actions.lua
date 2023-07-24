@@ -1,6 +1,6 @@
 local keymaps = require("pynappo/keymaps")
 return {
-  { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end },
+  { 'numToStr/Comment.nvim', event = 'BufReadPre', config = function() require('Comment').setup() end },
   {
     "folke/flash.nvim",
     event = "VeryLazy",
@@ -11,7 +11,7 @@ return {
         }
       }
     },
-    keys = require('pynappo.keymaps').setup.flash({lazy = true})
+    keys = keymaps.setup.flash({lazy = true})
   },
   -- { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
@@ -23,6 +23,7 @@ return {
   },
   {
     'monaqa/dial.nvim',
+    event = 'VeryLazy',
     config = function()
       local augend = require('dial.augend')
       require('dial.config').augends:register_group({
@@ -47,6 +48,7 @@ return {
   },
   {
     'gbprod/substitute.nvim',
+    event = 'VeryLazy',
     opts = {
       on_substitute = nil,
       yank_substituted_text = false,
@@ -70,5 +72,5 @@ return {
     },
     init = keymaps.setup.substitute
   },
-  { 'abecodes/tabout.nvim' }
+  { 'abecodes/tabout.nvim', event = 'VeryLazy' }
 }

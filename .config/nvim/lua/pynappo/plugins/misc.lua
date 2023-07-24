@@ -3,6 +3,7 @@ return {
   { 'simrat39/symbols-outline.nvim', config = function() require('symbols-outline').setup() end },
   {
     'akinsho/toggleterm.nvim',
+    cmd = 'ToggleTerm',
     config = function()
       require('toggleterm').setup(vim.tbl_deep_extend('force', {
         winbar = {

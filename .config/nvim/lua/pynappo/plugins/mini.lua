@@ -1,12 +1,13 @@
 return {
   'echasnovski/mini.nvim',
-  event = 'VeryLazy',
   config = function()
+    local keymaps = require('pynappo.keymaps')
     -- require('mini.pairs').setup()
     require('mini.ai').setup()
     require('mini.move').setup()
     require('mini.bufremove').setup()
     require('mini.sessions').setup()
+    require('mini.hipatterns').setup()
     require('mini.align').setup({
       mappings = {
         start = '<leader>a',
@@ -16,11 +17,10 @@ return {
     require('mini.surround').setup({
       custom_surroundings = nil,
       highlight_duration = 500,
-      mappings = require('pynappo.keymaps').mini.surround,
-      n_lines = 20,
+      mappings = keymaps.mini.surround,
+      n_lines = 30,
       respect_selection_type = true,
       search_method = 'cover',
-
       -- Whether to disable showing non-error feedback
       silent = false,
     })
@@ -52,7 +52,7 @@ return {
       },
     })
 
-    vim.keymap.del('x', require('pynappo.keymaps').mini.surround.add)
+    vim.keymap.del('x', keymaps.mini.surround.add)
     local indentscope = require('mini.indentscope')
     indentscope.setup({
       draw = {
@@ -68,17 +68,20 @@ return {
     })
     local trailspace = require('mini.trailspace')
     trailspace.setup()
-    vim.api.nvim_create_user_command('Trim', function()
-      trailspace.trim()
-      trailspace.trim_last_lines()
-    end, {})
-    require('pynappo/keymaps').setup.mini()
-    local function set_mini_highlights()
-      vim.cmd.highlight('MiniIndentscopeSymbol guifg=#777777 gui=nocombine')
-      vim.cmd.highlight('MiniTrailspace guifg=#444444 gui=undercurl,nocombine')
-    end
-    set_mini_highlights()
-    require('pynappo/autocmds').create('ColorScheme', { callback = set_mini_highlights })
+    local command_map = {
+      whitespace = trailspace.trim,
+      last_lines = trailspace.trim_last_lines,
+      all = function() 
+        trailspace.trim()
+        trailspace.trim_last_lines()
+      end,
+    }
+    vim.api.nvim_create_user_command(
+      'Trim',
+      function(args) (command_map[args.args] or command_map.all)() end,
+      { nargs = '?', complete = function() return vim.tbl_keys(command_map) end, }
+    )
+    keymaps.setup.mini()
     require('pynappo.theme').overrides.all_themes.vim_highlights.MiniIndentscopeSymbol = 'guifg=#666666 gui=nocombine'
     require('pynappo.theme').overrides.all_themes.vim_highlights.MiniTrailSpace = 'guifg=#555555 gui=undercurl,nocombine'
   end,

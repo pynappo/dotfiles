@@ -3,12 +3,10 @@ return {
   { 'nacro90/numb.nvim', config = function() require('numb').setup() end, event = 'CmdlineEnter' },
   {
     'max397574/better-escape.nvim',
-    config = function()
-      require('better_escape').setup({
-        mapping = { 'jk', 'kj' },
-        keys = function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end,
-      })
-    end,
+    opts = {
+      mapping = { 'jk', 'kj' },
+      keys = function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end,
+    }
   },
   {
     'mrjones2014/smart-splits.nvim',
@@ -18,6 +16,7 @@ return {
   {
     "gbprod/yanky.nvim",
     dependencies = { "kkharji/sqlite.lua" },
+    event = 'VeryLazy',
     init = keymaps.setup.yanky,
     config = function()
       require("yanky").setup({
@@ -35,18 +34,24 @@ return {
   { 'tiagovla/scope.nvim' },
   {
     'chentoast/marks.nvim',
+    event = 'VeryLazy',
     config = function() require('marks').setup({default_mappings = false}) end,
     keys = keymaps.setup.marks({lazy=true})
   },
   {
     'karb94/neoscroll.nvim',
+    event = 'VeryLazy',
     config = function()
       require('neoscroll').setup({ easing_function = 'quadratic' })
       require('neoscroll.config').set_mappings(keymaps.neoscroll)
     end,
   },
   'tpope/vim-repeat',
-  { 'nmac427/guess-indent.nvim', config = function() require('guess-indent').setup({}) end },
+  {
+    'nmac427/guess-indent.nvim',
+    event = 'VeryLazy',
+    config = function() require('guess-indent').setup({}) end,
+  },
   {
     'andymass/vim-matchup',
     event = 'BufRead',
