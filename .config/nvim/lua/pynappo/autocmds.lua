@@ -94,17 +94,15 @@ function autocmds.heirline_mode_cursorline(mode_colors)
   }) -- #172933
 end
 
-
-autocmds.create('UIEnter', {
-  callback = function()
-    if vim.v.event.chan == 1 then
-      require('pynappo/theme').transparent_override()
-      autocmds.create('ColorScheme', {
-        callback = require('pynappo/theme').transparent_override,
-        desc = 'Transparent background',
-      })
+-- called after setting up tint
+function autocmds.setup_overrides()
+  autocmds.create({'ColorScheme'}, {
+    callback = function(details)
+      if vim.g.disable_pynappo_theme_overrides then return end
+      require('pynappo.theme').overrides.all_themes:apply()
+      require('pynappo.theme').overrides[details.match]:apply()
     end
-  end,
-})
+  })
+end
 
 return autocmds

@@ -1,6 +1,6 @@
--- A file containing theme commands and various color utilities
 local theme = {}
-local highlights = {
+
+local transparent_highlights = {
   'Normal',
   'NormalNC',
   'LineNr',
@@ -12,21 +12,72 @@ local highlights = {
   'EndOfBuffer',
   'TablineFill',
 }
-function theme.transparent_override()
-  for _, hl in ipairs(highlights) do vim.cmd.highlight(hl .. ' guibg=NONE ctermbg=NONE') end
-  local ok, tint = pcall(require, 'tint')
-  if not ok then return end
-  tint.refresh()
+
+local OverrideTable = {
+  vim_highlights = {},
+  nvim_highlights = {},
+  links = {},
+  functions = {}
+}
+function OverrideTable:new()
+  local object = {
+    vim_highlights = setmetatable({}, {
+      __newindex = function (t, k, v)
+        vim.cmd.highlight(k .. ' ' .. v)
+        rawset(t,k,v)
+      end
+    }),
+    nvim_highlights = setmetatable({}, {
+      __newindex = function (t, k, v)
+        vim.api.nvim_set_hl(0, k, v)
+        rawset(t,k,v)
+      end
+    }),
+    links = setmetatable({}, {
+      __newindex = function (t, k, v)
+        vim.cmd('highlight! link ' .. k .. ' ' .. v)
+        rawset(t,k,v)
+      end
+    }),
+    functions = setmetatable({}, {
+      __newindex = function (t, k, v)
+        v()
+        rawset(t,k,v)
+      end
+    })
+  }
+
+  setmetatable(object, self)
+  self.__index = self
+  return object
 end
-function theme.set_rainbow_colors(prefix, suffix_colors, desc)
+
+function OverrideTable.apply(self)
+  for _, table in pairs(self) do
+    if type(table) == 'table' then
+      local newindex_func = getmetatable(table).__newindex
+      for key, value in pairs(table) do newindex_func(table, key, value) end
+    end
+  end
+end
+
+theme.overrides = {
+  all_themes = OverrideTable:new()
+}
+setmetatable(theme.overrides, {
+  __index = function (t, k)
+    rawset(t, k, OverrideTable:new())
+    return t[k]
+  end
+})
+
+for _, hl in ipairs(transparent_highlights) do theme.overrides.all_themes.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE' end
+
+function theme.set_rainbow_colors(prefix, suffix_colors)
   local hl_list = {}
   for suffix, color in pairs(suffix_colors) do hl_list[suffix] = { prefix .. suffix  , color} end
-  local function set_highlights()
-    for _, hl in pairs(hl_list) do vim.api.nvim_set_hl(0, hl[1], { fg = hl[2], nocombine = true }) end
-    vim.api.nvim_set_hl(0, 'IndentBlanklineContextChar', { fg='#777777', bold = true, nocombine = true })
-  end
-  set_highlights()
-  vim.api.nvim_create_autocmd('ColorScheme', { callback = set_highlights, desc = desc })
+  for _, hl in pairs(hl_list) do theme.overrides.all_themes.nvim_highlights[hl[1]] = { fg = hl[2], nocombine = true } end
   return hl_list
 end
+
 return theme

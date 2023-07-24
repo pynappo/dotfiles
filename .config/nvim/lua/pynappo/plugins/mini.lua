@@ -79,5 +79,7 @@ return {
     end
     set_mini_highlights()
     require('pynappo/autocmds').create('ColorScheme', { callback = set_mini_highlights })
+    require('pynappo.theme').overrides.all_themes.vim_highlights.MiniIndentscopeSymbol = 'guifg=#666666 gui=nocombine'
+    require('pynappo.theme').overrides.all_themes.vim_highlights.MiniTrailSpace = 'guifg=#555555 gui=undercurl,nocombine'
   end,
 }

@@ -5,7 +5,7 @@ return {
     event = 'BufReadPre',
     config = function()
       local colors = { '#3b2727', '#464431', '#31493a', '#273b4b', '#303053', '#403040' }
-      local hl_list = require('pynappo.theme').set_rainbow_colors('IndentBlanklineContextChar', colors, 'Set rainbow indent lines')
+      local hl_list = theme.set_rainbow_colors('IndentBlanklineContextChar', colors, 'Set rainbow indent lines')
       require('indent_blankline').setup({
         filetype_exclude = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
         show_trailing_blankline_indent = true,
@@ -14,6 +14,7 @@ return {
         use_treesitter = true,
         use_treesitter_scope = true,
       })
+      theme.overrides.all_themes.nvim_highlights['IndentBlanklineContextChar'] = { fg='#777777', bold = true, nocombine = true }
     end,
   },
   { 'folke/which-key.nvim', opts = {window = {border = 'single'}} },
@@ -140,15 +141,10 @@ return {
           render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
         end
       })
-      local function set_highlights()
-        for _, hl in ipairs({'HlSearchLensNear', 'HlSearchLens'}) do
-          vim.api.nvim_set_hl(0, hl .. 'Surround', {fg = ("#%06x"):format(vim.api.nvim_get_hl(0, {name = hl, link = false}).bg)})
-        end
+
+      for _, hl in ipairs({'HlSearchLensNear', 'HlSearchLens'}) do
+        require('pynappo.theme').overrides.all_themes.nvim_highlights[hl .. 'Surround'] = {fg = require('pynappo.utils').nvim_get_hl_hex(0, {name = hl, link = false}).bg}
       end
-      set_highlights()
-      require('pynappo.autocmds').create('ColorScheme', {
-        callback = set_highlights
-      })
     end,
     event = 'CmdlineEnter',
     cmd = { 'HlSearchLensEnable', 'HlSearchLensDisable', 'HlSearchLensToggle' },
@@ -172,7 +168,7 @@ return {
         },
         base = 'right',
       })
-      vim.cmd.highlight('ScrollViewMarks guibg=NONE')
+      require('pynappo.theme').overrides.all_themes.vim_highlights.ScrollViewMarks = 'guibg=NONE'
     end,
   },
   {

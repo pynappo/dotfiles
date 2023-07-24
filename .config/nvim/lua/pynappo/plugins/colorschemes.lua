@@ -24,6 +24,8 @@ return {
   },
   {
     'levouh/tint.nvim',
+    priority = 1000,
+    enabled = true,
     opts = {
       saturation = 0.8,
       tint = -20,
@@ -32,19 +34,21 @@ return {
         "WinSeparator",
         "Status.*",
         "Normal.*",
-        ".*CursorLine",
-        "Dropbar.*",
-        "Color.*",
+        "CursorLine",
+        "Dropbar",
+        "Color",
         "WinBar"
       },
       window_ignore_function = function(winid)
         local buftype = vim.api.nvim_get_option_value('buftype', {buf = vim.api.nvim_win_get_buf(winid)})
         local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
-
-        -- Do not tint `terminal` or floating windows, tint everything else
         return vim.tbl_contains({"terminal", "nofile"}, buftype) or floating
       end
     },
+    config = function(_, opts)
+      require('tint').setup(opts)
+      require('pynappo.autocmds').setup_overrides()
+    end
   },
   {
     "max397574/colortils.nvim",
