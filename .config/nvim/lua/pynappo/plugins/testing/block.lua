@@ -1,11 +1,9 @@
 return {
   {
     "HampusHauffman/block.nvim",
-    event = 'ColorScheme',
-    config = function()
-      require("block").setup({
-        bg = ("#%06x"):format(vim.api.nvim_get_hl(0, {name = 'NormalFloat'}).bg)
-      })
-    end
+    cmd = {'Block', 'BlockOn', "BlockOff"},
+    opts = {
+      bg = require('pynappo.utils').nvim_get_hl_hex(0, {name = 'NormalFloat'}).bg
+    }
   },
 }
