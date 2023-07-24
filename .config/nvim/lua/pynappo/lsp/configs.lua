@@ -1,8 +1,5 @@
+local keymaps = require('pynappo.keymaps')
 local default_config = {
-  on_attach = function(client, bufnr)
-    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-    require('pynappo/keymaps').setup.lsp(bufnr)
-  end,
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
   flags = {debounce_text_changes = 200}
 }
@@ -41,22 +38,34 @@ local configs = {
   },
   jdtls = {
     on_attach = function(_, bufnr)
-      require('pynappo/keymaps').setup.jdtls(bufnr)
+      keymaps.setup.jdtls(bufnr)
       require('jdtls').setup_dap({ hotcodereplace = 'auto' })
-      require('jdtls.setup').add_commands()
     end,
   }
 }
 
+require('pynappo.autocmds').create({'LspAttach'}, {
+  callback = function(details)
+    local bufnr = details.buf
+    local client = vim.lsp.get_client_by_id (details.data.client_id)
+    if not client then return end
+    if vim.tbl_contains({'copilot', 'null-ls'}, client.name or vim.print('no client found')) then return end
+    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+    keymaps.setup.lsp(bufnr)
+    require('pynappo.autocmds').create({'CursorHold'}, {
+      callback = function()
+        for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+          if vim.bo[vim.api.nvim_win_get_buf(winid)].filetype == 'noice' then return end
+        end
+        vim.lsp.buf.hover()
+      end,
+      buffer = bufnr
+    })
+  end
+})
+
 for key, config in pairs(configs) do
   config = vim.tbl_deep_extend("force", default_config, config)
-  if config.on_attach then
-    local on_attach = config.on_attach
-    config.on_attach = function(client, bufnr)
-      on_attach(client, bufnr)
-      default_config.on_attach(client, bufnr)
-    end
-  end
   configs[key] = config
 end
 
