@@ -62,7 +62,7 @@ local tabline = {
   },
   tabpage = {
     init = function(self) self.name = vim.t[self.tabnr].name end,
-    provider = function(self) return '%' .. self.tabnr .. 'T ' .. self.tabnr .. (self.name and ' ' .. self.name or '') .. ' %T' end,
+    provider = function(self) return '%' .. self.tabnr .. 'T ' .. self.tabnr .. (self.name and ' ' .. self.name or '') .. '%T' end,
     hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   }
 }
@@ -99,11 +99,7 @@ tabline.filename_block = {
 tabline.tabline_buffer_block = utils.surround(
   { '', '' },
   function(self) return self.is_active and 'tabline_sel' or 'tabline' end,
-  {
-    tabline.picker,
-    tabline.filename_block,
-    tabline.close_button,
-  }
+  { tabline.picker, tabline.filename_block, tabline.close_button, }
 )
 
 tabline.offset = {
@@ -111,17 +107,41 @@ tabline.offset = {
     local win = vim.api.nvim_tabpage_list_wins(0)[1]
     local bufnr = vim.api.nvim_win_get_buf(win)
     self.winid = win
-
-    if vim.bo[bufnr].filetype == 'neo-tree' then
-      self.title = 'Neo-Tree'
-      return true
-    end
+    return vim.bo[bufnr].filetype == 'neo-tree'
   end,
+  init = function(self)
+    self.width = vim.api.nvim_win_get_width(self.winid)
+    self.title = vim.fn.getcwd(self.winid)
+  end,
+  static = {
+    substitutions = {
+      { vim.env.XDG_CONFIG_HOME , '' },
+      { vim.env.HOME , '~' },
+    },
+    title_funcs = {
+      function(self, title)
+        local path_sep = vim.fn.has('win32') and [[\]] or '/'
+        for _, sub in pairs(self.substitutions) do
+          local pattern = type(sub[1]) == 'table' and table.concat(sub[1], path_sep) or sub[1]
+          title = title:gsub(pattern, sub[2])
+        end
+        return title
+      end,
+      function(_, title) return vim.fn.pathshorten(title, 1) end,
+      function() return "Neo-tree" end,
+      function() return "" end,
+    }
+  },
   provider = function(self)
     local title = self.title
-    local width = vim.api.nvim_win_get_width(self.winid)
-    local pad = math.ceil((width - string.len(title)) / 2)
-    return string.rep(' ', pad) .. title .. string.rep(' ', pad)
+    for _, func in ipairs(self.title_funcs) do
+      if #title < self.width then break end
+      title = func(self, title)
+    end
+    local length = vim.str_utfindex(title)
+    local left_pad = math.ceil((self.width - length) / 2)
+    local right_pad = math.max(0, left_pad - ((self.width - length) % 2))
+    return string.rep(' ', left_pad) .. title .. string.rep(' ', right_pad)
   end,
   hl = function(self) return vim.api.nvim_get_current_win() == self.winid and 'TablineSel' or 'Tabline' end,
 }
@@ -132,7 +152,6 @@ tabline.bufferline = utils.make_buflist(
 )
 tabline.tabpages = {
   {
-    condition = function() return #vim.api.nvim_list_tabpages() >= 2 end,
     utils.make_tablist(tabline.tabpage),
     {
       provider = '%999X 󰅖 %X',
