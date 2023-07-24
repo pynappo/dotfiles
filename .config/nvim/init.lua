@@ -3,7 +3,7 @@ local o = vim.o
 local opt = vim.opt
 local is_windows = vim.fn.has('win32') == 1
 local utils = require('pynappo.utils')
-if is_windows then
+if utils.is_windows then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
   o.shellredir = [[2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode]]
@@ -196,7 +196,7 @@ vim.cmd.amenu([[PopUp.:Inspect <Cmd>Inspect<CR>]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 
 local normalize_system_command = function(cmd)
-  return is_windows and vim.list_extend({'pwsh', '-NoProfile', '-c'}, cmd) or cmd
+  return utils.is_windows and vim.list_extend({ 'pwsh', '-NoProfile', '-c' }, cmd) or cmd
 end
 local print_system_command = function(cmd)
   local result = vim.system(normalize_system_command(cmd), {cwd = vim.fn.getcwd(), text = true}):wait()
@@ -220,7 +220,7 @@ local commands = {
         return
       end
       local command = command_map[args.args] or command_map.list
-      local modifiers = (args.bang and args.args == 'remove') and (is_windows and '-Force' or '-f') or nil
+      local modifiers = (args.bang and args.args == 'remove') and (utils.is_windows and '-Force' or '-f') or nil
       print_system_command({command, vim.fn.stdpath('data') .. '/swap/*', modifiers})
     end,
     {
