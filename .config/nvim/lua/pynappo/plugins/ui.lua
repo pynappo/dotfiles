@@ -1,4 +1,5 @@
 local keymaps = require('pynappo/keymaps')
+local theme = require('pynappo.theme')
 return {
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -17,8 +18,8 @@ return {
       theme.overrides.all_themes.nvim_highlights['IndentBlanklineContextChar'] = { fg='#777777', bold = true, nocombine = true }
     end,
   },
-  { 'folke/which-key.nvim', opts = {window = {border = 'single'}} },
-  { 'folke/trouble.nvim', config = true, cmd = 'Trouble' },
+  { 'folke/which-key.nvim', event = 'VeryLazy', opts = {window = {border = 'single'}} },
+  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
   {
     'folke/noice.nvim',
@@ -82,17 +83,15 @@ return {
         dependencies = {
           {
             'stevearc/dressing.nvim',
-            config = function()
-              require('dressing').setup({
-                input = {
-                  override = function(conf)
-                    conf.col = -1
-                    conf.row = 0
-                    return conf
-                  end,
-                },
-              })
-            end,
+            opts = {
+              input = {
+                override = function(conf)
+                  conf.col = -1
+                  conf.row = 0
+                  return conf
+                end,
+              },
+            }
           },
         },
         init = keymaps.setup.incremental_rename,
@@ -175,27 +174,30 @@ return {
     'kosayoda/nvim-lightbulb',
     config = function()
       require('nvim-lightbulb').setup({
-        sign = { enabled = false },
-        virtual_text = { enabled = true, text = '💡', hl_mode = 'replace' },
+        sign = { enabled = false},
+        virtual_text = {
+          enabled = true
+        }
+      })
+      vim.api.nvim_create_autocmd({'CursorHold, CursorHoldI'}, {
+        callback = function() require('nvim-lightbulb').update_lightbulb() end
       })
     end,
   },
   {
     'NvChad/nvim-colorizer.lua',
-    config = function()
-      require('colorizer').setup({
-        user_default_options = {
-          RGB = false, -- #RGB hex codes
-          RRGGBB = true, -- #RRGGBB hex codes
-          names = true, -- "Name" codes like Blue or blue
-          RRGGBBAA = true, -- #RRGGBBAA hex codes
-          AARRGGBB = true, -- 0xAARRGGBB hex codes
-          css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-          css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
-          mode = 'foreground', -- Set the display mode.
-          tailwind = true, -- Enable tailwind colors
-        },
-      })
-    end,
+    opts = {
+      user_default_options = {
+        RGB = false, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        names = true, -- "Name" codes like Blue or blue
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        AARRGGBB = true, -- 0xAARRGGBB hex codes
+        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        mode = 'foreground', -- Set the display mode.
+        tailwind = true, -- Enable tailwind colors
+      },
+    }
   },
 }

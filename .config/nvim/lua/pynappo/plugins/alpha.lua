@@ -6,25 +6,9 @@ return {
   },
   config = function()
     local plenary_path = require("plenary.path")
-    local theta = {}
     local cdir = vim.fn.getcwd()
     local if_nil = vim.F.if_nil
     local dashboard = require("alpha.themes.dashboard")
-    theta.buttons = {
-      {
-        type = "group",
-        val = {
-          { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
-          { type = "padding", val = 1 },
-          dashboard.button("e", "  New file", "<cmd>ene<CR>"),
-          dashboard.button("<CR>f", "󰈞  Find file"),
-          dashboard.button("<CR>g", "󰊄  Live grep"),
-          dashboard.button("c", "  Configuration", "<cmd>Config<CR>"),
-          dashboard.button("u", "  Update plugins", "<cmd>Lazy sync<CR>"),
-        },
-        position = "center",
-      }
-    }
 
     local nvim_web_devicons = {
       enabled = true,

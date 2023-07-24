@@ -1,7 +1,7 @@
 return {
   {
     'Shatur/neovim-ayu',
-    priority = 1000,
+    priority = 100,
     config = function()
       local colors = require('ayu.colors')
       local mirage = true
@@ -56,5 +56,5 @@ return {
     config = function()
       require("colortils").setup()
     end,
-  }
+  },
 }

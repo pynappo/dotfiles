@@ -1,9 +1,10 @@
 local autocmds = {}
+local utils = require('pynappo.utils')
 local pynappo = vim.api.nvim_create_augroup('pynappo', { clear = true })
 -- A little wrapper around nvim_create_autocmd
 function autocmds.create(event, opts)
   opts.group = opts.group or pynappo
-  local autocmd_id = vim.api.nvim_create_autocmd(event, opts)
+  return vim.api.nvim_create_autocmd(event, opts)
 end
 
 if vim.g.started_by_firenvim then autocmds.create('BufEnter', { callback = function() vim.cmd.startinsert() end }) end
@@ -19,7 +20,7 @@ autocmds.create('BufReadPost', {
     local fn = vim.fn
     if fn.line('\'"') > 0 and fn.line('\'"') <= fn.line('$') then
       fn.setpos('.', fn.getpos('\'"'))
-      vim.cmd('normal zz')
+      vim.cmd.normal('zz')
       vim.cmd('silent! foldopen')
     end
   end,
@@ -30,16 +31,14 @@ autocmds.create('DiagnosticChanged', {
   callback = function() vim.diagnostic.setloclist({ open = false }) end,
 })
 
-
 autocmds.create('SwapExists', {
   desc = 'Handle some swap file handling automatically',
   callback = function(args)
     local file = args.file
     local swap = vim.v.swapname
     if vim.fn.getftime(swap) < vim.fn.getftime(file) then
-      vim.fn.delete(swap)
-      print('Deleted old swapfile, editing file')
-      vim.v.swapchoice = 'e'
+      vim.v.swapchoice = 'd'
+      print('Deleted old swapfile')
     end
   end
 })
