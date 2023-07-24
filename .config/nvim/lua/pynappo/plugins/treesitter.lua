@@ -54,44 +54,50 @@ return {
       autotag = {
         enable = true,
       },
-      rainbow = {
-        enable = true,
-        -- list of languages you want to disable the plugin for
-        disable = {},
-        -- Which query to use for finding delimiters
-        query = 'rainbow-parens',
-        -- Highlight the entire buffer all at once
-        strategy = require('ts-rainbow').strategy.global,
-        hlgroups = {
-          'TSRainbowRed',
-          'TSRainbowOrange',
-          'TSRainbowYellow',
-          'TSRainbowGreen',
-          'TSRainbowCyan',
-          'TSRainbowBlue',
-          'TSRainbowViolet',
-        },
-      }
     }, require('pynappo.keymaps').treesitter))
-    local colors = {
-      Red = '#EF6D6D',
-      Orange = '#FFA645',
-      Yellow = '#EDEF56',
-      Green = '#6AEF6F',
-      Cyan = '#78F6FF',
-      Blue = '#70A4FF',
-      Violet = '#BDB2FF',
-    }
-    require('pynappo.theme').set_rainbow_colors('TSRainbow', colors, 'Set rainbow parentheses')
   end,
   dependencies = {
-    'HiPhish/nvim-ts-rainbow2',
+    {
+      'https://gitlab.com/HiPhish/rainbow-delimiters.nvim',
+      config = function()
+        local colors = {
+          Red = '#EF6D6D',
+          Orange = '#FFA645',
+          Yellow = '#EDEF56',
+          Green = '#6AEF6F',
+          Cyan = '#78E6EF',
+          Blue = '#70A4FF',
+          Violet = '#BDB2EF',
+        }
+        require('pynappo.theme').set_rainbow_colors('RainbowDelimiter', colors)
+        local rainbow_delimiters = require('rainbow-delimiters')
+
+        vim.g.rainbow_delimiters = {
+          strategy = {
+            [''] = rainbow_delimiters.strategy['global'],
+            vim = rainbow_delimiters.strategy['local'],
+          },
+          query = {
+            [''] = 'rainbow-delimiters',
+          },
+          highlight = {
+            'RainbowDelimiterRed',
+            'RainbowDelimiterYellow',
+            'RainbowDelimiterOrange',
+            'RainbowDelimiterGreen',
+            'RainbowDelimiterBlue',
+            'RainbowDelimiterCyan',
+            'RainbowDelimiterViolet',
+          },
+        }
+      end
+    },
     'nvim-treesitter/nvim-treesitter-textobjects',
     'windwp/nvim-ts-autotag',
     {
       'nvim-treesitter/nvim-treesitter-context',
       enabled = false,
-      config = function() require('treesitter-context').setup({ min_window_height = 30 }) end,
+      opts = { min_window_height = 30 }
     },
     'nvim-treesitter/playground',
     'RRethy/nvim-treesitter-textsubjects',
