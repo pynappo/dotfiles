@@ -59,8 +59,8 @@ function autocmds.heirline_mode_cursorline(mode_colors)
     callback = update_heirline_colors,
     desc = 'Make sure that the heirline colors are updated when colorscheme changes',
   })
-  local cursorline_bg_hex = ('%06x'):format(vim.api.nvim_get_hl(0, {name = 'CursorLine', link = false}).bg)
-  vim.api.nvim_set_hl(0, 'ModeCursorLine', { bg = '#' .. cursorline_bg_hex })
+  local cursorline_bg_hex = utils.nvim_get_hl_hex(0, {name = 'CursorLine'}).bg
+  vim.api.nvim_set_hl(0, 'ModeCursorLine', { bg = cursorline_bg_hex })
 
   autocmds.create({ 'VimEnter', 'ModeChanged' }, {
     callback = function()
@@ -68,16 +68,18 @@ function autocmds.heirline_mode_cursorline(mode_colors)
       local hex = heirline_colors.cached_hexes[mode]
       if not hex then
         local mode_color = heirline_colors.loaded[heirline_colors.mode[mode]]
-        if not mode_color then hex = cursorline_bg_hex
-        else 
+        if not mode_color then
+          hex = cursorline_bg_hex
+        else
           hex = ('%06x'):format(mode_color)
           hex = table.concat(vim.tbl_map(function(i)
-            return ("%02x"):format(math.floor(tonumber('0x' .. hex:sub(unpack(i))) / 5))
+            return ("%02x"):format(math.floor(tonumber('0x' .. hex:sub(unpack(i))) / 4.5))
           end, { {1,2}, {3,4}, {5,6} }), '')
         end
+        heirline_colors.cached_hexes[mode] = hex
       end
-      heirline_colors.cached_hexes[mode] = hex
       vim.cmd.highlight('ModeCursorLine guibg=#' .. hex)
+      vim.opt_local.winhighlight:append('CursorLine:ModeCursorLine')
       vim.cmd.redraw()
     end,
     desc = 'Change mode cursorline',
@@ -89,7 +91,7 @@ function autocmds.heirline_mode_cursorline(mode_colors)
   autocmds.create({ 'WinLeave', 'CmdLineEnter' }, {
     callback = function() vim.opt_local.winhighlight:remove({ 'CursorLine' }) end,
     desc = 'Disable mode cursorline for non-current windows',
-  })
+  }) -- #172933
 end
 
 

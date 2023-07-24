@@ -172,6 +172,8 @@ return {
         colors = heirline_colors()
       }
     })
-    require('pynappo/autocmds').heirline_mode_cursorline(mode_colors)
+    vim.api.nvim_create_autocmd('VimEnter', {
+      callback = function() require('pynappo.autocmds').heirline_mode_cursorline(mode_colors) end
+    })
   end,
 }
