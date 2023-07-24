@@ -43,4 +43,3 @@ local config = {
 }
 config = vim.tbl_extend('force', config, require('pynappo/lsp/configs').jdtls)
 require('jdtls').start_or_attach(config)
-require('jdtls.setup').add_commands()
