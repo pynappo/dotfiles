@@ -21,33 +21,58 @@ return {
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
   {
     'folke/noice.nvim',
-    config = function()
-      require('noice').setup({
-        cmdline = { enabled = false },
-        messages = { enabled = false },
-        lsp = {
-          progress = {
-            enabled = false,
-          },
-          override = {
-            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-            ['vim.lsp.util.stylize_markdown'] = true,
-            ['cmp.entry.get_documentation'] = true,
-          },
+    opts = {
+      cmdline = {
+        enabled = false,
+        view = "cmdline"
+      },
+      messages = { enabled = false },
+      lsp = {
+        progress = {
+          enabled = true,
         },
-        views = {
-          hover = {
-            border = { style = 'rounded' },
-            position = { row = 2 },
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true,
+        },
+      },
+      views = {
+        hover = {
+          border = { style = 'rounded' },
+          position = { row = 2 },
+        },
+        mini = {
+          position = { row = -1 - vim.o.cmdheight } -- better default
+        }
+      },
+      routes = {
+        {
+          filter = {
+            event = 'lsp',
+            kind = 'progress',
+            cond = function(message)
+              local client = vim.tbl_get(message.opts, 'progress', 'client')
+              return client == 'null-ls'
+            end
           },
+          opts = {skip = true}
         },
-        presets = {
-          inc_rename = true,
-          long_message_to_split = true,
-          lsp_doc_border = true,
+        {
+          filter = { find = 'No information available' },
+          opts = { stop = true },
         },
-      })
-    end,
+        {
+          filter = { find = 'bytes$' },
+          opts = { skip = true },
+        },
+      },
+      presets = {
+        inc_rename = true,
+        long_message_to_split = true,
+        lsp_doc_border = true,
+      },
+    },
     dependencies = {
       'MunifTanjim/nui.nvim',
       'rcarriga/nvim-notify',
