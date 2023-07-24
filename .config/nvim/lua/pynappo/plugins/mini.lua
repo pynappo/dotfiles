@@ -24,6 +24,33 @@ return {
       -- Whether to disable showing non-error feedback
       silent = false,
     })
+    require('mini.files').setup({
+      -- Customization of shown content
+      content = {
+        -- Predicate for which file system entries to show
+        filter = nil,
+        -- What prefix to show to the left of file system entry
+        prefix = nil,
+        -- In which order to show file system entries
+        sort = nil,
+      },
+
+      -- Module mappings created only inside explorer.
+      -- Use `''` (empty string) to not create one.
+      mappings = {
+        close       = 'q',
+        go_in       = 'l',
+        go_in_plus  = 'L',
+        go_out      = 'h',
+        go_out_plus = 'H',
+        reset       = '<BS>',
+        reveal_cwd  = '@',
+        show_help   = 'g?',
+        synchronize = '=',
+        trim_left   = '<',
+        trim_right  = '>',
+      },
+    })
 
     vim.keymap.del('x', require('pynappo.keymaps').mini.surround.add)
     local indentscope = require('mini.indentscope')
