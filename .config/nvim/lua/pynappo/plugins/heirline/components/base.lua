@@ -1,4 +1,5 @@
 local conditions = require('heirline.conditions')
+local u = require('pynappo.plugins.heirline.components.utils')
 local M = {
   vi_mode = {
     init = function(self)
@@ -127,11 +128,18 @@ local M = {
     },
     update = {'BufEnter', 'BufWritePost'}
   },
-  dropbar = {
+  dropbar_str = {
     condition = function() return not vim.tbl_isempty(dropbar) end,
+    provider = function() return dropbar.get_dropbar_str() end
+  },
+  dropbar = {
+    condition = function(self)
+      self.data = vim.tbl_get(dropbar.bars or {}, vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win())
+      return self.data
+    end,
+    static = { dropbar_on_click_string = 'v:lua.dropbar.on_click_callbacks.buf%s.win%s.fn%s' },
     init = function(self)
-      local data = dropbar.bars[vim.api.nvim_get_current_buf()][vim.api.nvim_get_current_win()]
-      local components = data.components
+      local components = self.data.components
       local children = {}
       for i, c in ipairs(components) do
         local child = {
@@ -140,26 +148,21 @@ local M = {
             hl = c.icon_hl
           },
           {
-            provider = c.name,
             hl = c.name_hl,
-            on_click = {
-              callback = function(_, ...)
-                c:on_click(...)
-              end,
-              name = "heirline_dropbar",
-            },
+            provider = c.name,
+          },
+          on_click = {
+            callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i),
+            name = "heirline_dropbar",
           },
         }
-        if #components > 1 and i < #components then
-          local sep = data.separator
+        if i < #components then
+          local sep = self.data.separator
           table.insert(child, {
             provider = sep.icon,
             hl = sep.icon_hl,
             on_click = {
-              callback = function(_, ...)
-                c:on_click(...)
-              end,
-              name = "heirline_dropbar_separator",
+              callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i + 1)
             }
           })
         end
@@ -167,7 +170,9 @@ local M = {
       end
       self.child = self:new(children, 1)
     end,
-    provider = function(self) return self.child:eval() end,
+    provider = function(self)
+      return self.child:eval()
+    end,
   },
   diagnostics = {
     {
@@ -275,18 +280,40 @@ local M = {
     update = 'BufEnter',
   },
   ruler = {
-    provider = '%7(%l/%3L%):%2c - %P',
+    provider = '%2c,%l - %P',
     update = { 'CursorMoved', 'ModeChanged' }
   },
   lsp_icons = {
-    update = { 'LspAttach', 'LspDetach' },
+    update = { 'LspAttach', 'LspDetach', 'LspProgress' },
+    condition = function(self)
+      self.clients = vim.lsp.get_active_clients()
+      return self.clients
+    end,
     init = function(self)
-      self.servers = vim.lsp.get_active_clients()
+      local children = {}
+      for i, client in ipairs(self.clients) do
+        ---@diagnostic disable-next-line: undefined-field
+        local icon = self.ls_icons[client.name] or require('nvim-web-devicons').get_icon_by_filetype(client.config.filetypes[1]) or '?'
+        local child = {
+          { provider = icon },
+          -- {
+          --   condition = function() return not self.ignore_messages[client.name] end,
+          --   provider = function()
+          --     local progress = client.progress:peek()
+          --     if progress and progress.value then
+          --       local values = vim.tbl_map(function(field) return progress.value[field] end, {'title', 'percentage', 'message'})
+          --       return table.concat(values, ' ')
+          --     end
+          --   end,
+          -- }
+        }
+        if i < #self.clients then table.insert(child, u.space) end
+        table.insert(children, child)
+      end
+      self.child = self:new(children, 1)
     end,
     on_click = {
-      callback = function()
-        vim.defer_fn(function() vim.cmd('LspInfo') end, 100)
-      end,
+      callback = function() vim.cmd('LspInfo') end,
       name = 'heirline_LSP',
     },
     static = {
@@ -295,15 +322,11 @@ local M = {
         ['null-ls'] = '󰟢',
         jdtls = '',
       },
-      devicon_by_filetype = require('nvim-web-devicons').get_icon_by_filetype
+      ignore_messages = {
+        ['null-ls'] = true
+      },
     },
-    provider = function(self)
-      if #self.servers == 0 then return 'N/A' end
-      local icons = vim.tbl_map(function(server)
-        return self.ls_icons[server.name] or self.devicon_by_filetype(server.config.filetypes[1]) or ''
-      end, self.servers)
-      return table.concat(icons, ' ')
-    end,
+    provider = function(self) return self.child:eval() end,
   },
   lazy = {
     condition = function()
@@ -311,18 +334,22 @@ local M = {
       return ok and lazy_status.has_updates()
     end,
     provider = function() return require("lazy.status").updates() end,
+    on_click = {
+      callback = function() require('lazy').check() end,
+      name = 'heirline_plugin_updates'
+    }
   },
   file_flags = {
     update = { 'BufWritePost', 'BufEnter', 'InsertEnter', 'TextChanged' },
     {
       condition = function() return vim.bo.modified end,
       provider = ' [+]',
-      hl = { fg = 'string' },
+      hl = 'String',
     },
     {
       condition = function() return not vim.bo.modifiable or vim.bo.readonly end,
       provider = ' ',
-      hl = { fg = 'constant' },
+      hl = 'Constant',
     },
   },
   filename = {
@@ -342,7 +369,7 @@ local M = {
     update = { 'FileType', 'BufEnter' },
   },
   filetype = {
-    provider = function() return string.upper(vim.bo.filetype) end,
+    provider = function() return (vim.bo.filetype):upper() end,
     hl = { fg = 'type', bold = true },
     update = { 'FileType' },
   },
