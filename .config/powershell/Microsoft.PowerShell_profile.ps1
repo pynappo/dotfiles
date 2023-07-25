@@ -38,6 +38,7 @@ $env:ANIMDL_CONFIG = "$HOME\.config\animdl\config.yml"
 Function fzfb { fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' @Args }
 Set-Alias -Name f -Value fzfb
 $env:PYTHONIOENCODING="utf-8"
+$env:PATH="$env:USERPROFILE\scoop\shims;$env:PATH"
 
 Invoke-Expression "$(thefuck --alias)"
 Function Reload-Path {
