@@ -2,12 +2,6 @@
 # VERSION: 3.0
 SETUVAR --export EDITOR:nvim
 SETUVAR __fish_initialized:3400
-SETUVAR _fish_abbr_df:git\x20\x2d\x2dgit\x2ddir\x3d\x24HOME/\x2efiles/\x20\x2d\x2dwork\x2dtree\x3d\x24HOME
-SETUVAR _fish_abbr_dotfiles:git\x20\x2d\x2dgit\x2ddir\x3d\x24HOME/\x2efiles/\x20\x2d\x2dwork\x2dtree\x3d\x24HOME
-SETUVAR _fish_abbr_jammers:youtube\x2dviewer\x20\x3aplaylist\x3dPLg\x2dSQpG3Qf59d1hzWtxsFqZt9n0e2llep\x20\x2ds\x20\x2dA\x20\x2da\x20\x2d\x2dappend\x2darg\x3d\x22\x2d\x2dvolume\x3d40\x22
-SETUVAR _fish_abbr_pacup:pacman\x20\x2dQqen\x20\x3e\x20\x2efiles/paclist\x2etxt\x20\x26\x26\x20pacman\x20\x2dQqem\x20\x3e\x20\x2efiles/aurlist\x2etxt
-SETUVAR _fish_abbr_pm:doas\x20pacman
-SETUVAR _fish_abbr_pr:paru
 SETUVAR fish_color_autosuggestion:707A8C
 SETUVAR fish_color_cancel:\x2d\x2dreverse
 SETUVAR fish_color_command:5CCFE6
