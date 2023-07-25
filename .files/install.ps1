@@ -42,7 +42,7 @@ git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME checkout --force
 git --git-dir=$HOME/.dotwindows.git/ --work-tree=$HOME checkout --force
 
 Start-Process -FilePath 'powershell' -ArgumentList ('scoop import $HOME\.files\scoop.json}')
-winget import .\.files\winget.json
+winget import .\.files\winget.json --accept-source-agreements --accept-package-agreements --disable-interactivity
 
 Reload-Path
 
