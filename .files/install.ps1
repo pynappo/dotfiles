@@ -41,7 +41,7 @@ git clone --bare https://github.com/pynappo/dotwindows.git .dotwindows.git
 git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME checkout --force
 git --git-dir=$HOME/.dotwindows.git/ --work-tree=$HOME checkout --force
 
-Start-Process -FileName 'powershell' -ArgumentList ("gsudo", '{scoop import .\.files\scoop.json}')
+Start-Process -FilePath 'powershell' -ArgumentList ('scoop import $HOME\.files\scoop.json}')
 winget import .\.files\winget.json
 
 Reload-Path
