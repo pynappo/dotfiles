@@ -1,19 +1,19 @@
-# Dotfiles
+A set of dotfiles containing most of my Linux and Windows dotfiles. For Windows-exclusive dotfiles, see [dotwindows](https://github.com/pynappo/dotwindows).
 
-I am figuring out how to do this stuff but here's my vim config and stuff
-
-# Setup 
+# Setup
 (assuming git, [scoop](https://github.com/ScoopInstaller/Scoop), and winget are installed):
+
+## Powershell
 ```
 cd $HOME
-git clone --bare git@github.com:pynappo/dotwindows.git $HOME/.dotwindows.git/
-git --git-dir=$HOME/.dotwindows.git/ --work-tree=$HOME checkout --force
+git clone --bare git@github.com:pynappo/dotfiles.git $HOME/.dotfiles.git/
+git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME checkout --force
 . $PROFILE
 df config status.showUntrackedFiles no
 ```
-# Package lists: 
-- [scoop.txt](.files/scoop.txt)
-- [winget.txt](.files/winget.txt)
+# Package lists:
+- [scoop.json](.files/scoop.json)
+- [winget.json](.files/winget.json)
 
 Import with:
 ```
