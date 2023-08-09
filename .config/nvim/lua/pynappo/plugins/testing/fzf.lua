@@ -1,7 +1,7 @@
 return {
   {
     'pynappo/fzf-lua',
-    enabled = false,
+    enabled = true,
     config = function()
       vim.keymap.set("n", "<c-P>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true })
       vim.keymap.set({ "i" }, "<C-x><C-f>",
@@ -11,6 +11,7 @@ return {
             winopts = { preview = { hidden = "nohidden" } }
           })
         end, { silent = true, desc = "Fuzzy complete file" })
+      
       vim.keymap.set({'n'}, "gp" , function()
         require'fzf-lua'.fzf_exec("rg --files", { actions = require'fzf-lua'.defaults.actions.files })
       end)
@@ -29,7 +30,7 @@ return {
         '<leader>kk',
         function()
           coroutine.wrap(function()
-            local result = fzf.fzf({ "choice 2"}, "--ansi")
+            local result = fzf.fzf({"choice 1", "choice 2"}, "--ansi")
             -- result is a list of lines that fzf returns, if the user has chosen
             if result then
               print(result[1])
@@ -42,7 +43,7 @@ return {
         '<leader>kj',
         function()
           coroutine.wrap(function()
-            local result = fzf.fzf("fd")
+            local result = fzf.fzf("rg --files")
             -- result is a list of lines that fzf returns, if the user has chosen
             if result then
               print(result[1])
@@ -50,7 +51,7 @@ return {
           end)()
         end
       )
-      vim.cmd('command! Rg lua require("fzf-commands").rg()')
     end
-}
+  },
+  
 }

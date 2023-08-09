@@ -234,11 +234,12 @@ local commands = {
   },
   {
     'Config',
-    function()
-      vim.cmd.tabnew()
+    function(args)
+      local new_tab = utils.truthy(args.args) and args.args == 'tab'
+      if new_tab then vim.cmd.tabnew() end
       vim.cmd.tcd('~/.config/nvim')
       require('tabnames').set_tab_name(0, 'Config')
-      vim.cmd('Alpha')
+      if new_tab then vim.cmd('Alpha') end
     end
   },
   {

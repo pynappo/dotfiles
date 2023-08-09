@@ -1,11 +1,14 @@
 local autocmds = {}
 local utils = require('pynappo.utils')
-local pynappo = vim.api.nvim_create_augroup('pynappo', { clear = true })
 -- A little wrapper around nvim_create_autocmd
-function autocmds.create(event, opts)
-  opts.group = opts.group or pynappo
-  return vim.api.nvim_create_autocmd(event, opts)
+function autocmds.create_wrapper(augroup_name)
+  local augroup = vim.api.nvim_create_augroup(augroup_name, { clear = true })
+  return function(event, opts)
+    opts.group = opts.group or augroup
+    return vim.api.nvim_create_autocmd(event, opts)
+  end, augroup
 end
+autocmds.create, autocmds.pynappo_augroup = autocmds.create_wrapper('pynappo')
 
 if vim.g.started_by_firenvim then autocmds.create('BufEnter', { callback = function() vim.cmd.startinsert() end }) end
 
@@ -90,7 +93,7 @@ function autocmds.heirline_mode_cursorline(mode_colors)
   autocmds.create({ 'WinLeave', 'CmdLineEnter' }, {
     callback = function() vim.opt_local.winhighlight:remove({ 'CursorLine' }) end,
     desc = 'Disable mode cursorline for non-current windows',
-  }) -- #172933
+  })
 end
 
 -- called after setting up tint

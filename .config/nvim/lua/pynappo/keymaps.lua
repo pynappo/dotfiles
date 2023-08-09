@@ -97,7 +97,6 @@ M.setup = {
       [{ 'n' }] = {
         { '<Tab>', vim.cmd.bnext },
         { '<S-Tab>', vim.cmd.bprevious },
-        { '<leader>hi', function() print(vim.cmd.highlight('ModeCursorLine')) end}
       },
       [{ 'n', 't' }] = {
         -- Better tabs
@@ -111,7 +110,13 @@ M.setup = {
         { '<leader>8', '8gt' },
         { '<leader>9', '9gt' },
         { '<leader>0', '10gt' },
-        { '<Esc>', vim.cmd.nohlsearch },
+        {
+          '<Esc>',
+          function()
+            if vim.api.nvim_win_get_config(0).relative ~= "" then return vim.cmd.quit() end
+            if vim.v.hlsearch == 1 then return vim.cmd.nohlsearch() end
+          end
+        },
         { '<leader>q', vim.cmd.bdelete },
         -- Autoindent on insert/append
         { 'I', autoindent('I'), { expr = true } },
@@ -177,7 +182,7 @@ M.setup = {
     }, {}, opts)
   end,
   smart_splits = function(opts)
-    map({
+    return map({
       [{ 'n', 't' }] = {
         { '<A-h>', function() require('smart-splits').resize_left() end },
         { '<A-j>', function() require('smart-splits').resize_down() end },
@@ -188,7 +193,7 @@ M.setup = {
         { '<C-k>', function() require('smart-splits').move_cursor_up() end },
         { '<C-l>', function() require('smart-splits').move_cursor_right() end },
       },
-    }, { silent = true }, {lazy = true})
+    }, { silent = true }, opts)
   end,
   treesj = function(opts)
     return map({
@@ -537,30 +542,22 @@ M.cmp = {
     local cmp = require('cmp')
     local luasnip = require('luasnip')
     return cmp.mapping.preset.insert({
-      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-s>'] = cmp.mapping(function(_) cmp.mapping.complete({ reason = cmp.ContextReason.Auto }) end, { 'i' }),
+      ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+      ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+      ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+      ["<C-f>"] = cmp.mapping.scroll_docs(4),
+      ["<C-Space>"] = cmp.mapping.complete(),
+      ["<C-e>"] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
-      ['<Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        elseif luasnip.jumpable(1) then
-          luasnip.jump(1)
-        else
-          fallback()
-        end
-      end, { 'i', 's', 'c' }),
-      ['<S-Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-          luasnip.jump(-1)
-        else
-          fallback()
-        end
-      end, { 'i', 's', 'c' }),
+      ["<S-CR>"] = cmp.mapping.confirm({
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = true,
+      }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     })
   end,
+  cmdline = function()
+    return require('cmp').mapping.preset.cmdline({})
+  end
 }
 
 M.toggleterm = { open_mapping = [[<C-\>]] }
