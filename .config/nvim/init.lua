@@ -126,7 +126,7 @@ require('lazy').setup({
   spec = {
     {
       { import = 'pynappo.plugins' },
-      { import = 'pynappo.plugins.testing', enabled = not require('pynappo.utils').is_termux },
+      { import = 'pynappo.plugins.testing', enabled = false },
     },
   },
   git = {

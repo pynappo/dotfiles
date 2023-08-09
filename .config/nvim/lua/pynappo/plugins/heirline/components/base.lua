@@ -68,7 +68,7 @@ local M = {
     flexible = 1,
     { -- evaluates to the full-lenth path
       provider = function(self)
-        local trail = self.cwd:sub(-1) == '/' and '' or (vim.fn.has('win32') and '\\' or '/')
+        local trail = self.cwd:sub(-1) == '/' and '' or (require('pynappo.utils').is_windows and '\\' or '/')
         return self.icon .. self.cwd .. trail .. ' '
       end,
     },

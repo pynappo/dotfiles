@@ -9,36 +9,12 @@ return {
     'jose-elias-alvarez/null-ls.nvim',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'WhoIsSethDaniel/mason-tool-installer.nvim',
     'alaviss/nim.nvim',
   },
   init = function() require('pynappo/keymaps').setup.diagnostics() end,
   config = function()
     require('mason').setup({ ui = { border = 'single' } })
     require('neodev').setup()
-    require('mason-tool-installer').setup {
-      ensure_installed = {
-        'codespell',
-        'cpptools',
-        'csharp-language-server',
-        'gopls',
-        'java-debug-adapter',
-        'java-test',
-        'jdtls',
-        'json-lsp',
-        -- 'ltex-ls',
-        'lua-language-server',
-        'marksman',
-        'netcoredbg',
-        'nimlsp',
-        'powershell-editor-services',
-        'python-lsp-server',
-        'rust-analyzer',
-        -- 'shopify-theme-check',
-        'stylua',
-        'zls',
-      },
-    }
 
     local mason_lspconfig = require('mason-lspconfig')
     local lspconfig = require('lspconfig')
