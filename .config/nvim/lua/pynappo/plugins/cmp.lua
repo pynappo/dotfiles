@@ -36,6 +36,7 @@ return {
       })
 
       local compare = require('cmp.config.compare')
+      local cmp_keymaps = require('pynappo.keymaps').cmp
       cmp.setup {
         window = {
           completion = {
@@ -75,7 +76,7 @@ return {
           expand = function(args) require('luasnip').lsp_expand(args.body) end,
         },
         completion = { completeopt = vim.o.completeopt },
-        mapping = require("pynappo/keymaps").cmp.insert(),
+        mapping = cmp_keymaps.insert(),
         preselect = cmp.PreselectMode.None,
         sources = cmp.config.sources(
           {
@@ -106,8 +107,9 @@ return {
             function (...) return require("cmp_buffer"):compare_locality(...) end,
             compare.offset,
             compare.exact,
-            compare.score,
             compare.recently_used,
+            compare.score,
+            compare.scopes,
             compare.locality,
             compare.kind,
             compare.sort_text,
@@ -128,7 +130,7 @@ return {
         })
       })
       cmp.setup.cmdline(':', {
-        mapping = require('pynappo.keymaps').cmp.insert(),
+        mapping = cmp_keymaps.cmdline(),
         confirmation = { completeopt = 'menu,menuone,noinsert' },
         sources = cmp.config.sources( {
           { name = 'cmdline_history' },
@@ -137,7 +139,7 @@ return {
         })
       })
       cmp.setup.cmdline('/', {
-        mapping = require('pynappo.keymaps').cmp.insert(),
+        mapping = cmp_keymaps.cmdline(),
         sources = cmp.config.sources(
           { { name = 'nvim_lsp_document_symbol' } },
           { { name = 'buffer' } }

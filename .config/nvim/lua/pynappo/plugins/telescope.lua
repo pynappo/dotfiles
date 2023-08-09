@@ -49,6 +49,7 @@ return {
         layout_config = {
           prompt_position = 'top',
         },
+        file_ignore_patterns = { "vendor/*" },
       },
       pickers = {
 

@@ -50,6 +50,8 @@ require('pynappo.autocmds').create({'LspAttach'}, {
     local client = vim.lsp.get_client_by_id (details.data.client_id)
     if not client then return end
     if vim.tbl_contains({'copilot', 'null-ls'}, client.name or vim.print('no client found')) then return end
+
+    if vim.b[bufnr].lsp_attached then return end
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     keymaps.setup.lsp(bufnr)
     require('pynappo.autocmds').create({'CursorHold'}, {
@@ -61,6 +63,7 @@ require('pynappo.autocmds').create({'LspAttach'}, {
       end,
       buffer = bufnr
     })
+    vim.b[bufnr].lsp_attached = true
   end
 })
 

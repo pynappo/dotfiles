@@ -81,12 +81,16 @@ return {
       items_number = if_nil(items_number, 10)
 
       local oldfiles = {}
+      local slash = 0
+      local backslash = 0
       for _, v in pairs(vim.v.oldfiles) do
+        v = v:gsub('/', '\\')
         if #oldfiles == items_number then break end
         local cwd_cond = not cwd or vim.startswith(v, cwd)
         local ignore = (opts.ignore and opts.ignore(v, get_extension(v))) or false
-        if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore then
-          oldfiles[#oldfiles + 1] = v
+        if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore and not oldfiles[v] then
+          table.insert(oldfiles, v)
+          oldfiles[v] = true
         end
       end
       local target_width = 35

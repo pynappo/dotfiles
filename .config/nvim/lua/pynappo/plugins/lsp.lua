@@ -25,7 +25,7 @@ return {
         'java-debug-adapter',
         'java-test',
         'jdtls',
-        -- 'json-lsp',
+        'json-lsp',
         -- 'ltex-ls',
         'lua-language-server',
         'marksman',
@@ -57,8 +57,6 @@ return {
         }),
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.code_actions.gitsigns,
-        null_ls.builtins.hover.dictionary,
-        null_ls.builtins.hover.printenv,
         null_ls.builtins.formatting.codespell
       },
     })

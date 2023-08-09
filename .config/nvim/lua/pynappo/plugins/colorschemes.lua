@@ -10,17 +10,20 @@ return {
         mirage = mirage,
         overrides = function()
           return {
-            WinBar = { link = 'TabLine' },
             WildMenu = { bg = colors.bg, fg = colors.markup },
             Comment = { fg = colors.fg_idle, italic = true },
             Search = { underline = true },
-            LineNr = { fg = colors.fg_idle },
-            dropbar = { link = 'WinBar' },
-            NormalNC = { link = 'Normal' }
+            NormalNC = { link = 'Normal' },
+            WinBar = { bg = colors.panel_shadow },
+            WinBarNC = { bg = colors.panel_shadow },
           }
         end,
       })
     end
+  },
+  {
+    'catppuccin/nvim',
+    enabled = false
   },
   {
     'levouh/tint.nvim',
@@ -53,8 +56,9 @@ return {
   {
     "max397574/colortils.nvim",
     cmd = "Colortils",
-    config = function()
-      require("colortils").setup()
-    end,
+    config = true
   },
+  {
+    'uga-rosa/ccc.nvim',
+  }
 }

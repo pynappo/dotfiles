@@ -10,7 +10,7 @@ return {
   },
   {
     'mrjones2014/smart-splits.nvim',
-    init = function() keymaps.setup.smart_splits() end,
+    keys = keymaps.setup.smart_splits({lazy = true}),
     config = true,
   },
   {

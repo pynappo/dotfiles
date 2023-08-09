@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2023-06-29T15:54:48.109-00:00",
+	"CreationDate" : "2023-07-25T01:46:27.216-00:00",
 	"Sources" : 
 	[
 		{
@@ -94,6 +94,9 @@
 					"PackageIdentifier" : "Microsoft.OneDrive"
 				},
 				{
+					"PackageIdentifier" : "Parsec.Parsec"
+				},
+				{
 					"PackageIdentifier" : "Playnite.Playnite"
 				},
 				{
@@ -104,6 +107,9 @@
 				},
 				{
 					"PackageIdentifier" : "Rustlang.Rustup"
+				},
+				{
+					"PackageIdentifier" : "Spotify.Spotify"
 				},
 				{
 					"PackageIdentifier" : "Valve.Steam"
@@ -122,6 +128,9 @@
 				},
 				{
 					"PackageIdentifier" : "Unigine.HeavenBenchmark"
+				},
+				{
+					"PackageIdentifier" : "Unity.UnityHub"
 				},
 				{
 					"PackageIdentifier" : "Ubisoft.Connect"
@@ -166,10 +175,10 @@
 					"PackageIdentifier" : "Yubico.YubikeyManager"
 				},
 				{
-					"PackageIdentifier" : "GoLang.Go"
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
+					"PackageIdentifier" : "GoLang.Go"
 				},
 				{
 					"PackageIdentifier" : "MiniTool.PartitionWizard.Free"
@@ -187,19 +196,16 @@
 					"PackageIdentifier" : "ElectronicArts.EADesktop"
 				},
 				{
-					"PackageIdentifier" : "bozbez.WinCaptureAudio.beta"
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerToys"
+					"PackageIdentifier" : "bozbez.WinCaptureAudio.beta"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
 				},
 				{
 					"PackageIdentifier" : "Alacritty.Alacritty"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.Teams"
@@ -214,6 +220,9 @@
 					"PackageIdentifier" : "ParadoxInteractive.ParadoxLauncher"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
 				},
 				{
@@ -223,7 +232,7 @@
 					"PackageIdentifier" : "Inkscape.Inkscape"
 				},
 				{
-					"PackageIdentifier" : "GitHub.cli"
+					"PackageIdentifier" : "Zoom.Zoom"
 				},
 				{
 					"PackageIdentifier" : "wez.wezterm"
@@ -238,22 +247,22 @@
 					"PackageIdentifier" : "valinet.ExplorerPatcher"
 				},
 				{
-					"PackageIdentifier" : "Zoom.Zoom"
+					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.XNARedist"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.OpenJDK.11"
+				},
+				{
 					"PackageIdentifier" : "Nushell.Nushell"
 				},
 				{
-					"PackageIdentifier" : "OpenJS.NodeJS.LTS"
+					"PackageIdentifier" : "GitHub.cli"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.OpenJDK.11"
 				},
 				{
 					"PackageIdentifier" : "Google.EarthPro"
@@ -268,7 +277,7 @@
 					"PackageIdentifier" : "Starship.Starship"
 				},
 				{
-					"PackageIdentifier" : "Unity.UnityHub"
+					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
 					"PackageIdentifier" : "Peppy.Osu!"
@@ -277,13 +286,13 @@
 					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.WindowsSDK.10.0.22000"
-				},
-				{
 					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Microsoft.WindowsSDK.10.0.22000"
+				},
+				{
+					"PackageIdentifier" : "Python.Python.3.12"
 				}
 			],
 			"SourceDetails" : 
