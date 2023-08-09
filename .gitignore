@@ -1,3 +1,5 @@
 packer_compiled.lua
 .config/thefuck/
 .config/mpv/watch_later
+.config/fish/functions
+.config/fish/conf.d

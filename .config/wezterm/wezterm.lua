@@ -1,6 +1,7 @@
 local wezterm = require('wezterm')
 local launch_menu = {}
-if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+local is_windows = wezterm.target_triple == 'x86_64-pc-windows-msvc'
+if is_windows then
   table.insert(launch_menu, {
     label = 'PowerShell',
     args = { 'pwsh.exe' },
@@ -66,7 +67,7 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
   end
 end
 
-local config = {
+return {
   debug_key_events = true,
   max_fps = 144,
   color_scheme = 'Ayu Mirage',
@@ -75,7 +76,7 @@ local config = {
     { family = "Symbols NFM", scale = 0.5 },
     'Noto Color Emoji',
   }),
-  default_prog = { 'pwsh' },
+  default_prog = { is_windows and 'pwsh' or 'fish' },
 
   window_background_opacity = 0.9,
   text_background_opacity = 0.9,
@@ -109,4 +110,4 @@ local config = {
   enable_kitty_keyboard = true,
 }
 
-return config
+
