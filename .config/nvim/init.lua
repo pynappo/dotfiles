@@ -126,7 +126,7 @@ require('lazy').setup({
   spec = {
     {
       { import = 'pynappo.plugins' },
-      { import = 'pynappo.plugins.testing', enabled = false },
+      { import = 'pynappo.plugins.testing', enabled = true },
     },
   },
   git = {
@@ -134,6 +134,7 @@ require('lazy').setup({
     timeout = 90,                   -- seconds
   },
   dev = {
+    fallback = true,
     path = '~/code/nvim',
     ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
     patterns = { "pynappo" }, -- For example {"folke"}
@@ -193,11 +194,16 @@ require("pynappo.keymaps").setup.regular()
 require("pynappo.theme")
 vim.cmd.colorscheme('ayu')
 
+vim.filetype.add({
+  pattern = {
+    [require('pynappo.utils').config_home .. "/waybar/config"] = 'json'
+  }
+})
 local normalize_system_command = function(cmd)
   return utils.is_windows and vim.list_extend({ 'pwsh', '-NoProfile', '-c' }, cmd) or cmd
 end
 local print_system_command = function(cmd)
-  local result = vim.system(normalize_system_command(cmd), { cwd = vim.fn.getcwd(), text = true }):wait()
+  local result = vim.system(vim.print(normalize_system_command(cmd)), { cwd = vim.fn.getcwd(), text = true }):wait()
   print(result.stdout:gsub('%%', [[\]]))
 end
 local commands = {
@@ -237,7 +243,7 @@ local commands = {
     function(args)
       local new_tab = utils.truthy(args.args) and args.args == 'tab'
       if new_tab then vim.cmd.tabnew() end
-      vim.cmd.tcd('~/.config/nvim')
+      vim.cmd.tcd((vim.env.XDG_CONFIG_HOME or '~/.config/') .. 'nvim/')
       require('tabnames').set_tab_name(0, 'Config')
       if new_tab then vim.cmd('Alpha') end
     end

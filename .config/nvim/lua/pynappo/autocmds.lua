@@ -34,17 +34,17 @@ autocmds.create('DiagnosticChanged', {
   callback = function() vim.diagnostic.setloclist({ open = false }) end,
 })
 
-autocmds.create('SwapExists', {
-  desc = 'Handle some swap file handling automatically',
-  callback = function(args)
-    local file = args.file
-    local swap = vim.v.swapname
-    if vim.fn.getftime(swap) < vim.fn.getftime(file) then
-      vim.v.swapchoice = 'd'
-      print('Deleted old swapfile')
-    end
-  end
-})
+-- autocmds.create('SwapExists', {
+--   desc = 'Handle some swap file handling automatically',
+--   callback = function(args)
+--     local file = args.file
+--     local swap = vim.v.swapname
+--     if vim.fn.getftime(swap) < vim.fn.getftime(file) then
+--       vim.v.swapchoice = 'd'
+--       print('Deleted old swapfile')
+--     end
+--   end
+-- })
 
 local heirline_colors = {}
 -- called in heirline setup

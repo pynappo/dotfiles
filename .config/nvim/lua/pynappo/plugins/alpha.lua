@@ -81,10 +81,8 @@ return {
       items_number = if_nil(items_number, 10)
 
       local oldfiles = {}
-      local slash = 0
-      local backslash = 0
       for _, v in pairs(vim.v.oldfiles) do
-        v = v:gsub('/', '\\')
+        if require('pynappo.utils').is_windows then v = v:gsub('/', '\\') end
         if #oldfiles == items_number then break end
         local cwd_cond = not cwd or vim.startswith(v, cwd)
         local ignore = (opts.ignore and opts.ignore(v, get_extension(v))) or false

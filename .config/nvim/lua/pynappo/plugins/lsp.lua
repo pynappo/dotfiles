@@ -16,14 +16,21 @@ return {
     require('mason').setup({ ui = { border = 'single' } })
     require('neodev').setup()
 
-    local mason_lspconfig = require('mason-lspconfig')
-    local lspconfig = require('lspconfig')
-    mason_lspconfig.setup()
-    mason_lspconfig.setup_handlers {
-      function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
-      rust_analyzer = function() require('rust-tools').setup() end,
-      jdtls = function() end, -- use method recommended by nvim-jdtls
-    }
+    mason_lspconfig = require('mason-lspconfig').setup({
+      ensure_installed = {
+        "lua_ls",
+        "rust_analyzer",
+        "marksman",
+        "jdtls",
+        "powershell_es",
+        "ltex",
+      },
+      handlers = {
+        function(ls) require('lspconfig')[ls].setup(require('pynappo/lsp/configs')[ls]) end,
+        rust_analyzer = function() require('rust-tools').setup() end,
+        jdtls = function() end, -- use method recommended by nvim-jdtls
+      }
+    })
 
     local null_ls = require('null-ls')
     null_ls.setup({

@@ -83,6 +83,10 @@ return {
 
   scrollback_lines = 3500,
   enable_scroll_bar = true,
+  default_cursor_style = 'BlinkingBar',
+
+  -- freetype_load_target = 'Light',
+  freetype_render_target = 'HorizontalLcd',
 
   tab_bar_at_bottom = false,
   use_fancy_tab_bar = true,
@@ -105,7 +109,7 @@ return {
     -- ( "nvim-treesitter/nvim-treesitter" | wbthomason/packer.nvim | wez/wezterm | "wez/wezterm.git" )
     -- As long as a full URL hyperlink regex exists above this it should not match a full URL to
     -- GitHub or GitLab / BitBucket (i.e. https://gitlab.com/user/project.git is still a whole clickable URL)
-    { regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]], format = 'https://www.github.com/$1/$3', },
+    { regex = [[["]{1}([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]{1}]], format = 'https://www.github.com/$1/$3', },
   },
   enable_kitty_keyboard = true,
 }

@@ -14,8 +14,8 @@ return {
             Comment = { fg = colors.fg_idle, italic = true },
             Search = { underline = true },
             NormalNC = { link = 'Normal' },
-            WinBar = { bg = colors.panel_shadow },
-            WinBarNC = { bg = colors.panel_shadow },
+            WinBar = { bg = colors.bg },
+            WinBarNC = { bg = colors.bg },
           }
         end,
       })
