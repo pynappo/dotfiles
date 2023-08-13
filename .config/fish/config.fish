@@ -17,3 +17,6 @@ function last_history_item
   echo $history[1]
 end
 abbr -a !! --position anywhere --function last_history_item
+alias sudo="/usr/bin/sudo -v; /usr/bin/sudo"
+# Created by `pipx` on 2023-08-10 08:32:24
+set PATH $PATH /home/dle/.local/bin

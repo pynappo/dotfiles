@@ -5,10 +5,13 @@
         "autoUpdateNotification": true,
         "useQuickCss": true,
         "themeLinks": [],
+        "enabledThemes": [],
         "enableReactDevtools": false,
         "frameless": false,
         "transparent": false,
         "winCtrlQ": false,
+        "macosTranslucency": false,
+        "disableMinSize": false,
         "winNativeTitleBar": false,
         "plugins": {
             "AlwaysTrust": {
@@ -189,7 +192,8 @@
             },
             "Moyai": {
                 "enabled": true,
-                "ignoreBots": true
+                "ignoreBots": true,
+                "ignoreBlocked": true
             },
             "MuteNewGuild": {
                 "enabled": false
@@ -251,7 +255,8 @@
                 "showInMessages": true,
                 "showSelf": true,
                 "showInProfile": true,
-                "pronounsFormat": "LOWERCASE"
+                "pronounsFormat": "LOWERCASE",
+                "pronounSource": 0
             },
             "QuickMention": {
                 "enabled": true
@@ -353,7 +358,6 @@
             "VcNarrator": {
                 "enabled": true,
                 "joinMessage": "{{USER}} joined",
-                "voice": "Microsoft Mark - English (United States)",
                 "volume": 0.7535211267605634,
                 "rate": 1.5989436619718311,
                 "leaveMessage": "{{USER}} left",
@@ -361,13 +365,16 @@
                 "muteMessage": "",
                 "unmuteMessage": "",
                 "deafenMessage": "",
-                "undeafenMessage": ""
+                "undeafenMessage": "",
+                "latinOnly": false,
+                "sayOwnName": false
             },
             "ViewIcons": {
                 "enabled": true
             },
             "ViewRaw": {
-                "enabled": true
+                "enabled": true,
+                "clickMethod": "Left"
             },
             "VolumeBooster": {
                 "enabled": true,
@@ -442,6 +449,57 @@
             },
             "USRBG": {
                 "enabled": false
+            },
+            "BiggerStreamPreview": {
+                "enabled": false
+            },
+            "FavoriteEmojiFirst": {
+                "enabled": false
+            },
+            "FavoriteGifSearch": {
+                "enabled": false
+            },
+            "MutualGroupDMs": {
+                "enabled": false
+            },
+            "NoPendingCount": {
+                "enabled": false
+            },
+            "NoProfileThemes": {
+                "enabled": false
+            },
+            "OpenInApp": {
+                "enabled": false
+            },
+            "Party mode 🎉": {
+                "enabled": false
+            },
+            "PermissionsViewer": {
+                "enabled": false
+            },
+            "ShowAllMessageButtons": {
+                "enabled": false
+            },
+            "ShowConnections": {
+                "enabled": false
+            },
+            "TextReplace": {
+                "enabled": false
+            },
+            "Translate": {
+                "enabled": false
+            },
+            "UnsuppressEmbeds": {
+                "enabled": false
+            },
+            "ValidUser": {
+                "enabled": false
+            },
+            "VencordToolbox": {
+                "enabled": false
+            },
+            "VoiceMessages": {
+                "enabled": false
             }
         },
         "notifications": {
@@ -451,13 +509,11 @@
             "logLimit": 50
         },
         "cloud": {
-            "authenticated": true,
+            "authenticated": false,
             "url": "https://api.vencord.dev/",
             "settingsSync": true,
-            "settingsSyncVersion": 1682748904293
-        },
-        "macosTranslucency": false,
-        "disableMinSize": false
+            "settingsSyncVersion": 1691647394055
+        }
     },
     "quickCss": ""
 }
