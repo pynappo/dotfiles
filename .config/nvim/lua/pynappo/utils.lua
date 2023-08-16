@@ -1,7 +1,6 @@
 local utils = {}
 utils.is_windows = vim.fn.has('win32') == 1
 utils.is_termux = vim.env.TERMUX_VERSION
-utils.config_home = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config")
 -- considers empty string and 0 falsy
 function utils.truthy(object)
   local conditions = {object, {

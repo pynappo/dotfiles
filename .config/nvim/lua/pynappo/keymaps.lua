@@ -169,7 +169,6 @@ M.setup = {
   substitute = function(opts)
     return map({
       [{ 'n' }] = {
-        -- { "r", function() require('substitute').operator() end, },
         { 'rr', function() require('substitute').line() end },
         { 'R', function() require('substitute').eol() end },
         { '<leader>r', function() require('substitute.range').operator() end },
@@ -506,7 +505,7 @@ M.setup = {
     })
   end,
   flash = function(opts)
-    map({
+    return map({
       [{ 'n', 'o', 'x' }] = {
         { 's', function() require('flash').jump() end, { desc = 'Flash' } },
         { 'S', function() require('flash').treesitter() end, { desc = 'Flash Treesitter' } },
@@ -519,14 +518,14 @@ M.setup = {
     }, {}, opts)
   end,
   trouble = function(opts)
-    map({
+    return map({
       [{ 'n' }] = {
         { '<leader>t', '<Cmd>Trouble<CR>', { desc = 'Trouble' } },
       },
     }, {}, opts)
   end,
   gesture = function(opts)
-    map({
+    return map({
       [{ "n" }] = {
         { "<LeftDrag>", function() require("gesture").draw() end, { silent = true } },
         { "<LeftRelease>", function() require("gesture").finish() end, { silent = true } },

@@ -11,8 +11,10 @@ abbr -a -- df 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 abbr -a -- ldf 'lazygit --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 abbr -a -- pm 'sudo pacman'
 abbr -a -- pr 'paru'
+abbr -a -- su 'su --shell=/usr/bin/fish'
 abbr -a man --set-cursor 'nvim "+Man %"'
-abbr -a man --set-cursor 'nvim "+Man %"'
+abbr -a -- e '$EDITOR'
+abbr -a -- edit '$EDITOR'
 function last_history_item
   echo $history[1]
 end

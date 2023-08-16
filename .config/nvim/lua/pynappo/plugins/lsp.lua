@@ -3,20 +3,17 @@ return {
   'neovim/nvim-lspconfig',
   event = 'BufReadPre',
   dependencies = {
-    'folke/neodev.nvim',
+    { 'folke/neodev.nvim', config = true },
+    'williamboman/mason.nvim',
     'mfussenegger/nvim-jdtls',
     'simrat39/rust-tools.nvim',
     'jose-elias-alvarez/null-ls.nvim',
-    'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'alaviss/nim.nvim',
   },
   init = function() require('pynappo/keymaps').setup.diagnostics() end,
   config = function()
-    require('mason').setup({ ui = { border = 'single' } })
-    require('neodev').setup()
-
-    mason_lspconfig = require('mason-lspconfig').setup({
+    require('mason-lspconfig').setup({
       ensure_installed = {
         "lua_ls",
         "rust_analyzer",
@@ -45,4 +42,8 @@ return {
     })
 
   end,
+  {
+    'williamboman/mason.nvim',
+    opts = { ui = { border = 'single' } }
+  }
 }

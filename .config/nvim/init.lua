@@ -1,4 +1,5 @@
 _G.pynappo = {}
+vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config")
 local o = vim.o
 local g = vim.g
 local opt = vim.opt
@@ -126,7 +127,7 @@ require('lazy').setup({
   spec = {
     {
       { import = 'pynappo.plugins' },
-      { import = 'pynappo.plugins.testing', enabled = true },
+      { import = 'pynappo.plugins.testing', enabled = false },
     },
   },
   git = {
@@ -150,7 +151,7 @@ require('lazy').setup({
   checker = {
     enabled = true,
     notify = true,
-    frequency = 60 * 60 * 24, -- once a day
+    frequency = 60 * 60 * 20, -- once a day-ish
   },
   change_detection = {
     enabled = true,
@@ -196,7 +197,7 @@ vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
   pattern = {
-    [require('pynappo.utils').config_home .. "/waybar/config"] = 'json'
+    [vim.env.XDG_CONFIG_HOME .. "/waybar/config"] = 'json'
   }
 })
 local normalize_system_command = function(cmd)

@@ -120,9 +120,10 @@ tabline.offset = {
     },
     title_funcs = {
       function(self, title)
-        local path_sep = vim.fn.has('win32') and [[\]] or '/'
+        local path_sep = require('pynappo.utils').is_windows and [[\]] or '/'
         for _, sub in pairs(self.substitutions) do
           local pattern = type(sub[1]) == 'table' and table.concat(sub[1], path_sep) or sub[1]
+          vim.print(title)
           title = title:gsub(pattern, sub[2])
         end
         return title
@@ -134,9 +135,11 @@ tabline.offset = {
   },
   provider = function(self)
     local title = self.title
-    for _, func in ipairs(self.title_funcs) do
-      if #title < self.width then break end
-      title = func(self, title)
+    if title then
+      for _, func in ipairs(self.title_funcs) do
+        if #title < self.width then break end
+        title = func(self, title)
+      end
     end
     local length = vim.str_utfindex(title)
     local left_pad = math.ceil((self.width - length) / 2)
