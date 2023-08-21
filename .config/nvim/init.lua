@@ -204,7 +204,7 @@ vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
   pattern = {
-    [require('pynappo.utils').config_home .. "/waybar/config"] = 'json'
+    [vim.env.XDG_CONFIG_HOME or ".-" .. "/waybar/config"] = 'json'
   }
 })
 -- GUI stuff

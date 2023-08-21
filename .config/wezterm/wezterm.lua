@@ -1,7 +1,6 @@
 local wezterm = require('wezterm')
 local act = wezterm.action
 local config = wezterm.config_builder()
-local is_windows = wezterm.target_triple == 'x86_64-pc-windows-msvc'
 local launch_menu = {}
 local is_windows = wezterm.target_triple == 'x86_64-pc-windows-msvc'
 if is_windows then
