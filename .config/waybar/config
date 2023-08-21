@@ -4,16 +4,29 @@
   "modules-left": ["wlr/workspaces", "sway/mode"],
   "wlr/workspaces": {
     "format": "{icon}",
-    "on-scroll-up": "hyprctl dispatch workspace e+1",
-    "on-scroll-down": "hyprctl dispatch workspace e-1",
-    "on-click": "activate"
-  },
+    "on-scroll-up": "hyprctl dispatch workspace e+2",
+    "on-scroll-down": "hyprctl dispatch workspace e-2",
+    "on-click": "activate",
+    "persistent_workspaces": {
+      "1": ["DP-2"],
+      "2": ["DP-3"],
+      "3": ["DP-2"],
+      "4": ["DP-3"],
+      "5": ["DP-2"],
+      "6": ["DP-3"],
+      "7": ["DP-2"],
+      "8": ["DP-3"],
+      "9": ["DP-2"],
+      "10": ["DP-3"],
+    },
+    "sort-by-number": true
+ },
   "modules-center": ["hyprland/window"],
   "hyprland/window": {
     "max-length": 50,
     "rewrite": {
-        "(.*) - Vivaldi": "🌎 $1",
-        "(.*) - fish": "> [$1]"
+      "(.*) - Vivaldi": "🌎 $1",
+      "(.*) - fish": "> [$1]",
     },
     "separate-outputs": true
   },

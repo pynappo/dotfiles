@@ -4,61 +4,8 @@ return {
     'nvim-tree/nvim-web-devicons',
     'nvim-lua/plenary.nvim',
   },
-  config = function()
-    local plenary_path = require("plenary.path")
-    local cdir = vim.fn.getcwd()
-    local if_nil = vim.F.if_nil
-    local dashboard = require("alpha.themes.dashboard")
-
-    local nvim_web_devicons = {
-      enabled = true,
-      highlight = true,
-    }
-
-    local function get_extension(fn)
-      local match = fn:match("^.+(%..+)$")
-      return match and match:sub(2) or ""
-    end
-
-    local function icon(fn)
-      local nwd = require("nvim-web-devicons")
-      local ext = get_extension(fn)
-      return nwd.get_icon(fn, ext, { default = true })
-    end
-
-    local function file_button(fn, sc, short_fn,autocd)
-      short_fn = short_fn or fn
-      local ico_txt
-      local fb_hl = {}
-
-      if nvim_web_devicons.enabled then
-        local ico, hl = icon(fn)
-        local hl_option_type = type(nvim_web_devicons.highlight)
-        if hl_option_type == "boolean" then
-          if hl and nvim_web_devicons.highlight then
-            table.insert(fb_hl, { hl, 0, #ico })
-          end
-        end
-        if hl_option_type == "string" then
-          table.insert(fb_hl, { nvim_web_devicons.highlight, 0, #ico })
-        end
-        ico_txt = ico .. "  "
-      else
-        ico_txt = ""
-      end
-      local cd_cmd = (autocd and " | cd %:p:h" or "")
-      local file_button_el = dashboard.button(sc, ico_txt .. short_fn, "<cmd>e " .. fn .. cd_cmd .." <CR>")
-      local fn_start = short_fn:match(".*[/\\]")
-      if fn_start ~= nil then
-        table.insert(fb_hl, { "Comment", #ico_txt - 2, #fn_start + #ico_txt })
-      end
-      file_button_el.opts.hl = fb_hl
-      return file_button_el
-    end
-
-    local default_mru_ignore = { "gitcommit" }
-
-    local mru_opts = {
+  opts = {
+    mru = {
       ignore = function(path, ext)
         local ignore_patterns = {
           "COMMIT_EDITMSG",
@@ -68,46 +15,80 @@ return {
         for _, pattern in ipairs(ignore_patterns) do
           if path:find(pattern) then return true end
         end
-        return vim.tbl_contains(default_mru_ignore, ext)
+        return vim.tbl_contains({ "gitcommit" }, ext)
       end,
-      autocd = false
+      autocd = false,
+      width = 50
+    },
+    nvim_web_devicons = {
+      enabled = true,
+      highlight = true,
     }
+  },
+  config = function(self, opts)
+    local plenary_path = require("plenary.path")
+    local cwd = vim.fn.getcwd()
+    local if_nil = vim.F.if_nil
+    local dashboard = require("alpha.themes.dashboard")
+
+    local function get_extension(fn)
+      return vim.fn.fnamemodify(fn, ":e")
+    end
+
+    local function file_button(filename, sc, short_fn, autocd)
+      short_fn = short_fn or filename
+      local ico_txt
+      local fb_hl = {}
+
+      if opts.nvim_web_devicons.enabled then
+        local icon, hl = require("nvim-web-devicons").get_icon(filename, get_extension(filename), { default = true })
+        if hl and opts.nvim_web_devicons.highlight then table.insert(fb_hl, { hl, 0, #icon }) end
+        ico_txt = icon .. "  "
+      else
+        ico_txt = ""
+      end
+      local cd_cmd = (autocd and " | cd %:p:h" or "")
+      local element = dashboard.button(sc, ico_txt .. short_fn, "<cmd>e " .. filename .. cd_cmd .." <CR>")
+      local fn_start = short_fn:match(".*[/\\]")
+      if fn_start then table.insert(fb_hl, { "Comment", #ico_txt - 2, #fn_start + #ico_txt }) end
+      element.opts.hl = fb_hl
+      return element
+    end
 
     --- @param start number
-    --- @param cwd string? optional
+    --- @param dir string? optional
     --- @param items_number number? optional number of items to generate, default = 10
-    local function mru(start, cwd, items_number, opts)
-      opts = opts or mru_opts
+    local function mru(start, dir, items_number, mru_opts)
+      mru_opts = mru_opts or opts.mru
       items_number = if_nil(items_number, 10)
 
       local oldfiles = {}
       for _, v in pairs(vim.v.oldfiles) do
         if require('pynappo.utils').is_windows then v = v:gsub('/', '\\') end
         if #oldfiles == items_number then break end
-        local cwd_cond = not cwd or vim.startswith(v, cwd)
-        local ignore = (opts.ignore and opts.ignore(v, get_extension(v))) or false
-        if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore and not oldfiles[v] then
+        local in_dir = not dir or vim.startswith(v, dir)
+        local ignore = mru_opts.ignore(v, get_extension(v))
+        if in_dir and vim.uv.fs_stat(v) and not ignore and not oldfiles[v] then
           table.insert(oldfiles, v)
           oldfiles[v] = true
         end
       end
-      local target_width = 35
 
       local tbl = {}
-      for i, fn in ipairs(oldfiles) do
-        local short_fn = vim.fn.fnamemodify(fn, cwd and ":." or ":~")
+      for i, filename in ipairs(oldfiles) do
+        local short_fn = vim.fn.fnamemodify(filename, dir and ":." or ":~")
 
-        if #short_fn > target_width then
+        if #short_fn > mru_opts.width then
           short_fn = plenary_path.new(short_fn):shorten(1, { -2, -1 })
-          if #short_fn > target_width then
+          if #short_fn > mru_opts.width then
             short_fn = plenary_path.new(short_fn):shorten(1, { -1 })
           end
         end
 
         local shortcut = tostring(i + start - 1)
 
-        local file_button_el = file_button(fn, shortcut, short_fn,opts.autocd)
-        tbl[i] = file_button_el
+        local element = file_button(filename, shortcut, short_fn,opts.autocd)
+        tbl[i] = element
       end
       return {
         type = "group",
@@ -141,7 +122,7 @@ return {
           val = "Recent files",
           opts = {
             hl = "SpecialComment",
-            shrink_margin = false,
+            shrink_margin = true,
             position = "center",
           },
         },
@@ -149,9 +130,12 @@ return {
         {
           type = "group",
           val = function()
-            return { mru(0, cdir) }
+            return { mru(0, cwd, 10) }
           end,
-          opts = { shrink_margin = false },
+          opts = {
+            width = opts.width,
+            shrink_margin = true,
+          },
         },
       },
     }
@@ -187,8 +171,8 @@ return {
             pattern = '*',
             group = "alpha_temp",
             callback = function ()
+              cwd = vim.fn.getcwd()
               require('alpha').redraw()
-              cdir = vim.fn.getcwd()
             end,
           })
         end,

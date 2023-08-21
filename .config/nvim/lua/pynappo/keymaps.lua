@@ -69,7 +69,6 @@ function M.convert_from_lazy(lazy_keys, from_register, to_register)
   if not lazy_keys then
     functions = {}
     register_text = vim.fn.getreg(from_register or '+'):match('keys.-(%b{})')
-    -- HACK: idk how packer.nvim is able to copy function code but this gmatch will do for now
     for func in register_text:gmatch('(function.-end,)') do
       table.insert(functions, func)
     end

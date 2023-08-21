@@ -70,9 +70,21 @@ button.vivaldi {
 .UrlBar-AddressField > .SiteInfoButton.warning + .UrlBar-UrlFieldWrapper :is(.UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD) {color: deeppink;}
 
 /* highlight stuff */
-.tab-position .tab {
-  border: 1px solid transparent;
+/* .tab-position .tab { */
+/*   border: 1px solid transparent; */
+/* } */
+/* .tab-position .tab:not(.active):hover { */
+/*   border: 2px solid #66aa22; */
+/* } */
+
+/* try to fix top tabs on linux */
+.tab-group-indicator {
+  top: -3px !important;
+  height: 10px !important;
 }
-.tab-position .tab:not(.active):hover {
-  border: 2px solid #66aa22;
+#tabs-tabbar-container.top {
+    padding-top: 0!important;
+}
+#header {
+  min-height: 30px !important;
 }
