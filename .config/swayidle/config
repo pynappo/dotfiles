@@ -1,5 +1,5 @@
-timeout 180 'swaylock --screenshots --clock --indicator --grace 60 --fade-in --effect-blur 5x2'
-timeout 300 'hyprctl dispatch dpms off'
-timeout 360 'systemctl suspend'
-after-resume 'hyprctl dispatch dpms on'
-before-sleep 'swaylock --screenshots --clock --indicator --grace 60 --fade-in --effect-blur 5x2'
+timeout 180 'swaylock --grace 30'
+timeout 300 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
+idlehint 360
+timeout 420 'systemctl suspend' resume 'hyprctl dispatch dpms on'
+before-sleep 'swaylock'

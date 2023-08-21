@@ -5,6 +5,25 @@ local default_config = {
 }
 local configs = {
   lua_ls = {
+    -- on_init = function(client)
+    --   local path = client.workspace_folders[1].name
+    --   local nvim_workspace = path:find('nvim')
+    --   local test_nvim = path:find('test')
+    --   if nvim_workspace then
+    --     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+    --       runtime = {
+    --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+    --         version = 'LuaJIT'
+    --       },
+    --       -- Make the server aware of Neovim runtime files
+    --       workspace = {
+    --         library = test_nvim and vim.env.VIMRUNTIME or vim.api.nvim_get_runtime_file("", true)
+    --       }
+    --     })
+    --     client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+    --   end
+    --   return true
+    -- end,
     on_attach = function(client, bufnr)
       client.server_capabilities.document_formatting = false
     end,
