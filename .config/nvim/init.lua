@@ -130,6 +130,7 @@ end
 vim.opt.runtimepath:prepend(lazypath)
 
 require("pynappo.autocmds")
+require('lazy.state').checker.last_check = 
 require('lazy').setup({
   spec = {
     {
@@ -158,7 +159,7 @@ require('lazy').setup({
   checker = {
     enabled = true,
     notify = true,
-    frequency = 60 * 60 * 24, -- once a day
+    frequency = math.huge,
   },
   change_detection = {
     enabled = true,
@@ -198,8 +199,10 @@ require('lazy').setup({
     skip_if_doc_exists = true,
   },
 })
+
 require("pynappo.keymaps").setup.regular()
 require("pynappo.theme")
+require("pynappo.commands")
 vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({

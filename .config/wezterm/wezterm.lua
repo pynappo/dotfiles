@@ -78,56 +78,44 @@ config.font = wezterm.font_with_fallback({
   'Noto Color Emoji',
 })
 config.default_prog = { is_windows and 'pwsh' or 'fish' }
+config.disable_default_key_bindings = true
+local function is_vim(pane)
+  -- this is set by the plugin, and unset on ExitPre in Neovim
+  return pane:get_user_vars().IS_NVIM == 'true'
+end
 
-return {
-  debug_key_events = true,
-  max_fps = 144,
-  color_scheme = 'Ayu Mirage',
-  font = wezterm.font_with_fallback({
-    'Inconsolata Nerd Font Mono',
-    { family = "Symbols NFM", scale = 0.5 },
-    'Noto Color Emoji',
-  }),
-  default_prog = { is_windows and 'pwsh' or 'fish' },
-
-  window_background_opacity = 0.9,
-  text_background_opacity = 0.9,
-
-  scrollback_lines = 3500,
-  enable_scroll_bar = true,
-  default_cursor_style = 'BlinkingBar',
-
-  -- freetype_load_target = 'Light',
-  freetype_render_target = 'HorizontalLcd',
-
-  tab_bar_at_bottom = false,
-  use_fancy_tab_bar = true,
-  hyperlink_rules = {
-    -- Linkify things that look like URLs and the host has a TLD name.
-    -- Compiled-in default. Used if you don't specify any hyperlink_rules.
-    { regex = '\\b\\w+://[\\w.-]+\\.[a-z]{2,15}\\S*\\b', format = '$0', },
-
-    -- linkify email addresses
-    -- Compiled-in default. Used if you don't specify any hyperlink_rules.
-    { regex = [[\b\w+@[\w-]+(\.[\w-]+)+\b]], format = 'mailto:$0', },
-    -- file:// URI
-    -- Compiled-in default. Used if you don't specify any hyperlink_rules.
-    { regex = [[\bfile://\S*\b]], format = '$0', },
-    -- Make task numbers clickable
-    -- The first matched regex group is captured in $1.
-    { regex = [[\b[tT](\d+)\b]], format = 'https://example.com/tasks/?t=$1', },
-
-    -- Make username/project paths clickable. This implies paths like the following are for GitHub.
-    -- ( "nvim-treesitter/nvim-treesitter" | wbthomason/packer.nvim | wez/wezterm | "wez/wezterm.git" )
-    -- As long as a full URL hyperlink regex exists above this it should not match a full URL to
-    -- GitHub or GitLab / BitBucket (i.e. https://gitlab.com/user/project.git is still a whole clickable URL)
-    { regex = [[["]{1}([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]{1}]], format = 'https://www.github.com/$1/$3', },
-  },
-  enable_kitty_keyboard = true,
+local direction_keys = {
+  Left = 'h',
+  Down = 'j',
+  Up = 'k',
+  Right = 'l',
+  -- reverse lookup
+  h = 'Left',
+  j = 'Down',
+  k = 'Up',
+  l = 'Right',
 }
 
-
-config.disable_default_key_bindings = true
+local function split_nav(resize_or_move, key)
+  return {
+    key = key,
+    mods = resize_or_move == 'resize' and 'META' or 'CTRL',
+    action = wezterm.action_callback(function(win, pane)
+      if is_vim(pane) then
+        -- pass the keys through to vim/nvim
+        win:perform_action({
+          SendKey = { key = key, mods = resize_or_move == 'resize' and 'META' or 'CTRL' },
+        }, pane)
+      else
+        if resize_or_move == 'resize' then
+          win:perform_action({ AdjustPaneSize = { direction_keys[key], 3 } }, pane)
+        else
+          win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
+        end
+      end
+    end),
+  }
+end
 config.keys = {
   -- move between split panes
   split_nav('move', 'h'),
