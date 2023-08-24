@@ -154,6 +154,7 @@ require('lazy').setup({
   },
   ui = {
     size = { width = 0.8, height = 0.8 },
+    border = 'single'
   },
   diff = { cmd = 'diffview.nvim' },
   checker = {
@@ -207,12 +208,11 @@ vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
   pattern = {
-    [vim.env.XDG_CONFIG_HOME or ".-" .. "/waybar/config"] = 'json'
+    [vim.env.XDG_CONFIG_HOME or ".-" .. "/waybar/config"] = 'json',
   }
 })
 -- GUI stuff
-o.guifont = "InconsolataLGC_NF:h8:#e-subpixelantialias"
-o.guifont = "InconsolataLGC_NF:h8:#e-subpixelantialias"
+o.guifont = "Inconsolata Nerd Font Mono:h8"
 g.firenvim_config = {
   globalSettings = {
     alt = 'all',
@@ -232,6 +232,7 @@ if g.started_by_firenvim then
   o.laststatus = 0
   o.cmdheight = 0
   o.showtabline = 0
+  o.pumheight = 10
 elseif g.neovide then
   g.neovide_transparency = 0.8
   g.neovide_refresh_rate = 144

@@ -71,7 +71,9 @@ setmetatable(theme.overrides, {
   end
 })
 
-for _, hl in ipairs(transparent_highlights) do theme.overrides.all_themes.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE' end
+if not vim.g.started_by_firenvim then
+  for _, hl in ipairs(transparent_highlights) do theme.overrides.all_themes.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE' end
+end
 
 function theme.set_rainbow_colors(prefix, suffix_colors)
   local hl_list = {}

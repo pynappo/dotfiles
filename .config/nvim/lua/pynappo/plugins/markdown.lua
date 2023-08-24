@@ -1,6 +1,10 @@
 return {
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
-  -- { 'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
+  {
+    'glacambre/firenvim',
+    lazy = not vim.g.started_by_firenvim,
+    build = function() vim.fn['firenvim#install'](0) end,
+  },
   { 'AckslD/nvim-FeMaco.lua', config = function() require('femaco').setup() end },
   {
     'toppair/peek.nvim',
