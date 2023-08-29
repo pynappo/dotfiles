@@ -176,7 +176,7 @@
                 "automodEmbeds": "never"
             },
             "MessageLogger": {
-                "enabled": false,
+                "enabled": true,
                 "deleteStyle": "text",
                 "ignoreBots": false,
                 "ignoreSelf": true
@@ -196,7 +196,7 @@
                 "ignoreBlocked": true
             },
             "MuteNewGuild": {
-                "enabled": false
+                "enabled": true
             },
             "NoBlockedMessages": {
                 "enabled": true,
@@ -217,7 +217,9 @@
             "NoReplyMention": {
                 "enabled": true,
                 "exemptList": "1234567890123445,1234567890123445",
-                "inverseShiftReply": false
+                "inverseShiftReply": false,
+                "userList": "1234567890123445,1234567890123445",
+                "shouldPingListed": true
             },
             "NoScreensharePreview": {
                 "enabled": false
@@ -420,47 +422,84 @@
                 "enabled": true
             },
             "ImageZoom": {
-                "enabled": false
+                "enabled": true
             },
             "MoreUserTags": {
-                "enabled": false
+                "enabled": true,
+                "tagSettings": {
+                    "WEBHOOK": {
+                        "text": "Webhook",
+                        "showInChat": true,
+                        "showInNotChat": true
+                    },
+                    "OWNER": {
+                        "text": "Owner",
+                        "showInChat": true,
+                        "showInNotChat": true
+                    },
+                    "ADMINISTRATOR": {
+                        "text": "Admin",
+                        "showInChat": true,
+                        "showInNotChat": true
+                    },
+                    "MODERATOR_STAFF": {
+                        "text": "Staff",
+                        "showInChat": true,
+                        "showInNotChat": true
+                    },
+                    "MODERATOR": {
+                        "text": "Mod",
+                        "showInChat": true,
+                        "showInNotChat": true
+                    },
+                    "VOICE_MODERATOR": {
+                        "text": "VC Mod",
+                        "showInChat": true,
+                        "showInNotChat": true
+                    }
+                }
             },
             "UserVoiceShow": {
                 "enabled": true,
                 "showVoiceChannelSectionHeader": true
             },
             "GreetStickerPicker": {
-                "enabled": false
+                "enabled": true
             },
             "AlwaysAnimate": {
                 "enabled": false
             },
             "PinDMs": {
-                "enabled": false
+                "enabled": true
             },
             "ReviewDB": {
-                "enabled": false
+                "enabled": true,
+                "notifyReviews": true
             },
             "SendTimestamps": {
-                "enabled": false
+                "enabled": true
             },
             "ShowMeYourName": {
-                "enabled": false
+                "enabled": true,
+                "displayNames": false,
+                "mode": "user-nick",
+                "inReplies": false
             },
             "USRBG": {
-                "enabled": false
+                "enabled": true,
+                "voiceBackground": true
             },
             "BiggerStreamPreview": {
                 "enabled": false
             },
             "FavoriteEmojiFirst": {
-                "enabled": false
+                "enabled": true
             },
             "FavoriteGifSearch": {
-                "enabled": false
+                "enabled": true
             },
             "MutualGroupDMs": {
-                "enabled": false
+                "enabled": true
             },
             "NoPendingCount": {
                 "enabled": false
@@ -469,19 +508,24 @@
                 "enabled": false
             },
             "OpenInApp": {
-                "enabled": false
+                "enabled": true
             },
             "Party mode 🎉": {
-                "enabled": false
+                "enabled": false,
+                "superIntensePartyMode": 0
             },
             "PermissionsViewer": {
-                "enabled": false
+                "enabled": true,
+                "permissionsSortOrder": 0,
+                "defaultPermissionsDropdownState": false
             },
             "ShowAllMessageButtons": {
-                "enabled": false
+                "enabled": true
             },
             "ShowConnections": {
-                "enabled": false
+                "enabled": true,
+                "iconSpacing": 1,
+                "iconSize": 32
             },
             "TextReplace": {
                 "enabled": false
@@ -493,12 +537,21 @@
                 "enabled": false
             },
             "ValidUser": {
-                "enabled": false
+                "enabled": true
             },
             "VencordToolbox": {
-                "enabled": false
+                "enabled": true
             },
             "VoiceMessages": {
+                "enabled": true
+            },
+            "NormalizeMessageLinks": {
+                "enabled": false
+            },
+            "PreviewMessage": {
+                "enabled": true
+            },
+            "SecretRingToneEnabler": {
                 "enabled": false
             }
         },
@@ -512,7 +565,7 @@
             "authenticated": false,
             "url": "https://api.vencord.dev/",
             "settingsSync": true,
-            "settingsSyncVersion": 1691647394055
+            "settingsSyncVersion": 1692690065159
         }
     },
     "quickCss": ""

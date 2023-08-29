@@ -18,14 +18,20 @@ return {
         return vim.tbl_contains({ "gitcommit" }, ext)
       end,
       autocd = false,
-      width = 50
     },
+    width = 100,
     nvim_web_devicons = {
       enabled = true,
       highlight = true,
+    },
+    button_defaults = {
+      position = "center",
+      cursor = 3,
+      align_shortcut = "right",
+      hl_shortcut = "Keyword"
     }
   },
-  config = function(self, opts)
+  config = function(_, options)
     local plenary_path = require("plenary.path")
     local cwd = vim.fn.getcwd()
     local if_nil = vim.F.if_nil
@@ -34,23 +40,35 @@ return {
     local function get_extension(fn)
       return vim.fn.fnamemodify(fn, ":e")
     end
+    local button = function(lhs, label, rhs, opts)
+      opts = opts and vim.tbl_extend("keep", opts, options.button_defaults) or options.button_defaults
+      opts.shortcut = lhs
+      return {
+        type = 'button',
+        val = label,
+        on_press = rhs and type(rhs) == "function" and rhs or function() vim.api.nvim_input(rhs) end,
+        opts = opts
+      }
+    end
 
     local function file_button(filename, sc, short_fn, autocd)
       short_fn = short_fn or filename
       local ico_txt
       local fb_hl = {}
 
-      if opts.nvim_web_devicons.enabled then
-        local icon, hl = require("nvim-web-devicons").get_icon(filename, get_extension(filename), { default = true })
-        if hl and opts.nvim_web_devicons.highlight then table.insert(fb_hl, { hl, 0, #icon }) end
+      if options.nvim_web_devicons.enabled then
+        local ft = vim.filetype.match({ filename = short_fn })
+        local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(ft, {default = true})
+        if hl and options.nvim_web_devicons.highlight then table.insert(fb_hl, { hl, 0, #icon }) end
         ico_txt = icon .. "  "
       else
         ico_txt = ""
       end
-      local cd_cmd = (autocd and " | cd %:p:h" or "")
+      local cd_cmd = (autocd and " | tcd %:p:h" or "")
       local element = dashboard.button(sc, ico_txt .. short_fn, "<cmd>e " .. filename .. cd_cmd .." <CR>")
       local fn_start = short_fn:match(".*[/\\]")
       if fn_start then table.insert(fb_hl, { "Comment", #ico_txt - 2, #fn_start + #ico_txt }) end
+      element.opts.width = options.width
       element.opts.hl = fb_hl
       return element
     end
@@ -58,8 +76,8 @@ return {
     --- @param start number
     --- @param dir string? optional
     --- @param items_number number? optional number of items to generate, default = 10
-    local function mru(start, dir, items_number, mru_opts)
-      mru_opts = mru_opts or opts.mru
+    local function mru(start, dir, items_number)
+      local mru_opts = options.mru
       items_number = if_nil(items_number, 10)
 
       local oldfiles = {}
@@ -78,22 +96,24 @@ return {
       for i, filename in ipairs(oldfiles) do
         local short_fn = vim.fn.fnamemodify(filename, dir and ":." or ":~")
 
-        if #short_fn > mru_opts.width then
+        if #short_fn > options.width then
           short_fn = plenary_path.new(short_fn):shorten(1, { -2, -1 })
-          if #short_fn > mru_opts.width then
+          if #short_fn > options.width then
             short_fn = plenary_path.new(short_fn):shorten(1, { -1 })
           end
         end
 
         local shortcut = tostring(i + start - 1)
 
-        local element = file_button(filename, shortcut, short_fn,opts.autocd)
+        local element = file_button(filename, shortcut, short_fn, options.autocd)
         tbl[i] = element
       end
       return {
         type = "group",
         val = tbl,
-        opts = {},
+        opts = {
+          width = options.width
+        },
       }
     end
 
@@ -133,11 +153,14 @@ return {
             return { mru(0, cwd, 10) }
           end,
           opts = {
-            width = opts.width,
+            width = options.width,
             shrink_margin = true,
           },
         },
       },
+      opts = {
+        width = options.width
+      }
     }
 
     local buttons = {
@@ -145,13 +168,16 @@ return {
       val = {
         { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
-        dashboard.button("e", "  New file", "<cmd>ene<CR>"),
-        dashboard.button("<CR>f", "󰈞  Find file"),
-        dashboard.button("<CR>p", "󰊄  Live grep"),
-        dashboard.button("c", "  Configuration", "<cmd>Config<CR>"),
-        dashboard.button("u", "  Update plugins", "<cmd>Lazy sync<CR>"),
+        button("e", "  New file", "<cmd>ene<CR>"),
+        button("<CR>f", "󰈞  Find file"),
+        button("<CR>p", "󰊄  Live grep"),
+        button("c", "  Configuration", "<cmd>Config<CR>"),
+        button("u", "  Update plugins", "<cmd>Lazy sync<CR>"),
       },
       position = "center",
+      opts = {
+        spacing = 0
+      }
     }
 
     local config = {
@@ -180,5 +206,8 @@ return {
     }
 
     require('alpha').setup(config)
+    vim.api.nvim_create_autocmd('TabNewEntered', {
+      command = [[Alpha]]
+    })
   end,
 }

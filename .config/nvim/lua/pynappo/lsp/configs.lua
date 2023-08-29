@@ -5,28 +5,27 @@ local default_config = {
 }
 local configs = {
   lua_ls = {
-    on_init = function(client)
-      local path = client.workspace_folders[1].name
-      local nvim_workspace = path:find('nvim')
-      local test_nvim = path:find('test')
-      if nvim_workspace then
-        local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file("lua/", true)
-        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-          runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = 'LuaJIT',
-            pathStrict = true
-          },
-          -- Make the server aware of Neovim runtime files
-          workspace = {
-            library = library
-          }
-        })
-        vim.print('hi', client.config.settings)
-        client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-      end
-      return true
-    end,
+    -- on_init = function(client)
+    --   local path = client.workspace_folders[1].name
+    --   local nvim_workspace = path:find('nvim')
+    --   local test_nvim = path:find('test')
+    --   if nvim_workspace then
+    --     local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file("lua", true)
+    --     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+    --       runtime = {
+    --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+    --         version = 'LuaJIT',
+    --         pathStrict = true
+    --       },
+    --       -- Make the server aware of Neovim runtime files
+    --       workspace = {
+    --         library = library
+    --       }
+    --     })
+    --     client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+    --   end
+    --   return true
+    -- end,
     settings = {
       Lua = {
         completion = {
@@ -69,7 +68,12 @@ local configs = {
 require('pynappo.autocmds').create({'LspAttach'}, {
   callback = function(details)
     local bufnr = details.buf
-    local client = vim.lsp.get_client_by_id (details.data.client_id)
+    local client = vim.lsp.get_client_by_id (details.data.client_id) or {}
+    -- local config = vim.tbl_get(client, 'config')
+    -- if config then
+    --   table.sort(config)
+    --   vim.print(#config, config)
+    -- end
     if not client then return end
     if vim.tbl_contains({'copilot', 'null-ls'}, client.name or vim.print('no client found')) then return end
 

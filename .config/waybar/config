@@ -30,7 +30,7 @@
     },
     "separate-outputs": true
   },
-  "modules-right": ["battery", "wireplumber", "clock"],
+  "modules-right": ["tray", "battery", "wireplumber", "clock"],
   "battery": {
     "format": "{capacity}% {icon}",
     "format-icons": ["", "", "", "", ""]

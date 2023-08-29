@@ -4,7 +4,13 @@ return {
     'neovim/nvim-lspconfig',
     event = 'BufReadPre',
     dependencies = {
-      { 'folke/neodev.nvim' },
+      {
+        'folke/neodev.nvim',
+        opts = {
+          override = function(root_dir, options)
+          end
+        },
+      },
       'williamboman/mason.nvim',
       'mfussenegger/nvim-jdtls',
       'simrat39/rust-tools.nvim',

@@ -88,3 +88,8 @@ button.vivaldi {
 #header {
   min-height: 30px !important;
 }
+#browser.linux .window-buttongroup {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}

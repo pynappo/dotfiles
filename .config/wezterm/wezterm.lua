@@ -68,7 +68,9 @@ if is_windows then
     end
   end
 end
+config.window_background_opacity = 0.8
 config.launch_menu = launch_menu
+config.term = 'wezterm'
 config.debug_key_events = true
 config.max_fps = 144
 config.color_scheme = 'Ayu Mirage'

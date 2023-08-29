@@ -1,6 +1,6 @@
 local autocmds = {}
 local utils = require('pynappo.utils')
--- A little wrapper around nvim_create_autocmd
+-- A function to create a function that creates autocmds for an augroup
 function autocmds.create_wrapper(augroup_name)
   local augroup = vim.api.nvim_create_augroup(augroup_name, { clear = true })
   return function(event, opts)

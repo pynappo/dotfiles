@@ -24,7 +24,7 @@ return {
       },
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = {'nim'},
+        additional_vim_regex_highlighting = { "nim" },
       },
       textsubjects = {
         enable = true,

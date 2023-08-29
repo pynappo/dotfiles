@@ -3,7 +3,7 @@ local normalize_system_command = function(cmd)
   return utils.is_windows and vim.list_extend({ 'pwsh', '-NoProfile', '-c' }, cmd) or cmd
 end
 local print_system_command = function(cmd)
-  local result = vim.system(vim.print(normalize_system_command(cmd)), { cwd = vim.fn.getcwd(), text = true }):wait()
+  local result = vim.system(normalize_system_command(cmd), { cwd = vim.fn.getcwd(), text = true }):wait()
   print(result.stdout:gsub('%%', [[\]]))
 end
 local commands = {

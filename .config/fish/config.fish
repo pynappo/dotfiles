@@ -22,6 +22,8 @@ abbr -a -- edit '$EDITOR'
 abbr -a nman --position anywhere --set-cursor 'nvim "+Man %"'
 abbr -a .C --position anywhere '~/.config/'
 abbr -a f --set-cursor 'fd . % | fzf'
+abbr -a -- jammers 'mpv'
+abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
 function last_history_item
   echo $history[1]
 end

@@ -71,7 +71,8 @@ setmetatable(theme.overrides, {
   end
 })
 
-if not vim.g.started_by_firenvim then
+local g = vim.g
+if not (g.started_by_firenvim or g.neovim or g.gonvim_running) then
   for _, hl in ipairs(transparent_highlights) do theme.overrides.all_themes.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE' end
 end
 

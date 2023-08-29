@@ -26,6 +26,15 @@ return {
     enabled = false
   },
   {
+    "baliestri/aura-theme",
+    lazy = false,
+    priority = 1000,
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
+      vim.cmd([[colorscheme aura-dark]])
+    end
+  },
+  {
     'levouh/tint.nvim',
     priority = 1000,
     enabled = true,

@@ -89,11 +89,6 @@ opt.listchars = {
   nbsp = '␣',
 }
 vim.api.nvim_create_autocmd('FileType', { callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end })
-vim.filetype.add({
-  extension = {
-    rasi = 'rasi'
-  }
-})
 local signs = {
   DiagnosticSignError = { text = "", texthl = "DiagnosticSignError" },
   DiagnosticSignWarn = { text = "", texthl = "DiagnosticSignWarn" },
@@ -209,10 +204,13 @@ vim.cmd.colorscheme('ayu')
 vim.filetype.add({
   pattern = {
     [vim.env.XDG_CONFIG_HOME or ".-" .. "/waybar/config"] = 'json',
+  },
+  extension = {
+    rasi = 'rasi'
   }
 })
 -- GUI stuff
-o.guifont = "Inconsolata Nerd Font Mono:h8"
+o.guifont = "Inconsolata Nerd Font Mono:h12:#e-subpixelantialias"
 g.firenvim_config = {
   globalSettings = {
     alt = 'all',
