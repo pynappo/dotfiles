@@ -16,6 +16,7 @@ return {
             NormalNC = { link = 'Normal' },
             WinBar = { bg = colors.bg },
             WinBarNC = { bg = colors.bg },
+            MsgArea = { link = 'NormalFloat' }
           }
         end,
       })
@@ -63,11 +64,12 @@ return {
     end
   },
   {
-    "max397574/colortils.nvim",
-    cmd = "Colortils",
-    config = true
-  },
-  {
     'uga-rosa/ccc.nvim',
+    opts = {
+      highlighter = {
+        auto_enable = true,
+        lsp = true,
+      }
+    }
   }
 }

@@ -125,7 +125,6 @@ end
 vim.opt.runtimepath:prepend(lazypath)
 
 require("pynappo.autocmds")
-require('lazy.state').checker.last_check = 
 require('lazy').setup({
   spec = {
     {
@@ -149,13 +148,31 @@ require('lazy').setup({
   },
   ui = {
     size = { width = 0.8, height = 0.8 },
-    border = 'single'
+    border = 'single',
+    custom_keys = {
+      -- you can define custom key maps here.
+      -- To disable one of the defaults, set it to false
+
+      -- open lazygit log
+      ["<localleader>l"] = function(plugin)
+        require("lazy.util").float_term({ "lazygit", "log" }, {
+          cwd = plugin.dir,
+        })
+      end,
+
+      -- open a terminal for the plugin dir
+      ["<localleader>t"] = function(plugin)
+        require("lazy.util").float_term(nil, {
+          cwd = plugin.dir,
+        })
+      end,
+    },
   },
   diff = { cmd = 'diffview.nvim' },
   checker = {
     enabled = true,
     notify = true,
-    frequency = math.huge,
+    frequency = 24 * 60 * 60,
   },
   change_detection = {
     enabled = true,
@@ -203,7 +220,7 @@ vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
   pattern = {
-    [vim.env.XDG_CONFIG_HOME or ".-" .. "/waybar/config"] = 'json',
+    [(vim.env.XDG_CONFIG_HOME or ".-") .. "/waybar/config"] = 'json',
   },
   extension = {
     rasi = 'rasi'

@@ -24,12 +24,6 @@ return {
       enabled = true,
       highlight = true,
     },
-    button_defaults = {
-      position = "center",
-      cursor = 3,
-      align_shortcut = "right",
-      hl_shortcut = "Keyword"
-    }
   },
   config = function(_, options)
     local plenary_path = require("plenary.path")
@@ -40,14 +34,33 @@ return {
     local function get_extension(fn)
       return vim.fn.fnamemodify(fn, ":e")
     end
-    local button = function(lhs, label, rhs, opts)
-      opts = opts and vim.tbl_extend("keep", opts, options.button_defaults) or options.button_defaults
-      opts.shortcut = lhs
+    local function button(lhs, label, rhs, opts)
+      local keybind_opts = { silent = true, nowait = true }
+      local button_opts = {
+        position = "center",
+        cursor = 3,
+        align_shortcut = "right",
+        hl_shortcut = "Keyword",
+        shortcut = lhs,
+        width = options.width
+      }
+      if opts then button_opts = vim.tbl_extend('force', button_opts, opts) end
+      local on_press
+      if rhs then
+        if type(rhs) == "function" then
+          keybind_opts.callback = rhs
+          on_press = rhs
+          button_opts.keymap = {'n', lhs, '', keybind_opts}
+        elseif type(rhs) == "string" then
+          on_press = function() vim.api.nvim_input(rhs) end
+          button_opts.keymap = {'n', lhs, rhs, keybind_opts}
+        end
+      end
       return {
         type = 'button',
         val = label,
-        on_press = rhs and type(rhs) == "function" and rhs or function() vim.api.nvim_input(rhs) end,
-        opts = opts
+        on_press = on_press,
+        opts = button_opts
       }
     end
 
@@ -65,7 +78,7 @@ return {
         ico_txt = ""
       end
       local cd_cmd = (autocd and " | tcd %:p:h" or "")
-      local element = dashboard.button(sc, ico_txt .. short_fn, "<cmd>e " .. filename .. cd_cmd .." <CR>")
+      local element = button(sc, ico_txt .. short_fn, "<cmd>e " .. filename .. cd_cmd .." <CR>")
       local fn_start = short_fn:match(".*[/\\]")
       if fn_start then table.insert(fb_hl, { "Comment", #ico_txt - 2, #fn_start + #ico_txt }) end
       element.opts.width = options.width

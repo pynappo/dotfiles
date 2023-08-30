@@ -13,7 +13,10 @@ return {
     },
     'mrbjarksen/neo-tree-diagnostics.nvim'
   },
-  init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
+  init = function()
+    vim.g.neo_tree_remove_legacy_commands = 1
+    require('pynappo.keymaps').setup.neotree()
+  end,
   config = function()
     local function getTelescopeOpts(state, path)
       return {
@@ -169,5 +172,4 @@ return {
       },
     }, require('pynappo.keymaps').neotree))
   end,
-  keys = require('pynappo/keymaps').setup.neotree({ lazy = true }),
 }
