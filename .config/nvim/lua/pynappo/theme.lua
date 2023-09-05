@@ -72,15 +72,21 @@ setmetatable(theme.overrides, {
 })
 
 local g = vim.g
-if not (g.started_by_firenvim or g.neovim or g.gonvim_running) then
+if not require('pynappo.utils').is_gui then
   for _, hl in ipairs(transparent_highlights) do theme.overrides.all_themes.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE' end
 end
 
-function theme.set_rainbow_colors(prefix, suffix_colors)
-  local hl_list = {}
-  for suffix, color in pairs(suffix_colors) do hl_list[suffix] = { prefix .. suffix  , color} end
-  for _, hl in pairs(hl_list) do theme.overrides.all_themes.nvim_highlights[hl[1]] = { fg = hl[2], nocombine = true } end
-  return hl_list
+function theme.set_rainbow_colors(prefix, colors)
+  local hl_names = {}
+  for _, color in ipairs(colors) do
+    local name = color[1]
+    local hex = color[2]
+    local hl_name = prefix .. name
+    table.insert(hl_names, hl_name)
+    vim.api.nvim_set_hl(0, hl_name, {fg = hex})
+    theme.overrides.all_themes.nvim_highlights[hl_name] = { fg = hex, nocombine = true }
+  end
+  return hl_names
 end
 
 return theme

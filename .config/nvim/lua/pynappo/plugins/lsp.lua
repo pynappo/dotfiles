@@ -4,18 +4,14 @@ return {
     'neovim/nvim-lspconfig',
     event = 'BufReadPre',
     dependencies = {
-      {
-        'folke/neodev.nvim',
-        opts = {
-          override = function(root_dir, options)
-          end
-        },
-      },
-      'williamboman/mason.nvim',
+      { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',
       'simrat39/rust-tools.nvim',
       'jose-elias-alvarez/null-ls.nvim',
-      'williamboman/mason-lspconfig.nvim',
+      {
+        'williamboman/mason-lspconfig.nvim',
+        dependencies = { 'williamboman/mason.nvim' },
+      },
       'alaviss/nim.nvim',
     },
     init = require('pynappo/keymaps').setup.diagnostics,

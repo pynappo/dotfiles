@@ -186,6 +186,7 @@ return {
         button("<CR>p", "󰊄  Live grep"),
         button("c", "  Configuration", "<cmd>Config<CR>"),
         button("u", "  Update plugins", "<cmd>Lazy sync<CR>"),
+        button("m", "  Mason", "<cmd>Mason<CR>"),
       },
       position = "center",
       opts = {

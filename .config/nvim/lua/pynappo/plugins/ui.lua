@@ -3,102 +3,36 @@ local theme = require('pynappo.theme')
 return {
   {
     'lukas-reineke/indent-blankline.nvim',
+    branch = 'v3',
     event = 'BufReadPre',
     config = function()
-      local colors = { '#3b2727', '#464431', '#31493a', '#273b4b', '#303053', '#403040' }
-      local hl_list = theme.set_rainbow_colors('IndentBlanklineContextChar', colors, 'Set rainbow indent lines')
-      require('indent_blankline').setup({
-        filetype_exclude = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
-        show_trailing_blankline_indent = true,
-        space_char_blankline = ' ',
-        char_highlight_list = vim.tbl_map(function(table) return table[1] end, hl_list),
-        use_treesitter = true,
-        use_treesitter_scope = true,
+      local colors = {
+        { 'Red', '#3b2727' },
+        { 'Yellow', '#464431' },
+        { 'Green', '#31493a' },
+        { 'Blue', '#273b4b' },
+        { 'Indigo', '#303053' },
+        { 'Violet', '#403040' },
+      }
+      require('ibl').setup({
+        exclude = {
+          filetype = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
+        },
+        indent = {
+          highlight = theme.set_rainbow_colors('IndentBlanklineLevel', colors)
+        },
+        scope = {
+          enabled = false,
+          show_start = true,
+        }
       })
-      theme.overrides.all_themes.nvim_highlights['IndentBlanklineContextChar'] = { fg='#777777', bold = true, nocombine = true }
+      local hooks = require "ibl.hooks"
+      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
     end,
   },
   { 'folke/which-key.nvim', event = 'VeryLazy', opts = {window = {border = 'single'}} },
   { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
-  {
-    'folke/noice.nvim',
-    opts = {
-      cmdline = {
-        enabled = false,
-        view = "cmdline"
-      },
-      messages = { enabled = false },
-      lsp = {
-        progress = {
-          enabled = true,
-        },
-        override = {
-          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-          ['vim.lsp.util.stylize_markdown'] = true,
-          ['cmp.entry.get_documentation'] = true,
-        },
-      },
-      views = {
-        hover = {
-          border = { style = 'rounded' },
-          position = { row = 2 },
-        },
-        mini = {
-          position = { row = -1 - vim.o.cmdheight } -- better default
-        }
-      },
-      routes = {
-        {
-          filter = {
-            event = 'lsp',
-            kind = 'progress',
-            cond = function(message)
-              local client = vim.tbl_get(message.opts, 'progress', 'client')
-              return client == 'null-ls'
-            end
-          },
-          opts = {skip = true}
-        },
-        {
-          filter = { find = 'No information available' },
-          opts = { stop = true },
-        },
-        {
-          filter = { find = 'bytes$' },
-          opts = { skip = true },
-        },
-      },
-      presets = {
-        inc_rename = true,
-        long_message_to_split = true,
-        lsp_doc_border = true,
-      },
-    },
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'rcarriga/nvim-notify',
-      {
-        'smjonas/inc-rename.nvim',
-        dependencies = {
-          {
-            'stevearc/dressing.nvim',
-            opts = {
-              input = {
-                override = function(conf)
-                  conf.col = -1
-                  conf.row = 0
-                  return conf
-                end,
-              },
-            }
-          },
-        },
-        init = keymaps.setup.incremental_rename,
-        config = true
-      },
-    },
-  },
   {
     'RRethy/vim-illuminate',
     event = 'BufRead',

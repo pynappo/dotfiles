@@ -83,8 +83,18 @@ function M.convert_from_lazy(lazy_keys, from_register, to_register)
     opts[1], opts[2], opts.mode = nil, nil, nil
     keymap_table:insert(mode, key, rhs, opts, (type(rhs) == 'function' and functions[i] or ('function_' .. i)))
   end
-  print(keymap_table)
   return keymap_table:get_keymaps(true)
+end
+
+local function abbreviate_command(abbr, expansion)
+  return {
+    abbr,
+    function()
+      local typing_command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdpos() < (#abbr + 2)
+      return typing_command and expansion or abbr
+    end,
+    { remap = false, expr = true}
+  }
 end
 
 M.setup = {
@@ -134,6 +144,10 @@ M.setup = {
         { '<leader>P', '"+P' },
         { '<leader>y', '"+y' },
         { '<leader>Y', '"+Y' },
+      },
+      [{'ca'}] = {
+        abbreviate_command('L', 'Lazy'),
+        abbreviate_command('s', 's/g<Left><Left>')
       },
       [{ 'v' }] = {
         {

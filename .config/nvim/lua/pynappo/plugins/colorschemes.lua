@@ -12,6 +12,7 @@ return {
           return {
             WildMenu = { bg = colors.bg, fg = colors.markup },
             Comment = { fg = colors.fg_idle, italic = true },
+            LineNr = { fg = "#555555"},
             Search = { underline = true },
             NormalNC = { link = 'Normal' },
             WinBar = { bg = colors.bg },
@@ -24,7 +25,8 @@ return {
   },
   {
     'catppuccin/nvim',
-    enabled = false
+    enabled = true,
+    as = "catppuccin"
   },
   {
     "baliestri/aura-theme",
@@ -71,5 +73,6 @@ return {
         lsp = true,
       }
     }
-  }
+  },
+  { 'pynappo/theme-vim' },
 }

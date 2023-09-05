@@ -28,7 +28,7 @@ o.mousescroll = "ver:8,hor:6"
 o.mousemoveevent = true
 
 -- Tabs
-o.tabstop = 2
+o.vartabstop = '2'
 o.shiftwidth = 0
 o.softtabstop = -1
 o.expandtab = true
