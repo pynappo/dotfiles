@@ -68,6 +68,16 @@ if is_windows then
     end
   end
 end
+ 
+config.ssh_domains = wezterm.default_ssh_domains()
+wezterm.on('update-status', function(window, pane)
+  local meta = pane:get_metadata() or {}
+  if meta.is_tardy then
+    local secs = meta.since_last_response_ms / 1000.0
+    window:set_right_status(string.format('tardy: %5.1fs⏳', secs))
+  end
+end)
+
 config.window_background_opacity = 0.8
 config.launch_menu = launch_menu
 config.term = 'wezterm'

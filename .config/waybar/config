@@ -1,9 +1,10 @@
 [{
   "layer": "top",
   "position": "bottom",
-  "modules-left": ["wlr/workspaces", "sway/mode"],
-  "wlr/workspaces": {
-    "format": "{icon}",
+  "modules-left": ["hyprland/workspaces", "sway/mode"],
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "format-icons": "{}",
     "on-scroll-up": "hyprctl dispatch workspace e+2",
     "on-scroll-down": "hyprctl dispatch workspace e-2",
     "on-click": "activate",
@@ -19,7 +20,6 @@
       "9": ["DP-2"],
       "10": ["DP-3"],
     },
-    "sort-by-number": true
  },
   "modules-center": ["hyprland/window"],
   "hyprland/window": {
@@ -30,10 +30,17 @@
     },
     "separate-outputs": true
   },
-  "modules-right": ["tray", "battery", "wireplumber", "clock"],
+  "modules-right": ["tray", "battery", "idle_inhibitor", "wireplumber", "clock"],
   "battery": {
     "format": "{capacity}% {icon}",
     "format-icons": ["", "", "", "", ""]
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
   },
   "wireplumber": {
     "format": "{volume}% {icon}",

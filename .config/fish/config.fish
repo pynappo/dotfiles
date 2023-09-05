@@ -1,6 +1,6 @@
+set XDG_CONFIG_HOME ~/.config
 oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
 if status is-interactive
-  # Commands to run in interactive sessions can go here
   if set -q TERMUX_VERSION
     fish_add_path -p "$HOME/neovim/build/bin"
   end
@@ -20,10 +20,13 @@ abbr -a -- g 'git'
 abbr -a -- sudo 'sudo -E -s'
 abbr -a -- edit '$EDITOR'
 abbr -a nman --position anywhere --set-cursor 'nvim "+Man %"'
-abbr -a .C --position anywhere '~/.config/'
+abbr -a .C --position anywhere '$XDG_CONFIG_HOME/'
 abbr -a f --set-cursor 'fd . % | fzf'
 abbr -a -- jammers 'mpv'
 abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
+abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
+abbr -a -- ibmconnect 'cat ~/code/cs/131/openconnect-password.txt | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u (cat ~/code/cs/131/openconnect-user.txt) --passwd-on-stdin'
+
 function last_history_item
   echo $history[1]
 end
