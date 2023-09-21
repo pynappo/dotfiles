@@ -4,10 +4,31 @@ if status is-interactive
   if set -q TERMUX_VERSION
     fish_add_path -p "$HOME/neovim/build/bin"
   end
-end
+  # Emulates vim's cursor shape behavior
+  # Set the normal and visual mode cursors to a block
+  set fish_cursor_default block
+  # Set the insert mode cursor to a line
+  set fish_cursor_insert line
+  # Set the replace mode cursor to an underscore
+  set fish_cursor_replace_one underscore
+  # The following variable can be used to configure cursor shape in
+  # visual mode, but due to fish_cursor_default, is redundant here
+  set fish_cursor_visual block
+  set fish_vi_force_cursor 1
+  function fish_user_key_bindings
+    # Execute this once perk mode that emacs bindings should be used in
+    fish_default_key_bindings -M insert
 
-# make abbreviations more versatile
-bind "/" expand-abbr or self-insert
+    # Then execute the vi-bindings so they take precedence when there's a conflict.
+    # Without --no-erase fish_vi_key_bindings will default to
+    # resetting all bindings.
+    # The argument specifies the initial mode (insert, "default" or visual).
+    fish_vi_key_bindings --no-erase insert
+    # make abbreviations more versatile
+    bind --erase --preset "/" 
+    bind -M insert / expand-abbr or self-insert
+  end
+end
 
 abbr -a -- dotfiles 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 abbr -a -- .f 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
@@ -19,9 +40,9 @@ abbr -a -- e '$EDITOR'
 abbr -a -- g 'git'
 abbr -a -- sudo 'sudo -E -s'
 abbr -a -- edit '$EDITOR'
-abbr -a nman --position anywhere --set-cursor 'nvim "+Man %"'
-abbr -a .C --position anywhere '$XDG_CONFIG_HOME/'
-abbr -a f --set-cursor 'fd . % | fzf'
+abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
+abbr -a --position anywhere .C '$XDG_CONFIG_HOME/'
+abbr -a --set-cursor f 'fd . % | fzf'
 abbr -a -- jammers 'mpv'
 abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
 abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
@@ -32,13 +53,13 @@ function last_history_item
 end
 abbr -a !! --position anywhere --function last_history_item
 
-abbr -a -- ls "exa --icons"
-abbr -a -- ll "exa --icons --group --header --group-directories-first --long"
-function exa -d "exa with auto-git"
+abbr -a -- ls "eza --icons"
+abbr -a -- ll "eza --icons --group --header --group-directories-first --long"
+function eza -d "eza with auto-git"
   if git rev-parse --is-inside-work-tree &>/dev/null
-    command exa --git --classify $argv
+    command eza --git --classify $argv
   else
-    command exa --classify $argv
+    command eza --classify $argv
   end
 end
 
@@ -52,25 +73,25 @@ function expand_dots -d 'expand ... to ../.. etc'
   set -l cmd (commandline --cut-at-cursor)
   set -l split (string split ' ' $cmd)
   switch $split[-1]
-  case './*'; commandline --insert '.'
-  case '*..'
-    # Only expand if the string consists of dots and slashes.
-    # We don't want to expand strings like `bazel build target/...`.
-    if string match --quiet --regex '^[/.]*$' $split[-1]
-      commandline --insert '/..'
-    else
-      commandline --insert '.'
-    end
-  case '*'; commandline --insert '.'
+    case './*'; commandline --insert '.'
+    case '*..'
+      # Only expand if the string consists of dots and slashes.
+      # We don't want to expand strings like `bazel build target/...`.
+      if string match --quiet --regex '^[/.]*$' $split[-1]
+        commandline --insert '/..'
+      else
+        commandline --insert '.'
+      end
+    case '*'; commandline --insert '.'
   end
 end
 function expand_lastarg
   switch (commandline -t)
-  case '!'
-    commandline -t ""
-    commandline -f history-token-search-backward
-  case '*'
-    commandline -i '$'
+    case '!'
+      commandline -t ""
+      commandline -f history-token-search-backward
+    case '*'
+      commandline -i '$'
   end
 end
 
