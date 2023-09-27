@@ -4,6 +4,7 @@ if status is-interactive
   if set -q TERMUX_VERSION
     fish_add_path -p "$HOME/neovim/build/bin"
   end
+  fish_add_path -p ~/.cargo/bin
   # Emulates vim's cursor shape behavior
   # Set the normal and visual mode cursors to a block
   set fish_cursor_default block
@@ -15,6 +16,7 @@ if status is-interactive
   # visual mode, but due to fish_cursor_default, is redundant here
   set fish_cursor_visual block
   set fish_vi_force_cursor 1
+  set LS_COLORS $(vivid generate ayu)
 end
 
 function fish_user_key_bindings
@@ -47,6 +49,7 @@ abbr -a -- jammers 'mpv'
 abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
 abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
 abbr -a -- ibmconnect 'cat ~/code/cs/131/openconnect-password.txt | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u (cat ~/code/cs/131/openconnect-user.txt) --passwd-on-stdin'
+abbr -a --set-cursor :h 'nvim "+help %"'
 
 function last_history_item
   echo $history[1]

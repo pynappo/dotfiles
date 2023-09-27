@@ -111,12 +111,12 @@ local direction_keys = {
 local function split_nav(resize_or_move, key)
   return {
     key = key,
-    mods = resize_or_move == 'resize' and 'META' or 'CTRL',
+    mods = resize_or_move == 'resize' and 'ALT' or 'CTRL',
     action = wezterm.action_callback(function(win, pane)
       if is_vim(pane) then
         -- pass the keys through to vim/nvim
         win:perform_action({
-          SendKey = { key = key, mods = resize_or_move == 'resize' and 'META' or 'CTRL' },
+          SendKey = { key = key, mods = resize_or_move == 'resize' and 'ALT' or 'CTRL' },
         }, pane)
       else
         if resize_or_move == 'resize' then
@@ -172,22 +172,14 @@ config.keys = {
   { key = '0', mods = 'SHIFT|CTRL', action = act.ResetFontSize },
   { key = '0', mods = 'SUPER', action = act.ResetFontSize },
   { key = '1', mods = 'SHIFT|CTRL', action = act.ActivateTab(0) },
-  { key = '1', mods = 'SUPER', action = act.ActivateTab(0) },
   { key = '2', mods = 'SHIFT|CTRL', action = act.ActivateTab(1) },
-  { key = '2', mods = 'SUPER', action = act.ActivateTab(1) },
   { key = '3', mods = 'SHIFT|CTRL', action = act.ActivateTab(2) },
-  { key = '3', mods = 'SUPER', action = act.ActivateTab(2) },
   { key = '4', mods = 'SHIFT|CTRL', action = act.ActivateTab(3) },
-  { key = '4', mods = 'SUPER', action = act.ActivateTab(3) },
   { key = '5', mods = 'SHIFT|CTRL', action = act.ActivateTab(4) },
   { key = '5', mods = 'SHIFT|ALT|CTRL', action = act.SplitHorizontal{ domain =  'CurrentPaneDomain' } },
-  { key = '5', mods = 'SUPER', action = act.ActivateTab(4) },
   { key = '6', mods = 'SHIFT|CTRL', action = act.ActivateTab(5) },
-  { key = '6', mods = 'SUPER', action = act.ActivateTab(5) },
   { key = '7', mods = 'SHIFT|CTRL', action = act.ActivateTab(6) },
-  { key = '7', mods = 'SUPER', action = act.ActivateTab(6) },
   { key = '8', mods = 'SHIFT|CTRL', action = act.ActivateTab(7) },
-  { key = '8', mods = 'SUPER', action = act.ActivateTab(7) },
   { key = '9', mods = 'SHIFT|CTRL', action = act.ActivateTab(-1) },
   { key = '9', mods = 'SUPER', action = act.ActivateTab(-1) },
   { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },

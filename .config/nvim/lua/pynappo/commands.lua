@@ -7,7 +7,7 @@ local print_system_command = function(cmd)
   print(result.stdout:gsub('%%', [[\]]))
 end
 local commands = {
-  { "CDhere", "cd %:p:h" },
+  { "CDhere", "tcd %:p:h" },
   {
     "DotfilesGit",
     function()

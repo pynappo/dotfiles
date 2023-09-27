@@ -156,6 +156,7 @@ return {
         },
         find_by_full_path_words = false,  -- `false` means it only searches the tail of a path.
         group_empty_dirs = true, -- when true, empty folders will be grouped together
+        scan_mode = "deep",
         search_limit = 50, -- max number of search results when using filters
         follow_current_file = {
           enabled = true
@@ -169,6 +170,7 @@ return {
         }, -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
         group_empty_dirs = true, -- when true, empty directories will be grouped together
+        scan_mode = "deep",
       },
     }, require('pynappo.keymaps').neotree))
   end,

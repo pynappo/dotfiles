@@ -56,7 +56,7 @@ function M.convert_from_api(from_register, to_register)
   local register_text = vim.fn.getreg(from_register or '+')
   local keymap_table = KeymapTable:new()
   for args_string in (register_text):gmatch('set(%b())') do
-    local args_table = (loadstring('return {' .. args_string:sub(2, -2) .. '}'))()
+    local args_table = assert(loadstring('return {' .. args_string:sub(2, -2) .. '}'))()
     if type(args_table[3]) == 'function' then args_table[3] = args_string:match('.-,.-,(.-),') end
     keymap_table:insert(unpack(args_table))
   end
@@ -73,7 +73,7 @@ function M.convert_from_lazy(lazy_keys, from_register, to_register)
       table.insert(functions, func)
     end
   end
-  lazy_keys = lazy_keys or (loadstring('return ' .. register_text))()
+  lazy_keys = lazy_keys or assert(loadstring('return ' .. register_text))()
   local keymap_table = KeymapTable:new()
   for i, keymap in ipairs(lazy_keys) do
     local key = keymap[1]

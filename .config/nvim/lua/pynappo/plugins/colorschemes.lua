@@ -29,15 +29,6 @@ return {
     as = "catppuccin"
   },
   {
-    "baliestri/aura-theme",
-    lazy = false,
-    priority = 1000,
-    config = function(plugin)
-      vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
-      vim.cmd([[colorscheme aura-dark]])
-    end
-  },
-  {
     'levouh/tint.nvim',
     priority = 1000,
     enabled = true,
@@ -71,8 +62,8 @@ return {
       highlighter = {
         auto_enable = true,
         lsp = true,
+        mode = "fg"
       }
     }
   },
-  { 'pynappo/theme-vim' },
 }

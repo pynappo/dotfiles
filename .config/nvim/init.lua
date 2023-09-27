@@ -57,6 +57,7 @@ o.showmode = false
 o.history = 1000
 o.scrolloff = 4
 o.undofile = true
+o.smoothscroll = true
 opt.sessionoptions = {
   'buffers', 'curdir', 'folds', 'help', 'tabpages', 'winsize', 'globals', 'terminal', 'options'
 }

@@ -32,7 +32,7 @@ return {
       })
     end
   },
-  { 'tiagovla/scope.nvim' },
+  { 'tiagovla/scope.nvim', opts = {} },
   {
     'chentoast/marks.nvim',
     event = 'VeryLazy',
@@ -55,7 +55,7 @@ return {
   },
   {
     'andymass/vim-matchup',
-    event = 'BufRead',
+    event = { "BufNewFile", 'BufRead' },
     init = function()
       vim.g.matchup_surround_enabled = 1
       vim.g.matchup_transmute = 1
@@ -63,4 +63,5 @@ return {
       vim.g.matchup_matchparen_offscreen = {}
     end,
   },
+  {'Aasim-A/scrollEOF.nvim', config = false}
 }

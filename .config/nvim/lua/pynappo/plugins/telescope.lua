@@ -18,6 +18,11 @@ return {
           prompt_position = 'top',
         },
         file_ignore_patterns = { "vendor/*" },
+        mappings = {
+          n = {
+            ['dd'] = "delete_buffer"
+          }
+        }
       },
       pickers = {
 

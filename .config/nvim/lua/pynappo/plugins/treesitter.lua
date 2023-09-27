@@ -1,6 +1,6 @@
 return {
   'nvim-treesitter/nvim-treesitter',
-  event = 'BufReadPost',
+  event = { 'BufNewFile', 'BufReadPost' },
   build = function()
     if not vim.env.GIT_WORK_TREE then vim.cmd('TSUpdate') end
   end,

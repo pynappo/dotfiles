@@ -20,7 +20,7 @@
       "9": ["DP-2"],
       "10": ["DP-3"],
     },
- },
+  },
   "modules-center": ["hyprland/window"],
   "hyprland/window": {
     "max-length": 50,
@@ -30,7 +30,35 @@
     },
     "separate-outputs": true
   },
-  "modules-right": ["tray", "battery", "idle_inhibitor", "wireplumber", "clock"],
+  "modules-right": [
+    "custom/wl-gammarelay-temperature",
+    "custom/wl-gammarelay-brightness",
+    "custom/wl-gammarelay-gamma",
+    "tray",
+    "battery",
+    "idle_inhibitor",
+    "network",
+    "wireplumber",
+    "clock"
+  ],
+  "custom/wl-gammarelay-temperature": {
+    "format": "{} ",
+    "exec": "wl-gammarelay-rs watch {t}",
+    "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100",
+    "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100"
+  },
+  "custom/wl-gammarelay-brightness": {
+    "format": "{}% ",
+    "exec": "wl-gammarelay-rs watch {bp}",
+    "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02",
+    "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02"
+  },
+  "custom/wl-gammarelay-gamma": {
+    "format": "{}% γ",
+    "exec": "wl-gammarelay-rs watch {g}",
+    "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02",
+    "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02"
+  },
   "battery": {
     "format": "{capacity}% {icon}",
     "format-icons": ["", "", "", "", ""]
@@ -42,15 +70,28 @@
       "deactivated": ""
     }
   },
+  "network": {
+    "interface": "wlan0",
+    "format": "{ifname}",
+    "format-wifi": "{essid} ({signalStrength}%) ",
+    "format-ethernet": "{ipaddr}/{cidr} 󰊗",
+    "format-disconnected": "", //An empty format will hide the module.
+    "tooltip-format": "{ifname} via {gwaddr} 󰊗",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+    "tooltip-format-ethernet": "{ifname} ",
+    "tooltip-format-disconnected": "Disconnected",
+    "max-length": 50
+  },
   "wireplumber": {
     "format": "{volume}% {icon}",
     "format-muted": "",
     "on-click": "pavucontrol",
-    "format-icons": ["", "", ""]
+    "format-icons": ["", "", ""],
+    "max-volume": 150.0
   },
   "clock": {
-    "format": "{:%H:%M}  ",
-    "format-alt": "{:%A, %B %d, %Y (%R)}  ",
+    "format": "{:%I:%M %p} ",
+    "format-alt": "{:%A, %B %d, %Y (%R)} 󰃰 ",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode"          : "year",

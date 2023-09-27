@@ -9,7 +9,7 @@ return {
         config = function() require('nvim-dap-virtual-text').setup({ commented = true }) end,
       },
     },
-    config = function() 
+    config = function()
       local keymaps = require("pynappo/keymaps")
       keymaps.setup.dap()
       keymaps.setup.dapui()

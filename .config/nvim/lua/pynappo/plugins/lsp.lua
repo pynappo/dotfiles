@@ -2,7 +2,7 @@
 return {
   {
     'neovim/nvim-lspconfig',
-    event = 'BufReadPre',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',

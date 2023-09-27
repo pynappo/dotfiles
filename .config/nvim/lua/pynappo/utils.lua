@@ -24,4 +24,23 @@ function utils.nvim_get_hl_hex(ns_id, opts)
   end
   return hl
 end
+
+local open_handlers = {
+  -- deal with 
+  function(path)
+
+  end,
+  vim.ui.open,
+}
+
+-- A custom version of vim.ui.open
+function utils.open(path)
+  for _, handler in open_handlers do
+    local res, err = handler(path)
+    if err then break end
+    if res then return res end
+  end
+  return nil, vim.print("custom ui.open: no handler worked")
+end
+
 return utils

@@ -4,7 +4,7 @@ return {
   {
     'lukas-reineke/indent-blankline.nvim',
     branch = 'v3',
-    event = 'BufReadPre',
+    event = { 'BufNewFile', 'BufReadPre' },
     config = function()
       local colors = {
         { 'Red', '#3b2727' },
@@ -35,7 +35,7 @@ return {
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
   {
     'RRethy/vim-illuminate',
-    event = 'BufRead',
+    event = {'BufNewFile', 'BufRead'},
     config = function()
       require('illuminate').configure({
         filetypes_denylist = {

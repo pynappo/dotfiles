@@ -284,9 +284,9 @@ local M = {
     update = { 'CursorMoved', 'ModeChanged' }
   },
   lsp_icons = {
-    update = { 'LspAttach', 'LspDetach', 'LspProgress' },
+    update = { 'LspAttach', 'LspDetach', 'LspProgress', 'WinEnter' },
     condition = function(self)
-      self.clients = vim.lsp.get_active_clients()
+      self.clients = vim.lsp.get_clients()
       return self.clients
     end,
     init = function(self)
@@ -295,7 +295,7 @@ local M = {
         ---@diagnostic disable-next-line: undefined-field
         local icon = self.ls_icons[client.name] or require('nvim-web-devicons').get_icon_by_filetype(client.config.filetypes[1]) or '?'
         local child = {
-          { provider = icon },
+          { provider = icon, hl = {bold = client.attached_buffers[vim.api.nvim_get_current_buf()]} },
           -- {
           --   condition = function() return not self.ignore_messages[client.name] end,
           --   provider = function()
@@ -318,8 +318,11 @@ local M = {
     },
     static = {
       ls_icons = {
+        astro = '󰑣',
         copilot = '',
+        emmet_language_server = '',
         ['null-ls'] = '󰟢',
+        tailwindcss = '󱏿',
         jdtls = '',
       },
       ignore_messages = {
