@@ -7,7 +7,7 @@ return {
       "nvim-telescope/telescope.nvim", -- optional
       "sindrets/diffview.nvim",        -- optional
     },
-    config = true,
+    cmd = 'Neogit',
     opts = {
       -- Hides the hints at the top of the status buffer
       disable_hint = false,

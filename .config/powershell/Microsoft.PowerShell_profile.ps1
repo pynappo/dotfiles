@@ -110,10 +110,10 @@ function Remove-Item-ToRecycleBin($Path) {
         }
     }
 }
-Set-Alias -Name df -Value Dotfiles
-Set-Alias -Name dw -Value Dotwindows
-Set-Alias -Name ldf -Value Lazy-Dotfiles
-Set-Alias -Name ldw -Value Lazy-Dotwindows
+Set-Alias -Name dot -Value Dotfiles
+Set-Alias -Name dotw -Value Dotwindows
+Set-Alias -Name ldot -Value Lazy-Dotfiles
+Set-Alias -Name ldotw -Value Lazy-Dotwindows
 Set-Alias -Name trash -Value Remove-Item-ToRecycleBin
 Function C {
     Set-Location @Args

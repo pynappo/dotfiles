@@ -1,11 +1,8 @@
 return {
   {
-    "linrongbin16/fzfx.nvim",
-    dependencies = {
-      { "junegunn/fzf", build = ":call fzf#install()" },
-    },
+    "vijaymarupudi/nvim-fzf",
     config = function()
-      require("fzfx").setup()
+      local fzf = require('fzf')
     end
   },
 }

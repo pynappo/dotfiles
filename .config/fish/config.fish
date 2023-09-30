@@ -33,8 +33,8 @@ function fish_user_key_bindings
 end
 
 abbr -a -- dotfiles 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
-abbr -a -- .f 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
-abbr -a -- l.f 'lazygit --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+abbr -a -- dot 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+abbr -a -- ldot 'lazygit --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 abbr -a -- pm 'sudo pacman'
 abbr -a -- pr 'paru'
 abbr -a -- su 'su --shell=/usr/bin/fish'

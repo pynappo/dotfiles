@@ -4,6 +4,12 @@ return {
     dependencies = {
       'nvim-tree/nvim-web-devicons',
       {
+        'pynappo/tabnames.nvim',
+        opts = {
+          session_support = true,
+        },
+      },
+      {
         'Bekaboo/dropbar.nvim',
         opts = {
           general = { enable = false },

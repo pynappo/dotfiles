@@ -47,7 +47,7 @@ winget import .\.files\winget.json --accept-source-agreements --accept-package-a
 Reload-Path
 
 . $PROFILE
-df config --local status.showUntrackedFiles no
+dot config --local status.showUntrackedFiles no
 
 "Removing notepad"
 winget uninstall 9MSMLRH6LZF3
