@@ -115,4 +115,3 @@
   "vim-repeat": { "branch": "master", "commit": "24afe922e6a05891756ecf331f39a1f6743d3d5a" },
   "which-key.nvim": { "branch": "main", "commit": "7ccf476ebe0445a741b64e36c78a682c1c6118b7" },
   "yanky.nvim": { "branch": "main", "commit": "590a713b0372485f595eea36e7e3ab2069946794" }
-}

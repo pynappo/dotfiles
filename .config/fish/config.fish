@@ -36,7 +36,6 @@ abbr -a -- dotfiles 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 abbr -a -- dot 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 abbr -a -- ldot 'lazygit --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 abbr -a -- pm 'sudo pacman'
-abbr -a -- pr 'paru'
 abbr -a -- su 'su --shell=/usr/bin/fish'
 abbr -a -- e '$EDITOR'
 abbr -a -- g 'git'
@@ -50,6 +49,8 @@ abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
 abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
 abbr -a -- ibmconnect 'cat ~/code/cs/131/openconnect-password.txt | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u (cat ~/code/cs/131/openconnect-user.txt) --passwd-on-stdin'
 abbr -a --set-cursor :h 'nvim "+help %"'
+abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
+abbr -a -- pr 'paru'
 
 function last_history_item
   echo $history[1]

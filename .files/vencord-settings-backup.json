@@ -4,7 +4,9 @@
         "autoUpdate": true,
         "autoUpdateNotification": true,
         "useQuickCss": true,
-        "themeLinks": [],
+        "themeLinks": [
+            "https://raw.githubusercontent.com/axisiscool/ayu-theme/main/theme.css"
+        ],
         "enabledThemes": [],
         "enableReactDevtools": false,
         "frameless": false,
@@ -69,7 +71,8 @@
             },
             "BetterRoleDot": {
                 "enabled": true,
-                "bothStyles": false
+                "bothStyles": false,
+                "copyRoleColorInProfilePopout": false
             },
             "BetterUploadButton": {
                 "enabled": true
@@ -169,17 +172,24 @@
             },
             "MessageClickActions": {
                 "enabled": true,
-                "enableDoubleClickToEdit": true
+                "enableDoubleClickToEdit": true,
+                "requireModifier": false,
+                "enableDoubleClickToReply": true
             },
             "MessageLinkEmbeds": {
                 "enabled": true,
-                "automodEmbeds": "never"
+                "automodEmbeds": "never",
+                "listMode": "blacklist",
+                "idList": ""
             },
             "MessageLogger": {
-                "enabled": true,
+                "enabled": false,
                 "deleteStyle": "text",
                 "ignoreBots": false,
-                "ignoreSelf": true
+                "ignoreSelf": true,
+                "ignoreUsers": "",
+                "ignoreChannels": "",
+                "ignoreGuilds": ""
             },
             "MessageTags": {
                 "enabled": true
@@ -300,7 +310,8 @@
             "ShowHiddenChannels": {
                 "enabled": true,
                 "showMode": 0,
-                "hideUnreads": true
+                "hideUnreads": true,
+                "defaultAllowedUsersAndRolesDropdownState": true
             },
             "SilentMessageToggle": {
                 "enabled": true
@@ -416,13 +427,19 @@
                 "groups": true,
                 "servers": true,
                 "friends": true,
-                "friendRequestCancels": true
+                "friendRequestCancels": true,
+                "notices": false
             },
             "Wikisearch": {
                 "enabled": true
             },
             "ImageZoom": {
-                "enabled": true
+                "enabled": true,
+                "size": 100,
+                "zoom": 2,
+                "nearestNeighbour": false,
+                "square": false,
+                "saveZoomValues": true
             },
             "MoreUserTags": {
                 "enabled": true,
@@ -470,7 +487,9 @@
                 "enabled": false
             },
             "PinDMs": {
-                "enabled": true
+                "enabled": true,
+                "pinnedDMs": "510953901122650112,539308061643243560,1154539548370554920",
+                "pinOrder": 0
             },
             "ReviewDB": {
                 "enabled": true,
@@ -482,12 +501,13 @@
             "ShowMeYourName": {
                 "enabled": true,
                 "displayNames": false,
-                "mode": "user-nick",
+                "mode": "nick-user",
                 "inReplies": false
             },
             "USRBG": {
                 "enabled": true,
-                "voiceBackground": true
+                "voiceBackground": true,
+                "nitroFirst": true
             },
             "BiggerStreamPreview": {
                 "enabled": false
@@ -508,7 +528,10 @@
                 "enabled": false
             },
             "OpenInApp": {
-                "enabled": true
+                "enabled": true,
+                "spotify": true,
+                "steam": true,
+                "epic": true
             },
             "Party mode 🎉": {
                 "enabled": false,
@@ -546,13 +569,34 @@
                 "enabled": true
             },
             "NormalizeMessageLinks": {
-                "enabled": false
+                "enabled": true
             },
             "PreviewMessage": {
                 "enabled": true
             },
             "SecretRingToneEnabler": {
                 "enabled": false
+            },
+            "CopyUserURLs": {
+                "enabled": false
+            },
+            "FixSpotifyEmbeds": {
+                "enabled": false
+            },
+            "Dearrow": {
+                "enabled": false
+            },
+            "PictureInPicture": {
+                "enabled": false
+            },
+            "ServerProfile": {
+                "enabled": true
+            },
+            "ShowTimeouts": {
+                "enabled": false
+            },
+            "ThemeAttributes": {
+                "enabled": true
             }
         },
         "notifications": {
@@ -565,7 +609,7 @@
             "authenticated": false,
             "url": "https://api.vencord.dev/",
             "settingsSync": true,
-            "settingsSyncVersion": 1692690065159
+            "settingsSyncVersion": 1695950272411
         }
     },
     "quickCss": ""
