@@ -1,0 +1,3 @@
+[submodule ".config/mpv/scripts/mpv-cut"]
+	path = .config/mpv/scripts/mpv-cut
+	url = git@github.com:familyfriendlymikey/mpv-cut.git

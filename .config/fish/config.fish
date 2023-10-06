@@ -19,59 +19,6 @@ if status is-interactive
   set LS_COLORS $(vivid generate ayu)
 end
 
-function fish_user_key_bindings
-  # Execute this once perk mode that emacs bindings should be used in
-  fish_default_key_bindings -M insert
-
-  # Then execute the vi-bindings so they take precedence when there's a conflict.
-  # Without --no-erase fish_vi_key_bindings will default to
-  # resetting all bindings.
-  # The argument specifies the initial mode (insert, "default" or visual).
-  fish_vi_key_bindings --no-erase insert
-  # make abbreviations more versatile
-  bind -M insert / expand-abbr or self-insert
-end
-
-abbr -a -- dotfiles 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
-abbr -a -- dot 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
-abbr -a -- ldot 'lazygit --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
-abbr -a -- pm 'sudo pacman'
-abbr -a -- su 'su --shell=/usr/bin/fish'
-abbr -a -- e '$EDITOR'
-abbr -a -- g 'git'
-abbr -a -- sudo 'sudo -E -s'
-abbr -a -- edit '$EDITOR'
-abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
-abbr -a --position anywhere .C '$XDG_CONFIG_HOME/'
-abbr -a --set-cursor f 'fd . % | fzf'
-abbr -a -- jammers 'mpv'
-abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
-abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
-abbr -a -- ibmconnect 'cat ~/code/cs/131/openconnect-password.txt | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u (cat ~/code/cs/131/openconnect-user.txt) --passwd-on-stdin'
-abbr -a --set-cursor :h 'nvim "+help %"'
-abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
-abbr -a -- pr 'paru'
-
-function last_history_item
-  echo $history[1]
-end
-abbr -a !! --position anywhere --function last_history_item
-
-abbr -a -- ls "eza --icons"
-abbr -a -- ll "eza --icons --group --header --group-directories-first --long"
-function eza -d "eza with auto-git"
-  if git rev-parse --is-inside-work-tree &>/dev/null
-    command eza --git --classify $argv
-  else
-    command eza --classify $argv
-  end
-end
-
-alias sudo="/usr/bin/sudo -v; /usr/bin/sudo"
-
-# Created by `pipx` on 2023-08-10 08:32:24
-set PATH $PATH /home/dle/.local/bin
-
 # from nickeb96/puffer-fish
 function expand_dots -d 'expand ... to ../.. etc'
   set -l cmd (commandline --cut-at-cursor)
@@ -99,13 +46,58 @@ function expand_lastarg
   end
 end
 
-set -l modes
-if test "$fish_key_bindings" = fish_default_key_bindings
-  set modes default insert
-else
-  set modes insert default
+function fish_user_key_bindings
+  # Execute this once perk mode that emacs bindings should be used in
+  fish_default_key_bindings -M insert
+
+  # Then execute the vi-bindings so they take precedence when there's a conflict.
+  # Without --no-erase fish_vi_key_bindings will default to
+  # resetting all bindings.
+  # The argument specifies the initial mode (insert, "default" or visual).
+  fish_vi_key_bindings --no-erase insert
+  # make abbreviations more versatile
+  bind -M insert / expand-abbr or self-insert
+
+  bind --mode insert . expand_dots
+  bind --mode insert '$' expand_lastarg
 end
 
-bind --mode $modes[1] . expand_dots
-bind --mode $modes[1] '$' expand_lastarg
-bind --mode $modes[2] --erase . ! '$'
+abbr -a -- dotfiles 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+abbr -a -- dot 'git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+abbr -a -- ldot 'lazygit --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+abbr -a -- pm 'sudo pacman'
+abbr -a -- su 'su --shell=/usr/bin/fish'
+abbr -a -- e '$EDITOR'
+abbr -a -- g 'git'
+abbr -a -- sudo 'sudo -E -s'
+abbr -a -- edit '$EDITOR'
+abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
+abbr -a --position anywhere .C '$XDG_CONFIG_HOME/'
+abbr -a --set-cursor f 'fd . % | fzf'
+abbr -a -- jammers 'mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --shuffle --no-video'
+abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
+abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
+abbr -a -- ibmconnect 'cat ~/code/cs/131/openconnect-password.txt | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u (cat ~/code/cs/131/openconnect-user.txt) --passwd-on-stdin'
+abbr -a --set-cursor :h 'nvim "+help %"'
+abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
+abbr -a -- pr 'paru'
+
+function last_history_item
+  echo $history[1]
+end
+abbr -a !! --position anywhere --function last_history_item
+
+abbr -a -- ls "eza --icons"
+abbr -a -- ll "eza --icons --group --header --group-directories-first --long"
+function eza -d "eza with auto-git"
+  if git rev-parse --is-inside-work-tree &>/dev/null
+    command eza --git --classify $argv
+  else
+    command eza --classify $argv
+  end
+end
+
+alias sudo="/usr/bin/sudo -v; /usr/bin/sudo"
+
+# Created by `pipx` on 2023-08-10 08:32:24
+set PATH $PATH /home/dle/.local/bin
