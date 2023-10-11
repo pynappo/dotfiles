@@ -3,7 +3,6 @@ local theme = require('pynappo.theme')
 return {
   {
     'lukas-reineke/indent-blankline.nvim',
-    branch = 'v3',
     event = { 'BufNewFile', 'BufReadPre' },
     config = function()
       local colors = {
@@ -16,7 +15,7 @@ return {
       }
       require('ibl').setup({
         exclude = {
-          filetype = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
+          filetypes = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
         },
         indent = {
           highlight = theme.set_rainbow_colors('IndentBlanklineLevel', colors)

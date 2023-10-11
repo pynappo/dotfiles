@@ -107,4 +107,16 @@ function autocmds.setup_overrides()
   })
 end
 
+-- autocmds.create({'VimEnter', 'BufReadPre', 'FileType'}, {
+--   callback = function(details)
+--     print(details.event)
+--   end
+-- })
+-- autocmds.create({'User'}, {
+--   pattern = 'VeryLazy',
+--   callback = function(details)
+--     print(details.event)
+--   end
+-- })
+
 return autocmds
