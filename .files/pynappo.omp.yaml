@@ -82,6 +82,7 @@ osc99: true
 palette:
   black: "#000000"
   blue: "#4560f9"
+  red: "#ddaaaa"
   cyan: "#72c2ea"
   gray: "#666666"
   green: "#76ef76"
