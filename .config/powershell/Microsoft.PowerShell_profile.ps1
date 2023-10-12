@@ -48,6 +48,9 @@ Function Notepad { Notepads @Args }
 Function Dotfiles {
     git --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args
 }
+Function Jammers {
+    mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --shuffle --no-video
+}
 Function Dotwindows {
     if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
         if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
