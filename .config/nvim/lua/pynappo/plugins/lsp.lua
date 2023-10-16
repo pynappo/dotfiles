@@ -14,7 +14,7 @@ return {
       },
       'alaviss/nim.nvim',
     },
-    init = require('pynappo/keymaps').setup.diagnostics,
+    init = require('pynappo.keymaps').setup.diagnostics,
     config = function()
       require('mason-lspconfig').setup({
         ensure_installed = {

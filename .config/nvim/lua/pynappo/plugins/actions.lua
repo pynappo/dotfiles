@@ -1,4 +1,4 @@
-local keymaps = require("pynappo/keymaps")
+local keymaps = require("pynappo.keymaps")
 return {
   { 'numToStr/Comment.nvim', event = 'BufReadPre', config = function() require('Comment').setup() end },
   {
@@ -72,5 +72,5 @@ return {
     },
     init = keymaps.setup.substitute
   },
-  { 'abecodes/tabout.nvim', event = 'VeryLazy' }
+  { 'abecodes/tabout.nvim', dependencies = 'nvim-treesitter/nvim-treesitter' }
 }

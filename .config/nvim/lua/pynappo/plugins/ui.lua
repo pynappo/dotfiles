@@ -1,4 +1,4 @@
-local keymaps = require('pynappo/keymaps')
+local keymaps = require('pynappo.keymaps')
 local theme = require('pynappo.theme')
 return {
   {
@@ -112,7 +112,7 @@ return {
           enabled = true
         }
       })
-      vim.api.nvim_create_autocmd({'CursorHold, CursorHoldI'}, {
+      vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI'}, {
         callback = function() require('nvim-lightbulb').update_lightbulb() end
       })
     end,

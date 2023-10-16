@@ -1,4 +1,4 @@
-local keymaps = require('pynappo/keymaps')
+local keymaps = require('pynappo.keymaps')
 return {
   { 'nacro90/numb.nvim', config = function() require('numb').setup() end, event = 'CmdlineEnter' },
   {'winston0410/range-highlight.nvim', dependencies = {'winston0410/cmd-parser.nvim'}, config = true},

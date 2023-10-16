@@ -10,7 +10,7 @@ return {
       },
     },
     config = function()
-      local keymaps = require("pynappo/keymaps")
+      local keymaps = require("pynappo.keymaps")
       keymaps.setup.dap()
       keymaps.setup.dapui()
       require("dapui").setup({

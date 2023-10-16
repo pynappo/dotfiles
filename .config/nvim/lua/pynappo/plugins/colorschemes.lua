@@ -10,7 +10,7 @@ return {
         mirage = mirage,
         overrides = function()
           return {
-            WildMenu = { bg = colors.bg, fg = colors.markup },
+            WildMenu = { bg = colors.fg, fg = colors.markup },
             Comment = { fg = colors.fg_idle, italic = true },
             LineNr = { fg = "#555555"},
             Search = { underline = true },
