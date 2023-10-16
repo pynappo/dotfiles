@@ -1,5 +1,9 @@
+daemonize
+ignore-empty-password
+show-failed-attempts
 screenshots
-clock
-indicator-idle-visible
-effect-blur=5x3
 show-keyboard-layout
+indicator-caps-lock
+effect-blur=10x3
+indicator-idle-visible
+clock
