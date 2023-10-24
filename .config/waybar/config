@@ -36,6 +36,7 @@
     "custom/wl-gammarelay-gamma",
     "tray",
     "battery",
+    "mpris",
     "idle_inhibitor",
     "network",
     "wireplumber",
@@ -58,6 +59,18 @@
     "exec": "wl-gammarelay-rs watch {g}",
     "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02",
     "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02"
+  },
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} <i>{dynamic}</i>",
+    "player-icons": {
+      "default": "▶",
+      "mpv": "🎵"
+    },
+    "status-icons": {
+      "paused": "⏸"
+    },
+    // "ignored-players": ["firefox"]
   },
   "battery": {
     "format": "{capacity}% {icon}",
