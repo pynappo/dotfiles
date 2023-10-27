@@ -1,0 +1,6 @@
+[Unit]
+Description=My Shell Script
+
+[Service]
+ExecStart=/home/dle/.config/hypr/scripts/autostart.sh
+

@@ -222,7 +222,7 @@ vim.cmd.colorscheme('ayu')
 vim.filetype.add({
   pattern = {
     [(vim.env.XDG_CONFIG_HOME or ".-") .. "/waybar/config"] = 'json',
-    [(vim.env.XDG_CONFIG_HOME or ".-") .. "/hypr/.-"] = 'hypr',
+    [(vim.env.XDG_CONFIG_HOME or ".-") .. "/hypr/.-conf"] = 'hypr',
   },
   extension = {
     rasi = 'rasi'
