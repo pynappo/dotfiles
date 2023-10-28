@@ -70,7 +70,7 @@ abbr -a -- su 'su --shell=/usr/bin/fish'
 abbr -a -- e '$EDITOR'
 abbr -a -- g 'git'
 abbr -a -- sudo 'sudo -E -s'
-abbr -a -- edit '$EDITOR'
+abbr -a -- sctl 'systemctl'
 abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
 abbr -a --position anywhere .C '$XDG_CONFIG_HOME/'
 abbr -a --set-cursor f 'fd . % | fzf'
@@ -81,6 +81,18 @@ abbr -a -- ibmconnect 'cat ~/code/cs/131/openconnect-password.txt | sudo opencon
 abbr -a --set-cursor :h 'nvim "+help %"'
 abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
 abbr -a -- pr 'paru'
+abbr -a -- - 'prevd'
+abbr -a -- + 'nextd'
+function edit
+    echo $EDITOR $argv
+end
+abbr -a edit_texts --position command --regex ".+\.txt" --function edit
+# see ./conf.d/abbr_helpers.fish
+abbr_subcommand git co checkout
+abbr_subcommand git ch cherry-pick
+abbr_subcommand git c commit
+abbr_subcommand git a add
+
 
 function last_history_item
   echo $history[1]
@@ -97,7 +109,5 @@ function eza -d "eza with auto-git"
   end
 end
 
+# refresh sudo timeout
 alias sudo="/usr/bin/sudo -v; /usr/bin/sudo"
-
-# Created by `pipx` on 2023-08-10 08:32:24
-set PATH $PATH /home/dle/.local/bin

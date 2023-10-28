@@ -72,7 +72,7 @@ return {
           git_del = get_hl('GitsignsDelete').fg or get_hl('DiffRemoved').fg or get_hl('DiffDelete').bg,
           git_add = get_hl('GitsignsAdd').fg or get_hl('DiffAdded').fg or get_hl('DiffAdded').bg,
           git_change = get_hl('GitsignsChange').fg or get_hl('DiffChange').fg or get_hl('DiffChange').bg,
-          tabline_sel = get_hl('TabLineSel').bg,
+          tabline_sel = get_hl('TabLineSel').bg or get_hl('Visual').bg,
           tabline = get_hl('TabLine').bg,
         }
         return colors

@@ -219,7 +219,10 @@ local M = {
   },
   dap = {
     {
-      condition = function() return require('dap').session() end,
+      condition = function()
+        local ok, dap = pcall(require, 'dap')
+        return ok and dap.session()
+      end,
       provider = function() return ' ' .. require('dap').status() .. ' ' end,
       hl = 'Debug',
       {

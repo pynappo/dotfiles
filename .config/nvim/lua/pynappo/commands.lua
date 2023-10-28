@@ -4,7 +4,7 @@ local normalize_system_command = function(cmd)
 end
 local print_system_command = function(cmd)
   local result = vim.system(normalize_system_command(cmd), { cwd = vim.fn.getcwd(), text = true }):wait()
-  print(result.stdout:gsub('%%', [[\]]))
+  print(utils.is_windows and result.stdout:gsub('%%', [[\]]) or result.stdout:gsub([[%]], [[/]]))
 end
 local commands = {
   { "CDhere", "tcd %:p:h" },

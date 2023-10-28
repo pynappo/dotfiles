@@ -112,6 +112,7 @@ return {
         mapping_options = { noremap = true, nowait = true, },
       },
       filesystem = {
+        hijack_netrw_behavior = "disabled",
         commands = {
           telescope_find = function(state)
             local node = state.tree:get_node()
