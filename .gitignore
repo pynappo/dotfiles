@@ -3,3 +3,4 @@ packer_compiled.lua
 .config/mpv/watch_later
 .config/fish/functions
 .config/fish/conf.d
+.steam
