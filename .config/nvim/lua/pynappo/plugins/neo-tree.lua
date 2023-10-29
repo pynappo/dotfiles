@@ -14,7 +14,6 @@ return {
     'mrbjarksen/neo-tree-diagnostics.nvim'
   },
   init = function()
-    vim.g.neo_tree_remove_legacy_commands = 1
     require('pynappo.keymaps').setup.neotree()
   end,
   config = function()

@@ -31,7 +31,6 @@ return {
   },
   { 'folke/which-key.nvim', event = 'VeryLazy', opts = {window = {border = 'single'}} },
   { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
-  { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
   {
     'RRethy/vim-illuminate',
     event = {'BufNewFile', 'BufRead'},

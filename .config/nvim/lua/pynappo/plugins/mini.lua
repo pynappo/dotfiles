@@ -4,6 +4,7 @@ return {
     local keymaps = require('pynappo.keymaps')
     -- require('mini.pairs').setup()
     require('mini.ai').setup()
+    require('mini.clue').setup()
     require('mini.move').setup()
     require('mini.bufremove').setup()
     require('mini.sessions').setup()
