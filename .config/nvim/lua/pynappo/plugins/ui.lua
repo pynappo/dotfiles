@@ -1,5 +1,4 @@
-local keymaps = require('pynappo.keymaps')
-local theme = require('pynappo.theme')
+local keymaps, theme = require('pynappo.keymaps'), require('pynappo.theme')
 return {
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -18,29 +17,37 @@ return {
           filetypes = { 'help', 'terminal', 'dashboard', 'packer', 'text' },
         },
         indent = {
-          highlight = theme.set_rainbow_colors('IndentBlanklineLevel', colors)
+          highlight = theme.set_rainbow_colors('IndentBlanklineLevel', colors),
         },
         scope = {
           enabled = false,
           show_start = true,
-        }
+        },
       })
-      local hooks = require "ibl.hooks"
+      local hooks = require('ibl.hooks')
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
     end,
   },
-  { 'folke/which-key.nvim', event = 'VeryLazy', opts = {window = {border = 'single'}} },
-  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
+  {
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
+    enabled = false,
+    opts = {
+      window = { border = 'single' },
+      triggers_nowait = { '<leader>', 'g' },
+    },
+  },
+  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({ lazy = true }) },
   {
     'RRethy/vim-illuminate',
-    event = {'BufNewFile', 'BufRead'},
+    event = { 'BufNewFile', 'BufRead' },
     config = function()
       require('illuminate').configure({
         filetypes_denylist = {
-          'dropbar_menu'
-        }
+          'dropbar_menu',
+        },
       })
-    end
+    end,
   },
   {
     'kevinhwang91/nvim-hlslens',
@@ -64,17 +71,32 @@ return {
             else
               text = ('%d/%d'):format(idx, cnt)
             end
-            chunks = {{' ', 'Ignore'}, {' ', 'HlSearchLensNearSurround'}, {text, 'HlSearchLensNear'}, {'', 'HlSearchLensNearSurround'}, }
+            chunks = {
+              { '    ', 'HlSearchLensNearIcon' },
+              { ' ', 'Ignore' },
+              { '', 'HlSearchLensNearSurround' },
+              { text, 'HlSearchLensNear' },
+              { ' ', 'HlSearchLensNearSurround' },
+            }
           else
             text = indicator
-            chunks = {{' ', 'Ignore'}, {'', 'HlSearchLensSurround'}, {text, 'HlSearchLens'}, {'', 'HlSearchLensSurround'}, }
+            chunks = {
+              { '    ', 'Ignore' },
+              { '', 'HlSearchLensSurround' },
+              { text, 'HlSearchLens' },
+              { '', 'HlSearchLensSurround' },
+            }
           end
           render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
-        end
+        end,
       })
 
-      for _, hl in ipairs({'HlSearchLensNear', 'HlSearchLens'}) do
-        require('pynappo.theme').overrides.all_themes.nvim_highlights[hl .. 'Surround'] = {fg = require('pynappo.utils').nvim_get_hl_hex(0, {name = hl, link = false}).bg}
+      local nvim_get_hl_hex = require('pynappo.utils').nvim_get_hl_hex
+      local overrides = require('pynappo.theme').overrides
+      for _, hl in ipairs({ 'HlSearchLensNear', 'HlSearchLens' }) do
+        overrides.all.nvim_highlights[hl .. 'Surround'] = { fg = nvim_get_hl_hex(0, { name = hl, link = false }).bg }
+        overrides.all.nvim_highlights[hl .. 'Icon'] =
+          { fg = nvim_get_hl_hex(0, { name = hl, link = false }).fg, bold = true }
       end
     end,
     event = 'CmdlineEnter',
@@ -99,20 +121,20 @@ return {
         },
         base = 'right',
       })
-      require('pynappo.theme').overrides.all_themes.vim_highlights.ScrollViewMarks = 'guibg=NONE'
+      theme.overrides.all.vim_highlights.ScrollViewMarks = 'guibg=NONE'
     end,
   },
   {
     'kosayoda/nvim-lightbulb',
     config = function()
       require('nvim-lightbulb').setup({
-        sign = { enabled = false},
+        sign = { enabled = false },
         virtual_text = {
-          enabled = true
-        }
+          enabled = true,
+        },
       })
-      vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI'}, {
-        callback = function() require('nvim-lightbulb').update_lightbulb() end
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        callback = function() require('nvim-lightbulb').update_lightbulb() end,
       })
     end,
   },

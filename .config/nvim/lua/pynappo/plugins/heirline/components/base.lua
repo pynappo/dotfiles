@@ -3,7 +3,7 @@ local u = require('pynappo.plugins.heirline.components.utils')
 local M = {
   vi_mode = {
     init = function(self)
-      self.mode = vim.fn.mode(1)
+      self.mode = vim.fn.mode()
       if not self.once then
         vim.api.nvim_create_autocmd('ModeChanged', {
           pattern = '*:*o',
@@ -126,11 +126,11 @@ local M = {
         provider = ')',
       },
     },
-    update = {'BufEnter', 'BufWritePost'}
+    update = { 'BufEnter', 'BufWritePost' },
   },
   dropbar_str = {
     condition = function() return not vim.tbl_isempty(dropbar) end,
-    provider = function() return dropbar.get_dropbar_str() end
+    provider = function() return dropbar.get_dropbar_str() end,
   },
   dropbar = {
     condition = function(self)
@@ -145,7 +145,7 @@ local M = {
         local child = {
           {
             provider = c.icon,
-            hl = c.icon_hl
+            hl = c.icon_hl,
           },
           {
             hl = c.name_hl,
@@ -153,7 +153,7 @@ local M = {
           },
           on_click = {
             callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i),
-            name = "heirline_dropbar",
+            name = 'heirline_dropbar',
           },
         }
         if i < #components then
@@ -162,24 +162,22 @@ local M = {
             provider = sep.icon,
             hl = sep.icon_hl,
             on_click = {
-              callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i + 1)
-            }
+              callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i + 1),
+            },
           })
         end
         table.insert(children, child)
       end
       self.child = self:new(children, 1)
     end,
-    provider = function(self)
-      return self.child:eval()
-    end,
+    provider = function(self) return self.child:eval() end,
   },
   diagnostics = {
     {
       condition = conditions.has_diagnostics,
       init = function(self)
-        local buffer_diagnostics = vim.diagnostic.get(0, {severity = {min = vim.diagnostic.severity.INFO}})
-        local diagnostic_counts = {0,0,0,0}
+        local buffer_diagnostics = vim.diagnostic.get(0, { severity = { min = vim.diagnostic.severity.INFO } })
+        local diagnostic_counts = { 0, 0, 0, 0 }
         for _, d in ipairs(buffer_diagnostics) do
           diagnostic_counts[d.severity] = diagnostic_counts[d.severity] + 1
         end
@@ -192,7 +190,9 @@ local M = {
             })
           end
         end
-        for i = 1, #children - 1, 1 do table.insert(children[i], { provider = ' ' }) end
+        for i = 1, #children - 1, 1 do
+          table.insert(children[i], { provider = ' ' })
+        end
         self.child = self:new(children, 1)
       end,
       static = {
@@ -215,7 +215,7 @@ local M = {
       },
       provider = function(self) return self.child:eval() end,
     },
-    update = { 'DiagnosticChanged', 'BufEnter' }
+    update = { 'DiagnosticChanged', 'BufEnter' },
   },
   dap = {
     {
@@ -268,7 +268,7 @@ local M = {
         },
       },
     },
-    update = {'CursorHold'}
+    update = { 'CursorHold' },
   },
   termname = {
     provider = function() return ' ' .. vim.api.nvim_buf_get_name(0):gsub('.*:', '') end,
@@ -284,7 +284,7 @@ local M = {
   },
   ruler = {
     provider = '%2c,%l - %P',
-    update = { 'CursorMoved', 'ModeChanged' }
+    update = { 'CursorMoved', 'ModeChanged' },
   },
   lsp_icons = {
     update = { 'LspAttach', 'LspDetach', 'LspProgress', 'WinEnter' },
@@ -296,9 +296,11 @@ local M = {
       local children = {}
       for i, client in ipairs(self.clients) do
         ---@diagnostic disable-next-line: undefined-field
-        local icon = self.ls_icons[client.name] or require('nvim-web-devicons').get_icon_by_filetype(client.config.filetypes[1]) or '?'
+        local icon = self.ls_icons[client.name]
+          or require('nvim-web-devicons').get_icon_by_filetype(client.config.filetypes[1])
+          or '?'
         local child = {
-          { provider = icon, hl = {bold = client.attached_buffers[vim.api.nvim_get_current_buf()]} },
+          { provider = icon, hl = { bold = client.attached_buffers[vim.api.nvim_get_current_buf()] } },
           -- {
           --   condition = function() return not self.ignore_messages[client.name] end,
           --   provider = function()
@@ -329,21 +331,21 @@ local M = {
         jdtls = '',
       },
       ignore_messages = {
-        ['null-ls'] = true
+        ['null-ls'] = true,
       },
     },
     provider = function(self) return self.child:eval() end,
   },
   lazy = {
     condition = function()
-      local ok, lazy_status = pcall(require, "lazy.status")
+      local ok, lazy_status = pcall(require, 'lazy.status')
       return ok and lazy_status.has_updates()
     end,
-    provider = function() return require("lazy.status").updates() end,
+    provider = function() return require('lazy.status').updates() end,
     on_click = {
       callback = function() require('lazy').check() end,
-      name = 'heirline_plugin_updates'
-    }
+      name = 'heirline_plugin_updates',
+    },
   },
   file_flags = {
     update = { 'BufWritePost', 'BufEnter', 'InsertEnter', 'TextChanged' },
@@ -385,7 +387,8 @@ M.file_info = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(0)
     self.extension = vim.fn.expand('%:e')
-    self.icon, self.icon_color = require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+    self.icon, self.icon_color =
+      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   M.file_icon,
   M.filename,

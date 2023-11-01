@@ -18,8 +18,8 @@ return {
               bar = {
                 separator = '  ',
                 extends = '…',
-              }
-            }
+              },
+            },
           },
           bar = {
             sources = function()
@@ -28,22 +28,18 @@ return {
                 -- sources.path,
                 {
                   get_symbols = function(buf, win, cursor)
-                    if vim.bo[buf].ft == 'markdown' then
-                      return sources.markdown.get_symbols(buf, win, cursor)
-                    end
+                    if vim.bo[buf].ft == 'markdown' then return sources.markdown.get_symbols(buf, win, cursor) end
                     for _, source in ipairs({ sources.lsp, sources.treesitter }) do
                       local symbols = source.get_symbols(buf, win, cursor)
-                      if not vim.tbl_isempty(symbols) then
-                        return symbols
-                      end
+                      if not vim.tbl_isempty(symbols) then return symbols end
                     end
                     return {}
                   end,
                 },
               }
             end,
-            truncate = true
-          }
+            truncate = true,
+          },
         },
       },
     },
@@ -99,29 +95,28 @@ return {
         ['!'] = 'diag_error',
         t = 'normal',
       }
-      local get_mode_color = function(self)
-        return self.mode_colors[conditions.is_active() and vim.fn.mode() or 'n']
-      end
+      local get_mode_color = function(self) return self.mode_colors[conditions.is_active() and vim.fn.mode() or 'n'] end
 
       local c = require('pynappo.plugins.heirline.components.base')
       local u = require('pynappo.plugins.heirline.components.utils')
-      c.vi_mode_block = utils.surround( { '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
+      c.vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
       c.lsp_block = {
         flexible = 2,
         utils.surround({ 'LSP: ', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
         utils.surround({ '', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
       }
-      c.ruler_block = utils.surround( { '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
+      c.ruler_block = utils.surround({ '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
       c.lazy_block = {
         flexible = 4,
-        utils.surround({ 'Plugin updates: ', '' }, 'diag_info', { c.lazy, hl = {fg = 'black'}}),
-        utils.surround({ '', '' }, 'diag_info', { c.lazy, hl = {fg = 'black'}}),
+        utils.surround({ 'Plugin updates: ', '' }, 'diag_info', { c.lazy, hl = { fg = 'black' } }),
+        utils.surround({ '', '' }, 'diag_info', { c.lazy, hl = { fg = 'black' } }),
       }
 
       local t = require('pynappo.plugins.heirline.components.tabline')
       require('heirline').setup({
+        ---@diagnostic disable-next-line: missing-fields
         statusline = {
-          hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' end,
+          hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' or nil end,
           static = {
             mode_colors = mode_colors,
             get_mode_color = get_mode_color,
@@ -137,18 +132,24 @@ return {
                   filetype = { '^git.*', 'fugitive' },
                 })
               end,
-              c.cwd, c.filetype, u.space, c.help_filename,
+              c.cwd,
+              c.filetype,
+              u.space,
+              c.help_filename,
             },
             {
               condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
-              c.file_icon, u.space, c.termname,
+              c.file_icon,
+              u.space,
+              c.termname,
             },
             { c.cwd, c.file_info },
           },
           u.align,
           {
-            condition = function() return conditions.buffer_matches({filetype = { 'alpha' }}) end,
-            c.lazy_block, u.space
+            condition = function() return conditions.buffer_matches({ filetype = { 'alpha' } }) end,
+            c.lazy_block,
+            u.space,
           },
           { c.dap, c.lsp_block, u.space, c.ruler_block },
         },
@@ -157,13 +158,18 @@ return {
           hl = function() return conditions.is_active() and 'WinBar' or 'WinBarNC' end,
           {
             condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
-            u.align, c.file_icon, u.space, c.termname,
+            u.align,
+            c.file_icon,
+            u.space,
+            c.termname,
           },
           { c.dropbar, u.align, c.diagnostics, c.gitsigns, u.space, c.file_info },
         },
         tabline = { t.offset, t.bufferline, u.align, t.tabpages },
         statuscolumn = {
-          condition = function() return not conditions.buffer_matches({ buftype = { 'nofile', 'prompt', 'quickfix', 'help' }, }) end,
+          condition = function()
+            return not conditions.buffer_matches({ buftype = { 'nofile', 'prompt', 'quickfix', 'help' } })
+          end,
           { provider = [[%s]] },
           {
             init = function(self) self.current_line = vim.api.nvim_win_get_cursor(0)[1] end,
@@ -171,26 +177,27 @@ return {
             { condition = function() return vim.v.virtnum ~= 0 end },
             {
               condition = function(self) return vim.v.lnum == self.current_line end,
-              { provider = function() return vim.v.lnum end, }, u.align
+              { provider = function() return vim.v.lnum end },
+              u.align,
             },
-            { u.align, { provider = function() return vim.v.relnum end, } },
+            { u.align, { provider = function() return vim.v.relnum end } },
           },
           { provider = [[%1(%C%)]] },
         },
         opts = {
           disable_winbar_cb = function(args)
             return conditions.buffer_matches({
-              buftype = { "nofile", "prompt", "help", "quickfix" },
-              filetype = { "^git.*", "fugitive", "Trouble", "dashboard" },
+              buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
+              filetype = { '^git.*', 'fugitive', 'Trouble', 'dashboard' },
             }, args.buf)
           end,
-          colors = heirline_colors()
-        }
+          colors = heirline_colors(),
+        },
       })
       -- need to ensure this happens after tint.nvim sets up
       vim.api.nvim_create_autocmd('VimEnter', {
-        callback = function() require('pynappo.autocmds').heirline_mode_cursorline(mode_colors) end
+        callback = function() require('pynappo.autocmds').heirline_mode_cursorline(mode_colors) end,
       })
     end,
-  }
+  },
 }

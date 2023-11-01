@@ -6,7 +6,8 @@ function autocmds.create_wrapper(augroup_name)
   return function(event, opts)
     opts.group = opts.group or augroup
     return vim.api.nvim_create_autocmd(event, opts)
-  end, augroup
+  end,
+    augroup
 end
 autocmds.create, autocmds.pynappo_augroup = autocmds.create_wrapper('pynappo')
 
@@ -53,7 +54,7 @@ function autocmds.heirline_mode_cursorline(mode_colors)
     heirline_colors = {
       mode = mode_colors,
       loaded = require('heirline.highlights').get_loaded_colors(),
-      cached_hexes = {}
+      cached_hexes = {},
     }
   end
   update_heirline_colors()
@@ -61,7 +62,7 @@ function autocmds.heirline_mode_cursorline(mode_colors)
     callback = update_heirline_colors,
     desc = 'Make sure that the heirline colors are updated when colorscheme changes',
   })
-  local cursorline_bg_hex = utils.nvim_get_hl_hex(0, {name = 'CursorLine'}).bg
+  local cursorline_bg_hex = utils.nvim_get_hl_hex(0, { name = 'CursorLine' }).bg
   vim.api.nvim_set_hl(0, 'ModeCursorLine', { bg = cursorline_bg_hex })
 
   autocmds.create({ 'VimEnter', 'ModeChanged' }, {
@@ -74,9 +75,13 @@ function autocmds.heirline_mode_cursorline(mode_colors)
           hex = cursorline_bg_hex
         else
           hex = ('%06x'):format(mode_color)
-          hex = table.concat(vim.tbl_map(function(i)
-            return ("%02x"):format(math.floor(tonumber('0x' .. hex:sub(unpack(i))) / 4.5))
-          end, { {1,2}, {3,4}, {5,6} }), '')
+          hex = table.concat(
+            vim.tbl_map(
+              function(i) return ('%02x'):format(math.floor(tonumber('0x' .. hex:sub(unpack(i))) / 4.5)) end,
+              { { 1, 2 }, { 3, 4 }, { 5, 6 } }
+            ),
+            ''
+          )
         end
         heirline_colors.cached_hexes[mode] = hex
       end
@@ -86,7 +91,7 @@ function autocmds.heirline_mode_cursorline(mode_colors)
     end,
     desc = 'Change mode cursorline',
   })
-  autocmds.create({ 'BufWinEnter', 'WinEnter', 'CmdLineLeave'}, {
+  autocmds.create({ 'BufWinEnter', 'WinEnter', 'CmdLineLeave' }, {
     callback = function() vim.opt_local.winhighlight:append('CursorLine:ModeCursorLine') end,
     desc = 'Enable mode cursorline for current windows',
   })
@@ -98,12 +103,12 @@ end
 
 -- called after setting up tint
 function autocmds.setup_overrides()
-  autocmds.create({'ColorScheme'}, {
+  autocmds.create({ 'ColorScheme' }, {
     callback = function(details)
       if vim.g.disable_pynappo_theme_overrides then return end
-      require('pynappo.theme').overrides.all_themes:apply()
+      require('pynappo.theme').overrides.all:apply()
       require('pynappo.theme').overrides[details.match]:apply()
-    end
+    end,
   })
 end
 

@@ -1,23 +1,23 @@
-local keymaps = require("pynappo.keymaps")
+local keymaps = require('pynappo.keymaps')
 return {
   { 'numToStr/Comment.nvim', event = 'BufReadPre', config = function() require('Comment').setup() end },
   {
-    "folke/flash.nvim",
-    event = "VeryLazy",
+    'folke/flash.nvim',
+    event = 'VeryLazy',
     opts = {
       modes = {
         search = {
-          enabled = false
-        }
-      }
+          enabled = false,
+        },
+      },
     },
-    keys = keymaps.setup.flash({lazy = true})
+    keys = keymaps.setup.flash({ lazy = true }),
   },
   -- { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
     'Wansmer/treesj',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    cmd = "TSJToggle",
+    cmd = 'TSJToggle',
     config = function() require('treesj').setup({ use_default_keymaps = false }) end,
     keys = keymaps.setup.treesj({ lazy = true }),
   },
@@ -44,7 +44,7 @@ return {
         },
       })
     end,
-    keys = keymaps.setup.dial({lazy=true})
+    keys = keymaps.setup.dial({ lazy = true }),
   },
   {
     'gbprod/substitute.nvim',
@@ -57,20 +57,46 @@ return {
         timer = 500,
       },
       range = {
-        prefix = "s",
+        prefix = 's',
         prompt_current_text = false,
         confirm = false,
         complete_word = false,
         motion1 = false,
         motion2 = false,
-        suffix = "",
+        suffix = '',
       },
       exchange = {
         motion = false,
         use_esc_to_cancel = true,
       },
     },
-    init = keymaps.setup.substitute
+    init = keymaps.setup.substitute,
   },
-  { 'abecodes/tabout.nvim', dependencies = 'nvim-treesitter/nvim-treesitter' }
+  {
+    'abecodes/tabout.nvim',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    opts = {
+      act_as_tab = true, -- shift content if tab out is not possible
+      act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+      default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
+      default_shift_tab = '<C-d>', -- reverse shift default action,
+      enable_backwards = true, -- well ...
+      completion = true, -- if the tabkey is used in a completion pum
+      tabouts = {
+        { open = "'", close = "'" },
+        { open = '"', close = '"' },
+        { open = '`', close = '`' },
+        { open = '(', close = ')' },
+        { open = '[', close = ']' },
+        { open = '{', close = '}' },
+      },
+      ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+      exclude = {}, -- tabout will ignore these filetypes
+    },
+    config = function(self, opts)
+      require('tabout').setup(opts)
+      vim.keymap.set('i', '<Tab>', '<Plug>(TaboutMulti)', { silent = true })
+      vim.keymap.set('i', '<S-Tab>', '<Plug>(TaboutBackMulti)', { silent = true })
+    end,
+  },
 }

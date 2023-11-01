@@ -24,11 +24,10 @@ local function abbreviate_command(abbr, expansion)
       local typing_command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdpos() < (#abbr + 2)
       return typing_command and expansion or abbr
     end,
-    { remap = false, expr = true}
+    { remap = false, expr = true },
   }
 end
 
-local lazy_require = 
 M.setup = {
   regular = function()
     local autoindent = function(key)
@@ -54,9 +53,9 @@ M.setup = {
         {
           '<Esc>',
           function()
-            if vim.api.nvim_win_get_config(0).relative ~= "" then return vim.cmd.quit() end
+            if vim.api.nvim_win_get_config(0).relative ~= '' then return vim.cmd.quit() end
             if vim.v.hlsearch == 1 then return vim.cmd.nohlsearch() end
-          end
+          end,
         },
         { '<leader>q', vim.cmd.bdelete },
         -- Autoindent on insert/append
@@ -70,16 +69,16 @@ M.setup = {
         { 'X', '"_dh' },
       },
       [{ 'n', 'v' }] = {
-        { 'p', 'p=`]`', {remap = true} },
-        { 'P', 'P=`]`', {remap = true}},
+        { 'p', 'p=`]`', { remap = true } },
+        { 'P', 'P=`]`', { remap = true } },
         { '<leader>p', '"+p' },
         { '<leader>P', '"+P' },
         { '<leader>y', '"+y' },
         { '<leader>Y', '"+Y' },
       },
-      [{'ca'}] = {
+      [{ 'ca' }] = {
         abbreviate_command('L', 'Lazy'),
-        abbreviate_command('s', 's/g<Left><Left>')
+        abbreviate_command('s', 's/g<Left><Left>'),
       },
       [{ 'v' }] = {
         {
@@ -165,7 +164,7 @@ M.setup = {
         { 'ga', lsp.code_action, { desc = '(LSP) Get code actions' } },
         { 'gr', lsp.references, { desc = '(LSP) Get references' } },
         {
-          '<leader>f',
+          '<leader>ff',
           function()
             local buf = vim.api.nvim_get_current_buf()
             local ft = vim.bo[buf].filetype
@@ -178,7 +177,7 @@ M.setup = {
           { desc = '(LSP) Format (priority to null-ls)' },
         },
         {
-          '<leader>ff',
+          '<leader>f',
           function()
             local client_names = vim.tbl_map(
               function(client) return client.name end,
@@ -435,6 +434,7 @@ M.setup = {
           'gbp',
           function()
             local tabline = require('heirline').tabline
+            ---@diagnostic disable-next-line: undefined-field
             local buflist = tabline._buflist[1]
             buflist._picker_labels = {}
             buflist._show_picker = true
@@ -472,16 +472,12 @@ M.setup = {
   end,
   gesture = function(opts)
     return map({
-      [{ "n" }] = {
-        { "<LeftDrag>", function() require("gesture").draw() end, { silent = true } },
-        { "<LeftRelease>", function() require("gesture").finish() end, { silent = true } },
-      }
+      [{ 'n' }] = {
+        { '<LeftDrag>', function() require('gesture').draw() end, { silent = true } },
+        { '<LeftRelease>', function() require('gesture').finish() end, { silent = true } },
+      },
     }, {}, opts)
   end,
-  conform = function(opts)
-    return map({
-    })
-  end
 }
 
 -- Other random plugin-specific mapping tables go here: --
@@ -491,22 +487,20 @@ M.cmp = {
     local cmp = require('cmp')
     local luasnip = require('luasnip')
     return cmp.mapping.preset.insert({
-      ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-      ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-      ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-      ["<C-f>"] = cmp.mapping.scroll_docs(4),
-      ["<C-Space>"] = cmp.mapping.complete(),
-      ["<C-e>"] = cmp.mapping.abort(),
+      ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
-      ["<S-CR>"] = cmp.mapping.confirm({
+      ['<S-CR>'] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
         select = true,
       }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     })
   end,
-  cmdline = function()
-    return require('cmp').mapping.preset.cmdline({})
-  end
+  cmdline = function() return require('cmp').mapping.preset.cmdline({}) end,
 }
 
 M.toggleterm = { open_mapping = [[<C-\>]] }
@@ -679,7 +673,6 @@ M.treesitter = {
     },
   },
 }
-
 
 M.mini = {
   surround = {

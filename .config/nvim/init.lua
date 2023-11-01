@@ -6,7 +6,7 @@ local utils = require('pynappo.utils')
 if utils.is_windows then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag =
-  '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
+    '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
   o.shellredir = [[2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode]]
   o.shellpipe = [[2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode]]
   o.shellquote = ''
@@ -18,13 +18,13 @@ o.showtabline = 2
 o.laststatus = 3
 
 -- Line numbers
-o.signcolumn = "auto:2"
+o.signcolumn = 'auto:2'
 o.relativenumber = true
 o.number = true
 
 -- Enable mouse
-o.mouse = "a"
-o.mousescroll = "ver:8,hor:6"
+o.mouse = 'a'
+o.mousescroll = 'ver:8,hor:6'
 o.mousemoveevent = true
 
 -- Tabs
@@ -59,44 +59,57 @@ o.scrolloff = 4
 o.undofile = true
 o.smoothscroll = true
 opt.sessionoptions = {
-  'buffers', 'curdir', 'folds', 'help', 'tabpages', 'winsize', 'globals', 'terminal', 'options'
+  'buffers',
+  'curdir',
+  'folds',
+  'help',
+  'tabpages',
+  'winsize',
+  'globals',
+  'terminal',
+  'options',
 }
 opt.wildoptions:append('fuzzy')
 opt.diffopt = {
-  'internal', 'filler', 'vertical', 'linematch:60'
+  'internal',
+  'filler',
+  'vertical',
+  'linematch:60',
 }
 
 -- UI stuff
 o.cursorline = true
-opt.whichwrap:append("<,>,h,l,[,]")
+opt.whichwrap:append('<,>,h,l,[,]')
 opt.fillchars = {
-  horiz     = '━',
-  horizup   = '┻',
+  horiz = '━',
+  horizup = '┻',
   horizdown = '┳',
-  vert      = '┃',
-  vertleft  = '┫',
+  vert = '┃',
+  vertleft = '┫',
   vertright = '┣',
   verthoriz = '╋',
-  eob       = ' ',
-  fold      = ' ',
-  diff      = '╱'
+  eob = ' ',
+  fold = ' ',
+  diff = '╱',
 }
 o.list = true
 opt.listchars = {
   extends = '⟩',
   precedes = '⟨',
   trail = '·',
-  tab = '» ',
+  tab = '|.',
   nbsp = '␣',
 }
 vim.api.nvim_create_autocmd('FileType', { callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end })
 local signs = {
-  DiagnosticSignError = { text = "", texthl = "DiagnosticSignError" },
-  DiagnosticSignWarn = { text = "", texthl = "DiagnosticSignWarn" },
-  DiagnosticSignInfo = { text = "", texthl = "DiagnosticSignInfo" },
-  DiagnosticSignHint = { text = "󰌵", texthl = "DiagnosticSignHint" }
+  DiagnosticSignError = { text = '', texthl = 'DiagnosticSignError' },
+  DiagnosticSignWarn = { text = '', texthl = 'DiagnosticSignWarn' },
+  DiagnosticSignInfo = { text = '', texthl = 'DiagnosticSignInfo' },
+  DiagnosticSignHint = { text = '󰌵', texthl = 'DiagnosticSignHint' },
 }
-for name, sign in pairs(signs) do vim.fn.sign_define(name, sign) end
+for name, sign in pairs(signs) do
+  vim.fn.sign_define(name, sign)
+end
 o.termguicolors = true
 
 g.mapleader = ' '
@@ -107,12 +120,13 @@ vim.diagnostic.config({
   virtual_lines = { only_current_line = true },
   signs = true,
   float = {
-    border = "single",
-    format = function(d) return ("%s (%s) [%s]"):format(d.message, d.source, d.code or d.user_data.lsp.code) end,
+    border = 'single',
+    format = function(d) return ('%s (%s) [%s]'):format(d.message, d.source, d.code or d.user_data.lsp.code) end,
   },
 })
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+---@diagnostic disable-next-line: undefined-field
 if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     'git',
@@ -125,7 +139,7 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
-require("pynappo.autocmds")
+require('pynappo.autocmds')
 require('lazy').setup({
   spec = {
     {
@@ -135,13 +149,14 @@ require('lazy').setup({
   },
   git = {
     log = { '--since=3 days ago' }, -- show commits from the last 3 days
-    timeout = 90,                   -- seconds
+    timeout = 90, -- seconds
   },
+  ---@diagnostic disable-next-line: assign-type-mismatch
   dev = {
     fallback = true,
     path = '~/code/nvim',
     ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-    patterns = { "pynappo" }, -- For example {"folke"}
+    patterns = { 'pynappo' }, -- For example {"folke"}
   },
   install = {
     missing = true,
@@ -155,15 +170,15 @@ require('lazy').setup({
       -- To disable one of the defaults, set it to false
 
       -- open lazygit log
-      ["<localleader>l"] = function(plugin)
-        require("lazy.util").float_term({ "lazygit", "log" }, {
+      ['<localleader>l'] = function(plugin)
+        require('lazy.util').float_term({ 'lazygit', 'log' }, {
           cwd = plugin.dir,
         })
       end,
 
       -- open a terminal for the plugin dir
-      ["<localleader>t"] = function(plugin)
-        require("lazy.util").float_term(nil, {
+      ['<localleader>t'] = function(plugin)
+        require('lazy.util').float_term(nil, {
           cwd = plugin.dir,
         })
       end,
@@ -183,27 +198,27 @@ require('lazy').setup({
     rtp = {
       reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
       ---@type string[]
-      paths = {},   -- add any custom paths here that you want to incluce in the rtp
+      paths = {}, -- add any custom paths here that you want to incluce in the rtp
       ---@type string[] list any plugins you want to disable here
       disabled_plugins = {
-        "matchit",
-        "matchparen",
-        "netrw",
-        "netrwPlugin",
-        "netrwSettings",
-        "netrwFileHandlers",
-        "gzip",
-        "zip",
-        "zipPlugin",
-        "tar",
-        "tarPlugin",
-        "getscript",
-        "getscriptPlugin",
-        "vimball",
-        "vimballPlugin",
-        "2html_plugin",
-        "logipat",
-        "rrhelper",
+        'matchit',
+        'matchparen',
+        'netrw',
+        'netrwPlugin',
+        'netrwSettings',
+        'netrwFileHandlers',
+        'gzip',
+        'zip',
+        'zipPlugin',
+        'tar',
+        'tarPlugin',
+        'getscript',
+        'getscriptPlugin',
+        'vimball',
+        'vimballPlugin',
+        '2html_plugin',
+        'logipat',
+        'rrhelper',
       },
     },
   },
@@ -214,22 +229,22 @@ require('lazy').setup({
   },
 })
 
-require("pynappo.keymaps").setup.regular()
-require("pynappo.theme")
-require("pynappo.commands")
+require('pynappo.keymaps').setup.regular()
+require('pynappo.theme')
+require('pynappo.commands')
 vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
   pattern = {
-    [(vim.env.XDG_CONFIG_HOME or ".-") .. "/waybar/config"] = 'json',
-    [(vim.env.XDG_CONFIG_HOME or ".-") .. "/hypr/.-conf"] = 'hypr',
+    [(vim.env.XDG_CONFIG_HOME or '.-') .. '/waybar/config'] = 'json',
+    [(vim.env.XDG_CONFIG_HOME or '.-') .. '/hypr/.-conf'] = 'hypr',
   },
   extension = {
-    rasi = 'rasi'
-  }
+    rasi = 'rasi',
+  },
 })
 -- GUI stuff
-o.guifont = "Inconsolata Nerd Font Mono:h12:#e-subpixelantialias"
+o.guifont = 'Inconsolata Nerd Font Mono:h12:#e-subpixelantialias'
 g.firenvim_config = {
   globalSettings = {
     alt = 'all',
@@ -242,7 +257,7 @@ g.firenvim_config = {
       selector = 'textarea',
       takeover = 'never',
     },
-  }
+  },
 }
 if g.started_by_firenvim then
   vim.cmd.startinsert()
@@ -264,3 +279,13 @@ vim.cmd.amenu([[PopUp.:Inspect <Cmd>Inspect<CR>]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
+
+vim.paste = (function(overridden)
+  return function(lines, phase)
+    for i, line in ipairs(lines) do
+      -- Scrub ANSI color codes from paste input.
+      lines[i] = line:gsub('\27%[[0-9;mK]+', '')
+    end
+    overridden(lines, phase)
+  end
+end)(vim.paste)

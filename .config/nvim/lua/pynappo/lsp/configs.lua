@@ -1,31 +1,31 @@
 local keymaps = require('pynappo.keymaps')
 local default_config = {
-  capabilities = require("cmp_nvim_lsp").default_capabilities(),
-  flags = {debounce_text_changes = 200}
+  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  flags = { debounce_text_changes = 200 },
 }
 local configs = {
   lua_ls = {
-    -- on_init = function(client)
-    --   local path = client.workspace_folders[1].name
-    --   local nvim_workspace = path:find('nvim')
-    --   local test_nvim = path:find('test')
-    --   if nvim_workspace then
-    --     local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file("lua", true)
-    --     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-    --       runtime = {
-    --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-    --         version = 'LuaJIT',
-    --         pathStrict = true
-    --       },
-    --       -- Make the server aware of Neovim runtime files
-    --       workspace = {
-    --         library = library
-    --       }
-    --     })
-    --     client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-    --   end
-    --   return true
-    -- end,
+    on_init = function(client)
+      local path = client.workspace_folders[1].name
+      local nvim_workspace = path:find('nvim')
+      local test_nvim = path:find('test')
+      if nvim_workspace then
+        local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file('lua', true)
+        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+          runtime = {
+            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT',
+            pathStrict = true,
+          },
+          -- Make the server aware of Neovim runtime files
+          workspace = {
+            library = library,
+          },
+        })
+        client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+      end
+      return true
+    end,
     settings = {
       Lua = {
         completion = {
@@ -38,73 +38,70 @@ local configs = {
           enable = true,
         },
         diagnostics = {
-          globals = {'vim'},
+          globals = { 'vim' },
         },
         telemetry = {
-          enable = true
+          enable = true,
         },
-      }
+      },
     },
   },
   ltex = {
     filetypes = {
-      "bib",
-      "gitcommit",
-      "org",
-      "plaintex",
-      "rst",
-      "rnoweb",
-      "tex",
-    }
+      'bib',
+      'gitcommit',
+      'org',
+      'plaintex',
+      'rst',
+      'rnoweb',
+      'tex',
+    },
   },
   jdtls = {
     on_attach = function(_, bufnr)
       keymaps.setup.jdtls(bufnr)
       require('jdtls').setup_dap({ hotcodereplace = 'auto' })
     end,
-  }
+  },
 }
 
-require('pynappo.autocmds').create({'LspAttach'}, {
+require('pynappo.autocmds').create({ 'LspAttach' }, {
   callback = function(details)
     local bufnr = details.buf
-    local client = vim.lsp.get_client_by_id (details.data.client_id) or {}
+    local client = vim.lsp.get_client_by_id(details.data.client_id) or {}
     -- local config = vim.tbl_get(client, 'config')
     -- if config then
     --   table.sort(config)
     --   vim.print(#config, config)
     -- end
     if not client then return end
-    if vim.tbl_contains({'copilot', 'null-ls'}, client.name or vim.print('no client found')) then return end
+    if vim.tbl_contains({ 'copilot', 'null-ls' }, client.name or vim.print('no client found')) then return end
 
-    if vim.b[bufnr].lsp_attached then
-      require('pynappo.autocmds').create({'CursorHold'}, {
+    if not vim.b[bufnr].lsp_attached then
+      require('pynappo.autocmds').create({ 'CursorHold' }, {
         callback = function()
           for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
             if vim.bo[vim.api.nvim_win_get_buf(winid)].filetype == 'noice' then return end
           end
           vim.lsp.buf.hover()
         end,
-        buffer = bufnr
+        buffer = bufnr,
       })
-      return
     end
-    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
     keymaps.setup.lsp(bufnr)
     vim.b[bufnr].lsp_attached = true
-  end
+  end,
 })
 
 for key, config in pairs(configs) do
-  config = vim.tbl_deep_extend("force", default_config, config)
+  ---@diagnostic disable-next-line: cast-local-type
+  config = vim.tbl_deep_extend('force', default_config, config)
   configs[key] = config
 end
 
 setmetatable(configs, {
-  __index = function()
-    return default_config
-  end
+  __index = function() return default_config end,
 })
-
 
 return configs

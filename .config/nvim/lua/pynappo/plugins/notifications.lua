@@ -9,7 +9,7 @@ return {
         WARN = 'Warn',
         INFO = 'Info',
         DEBUG = 'Hint',
-        TRACE = 'Ok'
+        TRACE = 'Ok',
       }
       local sections = {
         Title = '',
@@ -18,7 +18,9 @@ return {
       }
       for notify_level, diagnostic_level in pairs(levels) do
         for notify_section, diagnostic_section in pairs(sections) do
-          require('pynappo.theme').overrides.all_themes.links['Notify' .. notify_level .. notify_section] = 'Diagnostic' .. diagnostic_section .. diagnostic_level
+          require('pynappo.theme').overrides.all.links['Notify' .. notify_level .. notify_section] = 'Diagnostic'
+            .. diagnostic_section
+            .. diagnostic_level
         end
       end
     end,
@@ -28,7 +30,7 @@ return {
     opts = {
       cmdline = {
         enabled = false,
-        view = "cmdline"
+        view = 'cmdline',
       },
       messages = { enabled = false },
       lsp = {
@@ -47,8 +49,8 @@ return {
           position = { row = 2 },
         },
         mini = {
-          position = { row = -1 - vim.o.cmdheight } -- better default
-        }
+          position = { row = -1 - vim.o.cmdheight }, -- better default
+        },
       },
       routes = {
         {
@@ -58,9 +60,9 @@ return {
             cond = function(message)
               local client = vim.tbl_get(message.opts, 'progress', 'client')
               return client == 'null-ls'
-            end
+            end,
           },
-          opts = {skip = true}
+          opts = { skip = true },
         },
         {
           filter = { find = 'No information available' },
@@ -93,12 +95,12 @@ return {
                   return conf
                 end,
               },
-            }
+            },
           },
         },
         init = keymaps.setup.incremental_rename,
-        config = true
+        config = true,
       },
     },
-  }
+  },
 }

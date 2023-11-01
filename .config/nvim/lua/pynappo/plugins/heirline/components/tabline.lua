@@ -37,46 +37,39 @@ local tabline = {
     },
   },
   picker = {
-    condition = function(self)
-      return self._show_picker
-    end,
+    condition = function(self) return self._show_picker end,
     init = function(self)
       local bufname = vim.api.nvim_buf_get_name(self.bufnr)
-      bufname = vim.fn.fnamemodify(bufname, ":t")
+      bufname = vim.fn.fnamemodify(bufname, ':t')
       local label = bufname:sub(1, 1)
       local i = 2
       while self._picker_labels[label] do
-        if i > #bufname then
-          break
-        end
+        if i > #bufname then break end
         label = bufname:sub(i, i)
         i = i + 1
       end
       self._picker_labels[label] = self.bufnr
       self.label = label
     end,
-    provider = function(self)
-      return self.label
-    end,
+    provider = function(self) return self.label end,
     hl = { fg = 'diag_warn', bold = true },
   },
   tabpage = {
     init = function(self) self.name = vim.t[self.tabnr].name end,
-    provider = function(self) return '%' .. self.tabnr .. 'T ' .. self.tabnr .. (self.name and ' ' .. self.name or '') .. '%T' end,
+    provider = function(self)
+      return '%' .. self.tabnr .. 'T ' .. self.tabnr .. (self.name and ' ' .. self.name or '') .. '%T'
+    end,
     hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
-  }
+  },
 }
 
-local file_icon = require('pynappo/plugins/heirline/components/base').file_icon
+local file_icon = require('pynappo.plugins.heirline.components.base').file_icon
 
 tabline.filename_block = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
-    self.icon, self.icon_color = require('nvim-web-devicons').get_icon_color(
-      self.filename,
-      self.extension,
-      { default = true }
-    )
+    self.icon, self.icon_color =
+      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   on_click = {
@@ -99,7 +92,7 @@ tabline.filename_block = {
 tabline.tabline_buffer_block = utils.surround(
   { '', '' },
   function(self) return self.is_active and 'tabline_sel' or 'tabline' end,
-  { tabline.picker, tabline.filename_block, tabline.close_button, }
+  { tabline.picker, tabline.filename_block, tabline.close_button }
 )
 
 tabline.offset = {
@@ -115,8 +108,8 @@ tabline.offset = {
   end,
   static = {
     substitutions = {
-      { vim.env.XDG_CONFIG_HOME , '' },
-      { vim.env.HOME , '~' },
+      { vim.env.XDG_CONFIG_HOME, '' },
+      { vim.env.HOME, '~' },
     },
     title_funcs = {
       function(self, title)
@@ -128,9 +121,9 @@ tabline.offset = {
         return title
       end,
       function(_, title) return vim.fn.pathshorten(title, 1) end,
-      function() return "Neo-tree" end,
-      function() return "" end,
-    }
+      function() return 'Neo-tree' end,
+      function() return '' end,
+    },
   },
   provider = function(self)
     local title = self.title
@@ -158,6 +151,6 @@ tabline.tabpages = {
       hl = 'TabLine',
     },
   },
-  update = { 'TabEnter', 'TabLeave', 'TabNew', 'TabNewEntered', 'TabClosed', 'User' }
+  update = { 'TabEnter', 'TabLeave', 'TabNew', 'TabNewEntered', 'TabClosed', 'User' },
 }
 return tabline

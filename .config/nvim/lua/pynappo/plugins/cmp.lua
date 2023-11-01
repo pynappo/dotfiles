@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 return {
   {
     'hrsh7th/nvim-cmp',
@@ -27,50 +28,110 @@ return {
       },
     },
     config = function()
-      local cmp = require("cmp")
-      local lspkind = require("lspkind")
+      local cmp = require('cmp')
+      local lspkind = require('lspkind')
+      local cmp_format = lspkind.cmp_format
       lspkind.init({
         symbol_map = {
-          Copilot = "",
+          Copilot = '',
         },
       })
 
       local compare = require('cmp.config.compare')
       local cmp_keymaps = require('pynappo.keymaps').cmp
-      cmp.setup {
+
+      local kind_icons = {
+        default = {
+          -- if you change or add symbol here
+          -- replace corresponding line in readme
+          Text = '󰉿',
+          Method = '󰆧',
+          Function = '󰊕',
+          Constructor = '',
+          Field = '󰜢',
+          Variable = '󰀫',
+          Class = '󰠱',
+          Interface = '',
+          Module = '',
+          Property = '󰜢',
+          Unit = '󰑭',
+          Value = '󰎠',
+          Enum = '',
+          Keyword = '󰌋',
+          Snippet = '',
+          Color = '󰏘',
+          File = '󰈙',
+          Reference = '󰈇',
+          Folder = '󰉋',
+          EnumMember = '',
+          Constant = '󰏿',
+          Struct = '󰙅',
+          Event = '',
+          Operator = '󰆕',
+          TypeParameter = '',
+        },
+        codicons = {
+          Text = '',
+          Method = '',
+          Function = '',
+          Constructor = '',
+          Field = '',
+          Variable = '',
+          Class = '',
+          Interface = '',
+          Module = '',
+          Property = '',
+          Unit = '',
+          Value = '',
+          Enum = '',
+          Keyword = '',
+          Snippet = '',
+          Color = '',
+          File = '',
+          Reference = '',
+          Folder = '',
+          EnumMember = '',
+          Constant = '',
+          Struct = '',
+          Event = '',
+          Operator = '',
+          TypeParameter = '',
+        },
+      }
+
+      cmp.setup({
         window = {
           completion = {
-            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+            winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
             col_offset = -3,
             side_padding = 0,
-            scrollbar = '║'
           },
         },
         formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = function (entry, vim_item)
-            local kind = lspkind.cmp_format({
-              mode = "symbol_text",
+          fields = { 'kind', 'abbr', 'menu' },
+          format = function(entry, vim_item)
+            local kind = cmp_format({
+              mode = 'symbol_text',
               menu = {
-                luasnip = "[Snip]",
-                nvim_lsp = "[LSP]",
-                nvim_lsp_signature_help = "[Sign]",
-                emoji = "[Emoji]",
-                buffer = "[Buf]",
-                copilot = "[GHub]",
-                crates = "[Crate]",
-                path = "[Path]",
-                cmdline = "[Cmd]",
-                cmdline_history = "[Hist]",
-                git = "[Git]",
-                conventionalcommits = "[Conv]",
-                calc = "[Calc]"
+                luasnip = '[Snip]',
+                nvim_lsp = '[LSP]',
+                nvim_lsp_signature_help = '[Sign]',
+                emoji = '[Emoji]',
+                buffer = '[Buf]',
+                copilot = '[GHub]',
+                crates = '[Crate]',
+                path = '[Path]',
+                cmdline = '[Cmd]',
+                cmdline_history = '[Hist]',
+                git = '[Git]',
+                conventionalcommits = '[Conv]',
+                calc = '[Calc]',
               },
             })(entry, vim_item)
-            local strings = vim.split(kind.kind, "%s", { trimempty = true })
-            kind.kind = " " .. strings[1] .. " "
+            local strings = vim.split(kind.kind, '%s', { trimempty = true })
+            kind.kind = ' ' .. strings[1] .. ' '
             return kind
-          end
+          end,
         },
         snippet = {
           expand = function(args) require('luasnip').lsp_expand(args.body) end,
@@ -78,33 +139,32 @@ return {
         completion = { completeopt = vim.o.completeopt },
         mapping = cmp_keymaps.insert(),
         preselect = cmp.PreselectMode.None,
-        sources = cmp.config.sources(
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'crates' },
+          { name = 'emoji' },
+          { name = 'calc' },
+          { name = 'copilot' },
+          { name = 'path' },
+          { name = 'nvim_lua' },
+        }, {
           {
-            { name = "nvim_lsp" },
-            { name = "luasnip" },
-            { name = "crates" },
-            { name = 'emoji' },
-            { name = 'calc'},
-            { name = 'copilot' },
-            { name = "path"},
-            { name = "nvim_lua" },
-          },
-          {
-            {
-              name = 'buffer',
-              option = {
-                get_bufnrs = function()
-                  local bufs = {}
-                  for _, win in ipairs(vim.api.nvim_list_wins()) do bufs[vim.api.nvim_win_get_buf(win)] = true end
-                  return vim.tbl_keys(bufs)
+            name = 'buffer',
+            option = {
+              get_bufnrs = function()
+                local bufs = {}
+                for _, win in ipairs(vim.api.nvim_list_wins()) do
+                  bufs[vim.api.nvim_win_get_buf(win)] = true
                 end
-              }
-            }
-          }
-        ),
+                return vim.tbl_keys(bufs)
+              end,
+            },
+          },
+        }),
         sorting = {
           comparators = {
-            function (...) return require("cmp_buffer"):compare_locality(...) end,
+            function(...) return require('cmp_buffer'):compare_locality(...) end,
             compare.offset,
             compare.exact,
             compare.recently_used,
@@ -117,9 +177,9 @@ return {
             compare.order,
           },
         },
-        view = { entries = { name = "custom", selection_order = "near_cursor" } },
+        view = { entries = { name = 'custom', selection_order = 'near_cursor' } },
         experimental = { ghost_text = true },
-      }
+      })
 
       cmp.setup.filetype('gitcommit', {
         sources = cmp.config.sources({
@@ -127,23 +187,20 @@ return {
           { name = 'buffer' },
           { name = 'conventionalcommits' },
           { name = 'luasnip' },
-        })
+        }),
       })
       cmp.setup.cmdline(':', {
         mapping = cmp_keymaps.cmdline(),
         confirmation = { completeopt = 'menu,menuone,noinsert' },
-        sources = cmp.config.sources( {
+        sources = cmp.config.sources({
           { name = 'cmdline_history' },
           { name = 'path' },
           { name = 'cmdline' },
-        })
+        }),
       })
       cmp.setup.cmdline('/', {
         mapping = cmp_keymaps.cmdline(),
-        sources = cmp.config.sources(
-          { { name = 'nvim_lsp_document_symbol' } },
-          { { name = 'buffer' } }
-        )
+        sources = cmp.config.sources({ { name = 'nvim_lsp_document_symbol' } }, { { name = 'buffer' } }),
       })
     end,
   },

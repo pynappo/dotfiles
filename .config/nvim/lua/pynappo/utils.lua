@@ -26,7 +26,6 @@ function utils.nvim_get_hl_hex(ns_id, opts)
 end
 
 local open_handlers = {
-  -- deal with 
   function(path)
 
   end,
@@ -43,7 +42,7 @@ function utils.open(path)
   return nil, vim.print("custom ui.open: no handler worked")
 end
 
-local utils.lazy = {
+utils.lazy = {
   --- Require on index.
   ---
   --- Will only require the module after the first index of a module.
@@ -58,7 +57,7 @@ local utils.lazy = {
         require(require_path)[key] = value
       end,
     })
-  end
+  end,
 
   --- Requires only when you call the _module_ itself.
   ---
@@ -70,7 +69,7 @@ local utils.lazy = {
         return require(require_path)(...)
       end,
     })
-  end
+  end,
 
   --- Require when an exported method is called.
   ---
@@ -95,7 +94,7 @@ local utils.lazy = {
         end
       end,
     })
-  end
+  end,
 }
 
 return utils

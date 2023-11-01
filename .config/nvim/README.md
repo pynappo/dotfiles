@@ -1,4 +1,4 @@
-H\ere's my neovim config that I might link on Reddit posts and stuff. Some cool things of note:
+Here's my neovim config that I might link on Reddit posts and stuff. Some cool things of note:
 
 * [keymaps.lua](./lua/pynappo/keymaps.lua) holds all keymaps in one file for easy searching.
 * <200ms startuptime on windows, <75ms on linux
