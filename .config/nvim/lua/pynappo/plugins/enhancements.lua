@@ -1,13 +1,13 @@
 local keymaps = require('pynappo.keymaps')
 return {
   { 'nacro90/numb.nvim', config = function() require('numb').setup() end, event = 'CmdlineEnter' },
-  {'winston0410/range-highlight.nvim', dependencies = {'winston0410/cmd-parser.nvim'}, config = true},
+  { 'winston0410/range-highlight.nvim', dependencies = { 'winston0410/cmd-parser.nvim' }, config = true },
   {
     'max397574/better-escape.nvim',
     opts = {
       mapping = { 'jk', 'kj' },
       keys = function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and '<esc>l' or '<esc>' end,
-    }
+    },
   },
   {
     'mrjones2014/smart-splits.nvim',
@@ -15,12 +15,12 @@ return {
     config = true,
   },
   {
-    "gbprod/yanky.nvim",
-    dependencies = { "kkharji/sqlite.lua" },
+    'gbprod/yanky.nvim',
+    dependencies = { 'kkharji/sqlite.lua' },
     event = 'VeryLazy',
     init = keymaps.setup.yanky,
     config = function()
-      require("yanky").setup({
+      require('yanky').setup({
         picker = {
           select = {
             action = nil, -- nil to use default put action
@@ -30,14 +30,15 @@ return {
           },
         },
       })
-    end
+    end,
   },
   { 'tiagovla/scope.nvim', opts = {} },
   {
     'chentoast/marks.nvim',
+    enabled = false,
     event = 'VeryLazy',
-    config = function() require('marks').setup({default_mappings = false}) end,
-    keys = keymaps.setup.marks({lazy=true})
+    config = function() require('marks').setup({ default_mappings = false }) end,
+    keys = keymaps.setup.marks({ lazy = true }),
   },
   {
     'karb94/neoscroll.nvim',
@@ -55,7 +56,7 @@ return {
   },
   {
     'andymass/vim-matchup',
-    event = { "BufNewFile", 'BufRead' },
+    event = { 'BufNewFile', 'BufRead' },
     init = function()
       vim.g.matchup_surround_enabled = 1
       vim.g.matchup_transmute = 1
@@ -63,6 +64,6 @@ return {
       vim.g.matchup_matchparen_offscreen = {}
     end,
   },
-  {'Aasim-A/scrollEOF.nvim', config = false},
-  { 'lambdalisue/suda.vim', }
+  { 'Aasim-A/scrollEOF.nvim', config = false },
+  { 'lambdalisue/suda.vim' },
 }
