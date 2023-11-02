@@ -7,7 +7,7 @@ return {
       -- { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',
       'mrcjkb/rustaceanvim',
-      'jose-elias-alvarez/null-ls.nvim',
+      'nvimtools/none-ls.nvim',
       {
         'williamboman/mason-lspconfig.nvim',
         dependencies = { 'williamboman/mason.nvim' },

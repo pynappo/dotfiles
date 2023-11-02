@@ -16,7 +16,6 @@ return {
   },
   {
     'gbprod/yanky.nvim',
-    dependencies = { 'kkharji/sqlite.lua' },
     event = 'VeryLazy',
     init = keymaps.setup.yanky,
     config = function()
@@ -42,6 +41,7 @@ return {
   },
   {
     'karb94/neoscroll.nvim',
+    enabled = true,
     event = 'VeryLazy',
     config = function()
       require('neoscroll').setup({ easing_function = 'quadratic' })
@@ -66,4 +66,11 @@ return {
   },
   { 'Aasim-A/scrollEOF.nvim', config = false },
   { 'lambdalisue/suda.vim' },
+  {
+    'jinh0/eyeliner.nvim',
+    opts = {
+      highlight_on_key = true, -- show highlights only after keypress
+      dim = false, -- dim all other characters if set to true (recommended!)
+    },
+  },
 }

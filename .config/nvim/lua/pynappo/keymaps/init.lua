@@ -17,7 +17,7 @@ local function map(keymaps, keymap_opts, extra_opts)
   return lazy_keymaps
 end
 
-local function abbreviate_command(abbr, expansion)
+local function abbr_command(abbr, expansion)
   return {
     abbr,
     function()
@@ -53,9 +53,17 @@ M.setup = {
         {
           '<Esc>',
           function()
-            if vim.api.nvim_win_get_config(0).relative ~= '' then return vim.cmd.quit() end
-            if vim.v.hlsearch == 1 then return vim.cmd.nohlsearch() end
+            if vim.api.nvim_win_get_config(0).relative ~= '' then
+              vim.cmd.quit()
+              return nil
+            end
+            if vim.v.hlsearch == 1 then
+              vim.cmd.nohlsearch()
+              return nil
+            end
+            return '<Esc>'
           end,
+          { expr = true },
         },
         { '<leader>q', vim.cmd.bdelete },
         -- Autoindent on insert/append
@@ -77,8 +85,9 @@ M.setup = {
         { '<leader>Y', '"+Y' },
       },
       [{ 'ca' }] = {
-        abbreviate_command('L', 'Lazy'),
-        abbreviate_command('s', 's/g<Left><Left>'),
+        abbr_command('L', 'Lazy'),
+        abbr_command('s', 's/g<Left><Left>'),
+        abbr_command('h', 'vert h'),
       },
       [{ 'v' }] = {
         {

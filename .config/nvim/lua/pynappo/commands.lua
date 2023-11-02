@@ -7,12 +7,12 @@ local print_system_command = function(cmd)
   print(utils.is_windows and result.stdout:gsub('%%', [[\]]) or result.stdout:gsub([[%]], [[/]]))
 end
 local commands = {
-  { "CDhere", "tcd %:p:h" },
+  { 'CDhere', 'tcd %:p:h' },
   {
-    "DotfilesGit",
+    'DotfilesGit',
     function()
-      vim.env.GIT_WORK_TREE = vim.fn.expand("~")
-      vim.env.GIT_DIR = vim.fn.expand("~/.dotfiles.git/")
+      vim.env.GIT_WORK_TREE = vim.fn.expand('~')
+      vim.env.GIT_DIR = vim.fn.expand('~/.dotfiles.git/')
     end,
   },
   {
@@ -33,10 +33,10 @@ local commands = {
       complete = function()
         return {
           'list',
-          'remove'
+          'remove',
         }
-      end
-    }
+      end,
+    },
   },
   {
     'Config',
@@ -46,14 +46,14 @@ local commands = {
       vim.cmd.tcd((vim.env.XDG_CONFIG_HOME or '~/.config') .. '/nvim/')
       require('tabnames').set_tab_name(0, 'Config')
       if new_tab then vim.cmd('Alpha') end
-    end
+    end,
   },
   {
     'Messages',
     function()
       local scratch_buffer = vim.api.nvim_create_buf(false, true)
       vim.bo[scratch_buffer].filetype = 'vim'
-      local messages = vim.split(vim.fn.execute('messages', "silent"), '\n')
+      local messages = vim.split(vim.fn.execute('messages', 'silent'), '\n')
       vim.api.nvim_buf_set_text(scratch_buffer, 0, 0, 0, 0, messages)
       vim.cmd('vertical sbuffer ' .. scratch_buffer)
     end,
@@ -65,13 +65,13 @@ local commands = {
       local current_ft = vim.bo.filetype
       vim.cmd('vertical sbuffer' .. scratch_buffer)
       vim.bo[scratch_buffer].filetype = current_ft
-      vim.cmd('read ++edit #') -- load contents of previous buffer into scratch_buffer
+      vim.cmd.read('++edit #') -- load contents of previous buffer into scratch_buffer
       vim.cmd.normal('1G"_d_') -- delete extra newline at top of scratch_buffer
       vim.cmd.diffthis() -- scratch_buffer
       vim.cmd.wincmd('p')
       vim.cmd.diffthis() -- current buffer
-    end
-  }
+    end,
+  },
 }
 for _, cmd in ipairs(commands) do
   vim.api.nvim_create_user_command(
