@@ -336,6 +336,18 @@ local M = {
     },
     provider = function(self) return self.child:eval() end,
   },
+  conform = {
+    condition = function(self)
+      local ok, conform = pcall(require, 'conform')
+      self.conform = conform
+      return ok
+    end,
+    update = { 'BufEnter' },
+    provider = function(self)
+      local ft_formatters = self.conform.formatters_by_ft[vim.bo.filetype]
+      return ft_formatters and table.concat(self.conform.formatters_by_ft[vim.bo.filetype], ' ') or 'None'
+    end,
+  },
   lazy = {
     condition = function()
       local ok, lazy_status = pcall(require, 'lazy.status')

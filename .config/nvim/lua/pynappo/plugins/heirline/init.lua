@@ -111,6 +111,11 @@ return {
         utils.surround({ 'Plugin updates: ', '' }, 'diag_info', { c.lazy, hl = { fg = 'black' } }),
         utils.surround({ '', '' }, 'diag_info', { c.lazy, hl = { fg = 'black' } }),
       }
+      c.conform_block = {
+        flexible = 4,
+        utils.surround({ 'Formatters: ', '' }, 'diag_info', { c.conform, hl = { fg = 'black' } }),
+        utils.surround({ '', '' }, 'diag_info', { c.conform, hl = { fg = 'black' } }),
+      }
 
       local t = require('pynappo.plugins.heirline.components.tabline')
       require('heirline').setup({
@@ -151,7 +156,7 @@ return {
             c.lazy_block,
             u.space,
           },
-          { c.dap, c.lsp_block, u.space, c.ruler_block },
+          { c.dap, c.lsp_block, u.space, c.conform_block, u.space, c.ruler_block },
         },
         winbar = {
           fallthrough = false,
