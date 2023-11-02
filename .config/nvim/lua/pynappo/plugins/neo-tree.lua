@@ -137,7 +137,7 @@ return {
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
       hide_root_node = true,
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
-      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = true,   -- Close Neo-tree if it is the last window left in the tab
       default_source = 'filesystem',
       sort_case_insensitive = true,
       enable_diagnostics = true,
@@ -145,11 +145,11 @@ return {
       open_files_do_not_replace_types = { 'terminal', 'Trouble', 'qf', 'edgy' },
       -- source_selector provides clickable tabs to switch between sources.
       source_selector = {
-        winbar = true, -- toggle to show selector on winbar
-        statusline = false, -- toggle to show selector on statusline
+        winbar = true,                         -- toggle to show selector on winbar
+        statusline = false,                    -- toggle to show selector on statusline
         show_scrolled_off_parent_node = false, -- this will replace the tabs with the parent path
         -- of the top visible node when scrolled down.
-        sources = { -- falls back to source_name if nil
+        sources = {                            -- falls back to source_name if nil
           { source = 'filesystem', display_name = ' 󰉓 Files ' },
           { source = 'buffers', display_name = ' 󰈙 Buffers ' },
           { source = 'git_status', display_name = ' 󰊢 Git ' },
@@ -192,12 +192,12 @@ return {
           align = 'right',
         },
       },
-      window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
+      window = {           -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
         -- possible options. These can also be functions that return these options.
         position = 'left', -- left, right, top, bottom, float, current
-        width = 30, -- applies to left and right positions
-        height = 15, -- applies to top and bottom positions
-        popup = { -- settings that apply to float position only
+        width = 30,        -- applies to left and right positions
+        height = 15,       -- applies to top and bottom positions
+        popup = {          -- settings that apply to float position only
           size = {
             height = '80%',
             width = '50%',
@@ -235,17 +235,17 @@ return {
         bind_to_cwd = true, -- true creates a 2-way binding between vim's cwd and neo-tree's root
         cwd_target = { sidebar = 'tab', current = 'window' },
         filtered_items = {
-          visible = true, -- when true, they will just be displayed differently than normal items
+          visible = true,                       -- when true, they will just be displayed differently than normal items
           force_visible_in_empty_folder = true, -- when true, hidden files will be shown if the root folder is otherwise empty
-          show_hidden_count = true, -- when true, the number of hidden items in each folder will be shown as the last entry
+          show_hidden_count = true,             -- when true, the number of hidden items in each folder will be shown as the last entry
           hide_dotfiles = true,
           hide_gitignored = true,
-          hide_hidden = true, -- only works on Windows for hidden files/directories
+          hide_hidden = true,            -- only works on Windows for hidden files/directories
         },
         find_by_full_path_words = false, -- `false` means it only searches the tail of a path.
-        group_empty_dirs = true, -- when true, empty folders will be grouped together
+        group_empty_dirs = true,         -- when true, empty folders will be grouped together
         scan_mode = 'deep',
-        search_limit = 50, -- max number of search results when using filters
+        search_limit = 50,               -- max number of search results when using filters
         follow_current_file = {
           enabled = true,
         }, -- This will find and focus the file in the active buffer every time
@@ -255,7 +255,7 @@ return {
         bind_to_cwd = true,
         follow_current_file = {
           enabled = true,
-        }, -- This will find and focus the file in the active buffer every time
+        },                       -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
         group_empty_dirs = true, -- when true, empty directories will be grouped together
         scan_mode = 'deep',
@@ -263,3 +263,4 @@ return {
     }, require('pynappo.keymaps').neotree))
   end,
 }
+

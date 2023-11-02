@@ -367,8 +367,7 @@ local M = {
     end,
     hl = vim.bo.modified and { italic = true, force = true } or nil,
     flexible = 2,
-    update = { 'BufEnter', 'BufWritePost', 'WinResized', 'VimResized' },
-    { provider = function(self) return self.lfilename end },
+    { provider = function(self) return self.winbar and vim.fn.pathshorten(self.lfilename) or self.lfilename end },
     { provider = function(self) return vim.fn.pathshorten(self.lfilename) end },
   },
   file_icon = {

@@ -26,6 +26,8 @@ return {
       })
       local hooks = require('ibl.hooks')
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+      local hooks = require "ibl.hooks"
+      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
     end,
   },
   {
@@ -38,6 +40,12 @@ return {
     },
   },
   { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({ lazy = true }) },
+  { 'folke/which-key.nvim', event = 'VeryLazy', opts = {window = {border = 'single'}} },
+  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
+  { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
+  { 'folke/which-key.nvim', enabled = false, event = 'VeryLazy', opts = {window = {border = 'single'}} },
+  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
+  { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
   {
     'RRethy/vim-illuminate',
     event = { 'BufNewFile', 'BufRead' },

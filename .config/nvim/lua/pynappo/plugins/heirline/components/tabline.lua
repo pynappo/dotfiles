@@ -1,4 +1,6 @@
 local utils = require('heirline.utils')
+local ok, mini = pcall(require, 'mini.bufremove')
+local bufdelete = ok and mini.delete or vim.api.nvim_buf_delete
 local tabline = {
   bufnr = {
     provider = function(self) return tostring(self.bufnr) .. '. ' end,
@@ -30,7 +32,9 @@ local tabline = {
       provider = ' 󰅖',
       hl = { fg = 'gray' },
       on_click = {
-        callback = function(_, minwid) vim.api.nvim_buf_delete(minwid, { force = false }) end,
+        callback = function(_, minwid)
+          bufdelete(minwid)
+        end,
         minwid = function(self) return self.bufnr end,
         name = 'heirline_tabline_close_buffer_callback',
       },
@@ -75,7 +79,7 @@ tabline.filename_block = {
   on_click = {
     callback = function(_, minwid, _, button)
       if button == 'm' then
-        vim.api.nvim_buf_delete(minwid, { force = false })
+        bufdelete(minwid)
       else
         vim.api.nvim_win_set_buf(0, minwid)
       end

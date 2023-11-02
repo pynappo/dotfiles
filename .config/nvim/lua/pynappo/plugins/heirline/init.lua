@@ -155,6 +155,9 @@ return {
         },
         winbar = {
           fallthrough = false,
+          init = function(self)
+            self.winbar = true
+          end,
           hl = function() return conditions.is_active() and 'WinBar' or 'WinBarNC' end,
           {
             condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,

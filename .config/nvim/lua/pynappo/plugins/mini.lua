@@ -103,9 +103,7 @@ return {
         trailspace.trim_last_lines()
       end,
     }
-    user_command(
-      'Trim',
-      function(args) (command_map[args.args] or command_map.all)() end,
+    user_command('Trim', function(args) (command_map[args.args] or command_map.all)() end,
       { nargs = '?', complete = function() return vim.tbl_keys(command_map) end }
     )
     keymaps.setup.mini()
@@ -237,3 +235,4 @@ return {
     user_command('MiniStarter', function() starter.open() end, {})
   end,
 }
+

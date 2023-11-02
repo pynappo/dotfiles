@@ -1,6 +1,7 @@
 oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.yaml" | Invoke-Expression
 Import-Module scoop-completion
 Import-Module cd-extras
+Import-Module gsudoModule
 function IsVirtualTerminalProcessingEnabled {
 	$MethodDefinitions = @'
 [DllImport("kernel32.dll", SetLastError = true)]
@@ -39,6 +40,7 @@ Function fzfb { fzf --preview 'bat --color=always --style=numbers --line-range=:
 Set-Alias -Name f -Value fzfb
 $env:PYTHONIOENCODING="utf-8"
 $env:PATH="$env:USERPROFILE\scoop\shims;$env:PATH"
+$env:PATH="$env:APPDATA\Python\Python39\Scripts;$env:PATH"
 
 Invoke-Expression "$(thefuck --alias)"
 Function Reload-Path {

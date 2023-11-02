@@ -303,27 +303,6 @@
 				"Type" : "Microsoft.PreIndexed.Package"
 			}
 		},
-		{
-			"Packages" : 
-			[
-				{
-					"PackageIdentifier" : "9NTM2QC6QWS7"
-				},
-				{
-					"PackageIdentifier" : "9PC3H3V7Q9CH"
-				},
-				{
-					"PackageIdentifier" : "9NBLGGH5L9XT"
-				}
-			],
-			"SourceDetails" : 
-			{
-				"Argument" : "https://storeedgefd.dsx.mp.microsoft.com/v9.0",
-				"Identifier" : "StoreEdgeFD",
-				"Name" : "msstore",
-				"Type" : "Microsoft.Rest"
-			}
-		}
 	],
 	"WinGetVersion" : "1.6.1573-preview"
 }
