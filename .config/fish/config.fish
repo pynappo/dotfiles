@@ -1,4 +1,5 @@
 set XDG_CONFIG_HOME ~/.config
+set MANPAGER 'nvim +Man!'
 oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
 if status is-interactive
   if set -q TERMUX_VERSION

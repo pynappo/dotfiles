@@ -32,7 +32,7 @@ return {
         enabled = false,
         view = 'cmdline',
       },
-      messages = { enabled = false },
+      messages = { enabled = true },
       lsp = {
         progress = {
           enabled = true,

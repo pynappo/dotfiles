@@ -53,14 +53,8 @@ M.setup = {
         {
           '<Esc>',
           function()
-            if vim.api.nvim_win_get_config(0).relative ~= '' then
-              vim.cmd.quit()
-              return nil
-            end
-            if vim.v.hlsearch == 1 then
-              vim.cmd.nohlsearch()
-              return nil
-            end
+            if vim.api.nvim_win_get_config(0).relative ~= '' then return '<Cmd>quit<CR>' end
+            if vim.v.hlsearch == 1 then return '<Cmd>nohlsearch<CR>' end
             return '<Esc>'
           end,
           { expr = true },
@@ -571,9 +565,9 @@ M.neotree = {
       ['?'] = 'show_help',
       ['<'] = 'prev_source',
       ['>'] = 'next_source',
-      ['e'] = function() vim.cmd('Neotree focus filesystem left') end,
-      ['b'] = function() vim.cmd('Neotree focus buffers left') end,
-      ['g'] = function() vim.cmd('Neotree focus git_status left') end,
+      ['<LocalLeader>e'] = function() vim.cmd('Neotree focus filesystem left') end,
+      ['<LocalLeader>b'] = function() vim.cmd('Neotree focus buffers left') end,
+      ['<LocalLeader>g'] = function() vim.cmd('Neotree focus git_status left') end,
     },
   },
   filesystem = {

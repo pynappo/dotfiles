@@ -26,26 +26,15 @@ return {
       })
       local hooks = require('ibl.hooks')
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-      local hooks = require "ibl.hooks"
-      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
     end,
   },
-  {
-    'folke/which-key.nvim',
-    event = 'VeryLazy',
-    enabled = false,
-    opts = {
-      window = { border = 'single' },
-      triggers_nowait = { '<leader>', 'g' },
-    },
-  },
+  { 'folke/which-key.nvim', event = 'VeryLazy', opts = { window = { border = 'single' } } },
   { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({ lazy = true }) },
-  { 'folke/which-key.nvim', event = 'VeryLazy', opts = {window = {border = 'single'}} },
-  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
-  { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
-  { 'folke/which-key.nvim', enabled = false, event = 'VeryLazy', opts = {window = {border = 'single'}} },
-  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({lazy = true})},
-  { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { highlight = { keyword = 'fg', after = '' } } },
+  {
+    'folke/todo-comments.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { highlight = { keyword = 'fg', after = '' } },
+  },
   {
     'RRethy/vim-illuminate',
     event = { 'BufNewFile', 'BufRead' },
@@ -149,5 +138,111 @@ return {
   {
     'glacambre/firenvim',
     build = function() vim.fn['firenvim#install'](0) end,
+  },
+  {
+    'folke/noice.nvim',
+    opts = {
+      cmdline = {
+        enabled = false,
+        view = 'cmdline',
+      },
+      messages = { enabled = false },
+      lsp = {
+        progress = {
+          enabled = true,
+        },
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = false,
+          ['vim.lsp.util.stylize_markdown'] = false,
+          ['cmp.entry.get_documentation'] = false,
+        },
+      },
+      views = {
+        hover = {
+          border = { style = 'rounded' },
+          position = { row = 2 },
+        },
+        mini = {
+          position = { row = -1 - vim.o.cmdheight }, -- better default
+        },
+      },
+      routes = {
+        {
+          filter = {
+            event = 'lsp',
+            kind = 'progress',
+            cond = function(message)
+              local client = vim.tbl_get(message.opts, 'progress', 'client')
+              return client == 'null-ls'
+            end,
+          },
+          opts = { skip = true },
+        },
+        {
+          filter = { find = 'No information available' },
+          opts = { stop = true },
+        },
+        {
+          filter = { find = 'bytes$' },
+          opts = { skip = true },
+        },
+      },
+      presets = {
+        inc_rename = true,
+        long_message_to_split = true,
+        lsp_doc_border = true,
+      },
+    },
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify',
+      {
+        'smjonas/inc-rename.nvim',
+        dependencies = {
+          {
+            'stevearc/dressing.nvim',
+            opts = {
+              input = {
+                override = function(conf)
+                  conf.col = -1
+                  conf.row = 0
+                  return conf
+                end,
+              },
+            },
+          },
+        },
+        init = keymaps.setup.incremental_rename,
+        config = true,
+      },
+    },
+  },
+  {
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
+    enabled = false,
+    opts = {
+      plugins = {
+        marks = false, -- shows a list of your marks on ' and `
+        registers = false, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+        -- the presets plugin, adds help for a bunch of default keybindings in Neovim
+        -- No actual key bindings are created
+        spelling = {
+          enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+          suggestions = 20, -- how many suggestions should be shown in the list?
+        },
+        presets = {
+          operators = false, -- adds help for operators like d, y, ...
+          motions = false, -- adds help for motions
+          text_objects = false, -- help for text objects triggered after entering an operator
+          windows = false, -- default bindings on <c-w>
+          nav = false, -- misc bindings to work with windows
+          z = false, -- bindings for folds, spelling and others prefixed with z
+          g = false, -- bindings for prefixed with g
+        },
+      },
+      window = { border = 'single' },
+      triggers_nowait = { '<leader>', 'g' },
+    },
   },
 }

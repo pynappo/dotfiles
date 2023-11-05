@@ -289,3 +289,4 @@ vim.paste = (function(overridden)
     overridden(lines, phase)
   end
 end)(vim.paste)
+vim.keymap.set('n', '<leader>z', 'z=', { desc = 'Spelling' })

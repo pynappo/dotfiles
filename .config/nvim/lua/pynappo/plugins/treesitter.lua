@@ -21,7 +21,7 @@ return {
         'git_config',
         'git_rebase',
         'gitattributes',
-        'comment',
+        -- 'comment',
       },
       highlight = {
         enable = true,
