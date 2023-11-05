@@ -29,12 +29,19 @@ return {
     end,
   },
   { 'folke/which-key.nvim', event = 'VeryLazy', opts = { window = { border = 'single' } } },
-  { 'folke/trouble.nvim', config = true, cmd = 'Trouble', keys = keymaps.setup.trouble({ lazy = true }) },
   {
-    'folke/todo-comments.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { highlight = { keyword = 'fg', after = '' } },
+    'folke/trouble.nvim',
+    config = true,
+    cmd = 'Trouble',
+    keys = keymaps.setup.trouble({
+      lazy = true,
+    }),
   },
+  -- {
+  --   'folke/todo-comments.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  --   opts = { highlight = { keyword = 'fg', after = '' } },
+  -- },
   {
     'RRethy/vim-illuminate',
     event = { 'BufNewFile', 'BufRead' },
@@ -141,6 +148,15 @@ return {
   },
   {
     'folke/noice.nvim',
+    event = 'VeryLazy',
+    keys = {
+      {
+        '<S-Enter>',
+        function() require('noice').redirect(vim.fn.getcmdline()) end,
+        mode = 'c',
+        desc = 'Redirect Cmdline',
+      },
+    },
     opts = {
       cmdline = {
         enabled = false,

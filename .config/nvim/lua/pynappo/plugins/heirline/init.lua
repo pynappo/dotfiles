@@ -113,7 +113,7 @@ return {
       }
       c.conform_block = {
         flexible = 4,
-        utils.surround({ 'Formatters: ', '' }, 'diag_info', { c.conform, hl = { fg = 'black' } }),
+        utils.surround({ 'Conform: ', '' }, 'diag_info', { c.conform, hl = { fg = 'black' } }),
         utils.surround({ '', '' }, 'diag_info', { c.conform, hl = { fg = 'black' } }),
       }
 
@@ -160,9 +160,7 @@ return {
         },
         winbar = {
           fallthrough = false,
-          init = function(self)
-            self.winbar = true
-          end,
+          init = function(self) self.winbar = true end,
           hl = function() return conditions.is_active() and 'WinBar' or 'WinBarNC' end,
           {
             condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,

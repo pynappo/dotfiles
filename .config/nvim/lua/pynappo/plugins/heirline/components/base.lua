@@ -344,8 +344,8 @@ local M = {
     end,
     update = { 'BufEnter' },
     provider = function(self)
-      local ft_formatters = self.conform.formatters_by_ft[vim.bo.filetype]
-      return ft_formatters and table.concat(self.conform.formatters_by_ft[vim.bo.filetype], ' ') or 'None'
+      local ft_formatters = self.conform.list_formatters()
+      return ft_formatters and table.concat(vim.tbl_map(function(f) return f.name end, ft_formatters), ' ') or 'N/A'
     end,
   },
   lazy = {

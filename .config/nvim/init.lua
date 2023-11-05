@@ -245,27 +245,7 @@ vim.filetype.add({
 })
 -- GUI stuff
 o.guifont = 'Inconsolata Nerd Font Mono:h12:#e-subpixelantialias'
-g.firenvim_config = {
-  globalSettings = {
-    alt = 'all',
-  },
-  localSettings = {
-    ['.*'] = {
-      cmdline = 'neovim',
-      content = 'md',
-      priority = 0,
-      selector = 'textarea',
-      takeover = 'never',
-    },
-  },
-}
-if g.started_by_firenvim then
-  vim.cmd.startinsert()
-  o.laststatus = 0
-  o.cmdheight = 0
-  o.showtabline = 0
-  o.pumheight = 10
-elseif g.neovide then
+if g.neovide then
   g.neovide_transparency = 0.8
   g.neovide_refresh_rate = 144
   g.neovide_cursor_vfx_mode = 'ripple'
@@ -289,4 +269,3 @@ vim.paste = (function(overridden)
     overridden(lines, phase)
   end
 end)(vim.paste)
-vim.keymap.set('n', '<leader>z', 'z=', { desc = 'Spelling' })

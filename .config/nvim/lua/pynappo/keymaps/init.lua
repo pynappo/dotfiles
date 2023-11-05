@@ -37,6 +37,16 @@ M.setup = {
       [{ 'n' }] = {
         { '<Tab>', vim.cmd.bnext },
         { '<S-Tab>', vim.cmd.bprevious },
+        { '<Tab>', vim.cmd.bnext },
+        { '<S-Tab>', vim.cmd.bprevious },
+        { 'I', autoindent('I'), { expr = true } },
+        { 'i', autoindent('i'), { expr = true } },
+        { 'a', autoindent('a'), { expr = true } },
+        { 'A', autoindent('A'), { expr = true } },
+        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, { expr = true } },
+        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, { expr = true } },
+        { 'x', '"_dl' },
+        { 'X', '"_dh' },
       },
       [{ 'n', 't' }] = {
         -- Better tabs
@@ -61,14 +71,6 @@ M.setup = {
         },
         { '<leader>q', vim.cmd.bdelete },
         -- Autoindent on insert/append
-        { 'I', autoindent('I'), { expr = true } },
-        { 'i', autoindent('i'), { expr = true } },
-        { 'a', autoindent('a'), { expr = true } },
-        { 'A', autoindent('A'), { expr = true } },
-        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, { expr = true } },
-        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, { expr = true } },
-        { 'x', '"_dl' },
-        { 'X', '"_dh' },
       },
       [{ 'n', 'v' }] = {
         { 'p', 'p=`]`', { remap = true } },
@@ -110,6 +112,8 @@ M.setup = {
           end,
           { expr = true },
         },
+        { '<C-CR>', '<Esc>o' },
+        { '<C-S-CR>', '<Esc>O' },
       },
     }, { silent = true })
   end,
