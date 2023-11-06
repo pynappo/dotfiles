@@ -148,7 +148,7 @@ return {
   },
   {
     'folke/noice.nvim',
-    event = 'VeryLazy',
+    lazy = false,
     keys = {
       {
         '<S-Enter>',
