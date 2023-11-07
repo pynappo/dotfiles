@@ -17,12 +17,14 @@ local function map(keymaps, keymap_opts, extra_opts)
   return lazy_keymaps
 end
 
-local function abbr_command(abbr, expansion)
+function M.abbr_command(abbr, expansion)
   return {
     abbr,
     function()
       local typing_command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdpos() < (#abbr + 2)
-      return typing_command and expansion or abbr
+      if not typing_command then return abbr end
+      if type(expansion) == 'function' then return expansion() or abbr end
+      return expansion
     end,
     { remap = false, expr = true },
   }
@@ -81,9 +83,17 @@ M.setup = {
         { '<leader>Y', '"+Y' },
       },
       [{ 'ca' }] = {
-        abbr_command('L', 'Lazy'),
-        abbr_command('s', 's/g<Left><Left>'),
-        abbr_command('h', 'vert h'),
+        M.abbr_command('L', 'Lazy'),
+        M.abbr_command('s', 's/g<Left><Left>'),
+        M.abbr_command('h', 'vert h'),
+        M.abbr_command('w', function()
+          if vim.env.USER == 'root' then return 'w' end
+          local prefixes = { '/etc' }
+          for _, prefix in ipairs(prefixes) do
+            if vim.startswith(vim.api.nvim_buf_get_name(0), prefix) then return 'SudaWrite' end
+          end
+          return 'w'
+        end),
       },
       [{ 'v' }] = {
         {
@@ -459,7 +469,7 @@ M.setup = {
   end,
   flash = function(opts)
     return map({
-      [{ 'n', 'o', 'x' }] = {
+      [{ 'n' }] = {
         { 's', function() require('flash').jump() end, { desc = 'Flash' } },
         { 'S', function() require('flash').treesitter() end, { desc = 'Flash Treesitter' } },
       },
