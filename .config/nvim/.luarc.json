@@ -1,5 +1,6 @@
 {
     "diagnostics.disable": [
         "missing-fields"
-    ]
+    ],
+    "workspace.checkThirdParty": "Disable"
 }

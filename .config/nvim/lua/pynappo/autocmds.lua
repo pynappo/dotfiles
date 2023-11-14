@@ -4,11 +4,12 @@ local utils = require('pynappo.utils')
 function autocmds.create_wrapper(augroup_name)
   local augroup = vim.api.nvim_create_augroup(augroup_name, { clear = true })
   return function(event, opts)
-    opts.group = opts.group or augroup
-    return vim.api.nvim_create_autocmd(event, opts)
-  end,
-    augroup
+        opts.group = opts.group or augroup
+        return vim.api.nvim_create_autocmd(event, opts)
+      end,
+      augroup
 end
+
 autocmds.create, autocmds.pynappo_augroup = autocmds.create_wrapper('pynappo')
 
 if vim.g.started_by_firenvim then autocmds.create('BufEnter', { callback = function() vim.cmd.startinsert() end }) end

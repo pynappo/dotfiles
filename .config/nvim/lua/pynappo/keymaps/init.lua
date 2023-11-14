@@ -37,18 +37,18 @@ M.setup = {
     end
     map({
       [{ 'n' }] = {
-        { '<Tab>', vim.cmd.bnext },
+        { '<Tab>',   vim.cmd.bnext },
         { '<S-Tab>', vim.cmd.bprevious },
-        { '<Tab>', vim.cmd.bnext },
+        { '<Tab>',   vim.cmd.bnext },
         { '<S-Tab>', vim.cmd.bprevious },
-        { 'I', autoindent('I'), { expr = true } },
-        { 'i', autoindent('i'), { expr = true } },
-        { 'a', autoindent('a'), { expr = true } },
-        { 'A', autoindent('A'), { expr = true } },
-        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, { expr = true } },
-        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, { expr = true } },
-        { 'x', '"_dl' },
-        { 'X', '"_dh' },
+        { 'I',       autoindent('I'),                                       { expr = true } },
+        { 'i',       autoindent('i'),                                       { expr = true } },
+        { 'a',       autoindent('a'),                                       { expr = true } },
+        { 'A',       autoindent('A'),                                       { expr = true } },
+        { 'j',       function() return vim.v.count > 0 and 'j' or 'gj' end, { expr = true } },
+        { 'k',       function() return vim.v.count > 0 and 'k' or 'gk' end, { expr = true } },
+        { 'x',       '"_dl' },
+        { 'X',       '"_dh' },
       },
       [{ 'n', 't' }] = {
         -- Better tabs
@@ -75,8 +75,8 @@ M.setup = {
         -- Autoindent on insert/append
       },
       [{ 'n', 'v' }] = {
-        { 'p', 'p=`]`', { remap = true } },
-        { 'P', 'P=`]`', { remap = true } },
+        { 'p',         'p=`]`', { remap = true } },
+        { 'P',         'P=`]`', { remap = true } },
         { '<leader>p', '"+p' },
         { '<leader>P', '"+P' },
         { '<leader>y', '"+y' },
@@ -87,12 +87,15 @@ M.setup = {
         M.abbr_command('s', 's/g<Left><Left>'),
         M.abbr_command('h', 'vert h'),
         M.abbr_command('w', function()
-          if vim.env.USER == 'root' then return 'w' end
+          local auto_p = 'w ++p<Home><Right>'
+          if vim.env.USER == 'root' then return auto_p end
           local prefixes = { '/etc' }
           for _, prefix in ipairs(prefixes) do
-            if vim.startswith(vim.api.nvim_buf_get_name(0), prefix) then return 'SudaWrite' end
+            if vim.startswith(vim.api.nvim_buf_get_name(0), prefix) then
+              return 'SudaWrite'
+            end
           end
-          return 'w'
+          return auto_p
         end),
       },
       [{ 'v' }] = {
@@ -122,7 +125,7 @@ M.setup = {
           end,
           { expr = true },
         },
-        { '<C-CR>', '<Esc>o' },
+        { '<C-CR>',   '<Esc>o' },
         { '<C-S-CR>', '<Esc>O' },
       },
     }, { silent = true })
@@ -131,13 +134,13 @@ M.setup = {
     return map({
       [{ 'n' }] = {
         -- { "r", function() require('substitute').operator() end, },
-        { 'rr', function() require('substitute').line() end },
-        { 'R', function() require('substitute').eol() end },
-        { '<leader>r', function() require('substitute.range').operator() end },
+        { 'rr',         function() require('substitute').line() end },
+        { 'R',          function() require('substitute').eol() end },
+        { '<leader>r',  function() require('substitute.range').operator() end },
         { '<leader>rr', function() require('substitute.range').word() end },
       },
       [{ 'x' }] = {
-        { 'r', function() require('substitute').visual() end },
+        { 'r',         function() require('substitute').visual() end },
         { '<leader>r', function() require('substitute.range').visual() end },
       },
     }, {}, opts)
@@ -165,12 +168,12 @@ M.setup = {
     local lsp = vim.lsp.buf
     map({
       [{ 'n' }] = {
-        { 'gD', lsp.declaration, { desc = '(LSP) Get declaration' } },
-        { 'gd', lsp.definition, { desc = '(LSP) Get definition' } },
-        { 'K', lsp.hover, { desc = '(LSP) Get definition' } },
-        { 'gi', lsp.implementation, { desc = '(LSP) Get implementation' } },
-        { 'gk', lsp.signature_help, { desc = '(LSP) Get signature help' } },
-        { '<leader>wa', lsp.add_workspace_folder, { desc = '(LSP) Add workspace folder' } },
+        { 'gD',         lsp.declaration,             { desc = '(LSP) Get declaration' } },
+        { 'gd',         lsp.definition,              { desc = '(LSP) Get definition' } },
+        { 'K',          lsp.hover,                   { desc = '(LSP) Get definition' } },
+        { 'gi',         lsp.implementation,          { desc = '(LSP) Get implementation' } },
+        { 'gk',         lsp.signature_help,          { desc = '(LSP) Get signature help' } },
+        { '<leader>wa', lsp.add_workspace_folder,    { desc = '(LSP) Add workspace folder' } },
         { '<leader>wr', lsp.remove_workspace_folder, { desc = '(LSP) Remove workspace folder' } },
         {
           '<leader>wl',
@@ -178,8 +181,8 @@ M.setup = {
           { desc = '(LSP) Get workspace folders' },
         },
         { '<leader>D', lsp.type_definition, { desc = '(LSP) Get type' } },
-        { 'ga', lsp.code_action, { desc = '(LSP) Get code actions' } },
-        { 'gr', lsp.references, { desc = '(LSP) Get references' } },
+        { 'ga',        lsp.code_action,     { desc = '(LSP) Get code actions' } },
+        { 'gr',        lsp.references,      { desc = '(LSP) Get references' } },
         {
           '<leader>ff',
           function()
@@ -218,11 +221,11 @@ M.setup = {
     local jdtls = require('jdtls')
     map({
       [{ 'n' }] = {
-        { '<A-o>', jdtls.organize_imports },
+        { '<A-o>',      jdtls.organize_imports },
         { '<leader>tc', jdtls.test_class },
         { '<leader>tm', jdtls.test_nearest_method },
-        { 'crv', jdtls.extract_variable },
-        { 'crc', jdtls.extract_constant },
+        { 'crv',        jdtls.extract_variable },
+        { 'crc',        jdtls.extract_constant },
         { '<leader>tr', require('jdtls.dap').setup_dap_main_class_configs() },
       },
       [{ 'v' }] = {
@@ -234,7 +237,7 @@ M.setup = {
     local dap = require('dap')
     map({
       [{ 'n' }] = {
-        { '<F5>', dap.continue },
+        { '<F5>',       dap.continue },
         { '<leader>db', dap.toggle_breakpoint },
         { '<leader>dB', dap.set_breakpoint },
         { '<leader>dc', dap.disconnect },
@@ -264,8 +267,8 @@ M.setup = {
     map({
       [{ 'n' }] = {
         { '<leader>k', diag.open_float, { desc = 'Floating Diagnostics' } },
-        { '[d', diag.goto_prev, { desc = 'Previous diagnostic' } },
-        { ']d', diag.goto_next, { desc = 'Next diagnostic' } },
+        { '[d',        diag.goto_prev,  { desc = 'Previous diagnostic' } },
+        { ']d',        diag.goto_next,  { desc = 'Next diagnostic' } },
         { '<leader>q', diag.setloclist, { desc = 'Add diagnostics to location list' } },
       },
     })
@@ -289,10 +292,10 @@ M.setup = {
   hlslens = function(opts)
     return map({
       [{ 'n' }] = {
-        { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-        { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-        { '*', [[*<Cmd>lua require('hlslens').start()<CR>]] },
-        { '#', [[#<Cmd>lua require('hlslens').start()<CR>]] },
+        { 'n',  [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+        { 'N',  [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+        { '*',  [[*<Cmd>lua require('hlslens').start()<CR>]] },
+        { '#',  [[#<Cmd>lua require('hlslens').start()<CR>]] },
         { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]] },
         { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]] },
       },
@@ -302,23 +305,23 @@ M.setup = {
     local normal = { 'n' }
     local keymaps = {
       [normal] = {
-        { 'm', '<Plug>(Marks-set)' },
-        { 'm,', '<Plug>(Marks-setnext)' },
-        { 'm;', '<Plug>(Marks-toggle)' },
-        { 'dm', '<Plug>(Marks-delete)' },
-        { 'dm-', '<Plug>(Marks-deleteline)' },
+        { 'm',         '<Plug>(Marks-set)' },
+        { 'm,',        '<Plug>(Marks-setnext)' },
+        { 'm;',        '<Plug>(Marks-toggle)' },
+        { 'dm',        '<Plug>(Marks-delete)' },
+        { 'dm-',       '<Plug>(Marks-deleteline)' },
         { 'dm<Space>', '<Plug>(Marks-deletebuf)' },
-        { 'm:', '<Plug>(Marks-preview)' },
-        { 'm]', '<Plug>(Marks-next)' },
-        { 'm[', '<Plug>(Marks-prev)' },
-        { 'dm=', '<Plug>(Marks-delete-bookmark)' },
-        { 'm}', '<Plug>(Marks-next-bookmark)' },
-        { 'm{', '<Plug>(Marks-prev-bookmark)' },
+        { 'm:',        '<Plug>(Marks-preview)' },
+        { 'm]',        '<Plug>(Marks-next)' },
+        { 'm[',        '<Plug>(Marks-prev)' },
+        { 'dm=',       '<Plug>(Marks-delete-bookmark)' },
+        { 'm}',        '<Plug>(Marks-next-bookmark)' },
+        { 'm{',        '<Plug>(Marks-prev-bookmark)' },
       },
     }
     for i = 0, 9 do
       vim.list_extend(keymaps[normal], {
-        { 'm' .. i, '<Plug>(Marks-set-bookmark' .. i .. ')' },
+        { 'm' .. i,  '<Plug>(Marks-set-bookmark' .. i .. ')' },
         { 'dm' .. i, '<Plug>(Marks-delete-bookmark' .. i .. ')' },
         { 'm}' .. i, '<Plug>(Marks-next-bookmark' .. i .. ')' },
         { 'm{' .. i, '<Plug>(Marks-prev-bookmark' .. i .. ')' },
@@ -329,32 +332,32 @@ M.setup = {
   mini = function()
     return map({
       [{ 'n' }] = {
-        { '<M-h>', function() require('mini.move').move_line('left') end, { desc = 'Move line left' } },
-        { '<M-j>', function() require('mini.move').move_line('down') end, { desc = 'Move line down' } },
-        { '<M-k>', function() require('mini.move').move_line('up') end, { desc = 'Move line up' } },
+        { '<M-h>', function() require('mini.move').move_line('left') end,  { desc = 'Move line left' } },
+        { '<M-j>', function() require('mini.move').move_line('down') end,  { desc = 'Move line down' } },
+        { '<M-k>', function() require('mini.move').move_line('up') end,    { desc = 'Move line up' } },
         { '<M-l>', function() require('mini.move').move_line('right') end, { desc = 'Move line right' } },
-        { 'yss', 'ys_', { remap = true } },
+        { 'yss',   'ys_',                                                  { remap = true } },
       },
       [{ 'x' }] = {
-        { '<M-h>', function() require('mini.move').move_selection('left') end, { desc = 'Move selection left' } },
-        { '<M-j>', function() require('mini.move').move_selection('down') end, { desc = 'Move selection down' } },
-        { '<M-k>', function() require('mini.move').move_selection('up') end, { desc = 'Move selection up' } },
+        { '<M-h>', function() require('mini.move').move_selection('left') end,  { desc = 'Move selection left' } },
+        { '<M-j>', function() require('mini.move').move_selection('down') end,  { desc = 'Move selection down' } },
+        { '<M-k>', function() require('mini.move').move_selection('up') end,    { desc = 'Move selection up' } },
         { '<M-l>', function() require('mini.move').move_selection('right') end, { desc = 'Move selection right' } },
-        { 'S', ":<C-u>lua MiniSurround.add('visual')<CR>", { silent = true } },
+        { 'S',     ":<C-u>lua MiniSurround.add('visual')<CR>",                  { silent = true } },
       },
     })
   end,
   dial = function(opts)
     return map({
       [{ 'n' }] = {
-        { '<C-a>', function() return require('dial.map').inc_normal() end },
-        { '<C-x>', function() return require('dial.map').dec_normal() end },
+        { '<C-a>',  function() return require('dial.map').inc_normal() end },
+        { '<C-x>',  function() return require('dial.map').dec_normal() end },
         { 'g<C-a>', function() return require('dial.map').inc_gnormal() end },
         { 'g<C-x>', function() return require('dial.map').dec_gnormal() end },
       },
       [{ 'v' }] = {
-        { '<C-a>', function() return require('dial.map').inc_visual() end },
-        { '<C-x>', function() return require('dial.map').dec_visual() end },
+        { '<C-a>',  function() return require('dial.map').inc_visual() end },
+        { '<C-x>',  function() return require('dial.map').dec_visual() end },
         { 'g<C-a>', function() return require('dial.map').inc_gvisual() end },
         { 'g<c-x>', function() return require('dial.map').dec_gvisual() end },
       },
@@ -368,24 +371,24 @@ M.setup = {
           function() require('telescope.builtin').builtin(require('telescope.themes').get_ivy()) end,
           { desc = '(TS) Telescope', remap = false },
         },
-        { '<leader><space>', function() require('telescope.builtin').buffers() end, { desc = '(TS) Buffers' } },
-        { '<CR>f', function() require('telescope.builtin').find_files() end, { desc = '(TS) Find files' } },
+        { '<leader><space>', function() require('telescope.builtin').buffers() end,    { desc = '(TS) Buffers' } },
+        { '<CR>f',           function() require('telescope.builtin').find_files() end, { desc = '(TS) Find files' } },
         {
           '<CR>/',
           function() require('telescope.builtin').current_buffer_fuzzy_find() end,
           { desc = '(TS) Fuzzy find in buffer' },
         },
-        { '<CR>h', function() require('telescope.builtin').help_tags() end, { desc = '(TS) Neovim help' } },
-        { '<CR>t', function() require('telescope.builtin').tags() end, { desc = '(TS) Tags' } },
+        { '<CR>h', function() require('telescope.builtin').help_tags() end,   { desc = '(TS) Neovim help' } },
+        { '<CR>t', function() require('telescope.builtin').tags() end,        { desc = '(TS) Tags' } },
         { '<CR>d', function() require('telescope.builtin').grep_string() end, { desc = '(TS) grep current string' } },
-        { '<CR>p', function() require('telescope.builtin').live_grep() end, { desc = '(TS) live grep a string' } },
+        { '<CR>p', function() require('telescope.builtin').live_grep() end,   { desc = '(TS) live grep a string' } },
         {
           '<CR>o',
           function() require('telescope.builtin').tags({ only_current_buffer = true }) end,
           { desc = '(TS) Tags in buffer' },
         },
         { '<CR>?', function() require('telescope.builtin').oldfiles() end, { desc = '(TS) Oldfiles' } },
-        { '<CR>b', '<Cmd>Telescope file_browser<CR>', { desc = '(TS) Browse files' } },
+        { '<CR>b', '<Cmd>Telescope file_browser<CR>',                      { desc = '(TS) Browse files' } },
       },
     }, {}, opts)
   end,
@@ -409,37 +412,37 @@ M.setup = {
   yanky = function(opts)
     return map({
       [{ 'n', 'x' }] = {
-        { 'p', '<Plug>(YankyPutAfter)' },
-        { 'P', '<Plug>(YankyPutBefore)' },
-        { 'gp', '<Plug>(YankyGPutAfter)' },
-        { 'gP', '<Plug>(YankyGPutBefore)' },
+        { 'p',     '<Plug>(YankyPutAfter)' },
+        { 'P',     '<Plug>(YankyPutBefore)' },
+        { 'gp',    '<Plug>(YankyGPutAfter)' },
+        { 'gP',    '<Plug>(YankyGPutBefore)' },
         { '<c-n>', '<Plug>(YankyCycleForward)' },
         { '<c-p>', '<Plug>(YankyCycleBackward)' },
-        { ']p', '<Plug>(YankyPutIndentAfterLinewise)' },
-        { '[p', '<Plug>(YankyPutIndentBeforeLinewise)' },
-        { ']P', '<Plug>(YankyPutIndentAfterLinewise)' },
-        { '[P', '<Plug>(YankyPutIndentBeforeLinewise)' },
+        { ']p',    '<Plug>(YankyPutIndentAfterLinewise)' },
+        { '[p',    '<Plug>(YankyPutIndentBeforeLinewise)' },
+        { ']P',    '<Plug>(YankyPutIndentAfterLinewise)' },
+        { '[P',    '<Plug>(YankyPutIndentBeforeLinewise)' },
 
-        { '>p', '<Plug>(YankyPutIndentAfterShiftRight)' },
-        { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)' },
-        { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)' },
-        { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)' },
+        { '>p',    '<Plug>(YankyPutIndentAfterShiftRight)' },
+        { '<p',    '<Plug>(YankyPutIndentAfterShiftLeft)' },
+        { '>P',    '<Plug>(YankyPutIndentBeforeShiftRight)' },
+        { '<P',    '<Plug>(YankyPutIndentBeforeShiftLeft)' },
 
-        { '=p', '<Plug>(YankyPutAfterFilter)' },
-        { '=P', '<Plug>(YankyPutBeforeFilter)' },
+        { '=p',    '<Plug>(YankyPutAfterFilter)' },
+        { '=P',    '<Plug>(YankyPutBeforeFilter)' },
       },
     }, { remap = true }, opts)
   end,
   leap = function(opts)
     return map({
       [{ 'n', 'o' }] = {
-        { 's', '<Plug>(leap-forward-to)', { desc = 'Leap forward to' } },
-        { 'S', '<Plug>(leap-backward-to)', { desc = 'Leap backward to' } },
-        { 'gs', '<Plug>(leap-from-window)', { desc = 'Leap from window' } },
+        { 's',  '<Plug>(leap-forward-to)',   { desc = 'Leap forward to' } },
+        { 'S',  '<Plug>(leap-backward-to)',  { desc = 'Leap backward to' } },
+        { 'gs', '<Plug>(leap-from-window)',  { desc = 'Leap from window' } },
         { 'gs', '<Plug>(leap-cross-window)', { desc = 'Leap from window' } },
       },
       [{ 'x', 'o' }] = {
-        { 'x', '<Plug>(leap-forward-till)', { desc = 'Leap forward till' } },
+        { 'x', '<Plug>(leap-forward-till)',  { desc = 'Leap forward till' } },
         { 'X', '<Plug>(leap-backward-till)', { desc = 'Leap backward till' } },
       },
     }, {}, opts)
@@ -470,7 +473,7 @@ M.setup = {
   flash = function(opts)
     return map({
       [{ 'n' }] = {
-        { 's', function() require('flash').jump() end, { desc = 'Flash' } },
+        { 's', function() require('flash').jump() end,       { desc = 'Flash' } },
         { 'S', function() require('flash').treesitter() end, { desc = 'Flash Treesitter' } },
       },
       [{ 'c' }] = { { '<c-s>', function() require('flash').toggle() end, { desc = 'Toggle Flash Search' } } },
@@ -490,7 +493,7 @@ M.setup = {
   gesture = function(opts)
     return map({
       [{ 'n' }] = {
-        { '<LeftDrag>', function() require('gesture').draw() end, { silent = true } },
+        { '<LeftDrag>',    function() require('gesture').draw() end,   { silent = true } },
         { '<LeftRelease>', function() require('gesture').finish() end, { silent = true } },
       },
     }, {}, opts)
@@ -693,15 +696,15 @@ M.treesitter = {
 
 M.mini = {
   surround = {
-    add = 'ys', -- Add surrounding in Normal and Visual modes
-    delete = 'ds', -- Delete surrounding
-    find = '<leader>sf', -- Find surrounding (to the right)
-    find_left = '<leader>sF', -- Find surrounding (to the left)
-    highlight = '<leader>sh', -- Highlight surrounding
-    replace = 'cs', -- Replace surrounding
+    add = 'ys',                    -- Add surrounding in Normal and Visual modes
+    delete = 'ds',                 -- Delete surrounding
+    find = '<leader>sf',           -- Find surrounding (to the right)
+    find_left = '<leader>sF',      -- Find surrounding (to the left)
+    highlight = '<leader>sh',      -- Highlight surrounding
+    replace = 'cs',                -- Replace surrounding
     update_n_lines = '<leader>sn', -- Update `n_lines`
-    suffix_last = 'l', -- Suffix to search with "prev" method
-    suffix_next = 'n', -- Suffix to search with "next" method
+    suffix_last = 'l',             -- Suffix to search with "prev" method
+    suffix_next = 'n',             -- Suffix to search with "next" method
   },
 }
 return M

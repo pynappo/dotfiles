@@ -1,6 +1,6 @@
 local keymaps = require('pynappo.keymaps')
 return {
-  { 'nacro90/numb.nvim', config = function() require('numb').setup() end, event = 'CmdlineEnter' },
+  { 'nacro90/numb.nvim',                config = function() require('numb').setup() end,  event = 'CmdlineEnter' },
   { 'winston0410/range-highlight.nvim', dependencies = { 'winston0410/cmd-parser.nvim' }, config = true },
   {
     'max397574/better-escape.nvim',
@@ -31,7 +31,7 @@ return {
       })
     end,
   },
-  { 'tiagovla/scope.nvim', opts = {} },
+  { 'tiagovla/scope.nvim',    opts = {} },
   {
     'chentoast/marks.nvim',
     enabled = false,
@@ -70,7 +70,8 @@ return {
     'jinh0/eyeliner.nvim',
     opts = {
       highlight_on_key = true, -- show highlights only after keypress
-      dim = false, -- dim all other characters if set to true (recommended!)
+      dim = false,             -- dim all other characters if set to true (recommended!)
     },
   },
+  { 'tweekmonster/helpful.vim', init = function() vim.g.helpful = 1 end }
 }
