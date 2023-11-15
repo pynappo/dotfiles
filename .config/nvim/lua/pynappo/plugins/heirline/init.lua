@@ -152,11 +152,11 @@ return {
           },
           u.align,
           {
-            condition = function() return conditions.buffer_matches({ filetype = { 'alpha' } }) end,
+            condition = function() return conditions.buffer_matches({ filetype = { 'alpha', 'starter' } }) end,
             c.lazy_block,
             u.space,
           },
-          { c.dap, c.lsp_block, u.space, c.conform_block, u.space, c.ruler_block },
+          { c.dap,          c.lsp_block, u.space, c.conform_block, u.space, c.ruler_block },
         },
         winbar = {
           fallthrough = false,
@@ -186,7 +186,7 @@ return {
               { provider = function() return vim.v.lnum end },
               u.align,
             },
-            { u.align, { provider = function() return vim.v.relnum end } },
+            { u.align,                                             { provider = function() return vim.v.relnum end } },
           },
           { provider = [[%1(%C%)]] },
         },
