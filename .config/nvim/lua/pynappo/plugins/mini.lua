@@ -234,5 +234,8 @@ return {
       },
     })
     user_command('MiniStarter', function() starter.open() end, {})
+    vim.api.nvim_create_autocmd('TabNewEntered', {
+      command = [[MiniStarter]],
+    })
   end,
 }

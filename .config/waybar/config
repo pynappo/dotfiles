@@ -42,26 +42,8 @@
     "wireplumber",
     "clock"
   ],
-  "custom/wl-gammarelay-temperature": {
-    "format": "{} ",
-    "exec": "wl-gammarelay-rs watch {t}",
-    "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100",
-    "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100"
-  },
-  "custom/wl-gammarelay-brightness": {
-    "format": "{}% ",
-    "exec": "wl-gammarelay-rs watch {bp}",
-    "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02",
-    "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02"
-  },
-  "custom/wl-gammarelay-gamma": {
-    "format": "{}% γ",
-    "exec": "wl-gammarelay-rs watch {g}",
-    "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02",
-    "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02"
-  },
   "mpris": {
-    "format": "{player_icon} {dynamic}",
+    "format": "{player_icon} {dynamic} ",
     "format-paused": "{status_icon} <i>{dynamic}</i>",
     "player-icons": {
       "default": "▶",
@@ -73,11 +55,11 @@
     // "ignored-players": ["firefox"]
   },
   "battery": {
-    "format": "{capacity}% {icon}",
+    "format": "{capacity}% {icon} ",
     "format-icons": ["", "", "", "", ""]
   },
   "idle_inhibitor": {
-    "format": "{icon}",
+    "format": "{icon} ",
     "format-icons": {
       "activated": "",
       "deactivated": ""
@@ -86,12 +68,12 @@
   "network": {
     "interface": "wlan0",
     "format": "{ifname}",
-    "format-wifi": "{essid} ({signalStrength}%) ",
-    "format-ethernet": "{ipaddr}/{cidr} 󰊗",
+    "format-wifi": "{essid} ({signalStrength}%)  ",
+    "format-ethernet": "{ipaddr}/{cidr} 󰊗 ",
     "format-disconnected": "", //An empty format will hide the module.
-    "tooltip-format": "{ifname} via {gwaddr} 󰊗",
+    "tooltip-format": "{ifname} via {gwaddr} 󰊗 ",
     "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
-    "tooltip-format-ethernet": "{ifname} ",
+    "tooltip-format-ethernet": "{ifname}  ",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50
   },
