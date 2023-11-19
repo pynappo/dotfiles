@@ -31,11 +31,8 @@
     "separate-outputs": true
   },
   "modules-right": [
-    "custom/wl-gammarelay-temperature",
-    "custom/wl-gammarelay-brightness",
-    "custom/wl-gammarelay-gamma",
-    "tray",
     "battery",
+    "tray",
     "mpris",
     "idle_inhibitor",
     "network",

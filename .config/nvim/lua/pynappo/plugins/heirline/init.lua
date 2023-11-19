@@ -99,22 +99,23 @@ return {
 
       local c = require('pynappo.plugins.heirline.components.base')
       local u = require('pynappo.plugins.heirline.components.utils')
-      c.vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
-      c.lsp_block = {
+      local p = require('pynappo.plugins.heirline.components.plugins')
+      local vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
+      local lsp_block = {
         flexible = 2,
         utils.surround({ 'LSP: ', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
         utils.surround({ '', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
       }
-      c.ruler_block = utils.surround({ '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
-      c.lazy_block = {
+      local ruler_block = utils.surround({ '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
+      local lazy_block = {
         flexible = 4,
-        utils.surround({ 'Plugin updates: ', '' }, 'diag_info', { c.lazy, hl = { fg = 'black' } }),
-        utils.surround({ '', '' }, 'diag_info', { c.lazy, hl = { fg = 'black' } }),
+        utils.surround({ 'Plugin updates: ', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
+        utils.surround({ '', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
       }
-      c.conform_block = {
+      local conform_block = {
         flexible = 4,
-        utils.surround({ 'Conform: ', '' }, 'diag_info', { c.conform, hl = { fg = 'black' } }),
-        utils.surround({ '', '' }, 'diag_info', { c.conform, hl = { fg = 'black' } }),
+        utils.surround({ 'Conform: ', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
+        utils.surround({ '', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
       }
 
       local t = require('pynappo.plugins.heirline.components.tabline')
@@ -126,7 +127,7 @@ return {
             mode_colors = mode_colors,
             get_mode_color = get_mode_color,
           },
-          { c.vi_mode_block },
+          { vi_mode_block },
           u.align,
           {
             fallthrough = false,
@@ -153,10 +154,10 @@ return {
           u.align,
           {
             condition = function() return conditions.buffer_matches({ filetype = { 'alpha', 'starter' } }) end,
-            c.lazy_block,
+            lazy_block,
             u.space,
           },
-          { c.dap,          c.lsp_block, u.space, c.conform_block, u.space, c.ruler_block },
+          { p.dap,        lsp_block, u.space, conform_block, u.space, ruler_block },
         },
         winbar = {
           fallthrough = false,

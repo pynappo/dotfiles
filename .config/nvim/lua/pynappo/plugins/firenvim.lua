@@ -24,6 +24,24 @@ return {
         o.showtabline = 0
         o.pumheight = 10
       end
+      local once = false
+      local ft_maps = {
+        python3 = 'python'
+      }
+      vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+        pattern = "*leetcode*.txt",
+        once = true,
+        callback = function(ctx)
+          if not once then
+            vim.ui.select({ 'python3', 'csharp', 'rust' }, {
+              prompt = 'Select filetype for leetcode',
+            }, function(choice)
+              vim.bo.filetype = ft_maps[choice] or choice
+            end)
+          end
+          once = true
+        end
+      })
     end,
     build = function() vim.fn['firenvim#install'](0) end,
   },

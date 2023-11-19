@@ -73,7 +73,7 @@ tabline.filename_block = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
     self.icon, self.icon_color =
-      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+        require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   on_click = {
@@ -104,13 +104,15 @@ tabline.offset = {
     local win = vim.api.nvim_tabpage_list_wins(0)[1]
     local bufnr = vim.api.nvim_win_get_buf(win)
     self.winid = win
-    return vim.bo[bufnr].filetype == 'neo-tree'
+    return vim.tbl_contains(self.sidebar_filetypes, vim.bo[bufnr].filetype)
   end,
   init = function(self)
     self.width = vim.api.nvim_win_get_width(self.winid)
-    self.title = vim.fn.getcwd(self.winid)
+    self.title = vim.fn.getcwd(self.winid) or vim.fn.getcwd(-1, 0) or vim.fn.getcwd(-1, -1)
   end,
+
   static = {
+    sidebar_filetypes = { 'neo-tree' },
     substitutions = {
       { vim.env.XDG_CONFIG_HOME, '' },
       { vim.env.HOME, '~' },
@@ -120,6 +122,7 @@ tabline.offset = {
         local path_sep = vim.fn.has('win32') and [[\]] or '/'
         for _, sub in pairs(self.substitutions) do
           local pattern = type(sub[1]) == 'table' and table.concat(sub[1], path_sep) or sub[1]
+          vim.print(title, sub, pattern)
           title = title:gsub(pattern, sub[2])
         end
         return title

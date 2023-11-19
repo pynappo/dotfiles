@@ -6,7 +6,7 @@ local utils = require('pynappo.utils')
 if utils.is_windows then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag =
-    '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
+  '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
   o.shellredir = [[2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode]]
   o.shellpipe = [[2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode]]
   o.shellquote = ''
@@ -28,6 +28,7 @@ o.mousescroll = 'ver:8,hor:6'
 o.mousemoveevent = true
 
 -- Tabs
+o.tabstop = 2
 o.vartabstop = '2'
 o.shiftwidth = 0
 o.softtabstop = -1
@@ -149,7 +150,7 @@ require('lazy').setup({
   },
   git = {
     log = { '--since=3 days ago' }, -- show commits from the last 3 days
-    timeout = 90, -- seconds
+    timeout = 90,                   -- seconds
   },
   ---@diagnostic disable-next-line: assign-type-mismatch
   dev = {
@@ -198,7 +199,7 @@ require('lazy').setup({
     rtp = {
       reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
       ---@type string[]
-      paths = {}, -- add any custom paths here that you want to incluce in the rtp
+      paths = {},   -- add any custom paths here that you want to incluce in the rtp
       ---@type string[] list any plugins you want to disable here
       disabled_plugins = {
         'matchit',

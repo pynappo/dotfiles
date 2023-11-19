@@ -56,6 +56,7 @@ return {
   },
   {
     'andymass/vim-matchup',
+    enabled = false,
     event = { 'BufNewFile', 'BufRead' },
     init = function()
       vim.g.matchup_surround_enabled = 1

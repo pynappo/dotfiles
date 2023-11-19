@@ -5,7 +5,7 @@ if status is-interactive
   if set -q TERMUX_VERSION
     fish_add_path -p "$HOME/neovim/build/bin"
   end
-  fish_add_path -p ~/.cargo/bin
+  export (systemctl show-environment --user)
   # Emulates vim's cursor shape behavior
   # Set the normal and visual mode cursors to a block
   set fish_cursor_default block
@@ -63,6 +63,7 @@ function fish_user_key_bindings
   # fzf_user_key_bindings
 end
 
+# see ./conf.d/abbr_helpers.fish
 abbr -a -- dotfiles 'git --git-dir=$HOME/.files.git/ --work-tree=$HOME'
 abbr -a -- dot 'git --git-dir=$HOME/.files.git/ --work-tree=$HOME'
 abbr -a -- ldot 'lazygit --git-dir=$HOME/.files.git/ --work-tree=$HOME'
@@ -70,6 +71,10 @@ abbr -a -- pm 'sudo pacman'
 abbr -a -- su 'su --shell=/usr/bin/fish'
 abbr -a -- e '$EDITOR'
 abbr -a -- g 'git'
+abbr_subcommand git co checkout
+abbr_subcommand git ch cherry-pick
+abbr_subcommand git c commit
+abbr_subcommand git a add
 abbr -a -- sudo 'sudo -E -s'
 abbr -a -- sc 'systemctl'
 abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
@@ -90,12 +95,7 @@ abbr -a -- pacremove 'pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xarg
 function edit
     echo $EDITOR $argv
 end
-abbr -a edit_texts --position command --regex ".+\.txt" --function edit
-# see ./conf.d/abbr_helpers.fish
-abbr_subcommand git co checkout
-abbr_subcommand git ch cherry-pick
-abbr_subcommand git c commit
-abbr_subcommand git a add
+# abbr -a edit_texts --position command --regex ".+\.txt" --function edit
 
 
 function last_history_item

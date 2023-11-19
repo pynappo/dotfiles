@@ -28,7 +28,7 @@ return {
         handlers = {
           function(ls) require('lspconfig')[ls].setup(require('pynappo/lsp/configs')[ls]) end,
           rust_analyzer = function() end, -- use rustaceanvim
-          jdtls = function() end, -- use method recommended by nvim-jdtls
+          jdtls = function() end,         -- use method recommended by nvim-jdtls
         },
       })
 
@@ -49,9 +49,10 @@ return {
   },
   {
     'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
-    cmd = { 'ConformInfo' },
-    -- keys = require('pynappo.keymaps').setup.conform({ lazy = true }),
+    -- not lazyloading for heirline
+    -- event = { 'BufWritePre' },
+    -- cmd = { 'ConformInfo' },
+    -- init = require('pynappo.keymaps').setup.conform(),
     opts = {
       -- Define your formatters
       formatters_by_ft = {
