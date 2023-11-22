@@ -78,18 +78,18 @@ button.vivaldi {
 /* } */
 
 /* try to fix top tabs on linux */
-.tab-group-indicator {
-  top: -3px !important;
-  height: 10px !important;
-}
-#tabs-tabbar-container.top {
-    padding-top: 0!important;
-}
-#header {
-  min-height: 30px !important;
-}
-#browser.linux .window-buttongroup {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-}
+/* .tab-group-indicator { */
+/*   top: -3px !important; */
+/*   height: 10px !important; */
+/* } */
+/* #tabs-tabbar-container.top { */
+/*     padding-top: 0!important; */
+/* } */
+/* #header { */
+/*   min-height: 30px !important; */
+/* } */
+/* #browser.linux .window-buttongroup { */
+/*   position: absolute; */
+/*   right: 0px; */
+/*   top: 0px; */
+/* } */
