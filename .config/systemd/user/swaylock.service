@@ -5,9 +5,7 @@ Before=suspend.target
 
 [Service]
 Type=forking
-; Environment=WAYLAND_DISPLAY=wayland-1
-; Environment=XDG_RUNTIME_DIR=/run/user/%U
-ExecStart=/usr/bin/swaylock -c 000000 -k
+ExecStart=/usr/bin/swaylock
 ExecStartPost=/usr/bin/sleep 1
 TimeoutSec=infinity
 
