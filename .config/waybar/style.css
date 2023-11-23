@@ -119,7 +119,7 @@ tooltip label {
 #workspaces button {
   padding: 0 5px;
   color: @text;
-  box-shadow: inset 0 -2px @text;
+  box-shadow: inset 0 -2px @surface2;
   transition-property: box-shadow;
 }
 
@@ -129,7 +129,7 @@ tooltip label {
 }
 
 #workspaces button:hover {
-  box-shadow: inset 0 -5px;
+  box-shadow: inset 0 -4px;
 }
 
 #workspaces button.active {
