@@ -1,0 +1,10 @@
+[Unit]
+Description=User-level sleep target
+After=sleep.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl --user --machine=%i@ start --wait sleep.target
+
+[Install]
+WantedBy=sleep.target

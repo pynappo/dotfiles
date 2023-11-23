@@ -1,0 +1,11 @@
+--- /etc/pacman.conf.old	2023-11-07 10:15:49.094985491 -0800
++++ /etc/pacman.conf	2023-11-07 10:15:52.698474884 -0800
+@@ -34,7 +34,7 @@
+ #NoProgressBar
+ CheckSpace
+ #VerbosePkgLists
+-#ParallelDownloads = 5
++ParallelDownloads = 5
+ 
+ # By default, pacman accepts packages signed by keys that its local keyring
+ # trusts (see pacman-key and its man page), as well as unsigned packages.

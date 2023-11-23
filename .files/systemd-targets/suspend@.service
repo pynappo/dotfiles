@@ -1,0 +1,10 @@
+[Unit]
+Description=User-level suspend target
+After=suspend.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl --user --machine=%i@ start --wait suspend.target
+
+[Install]
+WantedBy=suspend.target
