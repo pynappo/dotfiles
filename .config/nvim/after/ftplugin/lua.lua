@@ -6,5 +6,5 @@ if bufname:find('nvim') then
     vim.opt_local.path:append(path)
   end
 
-  vim.opt_local.suffixesadd:prepend('.lua')
+  vim.opt_local.suffixesadd:prepend({ '.lua', '/init.lua' })
 end

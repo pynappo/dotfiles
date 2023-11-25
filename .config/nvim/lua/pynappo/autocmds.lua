@@ -36,6 +36,13 @@ autocmds.create('DiagnosticChanged', {
   callback = function() vim.diagnostic.setloclist({ open = false }) end,
 })
 
+local exrc_names = {
+  '.nvim.lua', '.nvimrc', '.exrc'
+}
+autocmds.create('DirChanged', {
+  desc = 'Auto-read exrc',
+  callback = function() end,
+})
 -- autocmds.create('SwapExists', {
 --   desc = 'Handle some swap file handling automatically',
 --   callback = function(args)

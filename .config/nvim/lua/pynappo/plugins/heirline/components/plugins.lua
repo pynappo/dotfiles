@@ -5,7 +5,7 @@ return {
       self.conform = conform
       return ok
     end,
-    update = { 'BufEnter' },
+    update = { 'BufEnter', 'BufNewFile' },
     provider = function(self)
       local ft_formatters = self.conform.list_formatters()
       return ft_formatters and

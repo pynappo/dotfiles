@@ -122,7 +122,7 @@ tabline.offset = {
         local path_sep = vim.fn.has('win32') and [[\]] or '/'
         for _, sub in pairs(self.substitutions) do
           local pattern = type(sub[1]) == 'table' and table.concat(sub[1], path_sep) or sub[1]
-          vim.print(title, sub, pattern)
+          -- vim.print(title, sub, pattern)
           title = title:gsub(pattern, sub[2])
         end
         return title

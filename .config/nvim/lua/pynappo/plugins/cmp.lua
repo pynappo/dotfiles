@@ -18,6 +18,7 @@ return {
       'octaltree/cmp-look',
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'davidsierradz/cmp-conventionalcommits',
+      'davidmh/cmp-nerdfonts',
       {
         'L3MON4D3/LuaSnip',
         config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
@@ -149,6 +150,7 @@ return {
           { name = 'path' },
           { name = 'nvim_lua' },
         }, {
+          { name = 'nerdfonts' },
           {
             name = 'buffer',
             option = {
