@@ -17,7 +17,7 @@ return {
         },
         -- Whether the contents of a currently open hover window should be moved
         -- to a :h preview-window when pressing the hover keymap.
-        preview_window = false,
+        preview_window = true,
         title = true,
         mouse_providers = {
           'LSP'
