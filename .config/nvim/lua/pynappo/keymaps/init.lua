@@ -87,7 +87,7 @@ M.setup = {
         M.abbr_command('s', 's/g<Left><Left>'),
         M.abbr_command('h', 'vert h'),
         M.abbr_command('w', function()
-          local auto_p = 'w ++p<Home><Right>'
+          local auto_p = 'w ++p'
           if vim.env.USER == 'root' then return auto_p end
           local prefixes = { '/etc' }
           for _, prefix in ipairs(prefixes) do
@@ -170,7 +170,7 @@ M.setup = {
       [{ 'n' }] = {
         { 'gD',         lsp.declaration,             { desc = '(LSP) Get declaration' } },
         { 'gd',         lsp.definition,              { desc = '(LSP) Get definition' } },
-        { 'K',          lsp.hover,                   { desc = '(LSP) Get definition' } },
+        -- { 'K',          lsp.hover,                   { desc = '(LSP) Get definition' } },
         { 'gi',         lsp.implementation,          { desc = '(LSP) Get implementation' } },
         { 'gk',         lsp.signature_help,          { desc = '(LSP) Get signature help' } },
         { '<leader>wa', lsp.add_workspace_folder,    { desc = '(LSP) Add workspace folder' } },
@@ -498,6 +498,15 @@ M.setup = {
       },
     }, {}, opts)
   end,
+  hover = function(opts)
+    return map({
+      [{ 'n' }] = {
+        { "K",           function() require("hover").hover() end,        { desc = "hover.nvim" } },
+        { "gK",          function() require("hover").hover_select() end, { desc = "hover.nvim (select)" } },
+        { '<MouseMove>', function() require('hover').hover_mouse() end,  { desc = "hover.nvim (mouse)" } }
+      }
+    }, {}, opts)
+  end
 }
 
 -- Other random plugin-specific mapping tables go here: --

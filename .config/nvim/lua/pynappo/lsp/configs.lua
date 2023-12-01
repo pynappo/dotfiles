@@ -77,17 +77,19 @@ require('pynappo.autocmds').create({ 'LspAttach' }, {
     if not client then return end
     if vim.tbl_contains({ 'copilot', 'null-ls' }, client.name or vim.print('no client found')) then return end
 
-    if not vim.b[bufnr].lsp_attached then
-      -- require('pynappo.autocmds').create({ 'CursorHold' }, {
-      --   callback = function()
-      --     for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-      --       if vim.bo[vim.api.nvim_win_get_buf(winid)].filetype == 'noice' then return end
-      --     end
-      --     vim.lsp.buf.hover()
-      --   end,
-      --   buffer = bufnr,
-      -- })
-    end
+    -- local ok, hover = pcall(require, 'hover')
+    -- hover = ok and hover.hover() or vim.lsp.buf.hover
+    -- if not vim.b[bufnr].lsp_attached then
+    --   require('pynappo.autocmds').create({ 'CursorHold' }, {
+    --     callback = function()
+    --       for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    --         if vim.bo[vim.api.nvim_win_get_buf(winid)].filetype == 'noice' then return end
+    --       end
+    --       hover()
+    --     end,
+    --     buffer = bufnr,
+    --   })
+    -- end
     vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
     keymaps.setup.lsp(bufnr)
     vim.b[bufnr].lsp_attached = true
