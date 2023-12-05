@@ -332,18 +332,10 @@ M.setup = {
   mini = function()
     return map({
       [{ 'n' }] = {
-        { '<M-h>', function() require('mini.move').move_line('left') end,  { desc = 'Move line left' } },
-        { '<M-j>', function() require('mini.move').move_line('down') end,  { desc = 'Move line down' } },
-        { '<M-k>', function() require('mini.move').move_line('up') end,    { desc = 'Move line up' } },
-        { '<M-l>', function() require('mini.move').move_line('right') end, { desc = 'Move line right' } },
-        { 'yss',   'ys_',                                                  { remap = true } },
+        { 'yss', 'ys_', { remap = true } },
       },
       [{ 'x' }] = {
-        { '<M-h>', function() require('mini.move').move_selection('left') end,  { desc = 'Move selection left' } },
-        { '<M-j>', function() require('mini.move').move_selection('down') end,  { desc = 'Move selection down' } },
-        { '<M-k>', function() require('mini.move').move_selection('up') end,    { desc = 'Move selection up' } },
-        { '<M-l>', function() require('mini.move').move_selection('right') end, { desc = 'Move selection right' } },
-        { 'S',     ":<C-u>lua MiniSurround.add('visual')<CR>",                  { silent = true } },
+        { 'S', ":<C-u>lua MiniSurround.add('visual')<CR>", { silent = true } },
       },
     })
   end,

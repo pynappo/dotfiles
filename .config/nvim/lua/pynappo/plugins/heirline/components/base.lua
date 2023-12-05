@@ -50,7 +50,7 @@ local M = {
         t = 'T',
       },
     },
-    provider = function(self) return '%2(' .. self.mode_names[self.mode] .. '%)' end,
+    provider = function(self) return '%2(' .. self.mode_names[self.mode] .. '%)' end,
     hl = { bold = true },
     update = { 'ModeChanged', 'CmdlineEnter', 'CmdlineLeave' },
   },

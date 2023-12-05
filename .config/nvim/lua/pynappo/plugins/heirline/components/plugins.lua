@@ -7,7 +7,7 @@ return {
     end,
     update = { 'BufEnter', 'BufNewFile' },
     provider = function(self)
-      local ft_formatters = self.conform.list_formatters()
+      local ft_formatters = self.conform.list_formatters(0)
       return ft_formatters and
           table.concat(vim.tbl_map(function(f) return f.name end, ft_formatters), ' ') or 'N/A'
     end,

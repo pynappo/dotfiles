@@ -28,7 +28,7 @@ return {
         handlers = {
           function(ls) require('lspconfig')[ls].setup(require('pynappo/lsp/configs')[ls]) end,
           rust_analyzer = function() end, -- use rustaceanvim
-          jdtls = function() end,         -- use method recommended by nvim-jdtls
+          jdtls = function() end, -- use method recommended by nvim-jdtls
         },
       })
 
@@ -57,8 +57,9 @@ return {
       -- Define your formatters
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = { 'isort', 'black' },
-        javascript = { { 'prettierd', 'prettier' } },
+        cpp = { 'clang_format' },
+        -- python = { 'isort', 'black' },
+        -- javascript = { { 'prettierd', 'prettier' } },
       },
       -- Set up format-on-save
       format_on_save = {

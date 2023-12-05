@@ -1,9 +1,10 @@
 set XDG_CONFIG_HOME ~/.config
 set MANPAGER 'nvim +Man!'
 oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
+fish_add_path -p "$HOME/.bun/bin"
 if status is-interactive
-  if set -q TERMUX_VERSION
-    fish_add_path -p "$HOME/neovim/build/bin"
+  if set -q $TERMUX_VERSION
+    fish_add_path -g "$HOME/neovim/build/bin"
   end
   export (systemctl show-environment --user)
   # Emulates vim's cursor shape behavior
@@ -83,7 +84,7 @@ abbr -a --set-cursor f 'fd . % | fzf'
 abbr -a -- jammers 'mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video --no-resume-playback'
 abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
 abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
-abbr -a --set-cursor ibmconnect 'IBM_USER="%" begin; echo (secret-tool lookup ibmconnect $IBM_USER) | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u sjsustudent6 --passwd-on-stdin; end'
+abbr -a --set-cursor ibmconnect 'IBM_USER="%" begin; echo (secret-tool lookup ibmconnect $IBM_USER) | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u $IBM_USER --passwd-on-stdin; end'
 abbr -a --set-cursor :h 'nvim "+help %"'
 abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
 abbr -a -- pr 'paru'
