@@ -1,4 +1,6 @@
 _G.pynappo = {}
+package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?/init.lua;'
+package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?.lua;'
 local o = vim.o
 local g = vim.g
 local opt = vim.opt
@@ -6,7 +8,7 @@ local utils = require('pynappo.utils')
 if utils.is_windows then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag =
-  '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
+    '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
   o.shellredir = [[2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode]]
   o.shellpipe = [[2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode]]
   o.shellquote = ''
@@ -150,7 +152,7 @@ require('lazy').setup({
   },
   git = {
     log = { '--since=3 days ago' }, -- show commits from the last 3 days
-    timeout = 90,                   -- seconds
+    timeout = 90, -- seconds
   },
   ---@diagnostic disable-next-line: assign-type-mismatch
   dev = {
@@ -199,7 +201,7 @@ require('lazy').setup({
     rtp = {
       reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
       ---@type string[]
-      paths = {},   -- add any custom paths here that you want to incluce in the rtp
+      paths = {}, -- add any custom paths here that you want to incluce in the rtp
       ---@type string[] list any plugins you want to disable here
       disabled_plugins = {
         'matchit',

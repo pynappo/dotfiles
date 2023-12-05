@@ -6,6 +6,9 @@
   selected = manager-core
 [credential]
   helper = manager-core
+	helper = 
+	helper = /usr/bin/git-credential-manager
+	credentialStore = secretservice
 [core]
   symlinks = true
   fsmonitor = true
@@ -52,3 +55,5 @@
   conflictstyle = diff3
 [safe]
   directory = *
+[credential "https://dev.azure.com"]
+	useHttpPath = true
