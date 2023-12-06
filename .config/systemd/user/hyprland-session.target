@@ -2,6 +2,3 @@
 Description=Hyprland startup
 StopWhenUnneeded=yes
 Wants=xdg-desktop-autostart.target
-
-[Service]
-Environment=DISPLAY=:0
