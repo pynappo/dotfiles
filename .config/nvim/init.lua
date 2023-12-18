@@ -104,24 +104,25 @@ opt.listchars = {
   nbsp = '␣',
 }
 vim.api.nvim_create_autocmd('FileType', { callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end })
-local signs = {
-  DiagnosticSignError = { text = '', texthl = 'DiagnosticSignError' },
-  DiagnosticSignWarn = { text = '', texthl = 'DiagnosticSignWarn' },
-  DiagnosticSignInfo = { text = '', texthl = 'DiagnosticSignInfo' },
-  DiagnosticSignHint = { text = '󰌵', texthl = 'DiagnosticSignHint' },
-}
-for name, sign in pairs(signs) do
-  vim.fn.sign_define(name, sign)
-end
 o.termguicolors = true
 
 g.mapleader = ' '
 g.maplocalleader = '\\'
 
 vim.diagnostic.config({
-  virtual_text = false,
+  virtual_text = {
+    severity = vim.diagnostic.severity.ERROR,
+    source = 'if_many',
+  },
   virtual_lines = { only_current_line = true },
-  signs = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    },
+  },
   float = {
     border = 'single',
     format = function(d) return ('%s (%s) [%s]'):format(d.message, d.source, d.code or d.user_data.lsp.code) end,

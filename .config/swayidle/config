@@ -1,4 +1,4 @@
 timeout 180 'swaylock --grace 30'
-timeout 300 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
+timeout 300 'hyprctl dispatch dpms off' after-resume 'hyprctl dispatch dpms on'
 idlehint 360
-timeout 420 'systemctl suspend' resume 'hyprctl dispatch dpms on'
+timeout 420 'systemctl suspend' after-resume 'hyprctl dispatch dpms on'

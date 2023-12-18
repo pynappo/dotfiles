@@ -1,11 +1,11 @@
 return {
   { 'tpope/vim-fugitive', event = 'CmdlineEnter' },
   {
-    "NeogitOrg/neogit",
+    'NeogitOrg/neogit',
     dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "nvim-telescope/telescope.nvim", -- optional
-      "sindrets/diffview.nvim",        -- optional
+      'nvim-lua/plenary.nvim', -- required
+      'nvim-telescope/telescope.nvim', -- optional
+      'sindrets/diffview.nvim', -- optional
     },
     cmd = 'Neogit',
     opts = {
@@ -29,20 +29,18 @@ return {
       },
       -- Allows a different telescope sorter. Defaults to 'fuzzy_with_index_bias'. The example below will use the native fzf
       -- sorter instead. By default, this function returns `nil`.
-      telescope_sorter = function()
-        return require("telescope").extensions.fzf.native_fzf_sorter()
-      end,
+      telescope_sorter = function() return require('telescope').extensions.fzf.native_fzf_sorter() end,
       -- Persist the values of switches/options within and across sessions
       remember_settings = true,
       -- Scope persisted settings on a per-project basis
       use_per_project_settings = true,
       -- Table of settings to never persist. Uses format "Filetype--cli-value"
       ignored_settings = {
-        "NeogitPushPopup--force-with-lease",
-        "NeogitPushPopup--force",
-        "NeogitPullPopup--rebase",
-        "NeogitCommitPopup--allow-empty",
-        "NeogitRevertPopup--no-edit",
+        'NeogitPushPopup--force-with-lease',
+        'NeogitPushPopup--force',
+        'NeogitPullPopup--rebase',
+        'NeogitCommitPopup--allow-empty',
+        'NeogitRevertPopup--no-edit',
       },
       -- Neogit refreshes its internal state after specific events, which can be expensive depending on the repository size.
       -- Disabling `auto_refresh` will make it so you have to manually refresh the status after you open it.
@@ -51,9 +49,9 @@ return {
       -- By default, branches will be sorted by commit date descending
       -- Flag description: https://git-scm.com/docs/git-branch#Documentation/git-branch.txt---sortltkeygt
       -- Sorting keys: https://git-scm.com/docs/git-for-each-ref#_options
-      sort_branches = "-committerdate",
+      sort_branches = '-committerdate',
       -- Change the default way of opening neogit
-      kind = "tab",
+      kind = 'tab',
       -- Disable line numbers and relative line numbers
       disable_line_numbers = true,
       -- The time after which an output console is shown for slow running commands
@@ -64,38 +62,38 @@ return {
         recent_commit_count = 10,
       },
       commit_editor = {
-        kind = "split",
+        kind = 'split',
       },
       commit_select_view = {
-        kind = "tab",
+        kind = 'tab',
       },
       commit_view = {
-        kind = "vsplit",
-        verify_commit = vim.fn.executable("gpg") == 1,
+        kind = 'vsplit',
+        verify_commit = vim.fn.executable('gpg') == 1,
       },
       log_view = {
-        kind = "tab",
+        kind = 'tab',
       },
       rebase_editor = {
-        kind = "split",
+        kind = 'split',
       },
       reflog_view = {
-        kind = "tab",
+        kind = 'tab',
       },
       merge_editor = {
-        kind = "split",
+        kind = 'split',
       },
       preview_buffer = {
-        kind = "split",
+        kind = 'split',
       },
       popup = {
-        kind = "split",
+        kind = 'split',
       },
       signs = {
         -- { CLOSED, OPENED }
-        hunk = { "", "" },
-        item = { ">", "v" },
-        section = { ">", "v" },
+        hunk = { '', '' },
+        item = { '>', 'v' },
+        section = { '>', 'v' },
       },
       -- Each Integration is auto-detected through plugin presence, however, it can be disabled by setting to `false`
       integrations = {
@@ -160,62 +158,7 @@ return {
           hidden = false,
         },
       },
-      mappings = {
-        finder = {
-          ["<cr>"] = "Select",
-          ["<c-c>"] = "Close",
-          ["<esc>"] = "Close",
-          ["<c-n>"] = "Next",
-          ["<c-p>"] = "Previous",
-          ["<down>"] = "Next",
-          ["<up>"] = "Previous",
-          ["<tab>"] = "MultiselectToggleNext",
-          ["<s-tab>"] = "MultiselectTogglePrevious",
-          ["<c-j>"] = "NOP",
-        },
-        -- Setting any of these to `false` will disable the mapping.
-        status = {
-          ["q"] = "Close",
-          ["I"] = "InitRepo",
-          ["1"] = "Depth1",
-          ["2"] = "Depth2",
-          ["3"] = "Depth3",
-          ["4"] = "Depth4",
-          ["<tab>"] = "Toggle",
-          ["x"] = "Discard",
-          ["s"] = "Stage",
-          ["S"] = "StageUnstaged",
-          ["<c-s>"] = "StageAll",
-          ["u"] = "Unstage",
-          ["U"] = "UnstageStaged",
-          ["d"] = "DiffAtFile",
-          ["$"] = "CommandHistory",
-          ["#"] = "Console",
-          ["<c-r>"] = "RefreshBuffer",
-          ["<enter>"] = "GoToFile",
-          ["<c-v>"] = "VSplitOpen",
-          ["<c-x>"] = "SplitOpen",
-          ["<c-t>"] = "TabOpen",
-          ["?"] = "HelpPopup",
-          ["D"] = "DiffPopup",
-          ["p"] = "PullPopup",
-          ["r"] = "RebasePopup",
-          ["m"] = "MergePopup",
-          ["P"] = "PushPopup",
-          ["c"] = "CommitPopup",
-          ["l"] = "LogPopup",
-          ["v"] = "RevertPopup",
-          ["Z"] = "StashPopup",
-          ["A"] = "CherryPickPopup",
-          ["b"] = "BranchPopup",
-          ["f"] = "FetchPopup",
-          ["X"] = "ResetPopup",
-          ["M"] = "RemotePopup",
-          ["{"] = "GoToPreviousHunkHeader",
-          ["}"] = "GoToNextHunkHeader",
-        },
-      },
-    }
+    },
   },
   {
     'pwntester/octo.nvim',
@@ -224,33 +167,33 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     cmd = 'Octo',
-    config = true
+    config = true,
   },
   {
     'lewis6991/gitsigns.nvim',
-    event = { "BufNewFile", "BufReadPre" },
+    event = { 'BufNewFile', 'BufReadPre' },
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = {
       signs = {
-        add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-        change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-        delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-        topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-        changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+        add = { hl = 'GitSignsAdd', text = '│', numhl = 'GitSignsAddNr', linehl = 'GitSignsAddLn' },
+        change = { hl = 'GitSignsChange', text = '│', numhl = 'GitSignsChangeNr', linehl = 'GitSignsChangeLn' },
+        delete = { hl = 'GitSignsDelete', text = '_', numhl = 'GitSignsDeleteNr', linehl = 'GitSignsDeleteLn' },
+        topdelete = { hl = 'GitSignsDelete', text = '‾', numhl = 'GitSignsDeleteNr', linehl = 'GitSignsDeleteLn' },
+        changedelete = { hl = 'GitSignsChange', text = '~', numhl = 'GitSignsChangeNr', linehl = 'GitSignsChangeLn' },
       },
-      signcolumn = false,  -- Toggle with `:Gitsigns toggle_signs`
-      numhl      = true, -- Toggle with `:Gitsigns toggle_numhl`
-      linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-      word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+      signcolumn = false, -- Toggle with `:Gitsigns toggle_signs`
+      numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
+      linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+      word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
       watch_gitdir = {
         interval = 1000,
-        follow_files = true
+        follow_files = true,
       },
       attach_to_untracked = true,
       current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
       current_line_blame_formatter = '<author>@<author_time:%Y-%m-%d>: <summary>',
       max_file_length = 40000, -- Disable if file is longer than this (in lines)
-    }
+    },
   },
   {
     'sindrets/diffview.nvim',
@@ -263,6 +206,6 @@ return {
       'DiffviewToggleFiles',
       'DiffviewFocusFiles',
       'DiffviewFileHistory',
-    }
+    },
   },
 }

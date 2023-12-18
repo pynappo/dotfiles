@@ -1,14 +1,14 @@
 -- install lazy.nvim, a plugin manager
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
-        vim.fn.system({
-                'git',
-                'clone',
-                '--filter=blob:none',
-                'https://github.com/folke/lazy.nvim.git',
-                '--branch=stable', -- latest stable release
-                lazypath,
-        })
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -24,96 +24,112 @@ o.expandtab = true
 o.timeoutlen = 2000
 o.list = true
 opt.listchars = {
-        lead = '.',
-        eol = '󱞣'
+  lead = '.',
+  eol = '󱞣',
 }
 
 -- setup plugins
 vim.keymap.set('n', '<leader>h', function() vim.print('hi') end)
 require('lazy').setup({
-        {
-                'neovim/nvim-lspconfig',
-                dependencies = {
-                        {
-                                'williamboman/mason-lspconfig.nvim',
-                                dependencies = { 'williamboman/mason.nvim' },
-                        },
-                },
-                config = function()
-                        require('mason-lspconfig').setup({
-                                ensure_installed = {
-                                        'lua_ls',
-                                },
-                                handlers = {
-                                        function(ls) require('lspconfig')[ls].setup({}) end,
-                                },
-                        })
-                end,
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason-lspconfig.nvim',
+        dependencies = { 'williamboman/mason.nvim' },
+      },
+    },
+    config = function()
+      require('mason-lspconfig').setup({
+        ensure_installed = {
+          'lua_ls',
         },
-        {
-                'williamboman/mason.nvim',
-                opts = { ui = { border = 'single' } },
+        handlers = {
+          function(ls) require('lspconfig')[ls].setup({}) end,
         },
-        {
-                "stevearc/conform.nvim",
-                dependencies = {
-                        { "neovim/nvim-lspconfig" },
-                        { "nvim-lua/plenary.nvim" },
-                        { "williamboman/mason.nvim" },
-                },
-                event = { "BufWritePre" },
-                cmd = { "ConformInfo" },
-                config = function()
-                        vim.api.nvim_create_user_command("FormatDisable", function(args)
-                                if args.bang then
-                                        -- FormatDisable! will disable formatting just for this buffer
-                                        vim.b.disable_autoformat = true
-                                else
-                                        vim.g.disable_autoformat = true
-                                end
-                        end, {
-                                desc = "Disable autoformat-on-save",
-                                bang = true,
-                        })
+      })
+    end,
+  },
+  {
+    'williamboman/mason.nvim',
+    opts = { ui = { border = 'single' } },
+  },
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    opts = {},
+  },
+  {
+    'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
+    dependencies = {
+      'hrsh7th/cmp-buffer', -- source for text in buffer
+      'hrsh7th/cmp-path', -- source for file system paths
+      'L3MON4D3/LuaSnip', -- snippet engine
+      'saadparwaiz1/cmp_luasnip', -- for autocompletion
+      'rafamadriz/friendly-snippets', -- useful snippets
+      'onsails/lspkind.nvim', -- vs-code like pictograms
+      'hrsh7th/cmp-cmdline',
+    },
+    config = function()
+      local cmp = require('cmp')
 
-                        vim.api.nvim_create_user_command("FormatEnable", function()
-                                vim.b.disable_autoformat = false
-                                vim.g.disable_autoformat = false
-                        end, {
-                                desc = "Re-enable autoformat-on-save",
-                        })
+      local luasnip = require('luasnip')
 
-                        require("conform").setup {
-                                format_on_save = function(bufnr)
-                                        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-                                                return
-                                        end
-                                        return { timeout_ms = 3000, lsp_fallback = true }
-                                end,
-                                formatters_by_ft = {
-                                        bash = { "shfmt" },
-                                        sh = { "shfmt" },
-                                        fish = { "fish_indent" },
-                                        lua = { "stylua" },
-                                        go = { "goimports", "gofumpt", "goimports-reviser" },
-                                        javascript = { { "prettierd", "prettier" } },
-                                        typescript = { { "prettierd", "prettier" } },
-                                        javascriptreact = { { "prettierd", "prettier" } },
-                                        typescriptreact = { { "prettierd", "prettier" } },
-                                        vue = { { "prettierd", "prettier" } },
-                                        css = { { "prettierd", "prettier" } },
-                                        scss = { { "prettierd", "prettier" } },
-                                        less = { { "prettierd", "prettier" } },
-                                        html = { { "prettierd", "prettier" } },
-                                        json = { { "prettierd", "prettier" } },
-                                        jsonc = { { "prettierd", "prettier" } },
-                                        yaml = { { "prettierd", "prettier" } },
-                                        markdown = { { "prettierd", "prettier" } },
-                                        ["markdown.mdx"] = { { "prettierd", "prettier" } },
-                                        graphql = { { "prettierd", "prettier" } },
-                                        handlebars = { { "prettierd", "prettier" } },
-                                },
-                        }
-                end,
-        }
+      local lspkind = require('lspkind')
+
+      -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
+      require('luasnip.loaders.from_vscode').lazy_load()
+
+      cmp.setup({
+        completion = {
+          completeopt = 'menu,menuone,preview,noselect',
+        },
+        snippet = { -- configure how nvim-cmp interacts with snippet engine
+          expand = function(args) luasnip.lsp_expand(args.body) end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-k>'] = cmp.mapping.select_prev_item(), -- previous suggestion
+          ['<C-j>'] = cmp.mapping.select_next_item(), -- next suggestion
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
+          ['<C-e>'] = cmp.mapping.abort(), -- close completion window
+          ['<CR>'] = cmp.mapping.confirm({ select = false }),
+        }),
+        -- sources for autocompletion
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' }, -- snippets
+          { name = 'buffer' }, -- text within current buffer
+          { name = 'path' }, -- file system paths
+        }),
+
+        -- configure lspkind for vs-code like pictograms in completion menu
+        formatting = {
+          format = lspkind.cmp_format({
+            maxwidth = 50,
+            ellipsis_char = '...',
+          }),
+        },
+      })
+
+      -- `:` cmdline setup.
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' },
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' },
+            },
+          },
+        }),
+      })
+    end,
+  },
 })

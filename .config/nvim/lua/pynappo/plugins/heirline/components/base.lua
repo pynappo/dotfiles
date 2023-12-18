@@ -197,10 +197,10 @@ local M = {
       end,
       static = {
         icons = {
-          vim.fn.sign_getdefined('DiagnosticSignError')[1].text,
-          vim.fn.sign_getdefined('DiagnosticSignWarn')[1].text,
-          vim.fn.sign_getdefined('DiagnosticSignInfo')[1].text,
-          vim.fn.sign_getdefined('DiagnosticSignHint')[1].text,
+          '',
+          '',
+          '',
+          '󰌵',
         },
         highlights = {
           'DiagnosticError',
@@ -244,8 +244,8 @@ local M = {
       for i, client in ipairs(self.clients) do
         ---@diagnostic disable-next-line: undefined-field
         local icon = self.ls_icons[client.name]
-            or require('nvim-web-devicons').get_icon_by_filetype(client.config.filetypes[1])
-            or '?'
+          or require('nvim-web-devicons').get_icon_by_filetype(client.config.filetypes[1])
+          or '?'
         local child = {
           { provider = icon, hl = { bold = client.attached_buffers[vim.api.nvim_get_current_buf()] } },
           -- {
@@ -323,7 +323,7 @@ M.file_info = {
     self.filename = vim.api.nvim_buf_get_name(0)
     self.extension = vim.fn.expand('%:e')
     self.icon, self.icon_color =
-        require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   M.file_icon,
   M.filename,

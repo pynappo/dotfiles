@@ -12,6 +12,7 @@ return {
           return {
             WildMenu = { bg = colors.ui, fg = colors.fg },
             Comment = { fg = colors.fg_idle, italic = true },
+            LspInlayHint = { fg = colors.fg_idle },
             LineNr = { fg = '#555555' },
             Search = { underline = true },
             NormalNC = { link = 'Normal' },
@@ -20,6 +21,7 @@ return {
             MsgArea = { link = 'NormalFloat' },
             HlSearchLens = { fg = colors.accent, bg = colors.guide_normal },
             HlSearchLensNear = { fg = colors.string, bg = colors.guide_active },
+            WinSeparator = { link = 'VertSplit' },
           }
         end,
       })

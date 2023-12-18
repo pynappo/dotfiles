@@ -36,6 +36,7 @@ local configs = {
         },
         hint = {
           enable = true,
+          arrayIndex = 'Disable',
         },
         diagnostics = {
           globals = { 'vim' },
@@ -90,6 +91,8 @@ require('pynappo.autocmds').create({ 'LspAttach' }, {
     --     buffer = bufnr,
     --   })
     -- end
+
+    if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(bufnr) end
     vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
     keymaps.setup.lsp(bufnr)
     vim.b[bufnr].lsp_attached = true

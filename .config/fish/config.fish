@@ -1,5 +1,5 @@
 set XDG_CONFIG_HOME ~/.config
-set MANPAGER 'nvim +Man!'
+# set MANPAGER 'nvim +Man!'
 oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
 fish_add_path -p "$HOME/.bun/bin"
 if status is-interactive
