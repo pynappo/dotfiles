@@ -230,28 +230,28 @@ return {
       open = { enable = false },
       close = { enable = false },
     })
-    local starter = require('mini.starter')
-    if not require('pynappo.utils').is_firenvim then
-      starter.setup({
-        evaluate_single = true,
-        items = {
-          starter.sections.builtin_actions(),
-          starter.sections.recent_files(10, false),
-          starter.sections.recent_files(10, true),
-          -- Use this if you set up 'mini.sessions'
-          starter.sections.sessions(5, true),
-          starter.sections.telescope(),
-        },
-        content_hooks = {
-          starter.gen_hook.adding_bullet(),
-          starter.gen_hook.padding(3, 2),
-          starter.gen_hook.aligning('center', 'center'),
-        },
-      })
-    end
-    user_command('MiniStarter', function() starter.open() end, {})
-    vim.api.nvim_create_autocmd('TabNewEntered', {
-      command = [[MiniStarter]],
-    })
+    -- local starter = require('mini.starter')
+    -- if not require('pynappo.utils').is_firenvim then
+    --   starter.setup({
+    --     evaluate_single = true,
+    --     items = {
+    --       starter.sections.builtin_actions(),
+    --       starter.sections.recent_files(10, false),
+    --       starter.sections.recent_files(10, true),
+    --       -- Use this if you set up 'mini.sessions'
+    --       starter.sections.sessions(5, true),
+    --       starter.sections.telescope(),
+    --     },
+    --     content_hooks = {
+    --       starter.gen_hook.adding_bullet(),
+    --       starter.gen_hook.padding(3, 2),
+    --       starter.gen_hook.aligning('center', 'center'),
+    --     },
+    --   })
+    -- end
+    -- user_command('MiniStarter', function() starter.open() end, {})
+    -- vim.api.nvim_create_autocmd('TabNewEntered', {
+    --   command = [[MiniStarter]],
+    -- })
   end,
 }
