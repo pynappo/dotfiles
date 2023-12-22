@@ -1,6 +1,6 @@
 [Unit]
 Description=User-level sleep target
-After=sleep.target
+Before=sleep.target
 
 [Service]
 Type=oneshot

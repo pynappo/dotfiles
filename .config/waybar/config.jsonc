@@ -25,15 +25,15 @@
   "hyprland/window": {
     "max-length": 50,
     "rewrite": {
-      "(.*) - Vivaldi": "🌎 $1",
+      "(.*) - Vivaldi": "   $1",
       "(.*) - fish": "> [$1]",
     },
     "separate-outputs": true
   },
   "modules-right": [
+    "mpris",
     "battery",
     "tray",
-    "mpris",
     "idle_inhibitor",
     "network",
     "wireplumber",
@@ -49,6 +49,7 @@
     "status-icons": {
       "paused": "⏸"
     },
+    "title-len": 50,
     // "ignored-players": ["firefox"]
   },
   "battery": {

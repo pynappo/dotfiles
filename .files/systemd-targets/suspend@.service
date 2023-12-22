@@ -1,6 +1,6 @@
 [Unit]
 Description=User-level suspend target
-After=suspend.target
+Before=suspend.target
 
 [Service]
 Type=oneshot
