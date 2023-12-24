@@ -4,10 +4,10 @@ local utils = require('pynappo.utils')
 function autocmds.create_wrapper(augroup_name)
   local augroup = vim.api.nvim_create_augroup(augroup_name, { clear = true })
   return function(event, opts)
-        opts.group = opts.group or augroup
-        return vim.api.nvim_create_autocmd(event, opts)
-      end,
-      augroup
+    opts.group = opts.group or augroup
+    return vim.api.nvim_create_autocmd(event, opts)
+  end,
+    augroup
 end
 
 autocmds.create, autocmds.pynappo_augroup = autocmds.create_wrapper('pynappo')
@@ -37,7 +37,9 @@ autocmds.create('DiagnosticChanged', {
 })
 
 local exrc_names = {
-  '.nvim.lua', '.nvimrc', '.exrc'
+  '.nvim.lua',
+  '.nvimrc',
+  '.exrc',
 }
 autocmds.create('DirChanged', {
   desc = 'Auto-read exrc',
@@ -131,5 +133,32 @@ end
 --     print(details.event)
 --   end
 -- })
+
+local skeletons = {}
+local function get_extension(path) return utils.truthy(vim.fn.fnamemodify(path, ':e')) end
+for i, skeleton in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
+  local extension = get_extension(skeleton)
+  if extension then
+    if not skeleton[extension] then
+      skeletons[extension] = { skeleton }
+    else
+      table.insert(skeletons[extension], skeleton)
+    end
+  end
+end
+local scratch = 'Start from scratch'
+autocmds.create({ 'BufNewFile' }, {
+  callback = function(ctx)
+    local extension = get_extension(ctx.match)
+    if extension then
+      vim.ui.select({ scratch, unpack(skeletons[extension]) }, {
+        prompt = 'Select skeleton',
+      }, function(choice)
+        if choice == scratch then return end
+        vim.cmd('0r ' .. choice)
+      end)
+    end
+  end,
+})
 
 return autocmds

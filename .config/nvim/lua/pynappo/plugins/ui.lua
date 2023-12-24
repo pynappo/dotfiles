@@ -215,22 +215,21 @@ return {
       },
       {
         'smjonas/inc-rename.nvim',
-        dependencies = {
-          {
-            'stevearc/dressing.nvim',
-            opts = {
-              input = {
-                override = function(conf)
-                  conf.col = -1
-                  conf.row = 0
-                  return conf
-                end,
-              },
-            },
-          },
-        },
+        dependencies = 'stevearc/dressing.nvim',
         init = keymaps.setup.incremental_rename,
         config = true,
+      },
+    },
+  },
+  {
+    'stevearc/dressing.nvim',
+    opts = {
+      input = {
+        override = function(conf)
+          conf.col = -1
+          conf.row = 0
+          return conf
+        end,
       },
     },
   },

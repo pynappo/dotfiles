@@ -5,7 +5,6 @@ return {
     'nvim-lua/plenary.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     'debugloop/telescope-undo.nvim',
-    'nvim-telescope/telescope-ui-select.nvim'
   },
   config = function()
     local ts = require('telescope')
@@ -17,16 +16,14 @@ return {
         layout_config = {
           prompt_position = 'top',
         },
-        file_ignore_patterns = { "vendor/*" },
+        file_ignore_patterns = { 'vendor/*' },
         mappings = {
           n = {
-            ['dd'] = "delete_buffer"
-          }
-        }
+            ['dd'] = 'delete_buffer',
+          },
+        },
       },
-      pickers = {
-
-      },
+      pickers = {},
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown({}),
@@ -58,10 +55,11 @@ return {
       'fzf',
       'notify',
       'undo',
-      'ui-select',
       'yank_history',
     }
-    for _, e in pairs(extensions) do ts.load_extension(e) end 
+    for _, e in pairs(extensions) do
+      ts.load_extension(e)
+    end
   end,
   keys = require('pynappo.keymaps').setup.telescope({ lazy = true }),
 }
