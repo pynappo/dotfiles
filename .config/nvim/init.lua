@@ -48,6 +48,7 @@ o.splitbelow = true
 o.linebreak = true
 o.breakindent = true
 o.wrap = true
+o.clipboard = 'unnamed'
 
 -- Pop up menu stuff
 o.pumblend = 20
