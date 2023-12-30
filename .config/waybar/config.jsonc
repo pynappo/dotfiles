@@ -1,12 +1,12 @@
 [{
   "layer": "top",
   "position": "bottom",
-  "modules-left": ["hyprland/workspaces", "sway/mode"],
-  "hyprland/workspaces": {
+  "modules-left": ["wlr/workspaces"],
+  "wlr/workspaces": {
     "format": "{name}",
     "format-icons": "{}",
-    "on-scroll-up": "hyprctl dispatch workspace e+2",
-    "on-scroll-down": "hyprctl dispatch workspace e-2",
+    // "on-scroll-up": "hyprctl dispatch workspace e+2",
+    // "on-scroll-down": "hyprctl dispatch workspace e-2",
     "on-click": "activate",
     "persistent_workspaces": {
       "1": ["DP-2"],
@@ -21,14 +21,20 @@
       "10": ["DP-3"],
     },
   },
-  "modules-center": ["hyprland/window"],
-  "hyprland/window": {
-    "max-length": 50,
-    "rewrite": {
-      "(.*) - Vivaldi": "   $1",
-      "(.*) - fish": "> [$1]",
+  "modules-center": ["wlr/taskbar"],
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 18,
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "app_ids-mapping": {
+      "firefoxdeveloperedition": "firefox-developer-edition"
     },
-    "separate-outputs": true
+    "rewrite": {
+        "Firefox Web Browser": "Firefox",
+        "Foot Server": "Terminal"
+    }
   },
   "modules-right": [
     "mpris",

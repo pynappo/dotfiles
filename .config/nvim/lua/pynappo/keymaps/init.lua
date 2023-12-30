@@ -21,7 +21,9 @@ function M.abbr_command(abbr, expansion)
   return {
     abbr,
     function()
-      local typing_command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdpos() < (#abbr + 2)
+      local valid, cmd = pcall(vim.api.nvim_parse_cmd, vim.fn.getcmdline(), {})
+      local typing_command = vim.fn.getcmdtype() == ':'
+        and vim.fn.getcmdpos() < (#abbr + 2 + (valid and #cmd.range == 2 and 5 or 0))
       if not typing_command then return abbr end
       if type(expansion) == 'function' then return expansion() or abbr end
       return expansion
@@ -95,6 +97,7 @@ M.setup = {
           end
           return auto_p
         end),
+        M.abbr_command('!', 'term'),
       },
       [{ 'v' }] = {
         {

@@ -81,6 +81,7 @@ window#waybar.empty {
 #mode,
 #idle_inhibitor,
 #scratchpad,
+#taskbar,
 #mpd {
   padding: 0 10px;
   margin: 0 2px;
@@ -172,7 +173,7 @@ tooltip label {
 }
 
 #battery.critical:not(.charging) {
-  background-color: #f53c3c;
+  background-color: @red;
   color: @text;
   animation-name: blink;
   animation-duration: 5s;
@@ -227,7 +228,7 @@ label:focus {
 
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
-  background-color: #eb4d4b;
+  background-color: @red;
 }
 
 #idle_inhibitor.activated {
@@ -235,3 +236,6 @@ label:focus {
   color: #000000
 }
 
+#taskbar {
+  
+}

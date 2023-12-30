@@ -13,15 +13,10 @@ return {
         ensure_installed = {
           'lua',
           'markdown',
-          'vimdoc',
+          -- 'vimdoc',
           'java',
-          'markdown_inline',
+          -- 'markdown_inline',
           'regex',
-          'gitcommit',
-          'gitignore',
-          'git_config',
-          'git_rebase',
-          'gitattributes',
           -- 'comment',
         },
         highlight = {

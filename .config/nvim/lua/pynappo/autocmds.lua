@@ -136,13 +136,13 @@ end
 
 local skeletons = {}
 local function get_extension(path) return utils.truthy(vim.fn.fnamemodify(path, ':e')) end
-for i, skeleton in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
-  local extension = get_extension(skeleton)
+for _, s in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
+  local extension = get_extension(s)
   if extension then
-    if not skeleton[extension] then
-      skeletons[extension] = { skeleton }
+    if not skeletons[extension] then
+      skeletons[extension] = { s }
     else
-      table.insert(skeletons[extension], skeleton)
+      table.insert(skeletons[extension], s)
     end
   end
 end
@@ -150,7 +150,7 @@ local scratch = 'Start from scratch'
 autocmds.create({ 'BufNewFile' }, {
   callback = function(ctx)
     local extension = get_extension(ctx.match)
-    if extension then
+    if extension and skeletons[extension] then
       vim.ui.select({ scratch, unpack(skeletons[extension]) }, {
         prompt = 'Select skeleton',
       }, function(choice)

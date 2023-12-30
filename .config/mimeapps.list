@@ -1,5 +1,6 @@
 [Added Associations]
-application/pdf=vivaldi-stable.desktop;
+application/pdf=libreoffice-draw.desktop;vivaldi-stable.desktop;
+image/png=pinta.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop
