@@ -236,6 +236,6 @@ label:focus {
   color: #000000
 }
 
-#taskbar {
-  
+#taskbar button {
+  padding: 2px 6px;
 }

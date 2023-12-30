@@ -21,25 +21,14 @@
       "10": ["DP-3"],
     },
   },
-  "modules-center": ["wlr/taskbar"],
-  // "hyprland/window": {
-  //   "max-length": 50,
-  //   "rewrite": {
-  //     "(.*) - Vivaldi": "   $1",
-  //     "(.*) - fish": "> [$1]",
-  //   },
-  //   "separate-outputs": true
-  // },
-  "wlr/taskbar": {
-    "format": "{icon} {title}",
-    "icon-size": 18,
-    "tooltip-format": "{title}",
-    "on-click": "activate",
-    "on-click-middle": "close",
+  "modules-center": ["hyprland/window"],
+  "hyprland/window": {
+    "max-length": 50,
     "rewrite": {
-        "Firefox Web Browser": "Firefox",
-        "Foot Server": "Terminal"
-    }
+      "(.*) - Vivaldi": "   $1",
+      "(.*) - fish": "> [$1]",
+    },
+    "separate-outputs": true
   },
   "modules-right": [
     "mpris",
