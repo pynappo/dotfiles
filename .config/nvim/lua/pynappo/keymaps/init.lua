@@ -22,8 +22,9 @@ function M.abbr_command(abbr, expansion)
     abbr,
     function()
       local valid, cmd = pcall(vim.api.nvim_parse_cmd, vim.fn.getcmdline(), {})
-      local typing_command = vim.fn.getcmdtype() == ':'
-        and vim.fn.getcmdpos() < (#abbr + 2 + (valid and #cmd.range == 2 and 5 or 0))
+      -- vim.print(cmd)
+      local offset = (valid and cmd.range and #cmd.range == 2 and 7) or 2
+      local typing_command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdpos() < (#abbr + offset)
       if not typing_command then return abbr end
       if type(expansion) == 'function' then return expansion() or abbr end
       return expansion

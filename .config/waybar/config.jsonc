@@ -31,7 +31,7 @@
   //   "separate-outputs": true
   // },
   "wlr/taskbar": {
-    "format": "{icon} {title}",
+    "format": "{icon} {title:.30}",
     "icon-size": 18,
     "tooltip-format": "{title}",
     "on-click": "activate",

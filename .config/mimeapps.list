@@ -1,6 +1,7 @@
 [Added Associations]
 application/pdf=libreoffice-draw.desktop;vivaldi-stable.desktop;
 image/png=pinta.desktop;
+x-scheme-handler/jetbrains=jetbrains-toolbox.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop
