@@ -1,3 +1,4 @@
+local prettier = { 'prettierd', 'prettier' }
 return {
   {
     'stevearc/conform.nvim',
@@ -10,8 +11,10 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         cpp = { 'clang_format' },
-        -- python = { 'isort', 'black' },
-        -- javascript = { { 'prettierd', 'prettier' } },
+        typescript = { prettier },
+        javascript = { prettier },
+        typescriptreact = { prettier },
+        javascriptreact = { prettier },
       },
       -- Set up format-on-save
       format_on_save = {

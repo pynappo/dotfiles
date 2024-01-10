@@ -47,7 +47,7 @@ o.splitbelow = true
 -- Line breaks
 o.linebreak = true
 o.breakindent = true
-o.wrap = true
+o.wrap = false
 o.clipboard = 'unnamed'
 
 -- Pop up menu stuff

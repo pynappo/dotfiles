@@ -28,6 +28,9 @@ opt.listchars = {
   eol = '󱞣',
 }
 
+vim.opt.relativenumber = true
+vim.opt.number = true
+vim.opt.statuscolumn = '%-3{v:lnum} %{v:relnum}'
 -- setup plugins
 vim.keymap.set('n', '<leader>h', function() vim.print('hi') end)
 require('lazy').setup({
@@ -83,6 +86,7 @@ require('lazy').setup({
       -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
       require('luasnip.loaders.from_vscode').lazy_load()
 
+      print('hi')
       cmp.setup({
         completion = {
           completeopt = 'menu,menuone,preview,noselect',
@@ -95,9 +99,29 @@ require('lazy').setup({
           ['<C-j>'] = cmp.mapping.select_next_item(), -- next suggestion
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
+          -- ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
           ['<C-e>'] = cmp.mapping.abort(), -- close completion window
           ['<CR>'] = cmp.mapping.confirm({ select = false }),
+          ['<C-n>'] = {
+            i = function()
+              local cmp = require('cmp')
+              if cmp.visible() then
+                cmp.select_next_item({ behavior = require('cmp.types').cmp.SelectBehavior.Insert })
+              else
+                cmp.complete()
+              end
+            end,
+          },
+          ['<C-p>'] = {
+            i = function()
+              local cmp = require('cmp')
+              if cmp.visible() then
+                cmp.select_prev_item({ behavior = require('cmp.types').cmp.SelectBehavior.Insert })
+              else
+                cmp.complete()
+              end
+            end,
+          },
         }),
         -- sources for autocompletion
         sources = cmp.config.sources({

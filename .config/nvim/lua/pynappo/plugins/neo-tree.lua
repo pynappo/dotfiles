@@ -1,7 +1,9 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
+  enabled = true,
   branch = 'v3.x',
   dependencies = {
+    'antosha417/nvim-lsp-file-operations',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
     {
@@ -77,7 +79,7 @@ return {
             filetype = { 'NvimTree', 'neo-tree', 'notify', 'scrollview', 'noice' },
 
             -- if the file type is one of following, the window will be ignored
-            buftype = { 'terminal' },
+            buftype = { 'terminal', 'nofile' },
           },
           wo = {},
           file_path_contains = {},
@@ -261,5 +263,6 @@ return {
         scan_mode = 'deep',
       },
     }, require('pynappo.keymaps').neotree))
+    require('lsp-file-operations').setup()
   end,
 }

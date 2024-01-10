@@ -13,6 +13,23 @@ return {
         dependencies = { 'williamboman/mason.nvim' },
       },
       'alaviss/nim.nvim',
+      {
+        'pmizio/typescript-tools.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+        opts = {
+          settings = {
+            tsserver_file_preferences = {
+              includeInlayParameterNameHints = 'all',
+              includeCompletionsForModuleExports = true,
+              quotePreference = 'auto',
+            },
+            tsserver_format_options = {
+              allowIncompleteCompletions = false,
+              allowRenameOfImportPath = false,
+            },
+          },
+        },
+      },
     },
     init = keymaps.setup.diagnostics,
     config = function()
@@ -28,7 +45,8 @@ return {
         handlers = {
           function(ls) require('lspconfig')[ls].setup(require('pynappo/lsp/configs')[ls]) end,
           rust_analyzer = function() end, -- use rustaceanvim
-          jdtls = function() end, -- use method recommended by nvim-jdtls
+          jdtls = function() end, -- use nvim-jdtls
+          tsserver = function() end, -- use typescript-tools
         },
       })
 
