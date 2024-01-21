@@ -2,6 +2,7 @@
 application/pdf=libreoffice-draw.desktop;vivaldi-stable.desktop;
 image/png=pinta.desktop;
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop;
+application/x-osu-beatmap-archive=org.gnome.FileRoller.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop
@@ -78,3 +79,5 @@ x-scheme-handler/about=vivaldi-stable.desktop
 x-scheme-handler/unknown=vivaldi-stable.desktop
 application/pdf=vivaldi-stable.desktop
 inode/directory=thunar.desktop
+x-scheme-handler/nxm=vortex-steamtinkerlaunch-dl.desktop
+x-scheme-handler/nxm-protocol=vortex-steamtinkerlaunch-dl.desktop

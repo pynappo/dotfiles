@@ -1,11 +1,10 @@
-set XDG_CONFIG_HOME ~/.config
+export (systemctl show-environment --user)
 if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
   fish_add_path -p "$HOME/.bun/bin"
   if set -q $TERMUX_VERSION
     fish_add_path -g "$HOME/neovim/build/bin"
   end
-  export (systemctl show-environment --user)
   # Emulates vim's cursor shape behavior
   # Set the normal and visual mode cursors to a block
   set fish_cursor_default block

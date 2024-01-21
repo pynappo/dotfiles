@@ -28,7 +28,6 @@ return {
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
     end,
   },
-  { 'folke/which-key.nvim', event = 'VeryLazy', opts = { window = { border = 'single' } } },
   {
     'folke/trouble.nvim',
     config = true,
@@ -236,7 +235,6 @@ return {
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
-    enabled = false,
     opts = {
       plugins = {
         marks = false, -- shows a list of your marks on ' and `

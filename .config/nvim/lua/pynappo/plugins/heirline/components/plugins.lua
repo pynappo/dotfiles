@@ -8,8 +8,7 @@ return {
     update = { 'BufEnter', 'BufNewFile' },
     provider = function(self)
       local ft_formatters = self.conform.list_formatters(0)
-      return ft_formatters and
-          table.concat(vim.tbl_map(function(f) return f.name end, ft_formatters), ' ') or 'N/A'
+      return ft_formatters and table.concat(vim.tbl_map(function(f) return f.name end, ft_formatters), ' ') or 'N/A'
     end,
   },
   lazy = {
@@ -22,6 +21,24 @@ return {
       callback = function() require('lazy').check() end,
       name = 'heirline_plugin_updates',
     },
+  },
+  lint = {
+    condition = function(self)
+      local ok, lint = pcall(require, 'lint')
+      self.lint = lint
+      return ok
+    end,
+    provider = function(self)
+      local linters = self.lint.linters_by_ft[vim.bo.filetype] or {}
+      if #linters == 0 then return 'N/A' end
+      local str = ''
+      for i, linter in ipairs(linters) do
+        if vim.tbl_contains(self.lint.get_running(), linter) then linter = '*' .. linter end
+        if i < #linters then linter = linter .. ', ' end
+        str = str .. linter
+      end
+      return str
+    end,
   },
   dap = {
     {
@@ -75,5 +92,45 @@ return {
       },
     },
     update = { 'CursorHold' },
+  },
+  dropbar = {
+    condition = function(self)
+      self.data = vim.tbl_get(dropbar.bars or {}, vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win())
+      return self.data
+    end,
+    static = { dropbar_on_click_string = 'v:lua.dropbar.callbacks.buf%s.win%s.fn%s' },
+    init = function(self)
+      local components = self.data.components
+      local children = {}
+      for i, c in ipairs(components) do
+        local child = {
+          {
+            hl = c.icon_hl,
+            provider = c.icon:gsub('%%', '%%%%'),
+          },
+          {
+            hl = c.name_hl,
+            provider = c.name:gsub('%%', '%%%%'),
+          },
+          on_click = {
+            callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i),
+            name = 'heirline_dropbar',
+          },
+        }
+        if i < #components then
+          local sep = self.data.separator
+          table.insert(child, {
+            provider = sep.icon,
+            hl = sep.icon_hl,
+            on_click = {
+              callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i + 1),
+            },
+          })
+        end
+        table.insert(children, child)
+      end
+      self.child = self:new(children, 1)
+    end,
+    provider = function(self) return self.child:eval() end,
   },
 }

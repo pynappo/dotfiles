@@ -49,8 +49,26 @@ return {
         },
         autotag = {
           enable = true,
+          filetypes = {
+            'html',
+            'javascript',
+            'typescript',
+            'javascriptreact',
+            'typescriptreact',
+            'svelte',
+            'vue',
+            'tsx',
+            'jsx',
+            'rescript',
+            'css',
+            'lua',
+            'xml',
+            'php',
+            'markdown',
+          },
         },
       }, require('pynappo.keymaps').treesitter))
+      vim.treesitter.language.register('markdown', 'mdx')
     end,
     dependencies = {
       {

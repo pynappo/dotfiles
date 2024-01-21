@@ -84,6 +84,9 @@ M.setup = {
         { '<leader>%', '<Cmd>%y<CR>' },
         { '<leader>Y', '"+Y' },
         { '<LeftRelease>', '"*ygv' },
+        { '<C-S-x>', '"+d' },
+        { '<C-S-v>', '"+p' },
+        { '<C-S-c>', '"+y' },
       },
       [{ 'ca' }] = {
         M.abbr_command('L', 'Lazy'),

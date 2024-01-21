@@ -12,7 +12,7 @@ local tabline = {
       if self.lfilename == '' then self.lfilename = '[No Name]' end
     end,
     hl = vim.bo.modified and { italic = true, force = true } or nil,
-    provider = function(self) return vim.fn.pathshorten(self.lfilename) end,
+    provider = function(self) return vim.fn.fnamemodify(self.lfilename, ':t') end,
   },
   file_flags = {
     {
@@ -32,9 +32,7 @@ local tabline = {
       provider = ' 󰅖',
       hl = { fg = 'gray' },
       on_click = {
-        callback = function(_, minwid)
-          bufdelete(minwid)
-        end,
+        callback = function(_, minwid) bufdelete(minwid) end,
         minwid = function(self) return self.bufnr end,
         name = 'heirline_tabline_close_buffer_callback',
       },
@@ -59,7 +57,7 @@ local tabline = {
     hl = { fg = 'diag_warn', bold = true },
   },
   tabpage = {
-    init = function(self) self.name = vim.t[self.tabnr].name end,
+    init = function(self) self.name = vim.api.nvim_tabpage_is_valid(self.tabnr) and vim.t[self.tabnr].name or '' end,
     provider = function(self)
       return '%' .. self.tabnr .. 'T ' .. self.tabnr .. (self.name and ' ' .. self.name or '') .. '%T'
     end,
@@ -73,7 +71,7 @@ tabline.filename_block = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
     self.icon, self.icon_color =
-        require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   on_click = {

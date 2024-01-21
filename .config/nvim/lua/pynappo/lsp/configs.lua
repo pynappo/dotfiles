@@ -10,12 +10,16 @@ local configs = {
       local nvim_workspace = path:find('nvim')
       local test_nvim = path:find('test')
       if nvim_workspace then
-        local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file('lua', true)
+        local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file('', true)
         client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
           runtime = {
             -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
             version = 'LuaJIT',
             pathStrict = true,
+            path = {
+              'lua/?.lua',
+              'lua/?/init.lua',
+            },
           },
           -- Make the server aware of Neovim runtime files
           workspace = {

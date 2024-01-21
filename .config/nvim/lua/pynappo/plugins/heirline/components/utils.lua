@@ -1,4 +1,4 @@
 return {
-  space = {provider = ' '},
-  align = { provider = '%=' }
+  space = { provider = ' ' },
+  align = { provider = '%=' },
 }

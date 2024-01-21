@@ -1,6 +1,6 @@
 -- install lazy.nvim, a plugin manager
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     'git',
     'clone',
@@ -27,13 +27,51 @@ opt.listchars = {
   lead = '.',
   eol = '󱞣',
 }
-
 vim.opt.relativenumber = true
 vim.opt.number = true
-vim.opt.statuscolumn = '%-3{v:lnum} %{v:relnum}'
 -- setup plugins
 vim.keymap.set('n', '<leader>h', function() vim.print('hi') end)
+local handlers = {
+  function(ls) require('lspconfig')[ls].setup({}) end,
+  lua_ls = function()
+    require('lspconfig').lua_ls.setup({
+      on_init = function(client)
+        local path = client.workspace_folders[1].name
+        if not vim.uv.fs_stat(path .. '/.luarc.json') and not vim.uv.fs_stat(path .. '/.luarc.jsonc') then
+          client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+            Lua = {
+              runtime = {
+                -- Tell the language server which version of Lua you're using
+                -- (most likely LuaJIT in the case of Neovim)
+                version = 'LuaJIT',
+                path = {
+                  'lua/?/init.lua',
+                  'lua/?.lua',
+                },
+              },
+              -- Make the server aware of Neovim runtime files
+              workspace = {
+                checkThirdParty = false,
+                library = vim.api.nvim_get_runtime_file('', true),
+              },
+            },
+          })
+        end
+      end,
+    })
+  end,
+}
+
+vim.api.nvim_create_autocmd({ 'QuitPre' }, {
+  callback = function()
+    local window_count = vim.fn.winnr('$')
+    if window_count == 1 then vim.cmd('Neotree') end
+  end,
+})
 require('lazy').setup({
+  {
+    'Shatur/neovim-ayu',
+  },
   {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -47,22 +85,13 @@ require('lazy').setup({
         ensure_installed = {
           'lua_ls',
         },
-        handlers = {
-          function(ls) require('lspconfig')[ls].setup({}) end,
-        },
+        handlers = handlers,
       })
     end,
   },
   {
     'williamboman/mason.nvim',
     opts = { ui = { border = 'single' } },
-  },
-  {
-    'nvim-telescope/telescope.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    opts = {},
   },
   {
     'hrsh7th/nvim-cmp',
@@ -75,12 +104,11 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets', -- useful snippets
       'onsails/lspkind.nvim', -- vs-code like pictograms
       'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
       local cmp = require('cmp')
-
       local luasnip = require('luasnip')
-
       local lspkind = require('lspkind')
 
       -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
@@ -89,7 +117,7 @@ require('lazy').setup({
       print('hi')
       cmp.setup({
         completion = {
-          completeopt = 'menu,menuone,preview,noselect',
+          completeopt = vim.o.completeopt,
         },
         snippet = { -- configure how nvim-cmp interacts with snippet engine
           expand = function(args) luasnip.lsp_expand(args.body) end,
@@ -99,39 +127,16 @@ require('lazy').setup({
           ['<C-j>'] = cmp.mapping.select_next_item(), -- next suggestion
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          -- ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
+          ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
           ['<C-e>'] = cmp.mapping.abort(), -- close completion window
           ['<CR>'] = cmp.mapping.confirm({ select = false }),
-          ['<C-n>'] = {
-            i = function()
-              local cmp = require('cmp')
-              if cmp.visible() then
-                cmp.select_next_item({ behavior = require('cmp.types').cmp.SelectBehavior.Insert })
-              else
-                cmp.complete()
-              end
-            end,
-          },
-          ['<C-p>'] = {
-            i = function()
-              local cmp = require('cmp')
-              if cmp.visible() then
-                cmp.select_prev_item({ behavior = require('cmp.types').cmp.SelectBehavior.Insert })
-              else
-                cmp.complete()
-              end
-            end,
-          },
         }),
-        -- sources for autocompletion
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
           { name = 'luasnip' }, -- snippets
           { name = 'buffer' }, -- text within current buffer
           { name = 'path' }, -- file system paths
         }),
-
-        -- configure lspkind for vs-code like pictograms in completion menu
         formatting = {
           format = lspkind.cmp_format({
             maxwidth = 50,
@@ -139,21 +144,18 @@ require('lazy').setup({
           }),
         },
       })
-
-      -- `:` cmdline setup.
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' },
-        }, {
-          {
-            name = 'cmdline',
-            option = {
-              ignore_cmds = { 'Man', '!' },
-            },
-          },
-        }),
-      })
     end,
   },
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    enabled = true,
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+    },
+    config = function() require('neo-tree').setup() end,
+  },
+  'svjunic/RadicalGoodSpeed.vim',
 })
+vim.cmd.colorscheme('ayu-mirage')

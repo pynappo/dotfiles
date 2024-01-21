@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 return {
   {
     'rebelot/heirline.nvim',
@@ -51,20 +52,20 @@ return {
       local get_hl = function(...) return utils.get_highlight(...) or {} end -- makes usage a bit simpler
       local function heirline_colors()
         local colors = {
-          string = get_hl('String').fg,
+          string = get_hl('String').fg or get_hl('Normal').fg,
           normal = get_hl('Normal').fg,
-          func = get_hl('Function').fg,
-          type = get_hl('Type').fg,
-          debug = get_hl('Debug').fg,
-          comment = get_hl('Comment').fg,
-          directory = get_hl('Directory').fg,
-          constant = get_hl('Constant').fg,
-          statement = get_hl('Statement').fg,
-          special = get_hl('Special').fg,
-          diag_warn = get_hl('DiagnosticWarn').fg,
-          diag_error = get_hl('DiagnosticError').fg,
-          diag_hint = get_hl('DiagnosticHint').fg,
-          diag_info = get_hl('DiagnosticInfo').fg,
+          func = get_hl('Function').fg or get_hl('Normal').fg,
+          type = get_hl('Type').fg or get_hl('Normal').fg,
+          debug = get_hl('Debug').fg or get_hl('Normal').fg,
+          comment = get_hl('Comment').fg or get_hl('Normal').fg,
+          directory = get_hl('Directory').fg or get_hl('Normal').fg,
+          constant = get_hl('Constant').fg or get_hl('Normal').fg,
+          statement = get_hl('Statement').fg or get_hl('Normal').fg,
+          special = get_hl('Special').fg or get_hl('Normal').fg,
+          diag_warn = get_hl('DiagnosticWarn').fg or get_hl('Normal').fg,
+          diag_error = get_hl('DiagnosticError').fg or get_hl('Normal').fg,
+          diag_hint = get_hl('DiagnosticHint').fg or get_hl('Normal').fg,
+          diag_info = get_hl('DiagnosticInfo').fg or get_hl('Normal').fg,
           git_del = get_hl('GitsignsDelete').fg or get_hl('DiffRemoved').fg or get_hl('DiffDelete').bg,
           git_add = get_hl('GitsignsAdd').fg or get_hl('DiffAdded').fg or get_hl('DiffAdded').bg,
           git_change = get_hl('GitsignsChange').fg or get_hl('DiffChange').fg or get_hl('DiffChange').bg,
@@ -108,7 +109,7 @@ return {
       }
       local ruler_block = utils.surround({ '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
       local lazy_block = {
-        flexible = 4,
+        flexible = 5,
         utils.surround({ 'Plugin updates: ', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
         utils.surround({ '', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
       }
@@ -117,10 +118,14 @@ return {
         utils.surround({ 'Conform: ', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
         utils.surround({ '', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
       }
+      local lint_block = {
+        flexible = 4,
+        utils.surround({ 'Lint: ', '' }, 'diag_info', { p.lint, hl = { fg = 'black' } }),
+        utils.surround({ '', '' }, 'diag_info', { p.lint, hl = { fg = 'black' } }),
+      }
 
       local t = require('pynappo.plugins.heirline.components.tabline')
       require('heirline').setup({
-        ---@diagnostic disable-next-line: missing-fields
         statusline = {
           hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' or nil end,
           static = {
@@ -157,7 +162,7 @@ return {
             lazy_block,
             u.space,
           },
-          { p.dap, lsp_block, u.space, conform_block, u.space, ruler_block },
+          { p.dap, lsp_block, u.space, conform_block, u.space, lint_block, u.space, ruler_block },
         },
         winbar = {
           fallthrough = false,
@@ -170,7 +175,7 @@ return {
             u.space,
             c.termname,
           },
-          { c.dropbar, u.align, c.diagnostics, c.gitsigns, u.space, c.file_info },
+          { p.dropbar, u.align, c.diagnostics, c.gitsigns, u.space, c.file_info },
         },
         tabline = { t.offset, t.bufferline, u.align, t.tabpages },
         statuscolumn = {

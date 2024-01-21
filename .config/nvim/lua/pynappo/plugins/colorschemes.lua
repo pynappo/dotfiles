@@ -1,6 +1,6 @@
 return {
   {
-    'Shatur/neovim-ayu',
+    'pynappo/neovim-ayu',
     priority = 100,
     config = function()
       local colors = require('ayu.colors')
@@ -12,7 +12,7 @@ return {
           return {
             WildMenu = { bg = colors.ui, fg = colors.fg },
             Comment = { fg = colors.fg_idle, italic = true },
-            LspInlayHint = { fg = colors.fg_idle },
+            LspInlayHint = { fg = colors.fg_idle, bg = colors.panel_bg },
             LineNr = { fg = '#555555' },
             Search = { underline = true },
             NormalNC = { link = 'Normal' },
@@ -30,7 +30,7 @@ return {
   {
     'catppuccin/nvim',
     enabled = true,
-    as = 'catppuccin',
+    name = 'catppuccin',
   },
   {
     'levouh/tint.nvim',

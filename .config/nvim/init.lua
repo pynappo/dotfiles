@@ -54,6 +54,7 @@ o.clipboard = 'unnamed'
 o.pumblend = 20
 o.updatetime = 500
 opt.completeopt = { 'menu', 'menuone', 'noinsert', 'noselect' }
+vim.fn.setreg('b', 'ihi')
 
 -- Misc.
 o.confirm = true
@@ -206,8 +207,8 @@ require('lazy').setup({
       paths = {}, -- add any custom paths here that you want to incluce in the rtp
       ---@type string[] list any plugins you want to disable here
       disabled_plugins = {
-        'matchit',
-        'matchparen',
+        -- 'matchit',
+        -- 'matchparen',
         'netrw',
         'netrwPlugin',
         'netrwSettings',
@@ -246,6 +247,7 @@ vim.filetype.add({
   },
   extension = {
     rasi = 'rasi',
+    mdx = 'mdx',
   },
 })
 -- GUI stuff
