@@ -253,5 +253,7 @@ return {
     -- vim.api.nvim_create_autocmd('TabNewEntered', {
     --   command = [[MiniStarter]],
     -- })
+    -- require('mini.notify').setup()
+    -- vim.notify = require('mini.notify').make_notify()
   end,
 }

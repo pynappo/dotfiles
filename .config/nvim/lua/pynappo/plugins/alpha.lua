@@ -215,7 +215,7 @@ return {
 
     require('alpha').setup(config)
     vim.api.nvim_create_autocmd('TabNewEntered', {
-      command = [[Alpha]],
+      callback = function(context) vim.print(vim.api.nvim_buf_get_name(context.buf)) end,
     })
   end,
 }

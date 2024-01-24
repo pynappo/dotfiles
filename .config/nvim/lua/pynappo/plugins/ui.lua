@@ -60,11 +60,7 @@ return {
           local sfw = vim.v.searchforward == 1
           local indicator, text, chunks
           local abs_rel_idx = math.abs(rel_idx)
-          if abs_rel_idx > 1 then
-            indicator = ('%d %s'):format(abs_rel_idx, sfw ~= (rel_idx > 1) and '' or '')
-          elseif abs_rel_idx == 1 then
-            indicator = sfw ~= (rel_idx == 1) and '' or ''
-          end
+          if abs_rel_idx > 0 then indicator = ('%d %s'):format(abs_rel_idx, sfw ~= (rel_idx > 1) and '' or '') end
 
           local lnum, col = unpack(pos_list[idx])
           if nearest then
@@ -75,7 +71,7 @@ return {
               text = ('%d/%d'):format(idx, cnt)
             end
             chunks = {
-              { '    ', 'HlSearchLensNearIcon' },
+              { '            ', 'HlSearchLensNearIcon' },
               { ' ', 'Ignore' },
               { '', 'HlSearchLensNearSurround' },
               { text, 'HlSearchLensNear' },
@@ -84,7 +80,7 @@ return {
           else
             text = indicator
             chunks = {
-              { '    ', 'Ignore' },
+              { '        ', 'Ignore' },
               { '', 'HlSearchLensSurround' },
               { text, 'HlSearchLens' },
               { '', 'HlSearchLensSurround' },

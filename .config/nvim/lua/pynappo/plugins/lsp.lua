@@ -4,7 +4,7 @@ return {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      -- { 'folke/neodev.nvim', config = true },
+      { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',
       'mrcjkb/rustaceanvim',
       'nvimtools/none-ls.nvim',
@@ -49,7 +49,6 @@ return {
           tsserver = function() end, -- use typescript-tools
         },
       })
-
       local null_ls = require('null-ls')
       null_ls.setup({
         sources = {

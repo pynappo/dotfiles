@@ -5,25 +5,32 @@ local default_config = {
 }
 local configs = {
   lua_ls = {
+    log_level = vim.lsp.log_levels.TRACE,
+    -- before_init = require('neodev.lsp').before_init,
     on_init = function(client)
       local path = client.workspace_folders[1].name
-      local nvim_workspace = path:find('nvim')
+      local nvim_workspace = path:find('nvim') or path:find('lua')
       local test_nvim = path:find('test')
       if nvim_workspace then
-        local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file('', true)
-        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-          runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = 'LuaJIT',
-            pathStrict = true,
-            path = {
-              'lua/?.lua',
-              'lua/?/init.lua',
+        local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file('lua', true)
+        -- add lazy-loaded plugins:
+        if package.loaded['lazy'] then
+          for _, plugin in ipairs(require('lazy').plugins()) do
+            local lua_plugin_dir = plugin.dir .. '/lua'
+            if not plugin._.loaded and vim.uv.fs_stat(lua_plugin_dir) then table.insert(library, lua_plugin_dir) end
+          end
+        end
+        client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+          Lua = {
+            runtime = {
+              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+              version = 'LuaJIT',
+              pathStrict = true,
             },
-          },
-          -- Make the server aware of Neovim runtime files
-          workspace = {
-            library = library,
+            -- Make the server aware of Neovim runtime files
+            workspace = {
+              library = library,
+            },
           },
         })
         client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })

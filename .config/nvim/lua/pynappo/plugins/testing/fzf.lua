@@ -1,6 +1,7 @@
 return {
   {
     'vijaymarupudi/nvim-fzf',
+    enabled = false,
     event = 'VeryLazy',
     config = function() local fzf = require('fzf') end,
   },
