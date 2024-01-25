@@ -2,32 +2,36 @@ oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.yaml" | Invoke-Expressio
 Import-Module scoop-completion
 Import-Module cd-extras
 Import-Module gsudoModule
-function IsVirtualTerminalProcessingEnabled {
-	$MethodDefinitions = @'
+function IsVirtualTerminalProcessingEnabled
+{
+    $MethodDefinitions = @'
 [DllImport("kernel32.dll", SetLastError = true)]
 public static extern IntPtr GetStdHandle(int nStdHandle);
 [DllImport("kernel32.dll", SetLastError = true)]
 public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
 '@
-	$Kernel32 = Add-Type -MemberDefinition $MethodDefinitions -Name 'Kernel32' -Namespace 'Win32' -PassThru
-	$hConsoleHandle = $Kernel32::GetStdHandle(-11) # STD_OUTPUT_HANDLE
-	$mode = 0
-	$Kernel32::GetConsoleMode($hConsoleHandle, [ref]$mode) >$null
-	if ($mode -band 0x0004) { # 0x0004 ENABLE_VIRTUAL_TERMINAL_PROCESSING
-		return $true
-	}
-	return $false
+    $Kernel32 = Add-Type -MemberDefinition $MethodDefinitions -Name 'Kernel32' -Namespace 'Win32' -PassThru
+    $hConsoleHandle = $Kernel32::GetStdHandle(-11) # STD_OUTPUT_HANDLE
+    $mode = 0
+    $Kernel32::GetConsoleMode($hConsoleHandle, [ref]$mode) >$null
+    if ($mode -band 0x0004)
+    { # 0x0004 ENABLE_VIRTUAL_TERMINAL_PROCESSING
+        return $true
+    }
+    return $false
 }
 
-function CanUsePredictionSource {
-	return (! [System.Console]::IsOutputRedirected) -and (IsVirtualTerminalProcessingEnabled)
+function CanUsePredictionSource
+{
+    return (! [System.Console]::IsOutputRedirected) -and (IsVirtualTerminalProcessingEnabled)
 }
 
-if (CanUsePredictionSource){ 
-  Import-Module -Name Terminal-Icons
-  Import-Module PSReadLine
-  Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin -HistoryNoDuplicates
-  Import-Module -Name Terminal-Icons
+if (CanUsePredictionSource)
+{ 
+    Import-Module -Name Terminal-Icons
+    Import-Module PSReadLine
+    Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin -HistoryNoDuplicates
+    Import-Module -Name Terminal-Icons
 }
 
 $env:FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git --color=always --strip-cwd-prefix"
@@ -36,29 +40,44 @@ $env:FZF_DEFAULT_OPTS = "--height=80% --layout=reverse --ansi --info=inline --ta
 $env:XDG_CONFIG_HOME = "$HOME\.config"
 $env:MPV_HOME = "$HOME\.config\mpv"
 $env:ANIMDL_CONFIG = "$HOME\.config\animdl\config.yml"
-Function fzfb { fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' @Args }
+Function fzfb
+{ fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' @Args 
+}
 Set-Alias -Name f -Value fzfb
 $env:PYTHONIOENCODING="utf-8"
 $env:PATH="$env:USERPROFILE\scoop\shims;$env:PATH"
 $env:PATH="$env:APPDATA\Python\Python39\Scripts;$env:PATH"
 
 Invoke-Expression "$(thefuck --alias)"
-Function Reload-Path {
+Function Reload-Path
+{
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 }
-Function Notepad { Notepads @Args }
-Function Dotfiles {
+Function Notepad
+{ Notepads @Args 
+}
+Function Dotfiles
+{
     git --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args
 }
-Function Jammers {
-    mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video
+Function Jammers
+{
+    mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video @Args
 }
-Function Dotwindows {
-    if ($Args -and ($Args[0].ToString().ToLower() -eq "link")) {
-        if ($Args.Count -ne 3) {"Please supply a link path AND a link target, respectively."}
-        else {
-            if (!(Test-Path $Args[1])) { Return Write-Error("Path invalid.")}
-            if (!(Test-Path $Args[2])) { Return Write-Error("Target invalid.")}
+Function Dotwindows
+{
+    if ($Args -and ($Args[0].ToString().ToLower() -eq "link"))
+    {
+        if ($Args.Count -ne 3)
+        {"Please supply a link path AND a link target, respectively."
+        } else
+        {
+            if (!(Test-Path $Args[1]))
+            { Return Write-Error("Path invalid.")
+            }
+            if (!(Test-Path $Args[2]))
+            { Return Write-Error("Target invalid.")
+            }
             $Path = (Resolve-Path $Args[1]).ToString()
             $Target = (Resolve-Path $Args[2]).ToString()
 
@@ -68,48 +87,54 @@ Function Dotwindows {
             Dotwindows add $Path
             Dotfiles add $Target
         }
+    } else
+    { git --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args 
     }
-    else { git --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
 }
-Function Lazy-Dotfiles { lazygit --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args }
-Function Lazy-Dotwindows { lazygit --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args }
+Function Lazy-Dotfiles
+{ lazygit --git-dir=$Home/.dotfiles.git/ --work-tree=$HOME @Args 
+}
+Function Lazy-Dotwindows
+{ lazygit --git-dir=$Home/.dotwindows.git/ --work-tree=$HOME @Args 
+}
 
-Function Pacup ([string]$Path = "$Home\.files\"){
-	scoop export > ($Path + 'scoop.json')
-	winget export -o ($Path + 'winget.json') --accept-source-agreements
+Function Pacup ([string]$Path = "$Home\.files\")
+{
+    scoop export > ($Path + 'scoop.json')
+    winget export -o ($Path + 'winget.json') --accept-source-agreements
     pip freeze > ($Path + 'requirements.txt')
 }
 
-Function New-Link ($Path, $Target) {
+Function New-Link ($Path, $Target)
+{
     New-Item -ItemType SymbolicLink -Path $Path -Value $Target
 }
 
 Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
-	param($wordToComplete, $commandAst, $cursorPosition)
-	[Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
-	$Local:word = $wordToComplete.Replace('"', '""')
-	$Local:ast = $commandAst.ToString().Replace('"', '""')
-	winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
+    $Local:word = $wordToComplete.Replace('"', '""')
+    $Local:ast = $commandAst.ToString().Replace('"', '""')
+    winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-	}
+    }
 }
 Add-Type -AssemblyName Microsoft.VisualBasic
 
-function Remove-Item-ToRecycleBin($Path) {
+function Remove-Item-ToRecycleBin($Path)
+{
     $item = Get-Item -Path $Path -ErrorAction SilentlyContinue
     if ($null -eq $item)
     {
         Write-Error("'{0}' not found" -f $Path)
-    }
-    else
+    } else
     {
         $fullpath=$item.FullName
         Write-Verbose ("Moving '{0}' to the Recycle Bin" -f $fullpath)
         if (Test-Path -Path $fullpath -PathType Container)
         {
             [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteDirectory($fullpath,'OnlyErrorDialogs','SendToRecycleBin')
-        }
-        else
+        } else
         {
             [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($fullpath,'OnlyErrorDialogs','SendToRecycleBin')
         }
@@ -120,35 +145,41 @@ Set-Alias -Name dotw -Value Dotwindows
 Set-Alias -Name ldot -Value Lazy-Dotfiles
 Set-Alias -Name ldotw -Value Lazy-Dotwindows
 Set-Alias -Name trash -Value Remove-Item-ToRecycleBin
-Function C {
+Function C
+{
     Set-Location @Args
     Get-ChildItem
 }
-Function Mc {
+Function Mc
+{
     mkdir @Args
     Set-Location @Args
 }
-Function Rmf {
+Function Rmf
+{
     Remove-Item -Force @Args
 }
 # powershell completion for gh                                   -*- shell-script -*-
 
-function __gh_debug {
-    if ($env:BASH_COMP_DEBUG_FILE) {
+function __gh_debug
+{
+    if ($env:BASH_COMP_DEBUG_FILE)
+    {
         "$args" | Out-File -Append -FilePath "$env:BASH_COMP_DEBUG_FILE"
     }
 }
 
-filter __gh_escapeStringWithSpecialChars {
+filter __gh_escapeStringWithSpecialChars
+{
     $_ -replace '\s|#|@|\$|;|,|''|\{|\}|\(|\)|"|`|\||<|>|&','`$&'
 }
 
 Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
     param(
-            $WordToComplete,
-            $CommandAst,
-            $CursorPosition
-        )
+        $WordToComplete,
+        $CommandAst,
+        $CursorPosition
+    )
 
     # Get the current command line and convert into a string
     $Command = $CommandAst.CommandElements
@@ -163,7 +194,8 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
     # to truncate the command-line ($Command) up to the $CursorPosition location.
     # Make sure the $Command is longer then the $CursorPosition before we truncate.
     # This happens because the $Command does not include the last space.
-    if ($Command.Length -gt $CursorPosition) {
+    if ($Command.Length -gt $CursorPosition)
+    {
         $Command=$Command.Substring(0,$CursorPosition)
     }
     __gh_debug "Truncated command: $Command"
@@ -184,7 +216,8 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
     # we cannot use $WordToComplete because it
     # has the wrong values if the cursor was moved
     # so use the last argument
-    if ($WordToComplete -ne "" ) {
+    if ($WordToComplete -ne "" )
+    {
         $WordToComplete = $Arguments.Split(" ")[-1]
     }
     __gh_debug "New WordToComplete: $WordToComplete"
@@ -192,13 +225,15 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
 
     # Check for flag with equal sign
     $IsEqualFlag = ($WordToComplete -Like "--*=*" )
-    if ( $IsEqualFlag ) {
+    if ( $IsEqualFlag )
+    {
         __gh_debug "Completing equal sign flag"
         # Remove the flag part
         $Flag,$WordToComplete = $WordToComplete.Split("=",2)
     }
 
-    if ( $WordToComplete -eq "" -And ( -Not $IsEqualFlag )) {
+    if ( $WordToComplete -eq "" -And ( -Not $IsEqualFlag ))
+    {
         # If the last parameter is complete (there is a space following it)
         # We add an extra empty parameter so we can indicate this to the go method.
         __gh_debug "Adding extra empty parameter"
@@ -216,7 +251,8 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
 
     # get directive from last line
     [int]$Directive = $Out[-1].TrimStart(':')
-    if ($Directive -eq "") {
+    if ($Directive -eq "")
+    {
         # There is no directive specified
         $Directive = 0
     }
@@ -226,7 +262,8 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
     $Out = $Out | Where-Object { $_ -ne $Out[-1] }
     __gh_debug "The completions are: $Out"
 
-    if (($Directive -band $ShellCompDirectiveError) -ne 0 ) {
+    if (($Directive -band $ShellCompDirectiveError) -ne 0 )
+    {
         # Error code.  No completion.
         __gh_debug "Received error from custom completion go code"
         return
@@ -239,13 +276,15 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
         __gh_debug "Name: $Name Description: $Description"
 
         # Look for the longest completion so that we can format things nicely
-        if ($Longest -lt $Name.Length) {
+        if ($Longest -lt $Name.Length)
+        {
             $Longest = $Name.Length
         }
 
         # Set the description to a one space string if there is none set.
         # This is needed because the CompletionResult does not accept an empty string as argument
-        if (-Not $Description) {
+        if (-Not $Description)
+        {
             $Description = " "
         }
         @{Name="$Name";Description="$Description"}
@@ -253,14 +292,16 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
 
 
     $Space = " "
-    if (($Directive -band $ShellCompDirectiveNoSpace) -ne 0 ) {
+    if (($Directive -band $ShellCompDirectiveNoSpace) -ne 0 )
+    {
         # remove the space here
         __gh_debug "ShellCompDirectiveNoSpace is called"
         $Space = ""
     }
 
     if ((($Directive -band $ShellCompDirectiveFilterFileExt) -ne 0 ) -or
-       (($Directive -band $ShellCompDirectiveFilterDirs) -ne 0 ))  {
+       (($Directive -band $ShellCompDirectiveFilterDirs) -ne 0 ))
+    {
         __gh_debug "ShellCompDirectiveFilterFileExt ShellCompDirectiveFilterDirs are not supported"
 
         # return here to prevent the completion of the extensions
@@ -272,16 +313,19 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
         $_.Name -like "$WordToComplete*"
 
         # Join the flag back if we have an equal sign flag
-        if ( $IsEqualFlag ) {
+        if ( $IsEqualFlag )
+        {
             __gh_debug "Join the equal sign flag back to the completion value"
             $_.Name = $Flag + "=" + $_.Name
         }
     }
 
-    if (($Directive -band $ShellCompDirectiveNoFileComp) -ne 0 ) {
+    if (($Directive -band $ShellCompDirectiveNoFileComp) -ne 0 )
+    {
         __gh_debug "ShellCompDirectiveNoFileComp is called"
 
-        if ($Values.Length -eq 0) {
+        if ($Values.Length -eq 0)
+        {
             # Just print an empty string here so the
             # shell does not start to complete paths.
             # We cannot use CompletionResult here because
@@ -312,36 +356,44 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
         # 3) ResultType     type of completion result
         # 4) ToolTip        text for the tooltip with details about the object
 
-        switch ($Mode) {
+        switch ($Mode)
+        {
 
             # bash like
-            "Complete" {
+            "Complete"
+            {
 
-                if ($Values.Length -eq 1) {
+                if ($Values.Length -eq 1)
+                {
                     __gh_debug "Only one completion left"
 
                     # insert space after value
                     [System.Management.Automation.CompletionResult]::new($($comp.Name | __gh_escapeStringWithSpecialChars) + $Space, "$($comp.Name)", 'ParameterValue', "$($comp.Description)")
 
-                } else {
+                } else
+                {
                     # Add the proper number of spaces to align the descriptions
-                    while($comp.Name.Length -lt $Longest) {
+                    while($comp.Name.Length -lt $Longest)
+                    {
                         $comp.Name = $comp.Name + " "
                     }
 
                     # Check for empty description and only add parentheses if needed
-                    if ($($comp.Description) -eq " " ) {
+                    if ($($comp.Description) -eq " " )
+                    {
                         $Description = ""
-                    } else {
+                    } else
+                    {
                         $Description = "  ($($comp.Description))"
                     }
 
                     [System.Management.Automation.CompletionResult]::new("$($comp.Name)$Description", "$($comp.Name)$Description", 'ParameterValue', "$($comp.Description)")
                 }
-             }
+            }
 
             # zsh like
-            "MenuComplete" {
+            "MenuComplete"
+            {
                 # insert space after value
                 # MenuComplete will automatically show the ToolTip of
                 # the highlighted value at the bottom of the suggestions.
@@ -349,7 +401,8 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
             }
 
             # TabCompleteNext and in case we get something unknown
-            Default {
+            Default
+            {
                 # Like MenuComplete but we don't want to add a space here because
                 # the user need to press space anyway to get the completion.
                 # Description will not be shown because that's not possible with TabCompleteNext
