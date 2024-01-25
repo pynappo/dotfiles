@@ -153,6 +153,7 @@ require('lazy').setup({
       { import = 'pynappo.plugins.testing', enabled = true },
     },
   },
+  debug = true,
   git = {
     log = { '--since=3 days ago' }, -- show commits from the last 3 days
     timeout = 90, -- seconds

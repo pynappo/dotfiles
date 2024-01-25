@@ -27,11 +27,21 @@ return {
           'saadparwaiz1/cmp_luasnip',
         },
       },
+      {
+        'roobert/tailwindcss-colorizer-cmp.nvim',
+        -- optionally, override the default options:
+        config = function()
+          require('tailwindcss-colorizer-cmp').setup({
+            color_square_width = 1,
+          })
+        end,
+      },
     },
     config = function()
       local cmp = require('cmp')
       local lspkind = require('lspkind')
       local cmp_format = lspkind.cmp_format
+      local tailwind_format = require('tailwindcss-colorizer-cmp').formatter
       lspkind.init({
         symbol_map = {
           Copilot = '',
@@ -130,6 +140,7 @@ return {
               },
             })(entry, vim_item)
             local strings = vim.split(kind.kind, '%s', { trimempty = true })
+            tailwind_format(entry, vim_item)
             kind.kind = ' ' .. strings[1] .. ' '
             return kind
           end,
@@ -142,13 +153,14 @@ return {
         preselect = cmp.PreselectMode.None,
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },
           { name = 'crates' },
           { name = 'emoji' },
           { name = 'calc' },
           { name = 'copilot' },
           { name = 'path' },
           { name = 'nvim_lua' },
+        }, {
+          { name = 'luasnip' },
         }, {
           { name = 'nerdfonts' },
           {
@@ -166,13 +178,13 @@ return {
         }),
         sorting = {
           comparators = {
-            function(...) return require('cmp_buffer'):compare_locality(...) end,
             compare.offset,
             compare.exact,
-            compare.recently_used,
-            compare.score,
             compare.scopes,
+            compare.score,
             compare.locality,
+            -- function(...) return require('cmp_buffer'):compare_locality(...) end,
+            compare.recently_used,
             compare.kind,
             compare.sort_text,
             compare.length,
