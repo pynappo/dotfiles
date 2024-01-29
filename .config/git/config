@@ -6,8 +6,6 @@
   selected = manager-core
 [credential]
   helper = manager-core
-	helper = 
-	helper = /usr/bin/git-credential-manager
 	credentialStore = secretservice
 [core]
   symlinks = true

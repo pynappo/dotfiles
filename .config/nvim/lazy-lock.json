@@ -54,6 +54,7 @@
   "muren.nvim": { "branch": "main", "commit": "818c09097dba1322b2ca099e35f7471feccfef93" },
   "neo-tree-diagnostics.nvim": { "branch": "main", "commit": "483019d251c31acd14102bc279f938f98d9a3de6" },
   "neo-tree.nvim": { "branch": "v3.x", "commit": "2f2d08894bbc679d4d181604c16bb7079f646384" },
+  "neodev.nvim": { "branch": "main", "commit": "e7ca4a2ea0da5e39a639c08c3edb352b9355f09e" },
   "neogit": { "branch": "master", "commit": "ce0c369ccdba3f644a3b28f4c053421f435352c9" },
   "neorg": { "branch": "main", "commit": "28cbafbc0cde316d8e2618ff26377200225e9393" },
   "neoscroll.nvim": { "branch": "master", "commit": "be4ebf855a52f71ca4338694a5696675d807eff9" },
@@ -115,5 +116,5 @@
   "vim-illuminate": { "branch": "master", "commit": "3bd2ab64b5d63b29e05691e624927e5ebbf0fb86" },
   "vim-repeat": { "branch": "master", "commit": "24afe922e6a05891756ecf331f39a1f6743d3d5a" },
   "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" },
-  "window-picker": { "branch": "main", "commit": "41cfaa428577c53552200a404ae9b3a0b5719706" },
-  "yanky.nvim": { "branch": "main", "commit": "6bb9ffd3cad4c9876bda54e19d0659de28a4f84f" }
+  "window-picker": { "branch": "main", "commit": "41cfaa428577c53552200a404ae9b3a0b5719706" }
+}
