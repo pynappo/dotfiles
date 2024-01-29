@@ -2,11 +2,6 @@
   email = lehtien.david@gmail.com
   name = pynappo
   signingkey = ~/.ssh/id_ed25519.pub
-[credential "helperselector"]
-  selected = manager-core
-[credential]
-  helper = manager-core
-	credentialStore = secretservice
 [core]
   symlinks = true
   fsmonitor = true
