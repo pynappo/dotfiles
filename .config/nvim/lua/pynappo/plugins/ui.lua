@@ -278,5 +278,4 @@ return {
       vim.keymap.set('n', 'g.', function() require('specs').show_specs() end, { silent = true })
     end,
   },
-  opts = {},
 }

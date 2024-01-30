@@ -49,28 +49,28 @@ return {
       local utils = require('heirline.utils')
       local conditions = require('heirline.conditions')
 
-      local get_hl = function(...) return utils.get_highlight(...) or {} end -- makes usage a bit simpler
+      local hl = function(...) return utils.get_highlight(...) or {} end -- makes usage a bit simpler
       local function heirline_colors()
         local colors = {
-          string = get_hl('String').fg or get_hl('Normal').fg,
-          normal = get_hl('Normal').fg,
-          func = get_hl('Function').fg or get_hl('Normal').fg,
-          type = get_hl('Type').fg or get_hl('Normal').fg,
-          debug = get_hl('Debug').fg or get_hl('Normal').fg,
-          comment = get_hl('Comment').fg or get_hl('Normal').fg,
-          directory = get_hl('Directory').fg or get_hl('Normal').fg,
-          constant = get_hl('Constant').fg or get_hl('Normal').fg,
-          statement = get_hl('Statement').fg or get_hl('Normal').fg,
-          special = get_hl('Special').fg or get_hl('Normal').fg,
-          diag_warn = get_hl('DiagnosticWarn').fg or get_hl('Normal').fg,
-          diag_error = get_hl('DiagnosticError').fg or get_hl('Normal').fg,
-          diag_hint = get_hl('DiagnosticHint').fg or get_hl('Normal').fg,
-          diag_info = get_hl('DiagnosticInfo').fg or get_hl('Normal').fg,
-          git_del = get_hl('GitsignsDelete').fg or get_hl('DiffRemoved').fg or get_hl('DiffDelete').bg,
-          git_add = get_hl('GitsignsAdd').fg or get_hl('DiffAdded').fg or get_hl('DiffAdded').bg,
-          git_change = get_hl('GitsignsChange').fg or get_hl('DiffChange').fg or get_hl('DiffChange').bg,
-          tabline_sel = get_hl('TabLineSel').bg or get_hl('Visual').bg,
-          tabline = get_hl('TabLine').bg,
+          string = hl('String').fg or hl('Normal').fg,
+          normal = hl('Normal').fg,
+          func = hl('Function').fg or hl('Normal').fg,
+          type = hl('Type').fg or hl('Normal').fg,
+          debug = hl('Debug').fg or hl('Normal').fg,
+          comment = hl('Comment').fg or hl('Normal').fg,
+          directory = hl('Directory').fg or hl('Normal').fg,
+          constant = hl('Constant').fg or hl('Normal').fg,
+          statement = hl('Statement').fg or hl('Normal').fg,
+          special = hl('Special').fg or hl('Normal').fg,
+          diag_warn = hl('DiagnosticWarn').fg or hl('Normal').fg,
+          diag_error = hl('DiagnosticError').fg or hl('Normal').fg,
+          diag_hint = hl('DiagnosticHint').fg or hl('Normal').fg,
+          diag_info = hl('DiagnosticInfo').fg or hl('Normal').fg,
+          git_del = hl('GitsignsDelete').fg or hl('DiffRemoved').fg or hl('DiffDelete').bg,
+          git_add = hl('GitsignsAdd').fg or hl('DiffAdded').fg or hl('DiffAdded').bg,
+          git_change = hl('GitsignsChange').fg or hl('DiffChange').fg or hl('DiffChange').bg,
+          tabline_sel = hl('TabLineSel').bg or hl('Visual').bg,
+          tabline = hl('TabLine').bg,
         }
         return colors
       end
@@ -169,6 +169,12 @@ return {
           init = function(self) self.winbar = true end,
           hl = function() return conditions.is_active() and 'WinBar' or 'WinBarNC' end,
           {
+            condition = function() return conditions.buffer_matches({ buftype = { 'help' } }) end,
+            c.filetype,
+            u.align,
+            c.filename,
+          },
+          {
             condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
             u.align,
             c.file_icon,
@@ -199,7 +205,7 @@ return {
         opts = {
           disable_winbar_cb = function(args)
             return conditions.buffer_matches({
-              buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
+              buftype = { 'nofile', 'prompt', 'quickfix' },
               filetype = { '^git.*', 'fugitive', 'Trouble', 'dashboard' },
             }, args.buf)
           end,

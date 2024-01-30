@@ -2,9 +2,9 @@ local user_command = vim.api.nvim_create_user_command
 return {
   'echasnovski/mini.nvim',
   config = function()
+    local extra = require('mini.extra')
     local keymaps = require('pynappo.keymaps')
     -- require('mini.pairs').setup()
-    require('mini.ai').setup()
     require('mini.move').setup({
       mappings = {
         -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
@@ -43,7 +43,7 @@ return {
       },
 
       -- Whether to print session path after action
-      verbose = { read = false, write = true, delete = true },
+      verbose = { read = true, write = true, delete = true },
     })
     require('mini.hipatterns').setup()
     require('mini.align').setup({
@@ -208,28 +208,28 @@ return {
       },
     })
     user_command('MiniMapToggle', function() map.toggle() end, {})
-    local animate = require('mini.animate')
-    animate.setup({
-      cursor = { enable = false },
-      scroll = {
-        enable = false,
-        timing = animate.gen_timing.quadratic({
-          easing = 'out',
-          duration = 40,
-          unit = 'total',
-        }),
-      },
-      resize = {
-        enable = true,
-        timing = animate.gen_timing.cubic({
-          easing = 'out',
-          duration = 40,
-          unit = 'total',
-        }),
-      },
-      open = { enable = false },
-      close = { enable = false },
-    })
+    -- local animate = require('mini.animate')
+    -- animate.setup({
+    --   cursor = { enable = false },
+    --   scroll = {
+    --     enable = false,
+    --     timing = animate.gen_timing.quadratic({
+    --       easing = 'out',
+    --       duration = 40,
+    --       unit = 'total',
+    --     }),
+    --   },
+    --   resize = {
+    --     enable = false,
+    --     timing = animate.gen_timing.cubic({
+    --       easing = 'out',
+    --       duration = 40,
+    --       unit = 'total',
+    --     }),
+    --   },
+    --   open = { enable = false },
+    --   close = { enable = false },
+    -- })
     -- local starter = require('mini.starter')
     -- if not require('pynappo.utils').is_firenvim then
     --   starter.setup({
@@ -255,5 +255,99 @@ return {
     -- })
     -- require('mini.notify').setup()
     -- vim.notify = require('mini.notify').make_notify()
+    require('mini.pick').setup({
+      -- Delays (in ms; should be at least 1)
+      delay = {
+        -- Delay between forcing asynchronous behavior
+        async = 10,
+
+        -- Delay between computation start and visual feedback about it
+        busy = 50,
+      },
+
+      -- Keys for performing actions. See `:h MiniPick-actions`.
+      mappings = {
+        caret_left = '<Left>',
+        caret_right = '<Right>',
+
+        choose = '<CR>',
+        choose_in_split = '<C-s>',
+        choose_in_tabpage = '<C-t>',
+        choose_in_vsplit = '<C-v>',
+        choose_marked = '<M-CR>',
+
+        delete_char = '<BS>',
+        delete_char_right = '<Del>',
+        delete_left = '<C-u>',
+        delete_word = '<C-w>',
+
+        mark = '<C-x>',
+        mark_all = '<C-a>',
+
+        move_down = '<C-n>',
+        move_start = '<C-g>',
+        move_up = '<C-p>',
+
+        paste = '<C-r>',
+
+        refine = '<C-Space>',
+        refine_marked = '<M-Space>',
+
+        scroll_down = '<C-f>',
+        scroll_left = '<C-h>',
+        scroll_right = '<C-l>',
+        scroll_up = '<C-b>',
+
+        stop = '<Esc>',
+
+        toggle_info = '<S-Tab>',
+        toggle_preview = '<Tab>',
+      },
+
+      -- General options
+      options = {
+        -- Whether to show content from bottom to top
+        content_from_bottom = false,
+
+        -- Whether to cache matches (more speed and memory on repeated prompts)
+        use_cache = false,
+      },
+
+      -- Source definition. See `:h MiniPick-source`.
+      source = {
+        items = nil,
+        name = nil,
+        cwd = nil,
+
+        match = nil,
+        show = nil,
+        preview = nil,
+
+        choose = nil,
+        choose_marked = nil,
+      },
+
+      -- Window related options
+      window = {
+        -- Float window config (table or callable returning it)
+        config = nil,
+
+        -- String to use as cursor in prompt
+        prompt_cursor = '▏',
+
+        -- String to use as prefix in prompt
+        prompt_prefix = '> ',
+      },
+    })
+    local extra_ai = extra.gen_ai_spec
+    require('mini.ai').setup({
+      custom_textobjects = {
+        ['%'] = extra_ai.buffer(),
+        D = extra_ai.diagnostic(),
+        I = extra_ai.indent(),
+        L = extra_ai.line(),
+        N = extra_ai.number(),
+      },
+    })
   end,
 }

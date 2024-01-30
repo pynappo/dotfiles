@@ -83,7 +83,7 @@ return {
         use_esc_to_cancel = true,
       },
     },
-    init = keymaps.setup.substitute,
+    keys = keymaps.setup.substitute({ lazy = true }),
   },
   {
     'abecodes/tabout.nvim',

@@ -1,6 +1,10 @@
 local keymaps = require('pynappo.keymaps')
 local default_config = {
-  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  capabilities = vim.tbl_deep_extend(
+    'force',
+    vim.lsp.protocol.make_client_capabilities(),
+    require('cmp_nvim_lsp').default_capabilities()
+  ),
   flags = { debounce_text_changes = 200 },
 }
 local configs = {
@@ -42,15 +46,9 @@ local configs = {
         completion = {
           callSnippet = 'Both',
         },
-        workspace = {
-          checkThirdParty = false,
-        },
         hint = {
           enable = true,
           arrayIndex = 'Disable',
-        },
-        diagnostics = {
-          globals = { 'vim' },
         },
         telemetry = {
           enable = true,

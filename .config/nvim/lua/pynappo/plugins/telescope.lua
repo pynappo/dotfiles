@@ -11,6 +11,7 @@ return {
 
     ts.setup({
       defaults = {
+        winblend = 10,
         path_display = { 'smart' },
         layout_strategy = 'flex',
         layout_config = {
@@ -42,6 +43,8 @@ return {
     for _, e in pairs(extensions) do
       ts.load_extension(e)
     end
+    require('pynappo.theme').overrides.all.links['TelescopeNormal'] = 'NormalFloat'
+    require('pynappo.theme').overrides.all.links['TelescopeBorder'] = 'NormalFloat'
   end,
   keys = require('pynappo.keymaps').setup.telescope({ lazy = true }),
 }

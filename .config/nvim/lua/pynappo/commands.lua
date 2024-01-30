@@ -4,7 +4,7 @@ local normalize_system_command = function(cmd)
 end
 local print_system_command = function(cmd)
   local result = vim.system(normalize_system_command(cmd), { cwd = vim.fn.getcwd(), text = true }):wait()
-  print(utils.is_windows and result.stdout:gsub('%%', [[\]]) or result.stdout:gsub([[%]], [[/]]))
+  print(utils.is_windows and result.stdout:gsub('%%', [[\]]) or result.stdout:gsub([[%%]], [[/]]))
 end
 local commands = {
   { 'CDhere', 'tcd %:p:h' },
@@ -67,9 +67,9 @@ local commands = {
       vim.bo[scratch_buffer].filetype = current_ft
       vim.cmd('read ++edit #') -- load contents of previous buffer into scratch_buffer
       vim.cmd.normal('1G"_d_') -- delete extra newline at top of scratch_buffer
-      vim.cmd.diffthis()       -- scratch_buffer
+      vim.cmd.diffthis() -- scratch_buffer
       vim.cmd.wincmd('p')
-      vim.cmd.diffthis()       -- current buffer
+      vim.cmd.diffthis() -- current buffer
     end,
   },
 }

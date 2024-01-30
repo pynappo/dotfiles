@@ -43,6 +43,15 @@ return {
             enable = true,
             set_jumps = true, -- whether to set jumps in the jumplist
           },
+          lsp_interop = {
+            enable = true,
+            border = 'none',
+            floating_preview_opts = {},
+            peek_definition_code = {
+              ['<leader>df'] = '@function.outer',
+              ['<leader>dF'] = '@class.outer',
+            },
+          },
         },
         matchup = {
           enable = true,
@@ -69,6 +78,9 @@ return {
         },
       }, require('pynappo.keymaps').treesitter))
       vim.treesitter.language.register('markdown', 'mdx')
+      vim.o.foldmethod = 'expr'
+      vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+      vim.o.foldenable = false
     end,
     dependencies = {
       {

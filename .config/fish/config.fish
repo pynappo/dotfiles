@@ -76,6 +76,7 @@ if status is-interactive
   abbr_subcommand git a add
   abbr -a -- sudo 'sudo -E -s'
   abbr -a -- sc 'systemctl'
+  abbr -a -- jc 'journalctl'
   abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
   abbr -a --position anywhere .C "$XDG_CONFIG_HOME/"
   abbr -a --set-cursor f 'fd . % | fzf'

@@ -31,74 +31,49 @@ vim.opt.relativenumber = true
 vim.opt.number = true
 -- setup plugins
 require('lazy').setup({
-  {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      {
-        'williamboman/mason-lspconfig.nvim',
-        dependencies = { 'williamboman/mason.nvim' },
-      },
-    },
-    config = function()
-      require('mason-lspconfig').setup({
-        ensure_installed = {
-          'lua_ls',
-          'tsserver',
-          'astro',
-        },
-        handlers = {
-          function(ls) require('lspconfig')[ls].setup({}) end,
-        },
-      })
-    end,
-  },
-  {
-    'williamboman/mason.nvim',
-    opts = { ui = { border = 'single' } },
-  },
-  {
-    'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
-    dependencies = {
-      'L3MON4D3/LuaSnip', -- snippet engine
-      'onsails/lspkind.nvim', -- vs-code like pictograms
-      'hrsh7th/cmp-nvim-lsp',
-    },
-    config = function()
-      local cmp = require('cmp')
-      local luasnip = require('luasnip')
-      local lspkind = require('lspkind')
-
-      -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-      require('luasnip.loaders.from_vscode').lazy_load()
-
-      print('hi')
-      cmp.setup({
-        completion = {
-          completeopt = vim.o.completeopt,
-        },
-        snippet = { -- configure how nvim-cmp interacts with snippet engine
-          expand = function(args) luasnip.lsp_expand(args.body) end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
-          ['<C-e>'] = cmp.mapping.abort(), -- close completion window
-          ['<CR>'] = cmp.mapping.confirm({ select = false }),
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-        }),
-        formatting = {
-          format = lspkind.cmp_format({
-            maxwidth = 50,
-            ellipsis_char = '...',
-          }),
-        },
-      })
-    end,
-  },
+  -- {
+  --   'hrsh7th/nvim-cmp',
+  --   event = 'InsertEnter',
+  --   dependencies = {
+  --     'L3MON4D3/LuaSnip', -- snippet engine
+  --     'onsails/lspkind.nvim', -- vs-code like pictograms
+  --     'hrsh7th/cmp-nvim-lsp',
+  --   },
+  --   config = function()
+  --     local cmp = require('cmp')
+  --     local luasnip = require('luasnip')
+  --     local lspkind = require('lspkind')
+  --
+  --     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
+  --     require('luasnip.loaders.from_vscode').lazy_load()
+  --
+  --     cmp.setup({
+  --       completion = {
+  --         completeopt = vim.o.completeopt,
+  --       },
+  --       snippet = { -- configure how nvim-cmp interacts with snippet engine
+  --         expand = function(args) luasnip.lsp_expand(args.body) end,
+  --       },
+  --       mapping = cmp.mapping.preset.insert({
+  --         ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
+  --         ['<C-e>'] = cmp.mapping.abort(), -- close completion window
+  --         ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  --       }),
+  --       sources = cmp.config.sources({
+  --         { name = 'nvim_lsp' },
+  --       }),
+  --       formatting = {
+  --         format = lspkind.cmp_format({
+  --           maxwidth = 50,
+  --           ellipsis_char = '...',
+  --         }),
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     'nvim-treesitter/nvim-treesitter',
+    'neovim/nvim-lspconfig',
     event = { 'BufNewFile', 'BufReadPost' },
     build = function()
       if not vim.env.GIT_WORK_TREE then vim.cmd('TSUpdate') end

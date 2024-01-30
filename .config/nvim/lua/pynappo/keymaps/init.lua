@@ -138,9 +138,6 @@ M.setup = {
   substitute = function(opts)
     return map({
       [{ 'n' }] = {
-        -- { "r", function() require('substitute').operator() end, },
-        { 'rr', function() require('substitute').line() end },
-        { 'R', function() require('substitute').eol() end },
         { '<leader>r', function() require('substitute.range').operator() end },
         { '<leader>rr', function() require('substitute.range').word() end },
       },
@@ -636,8 +633,8 @@ M.neotree = {
 M.neoscroll = {
   ['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '100', [["sine"]] } },
   ['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '100', [["sine"]] } },
-  ['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '100', [["circular"]] } },
-  ['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '100', [["circular"]] } },
+  ['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '50', [["circular"]] } },
+  ['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '50', [["circular"]] } },
   ['<C-y>'] = { 'scroll', { '-0.10', 'false', '50', nil } },
   ['<C-e>'] = { 'scroll', { '0.10', 'false', '50', nil } },
   ['zt'] = { 'zt', { '50' } },
