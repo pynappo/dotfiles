@@ -24,6 +24,7 @@ local configs = {
             if not plugin._.loaded and vim.uv.fs_stat(lua_plugin_dir) then table.insert(library, lua_plugin_dir) end
           end
         end
+        library = vim.tbl_map(function(stf) return vim.fs.normalize(stf) end, library)
         client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
           Lua = {
             runtime = {
