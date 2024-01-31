@@ -111,6 +111,14 @@ return {
       }
 
       cmp.setup({
+        enabled = function()
+          local disabled = false
+          disabled = disabled or (vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt')
+          disabled = disabled or (vim.fn.reg_recording() ~= '')
+          disabled = disabled or (vim.fn.reg_executing() ~= '')
+          disabled = disabled or vim.g.cmp_disable
+          return not disabled
+        end,
         window = {
           completion = {
             winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',

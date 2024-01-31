@@ -50,6 +50,13 @@ M.setup = {
         { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, { expr = true } },
         { 'x', '"_dl' },
         { 'X', '"_dh' },
+        {
+          '<leader>cmp',
+          function()
+            vim.g.cmp_disable = not vim.g.cmp_disable
+            vim.notify((vim.g.cmp_disable and 'Disabled' or 'Enabled') .. ' cmp', vim.log.levels.INFO)
+          end,
+        },
       },
       [{ 'n', 't' }] = {
         -- Better tabs
