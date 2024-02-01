@@ -54,7 +54,6 @@ o.clipboard = 'unnamed'
 o.pumblend = 20
 o.updatetime = 500
 opt.completeopt = { 'menu', 'menuone', 'noinsert', 'noselect' }
-vim.fn.setreg('b', 'ihi')
 
 -- Misc.
 o.confirm = true
