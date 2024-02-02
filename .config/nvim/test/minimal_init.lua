@@ -12,7 +12,7 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- some settings
+-- some nice-to-have settings
 vim.cmd.colorscheme('habamax')
 local o = vim.o
 local opt = vim.opt
@@ -27,10 +27,12 @@ opt.listchars = {
   lead = '.',
   eol = '󱞣',
 }
+vim.g.mapleader = ' '
 vim.opt.relativenumber = true
 vim.opt.number = true
 -- setup plugins
 require('lazy').setup({
+  'easymotion/vim-easymotion',
   -- {
   --   'hrsh7th/nvim-cmp',
   --   event = 'InsertEnter',
@@ -71,35 +73,35 @@ require('lazy').setup({
   --     })
   --   end,
   -- },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    'neovim/nvim-lspconfig',
-    event = { 'BufNewFile', 'BufReadPost' },
-    build = function()
-      if not vim.env.GIT_WORK_TREE then vim.cmd('TSUpdate') end
-    end,
-    cmd = 'TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        auto_install = true,
-        ensure_installed = {
-          'lua',
-          'astro',
-          'typescript',
-          'javascript',
-          'tsx',
-          'html',
-        },
-        highlight = {
-          enable = true,
-        },
-        textsubjects = {
-          enable = true,
-        },
-        indent = {
-          enable = true,
-        },
-      })
-    end,
-  },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter',
+  --   'neovim/nvim-lspconfig',
+  --   event = { 'BufNewFile', 'BufReadPost' },
+  --   build = function()
+  --     if not vim.env.GIT_WORK_TREE then vim.cmd('TSUpdate') end
+  --   end,
+  --   cmd = 'TSUpdate',
+  --   config = function()
+  --     require('nvim-treesitter.configs').setup({
+  --       auto_install = true,
+  --       ensure_installed = {
+  --         'lua',
+  --         'astro',
+  --         'typescript',
+  --         'javascript',
+  --         'tsx',
+  --         'html',
+  --       },
+  --       highlight = {
+  --         enable = true,
+  --       },
+  --       textsubjects = {
+  --         enable = true,
+  --       },
+  --       indent = {
+  --         enable = true,
+  --       },
+  --     })
+  --   end,
+  -- },
 })

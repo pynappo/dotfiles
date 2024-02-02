@@ -72,7 +72,7 @@ wezterm.on("update-status", function(window, pane)
 	end
 end)
 
-config.window_background_opacity = 0.8
+config.window_background_opacity = 0.9
 config.launch_menu = launch_menu
 config.term = "wezterm"
 config.debug_key_events = true
