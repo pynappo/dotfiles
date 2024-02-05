@@ -2,6 +2,7 @@ export (systemctl show-environment --user)
 if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
   fish_add_path -p "$HOME/.bun/bin"
+  fish_add_path -p "$HOME/.nimble/bin"
   if set -q $TERMUX_VERSION
     fish_add_path -g "$HOME/neovim/build/bin"
   end

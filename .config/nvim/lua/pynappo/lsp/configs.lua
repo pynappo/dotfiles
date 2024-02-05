@@ -12,7 +12,8 @@ local configs = {
     log_level = vim.lsp.log_levels.TRACE,
     -- before_init = require('neodev.lsp').before_init,
     on_init = function(client)
-      local path = client.workspace_folders[1].name
+      local path = vim.tbl_get(client, 'workspace_folders', 1, 'name')
+      if not path then return true end
       local nvim_workspace = path:find('nvim') or path:find('lua')
       local test_nvim = path:find('test')
       if nvim_workspace then
@@ -24,7 +25,7 @@ local configs = {
             if not plugin._.loaded and vim.uv.fs_stat(lua_plugin_dir) then table.insert(library, lua_plugin_dir) end
           end
         end
-        library = vim.tbl_map(function(stf) return vim.fs.normalize(stf) end, library)
+        library = vim.tbl_map(function(lib) return vim.fs.normalize(lib) end, library)
         client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
           Lua = {
             runtime = {

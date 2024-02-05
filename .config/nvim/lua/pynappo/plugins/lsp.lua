@@ -12,7 +12,7 @@ return {
         'williamboman/mason-lspconfig.nvim',
         dependencies = { 'williamboman/mason.nvim' },
       },
-      'alaviss/nim.nvim',
+      -- 'alaviss/nim.nvim',
       {
         'pmizio/typescript-tools.nvim',
         dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
@@ -62,6 +62,9 @@ return {
   },
   {
     'williamboman/mason.nvim',
-    opts = { ui = { border = 'single' } },
+    opts = {
+      ui = { border = 'single' },
+      PATH = 'append',
+    },
   },
 }

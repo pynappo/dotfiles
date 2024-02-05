@@ -38,13 +38,13 @@ return {
       'fzf',
       'notify',
       'undo',
-      'yank_history',
+      -- 'yank_history',
     }
     for _, e in pairs(extensions) do
       ts.load_extension(e)
     end
     require('pynappo.theme').overrides.all.links['TelescopeNormal'] = 'NormalFloat'
-    require('pynappo.theme').overrides.all.links['TelescopeBorder'] = 'NormalFloat'
+    require('pynappo.theme').overrides.all.links['TelescopeBorder'] = 'FloatBorder'
   end,
   keys = require('pynappo.keymaps').setup.telescope({ lazy = true }),
 }
