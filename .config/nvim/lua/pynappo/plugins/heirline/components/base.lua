@@ -52,7 +52,6 @@ local M = {
     },
     provider = function(self) return '%(' .. self.mode_names[self.mode] .. '%)' end,
     hl = { bold = true },
-    update = { 'ModeChanged', 'CmdlineEnter', 'CmdlineLeave' },
   },
   cwd = {
     init = function(self)

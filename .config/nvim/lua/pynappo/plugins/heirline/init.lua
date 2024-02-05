@@ -6,9 +6,6 @@ return {
       'nvim-tree/nvim-web-devicons',
       {
         'pynappo/tabnames.nvim',
-        opts = {
-          session_support = true,
-        },
       },
       {
         'Bekaboo/dropbar.nvim',
@@ -101,27 +98,27 @@ return {
       local c = require('pynappo.plugins.heirline.components.base')
       local u = require('pynappo.plugins.heirline.components.utils')
       local p = require('pynappo.plugins.heirline.components.plugins')
+      local function surround_label(label, delimiters, color, component)
+        return utils.surround({ label .. delimiters[1], delimiters[2] }, color, component),
+          utils.surround(delimiters, color, component)
+      end
       local vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
       local lsp_block = {
         flexible = 2,
-        utils.surround({ 'LSP: ', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
-        utils.surround({ '', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
+        surround_label('LSP: ', { '', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
       }
       local ruler_block = utils.surround({ '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
       local lazy_block = {
         flexible = 5,
-        utils.surround({ 'Plugin updates: ', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
-        utils.surround({ '', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
+        surround_label('Plugin updates: ', { '', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
       }
       local conform_block = {
         flexible = 4,
-        utils.surround({ 'Conform: ', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
-        utils.surround({ '', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
+        surround_label('Conform: ', { '', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
       }
       local lint_block = {
         flexible = 4,
-        utils.surround({ 'Lint: ', '' }, 'diag_info', { p.lint, hl = { fg = 'black' } }),
-        utils.surround({ '', '' }, 'diag_info', { p.lint, hl = { fg = 'black' } }),
+        surround_label('Lint: ', { '', '' }, 'diag_info', { p.lint, hl = { fg = 'black' } }),
       }
 
       local t = require('pynappo.plugins.heirline.components.tabline')
@@ -188,15 +185,27 @@ return {
           condition = function()
             return not conditions.buffer_matches({ buftype = { 'nofile', 'prompt', 'quickfix', 'help' } })
           end,
+          init = function(self)
+            self.marks = {}
+            for _, mark in pairs(vim.fn.getmarklist(vim.api.nvim_get_current_buf())) do
+              self.marks[mark.pos[2]] = mark
+            end
+            self.current_line = vim.api.nvim_win_get_cursor(0)[1]
+          end,
+          {
+            provider = function(self)
+              if self.marks[vim.v.lnum] then return self.marks[vim.v.lnum].mark:sub(2) end
+            end,
+            hl = '@comment.note',
+          },
           { provider = [[%s]] },
           {
-            init = function(self) self.current_line = vim.api.nvim_win_get_cursor(0)[1] end,
             fallthrough = false,
             { condition = function() return vim.v.virtnum ~= 0 end },
             {
               condition = function(self) return vim.v.lnum == self.current_line end,
-              { provider = function() return vim.v.lnum end },
               u.align,
+              { provider = function() return vim.v.lnum end },
             },
             { u.align, { provider = function() return vim.v.relnum end } },
           },

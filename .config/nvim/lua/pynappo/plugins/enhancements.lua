@@ -16,13 +16,6 @@ return {
   },
   { 'tiagovla/scope.nvim', opts = {} },
   {
-    'chentoast/marks.nvim',
-    enabled = false,
-    event = 'VeryLazy',
-    config = function() require('marks').setup({ default_mappings = false }) end,
-    keys = keymaps.setup.marks({ lazy = true }),
-  },
-  {
     'karb94/neoscroll.nvim',
     enabled = true,
     event = 'VeryLazy',

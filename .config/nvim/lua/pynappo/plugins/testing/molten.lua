@@ -1,7 +1,7 @@
 return {
   {
     'benlubas/molten-nvim',
-    cond = not require('pynappo.utils').is_firenvim,
+    cond = not require('pynappo.utils').is_firenvim and not require('pynappo.utils').is_windows,
     dependencies = {
       {
         '3rd/image.nvim',

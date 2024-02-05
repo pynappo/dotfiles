@@ -121,6 +121,7 @@ return {
         end,
         window = {
           completion = {
+            autocomplete = false,
             winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
             col_offset = -3,
             side_padding = 0,

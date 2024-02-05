@@ -168,7 +168,7 @@ local function passthrough_to_tui_app(mapping)
 		mods = mapping.mods,
 		action = wezterm.action_callback(function(window, pane)
 			local sel = window:get_selection_text_for_pane(pane)
-			if pane:get_foreground_process_name():find("vim") or not sel or sel == "" then
+			if is_vim(pane) or not sel or sel == "" then
 				window:perform_action(wezterm.action.SendKey({ key = mapping.key, mods = mapping.mods }), pane)
 			else
 				window:perform_action(mapping.action, pane)

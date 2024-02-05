@@ -57,6 +57,13 @@ M.setup = {
             vim.notify((vim.g.cmp_disable and 'Disabled' or 'Enabled') .. ' cmp', vim.log.levels.INFO)
           end,
         },
+        {
+          '<leader>cd',
+          function()
+            vim.g.autocomplete_disable = not vim.g.autocomplete_disable
+            vim.notify((vim.g.autocomplete_disable and 'Disabled' or 'Enabled') .. ' autocomplete', vim.log.levels.INFO)
+          end,
+        },
       },
       [{ 'n', 't' }] = {
         -- Better tabs
