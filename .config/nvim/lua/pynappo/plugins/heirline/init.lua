@@ -68,6 +68,7 @@ return {
           git_change = hl('GitsignsChange').fg or hl('DiffChange').fg or hl('DiffChange').bg,
           tabline_sel = hl('TabLineSel').bg or hl('Visual').bg,
           tabline = hl('TabLine').bg,
+          statusline = hl('StatusLine').bg,
         }
         return colors
       end
@@ -103,24 +104,28 @@ return {
           utils.surround(delimiters, color, component)
       end
       local vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
-      local lsp_block = {
-        flexible = 2,
-        surround_label('LSP: ', { '', '' }, 'string', { c.lsp_icons, hl = { fg = 'black' } }),
-      }
       local ruler_block = utils.surround({ '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
-      local lazy_block = {
+      local tools_block = {
         flexible = 5,
-        surround_label('Plugin updates: ', { '', '' }, 'diag_info', { p.lazy, hl = { fg = 'black' } }),
+        surround_label('Tools: ', { '', '' }, 'diag_info', {
+          u.space,
+          { c.lsp_icons, hl = { fg = 'debug' } },
+          u.comma,
+          u.space,
+          {
+            p.conform,
+            hl = { fg = 'string' },
+          },
+          u.comma,
+          u.space,
+          {
+            p.lint,
+            hl = { fg = 'diag_info' },
+          },
+          u.space,
+          hl = { bg = 'statusline' },
+        }),
       }
-      local conform_block = {
-        flexible = 4,
-        surround_label('Conform: ', { '', '' }, 'diag_info', { p.conform, hl = { fg = 'black' } }),
-      }
-      local lint_block = {
-        flexible = 4,
-        surround_label('Lint: ', { '', '' }, 'diag_info', { p.lint, hl = { fg = 'black' } }),
-      }
-
       local t = require('pynappo.plugins.heirline.components.tabline')
       require('heirline').setup({
         statusline = {
@@ -159,7 +164,7 @@ return {
             lazy_block,
             u.space,
           },
-          { p.dap, lsp_block, u.space, conform_block, u.space, lint_block, u.space, ruler_block },
+          { p.dap, tools_block, u.space, ruler_block },
         },
         winbar = {
           fallthrough = false,

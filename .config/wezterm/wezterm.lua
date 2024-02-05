@@ -73,7 +73,7 @@ config.unix_domains = {
 -- `wezterm connect unix` by default, connecting to the unix
 -- domain on startup.
 -- If you prefer to connect manually, leave out this line.
-config.default_gui_startup_args = { "connect", "unix" }
+-- config.default_gui_startup_args = { "connect", "unix" }
 config.ssh_domains = wezterm.default_ssh_domains()
 wezterm.on("update-status", function(window, pane)
 	local meta = pane:get_metadata() or {}

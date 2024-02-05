@@ -13,7 +13,7 @@ return {
             WildMenu = { bg = colors.ui, fg = colors.fg },
             Comment = { fg = colors.fg_idle, italic = true },
             LspInlayHint = { fg = colors.fg_idle, bg = colors.panel_bg },
-            LineNr = { fg = '#555555' },
+            LineNr = { fg = colors.comment },
             Search = { underline = true },
             NormalNC = { link = 'Normal' },
             WinBar = { bg = colors.bg },
@@ -22,6 +22,8 @@ return {
             HlSearchLens = { fg = colors.accent, bg = colors.guide_normal },
             HlSearchLensNear = { fg = colors.string, bg = colors.guide_active },
             WinSeparator = { link = 'VertSplit' },
+            FloatBorder = { fg = colors.comment, bg = colors.bg },
+            TelescopePromptBorder = { fg = colors.accent, bg = colors.bg },
           }
         end,
       })

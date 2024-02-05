@@ -26,9 +26,6 @@ return {
       },
       pickers = {},
       extensions = {
-        ['ui-select'] = {
-          require('telescope.themes').get_dropdown({}),
-        },
         file_browser = {
           hijack_netrw = false,
         },

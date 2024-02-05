@@ -30,17 +30,17 @@ return {
     event = 'VeryLazy',
     config = function() require('guess-indent').setup({}) end,
   },
-  {
-    'andymass/vim-matchup',
-    enabled = false,
-    event = { 'BufNewFile', 'BufRead' },
-    init = function()
-      vim.g.matchup_surround_enabled = 1
-      vim.g.matchup_transmute = 1
-      vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_matchparen_offscreen = {}
-    end,
-  },
+  -- {
+  --   'andymass/vim-matchup',
+  --   enabled = false,
+  --   event = { 'BufNewFile', 'BufRead' },
+  --   init = function()
+  --     vim.g.matchup_surround_enabled = 1
+  --     vim.g.matchup_transmute = 1
+  --     vim.g.matchup_matchparen_deferred = 1
+  --     vim.g.matchup_matchparen_offscreen = {}
+  --   end,
+  -- },
   { 'Aasim-A/scrollEOF.nvim', config = false },
   { 'lambdalisue/suda.vim' },
   {
