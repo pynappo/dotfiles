@@ -96,33 +96,41 @@ return {
       }
       local get_mode_color = function(self) return self.mode_colors[conditions.is_active() and vim.fn.mode() or 'n'] end
 
-      local c = require('pynappo.plugins.heirline.components.base')
+      local b = require('pynappo.plugins.heirline.components.base')
       local u = require('pynappo.plugins.heirline.components.utils')
       local p = require('pynappo.plugins.heirline.components.plugins')
+      local function cond_append(base, ...)
+        local copy = vim.deepcopy(base, true)
+        local condition = copy.condition
+        copy.condition = nil
+        local result = {
+          condition = condition,
+          copy,
+        }
+        for _, v in pairs({ ... }) do
+          table.insert(result, v)
+        end
+        return result
+      end
       local function surround_label(label, delimiters, color, component)
         return utils.surround({ label .. delimiters[1], delimiters[2] }, color, component),
           utils.surround(delimiters, color, component)
       end
-      local vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { c.vi_mode, hl = { fg = 'black' } })
-      local ruler_block = utils.surround({ '', '' }, get_mode_color, { c.ruler, hl = { fg = 'black' } })
+      local vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { b.vi_mode, hl = { fg = 'black' } })
+      local ruler_block = utils.surround({ '', '' }, get_mode_color, { b.ruler, hl = { fg = 'black' } })
       local tools_block = {
         flexible = 5,
         surround_label('Tools: ', { '', '' }, 'diag_info', {
           u.space,
-          { c.lsp_icons, hl = { fg = 'debug' } },
-          u.comma,
-          u.space,
-          {
+          cond_append({ b.lsp_icons, hl = { fg = 'debug' } }, u.comma, u.space),
+          cond_append({
             p.conform,
             hl = { fg = 'string' },
-          },
-          u.comma,
-          u.space,
-          {
+          }, u.comma, u.space),
+          cond_append({
             p.lint,
             hl = { fg = 'diag_info' },
-          },
-          u.space,
+          }, u.space),
           hl = { bg = 'statusline' },
         }),
       }
@@ -145,18 +153,18 @@ return {
                   filetype = { '^git.*', 'fugitive' },
                 })
               end,
-              c.cwd,
-              c.filetype,
+              b.cwd,
+              b.filetype,
               u.space,
-              c.help_filename,
+              b.help_filename,
             },
             {
               condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
-              c.file_icon,
+              b.file_icon,
               u.space,
-              c.termname,
+              b.termname,
             },
-            { c.cwd, c.file_info },
+            { b.cwd, b.file_info },
           },
           u.align,
           {
@@ -172,18 +180,18 @@ return {
           hl = function() return conditions.is_active() and 'WinBar' or 'WinBarNC' end,
           {
             condition = function() return conditions.buffer_matches({ buftype = { 'help' } }) end,
-            c.filetype,
+            b.filetype,
             u.align,
-            c.filename,
+            b.filename,
           },
           {
             condition = function() return conditions.buffer_matches({ buftype = { 'terminal' } }) end,
             u.align,
-            c.file_icon,
+            b.file_icon,
             u.space,
-            c.termname,
+            b.termname,
           },
-          { p.dropbar, u.align, c.diagnostics, c.gitsigns, u.space, c.file_info },
+          { p.dropbar, u.align, b.diagnostics, b.gitsigns, u.space, b.file_info },
         },
         tabline = { t.offset, t.bufferline, u.align, t.tabpages },
         statuscolumn = {

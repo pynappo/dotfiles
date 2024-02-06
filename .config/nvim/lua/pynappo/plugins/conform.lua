@@ -18,10 +18,10 @@ return {
         ruby = { prettier },
       },
       -- Set up format-on-save
-      format_on_save = {
-        timeout_ms = nil,
-        lsp_fallback = true,
-      },
+      -- format_on_save = {
+      --   timeout_ms = nil,
+      --   lsp_fallback = true,
+      -- },
       -- Customize formatters
       formatters = {
         shfmt = {
@@ -62,10 +62,18 @@ return {
     end,
     config = function(_, opts)
       require('conform').setup(opts)
-      -- vim.api.nvim_create_autocmd('BufWritePre', {
-      --   pattern = '*',
-      --   callback = function(args) require('conform').format({ bufnr = args.buf }) end,
-      -- })
+      vim.g.conform_on_save = true
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        pattern = '*',
+        callback = function(args)
+          if vim.g.conform_on_save then require('conform').format({ bufnr = args.buf, timeout_ms = nil }) end
+        end,
+      })
+      vim.api.nvim_create_user_command(
+        'ConformToggleOnSave',
+        function() vim.g.conform_on_save = not vim.g.conform_on_save end,
+        {}
+      )
     end,
   },
 }
