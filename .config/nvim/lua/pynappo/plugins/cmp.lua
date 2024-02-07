@@ -42,11 +42,6 @@ return {
       local lspkind = require('lspkind')
       local cmp_format = lspkind.cmp_format
       local tailwind_format = require('tailwindcss-colorizer-cmp').formatter
-      lspkind.init({
-        symbol_map = {
-          Copilot = '',
-        },
-      })
 
       local compare = require('cmp.config.compare')
       local cmp_keymaps = require('pynappo.keymaps').cmp
@@ -113,7 +108,7 @@ return {
       cmp.setup({
         enabled = function()
           local disabled = false
-          disabled = disabled or (vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt')
+          disabled = disabled or (vim.bo[0].buftype == 'prompt')
           disabled = disabled or (vim.fn.reg_recording() ~= '')
           disabled = disabled or (vim.fn.reg_executing() ~= '')
           disabled = disabled or vim.g.cmp_disable
@@ -136,9 +131,9 @@ return {
                 luasnip = '[Snip]',
                 nvim_lsp = '[LSP]',
                 nvim_lsp_signature_help = '[Sign]',
+                nvim_lsp_document_symbol = '[Sym]',
                 emoji = '[Emoji]',
                 buffer = '[Buf]',
-                copilot = '[GHub]',
                 crates = '[Crate]',
                 path = '[Path]',
                 cmdline = '[Cmd]',
@@ -165,7 +160,6 @@ return {
           { name = 'crates' },
           { name = 'emoji' },
           { name = 'calc' },
-          { name = 'copilot' },
           { name = 'path' },
           { name = 'nvim_lua' },
         }, {
@@ -216,9 +210,10 @@ return {
         mapping = cmp_keymaps.cmdline(),
         confirmation = { completeopt = 'menu,menuone,noinsert' },
         sources = cmp.config.sources({
-          { name = 'cmdline_history' },
           { name = 'path' },
           { name = 'cmdline' },
+        }, {
+          { name = 'cmdline_history' },
         }),
       })
       cmp.setup.cmdline('/', {
@@ -227,14 +222,14 @@ return {
       })
     end,
   },
-  {
-    'zbirenbaum/copilot-cmp',
-    event = { 'BufRead', 'BufNewFile' },
-    dependencies = {
-      { 'zbirenbaum/copilot.lua', config = function() require('copilot').setup() end },
-    },
-    config = function() require('copilot_cmp').setup() end,
-  },
+  -- {
+  --   'zbirenbaum/copilot-cmp',
+  --   event = { 'BufRead', 'BufNewFile' },
+  --   dependencies = {
+  --     { 'zbirenbaum/copilot.lua', config = function() require('copilot').setup() end },
+  --   },
+  --   config = function() require('copilot_cmp').setup() end,
+  -- },
   {
     'petertriho/cmp-git',
     ft = { 'gitcommit', 'gitrebase', 'octo' },

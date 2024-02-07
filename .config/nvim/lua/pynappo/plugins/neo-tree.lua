@@ -136,8 +136,8 @@ return {
       }
     end
     require('neo-tree').setup(vim.tbl_deep_extend('force', {
-      log_level = 'debug',
-      log_to_file = true,
+      -- log_level = 'debug',
+      -- log_to_file = true,
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
       hide_root_node = true,
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
