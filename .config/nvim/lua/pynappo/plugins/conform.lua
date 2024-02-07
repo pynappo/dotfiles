@@ -62,18 +62,17 @@ return {
     end,
     config = function(_, opts)
       require('conform').setup(opts)
-      vim.g.conform_on_save = true
+      vim.g.auto_conform_on_save = true
       vim.api.nvim_create_autocmd('BufWritePre', {
         pattern = '*',
         callback = function(args)
-          if vim.g.conform_on_save then require('conform').format({ bufnr = args.buf, timeout_ms = nil }) end
+          if vim.g.auto_conform_on_save then require('conform').format({ bufnr = args.buf, timeout_ms = nil }) end
         end,
       })
-      vim.api.nvim_create_user_command(
-        'ConformToggleOnSave',
-        function() vim.g.conform_on_save = not vim.g.conform_on_save end,
-        {}
-      )
+      vim.api.nvim_create_user_command('ConformToggleOnSave', function()
+        vim.g.auto_conform_on_save = not vim.g.auto_conform_on_save
+        vim.notify('Auto-Conform on save: ' .. (vim.g.auto_conform_on_save and 'Enabled' or 'Disabled'))
+      end, {})
     end,
   },
 }

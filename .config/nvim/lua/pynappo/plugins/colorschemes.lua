@@ -1,6 +1,6 @@
 return {
   {
-    'pynappo/neovim-ayu',
+    'Shatur/neovim-ayu',
     priority = 100,
     config = function()
       local colors = require('ayu.colors')

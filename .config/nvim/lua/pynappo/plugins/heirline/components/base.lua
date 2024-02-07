@@ -229,14 +229,13 @@ local M = {
     update = 'BufEnter',
   },
   ruler = {
-    provider = '%2c,%l - %P',
-    update = { 'CursorMoved', 'ModeChanged' },
+    provider = '%02c,%l',
   },
   lsp_icons = {
     update = { 'LspAttach', 'LspDetach', 'LspProgress', 'WinEnter' },
     condition = function(self)
       self.clients = vim.lsp.get_clients()
-      return self.clients
+      return not vim.tbl_isempty(self.clients)
     end,
     init = function(self)
       local children = {}

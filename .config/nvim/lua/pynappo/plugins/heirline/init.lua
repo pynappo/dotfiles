@@ -101,8 +101,13 @@ return {
       local p = require('pynappo.plugins.heirline.components.plugins')
       local function cond_append(base, ...)
         local copy = vim.deepcopy(base, true)
-        local condition = copy.condition
-        copy.condition = nil
+        condition = copy.condition
+        if not copy.condition then
+          condition = copy[1].condition
+          copy[1].condition = nil
+        else
+          copy.condition = nil
+        end
         local result = {
           condition = condition,
           copy,
@@ -120,17 +125,16 @@ return {
       local ruler_block = utils.surround({ '', '' }, get_mode_color, { b.ruler, hl = { fg = 'black' } })
       local tools_block = {
         flexible = 5,
-        surround_label('Tools: ', { '', '' }, 'diag_info', {
-          u.space,
+        surround_label('Tools: ', { '[', ']' }, 'diag_info', {
           cond_append({ b.lsp_icons, hl = { fg = 'debug' } }, u.comma, u.space),
           cond_append({
             p.conform,
-            hl = { fg = 'string' },
+            hl = function() return { fg = vim.g.auto_conform_on_save and 'string' or 'normal' } end,
           }, u.comma, u.space),
           cond_append({
             p.lint,
             hl = { fg = 'diag_info' },
-          }, u.space),
+          }),
           hl = { bg = 'statusline' },
         }),
       }
@@ -200,7 +204,8 @@ return {
           end,
           init = function(self)
             self.marks = {}
-            for _, mark in pairs(vim.fn.getmarklist(vim.api.nvim_get_current_buf())) do
+            local marks = vim.list_extend(vim.fn.getmarklist(vim.api.nvim_get_current_buf()), vim.fn.getmarklist())
+            for _, mark in pairs(marks) do
               self.marks[mark.pos[2]] = mark
             end
             self.current_line = vim.api.nvim_win_get_cursor(0)[1]

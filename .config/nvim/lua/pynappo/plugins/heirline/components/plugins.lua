@@ -2,13 +2,13 @@ return {
   conform = {
     condition = function(self)
       local ok, conform = pcall(require, 'conform')
-      self.conform = conform
-      return ok
+      if not ok then return false end
+      self.formatters = conform.list_formatters(0)
+      return not vim.tbl_isempty(self.formatters)
     end,
-    update = { 'BufEnter', 'BufNewFile' },
+    update = { 'BufEnter', 'BufNewFile', 'CmdlineLeave' },
     provider = function(self)
-      local ft_formatters = self.conform.list_formatters(0)
-      return ft_formatters and table.concat(vim.tbl_map(function(f) return f.name end, ft_formatters), ' ') or 'N/A'
+      return self.formatters and table.concat(vim.tbl_map(function(f) return f.name end, self.formatters), ' ') or 'N/A'
     end,
   },
   lazy = {
