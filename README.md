@@ -12,7 +12,6 @@ git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME checkout --force
 df config status.showUntrackedFiles no
 ```
 # Package lists:
-
 ## Windows
 - [scoop.json](.files/scoop.json)
 - [winget.json](.files/winget.json)

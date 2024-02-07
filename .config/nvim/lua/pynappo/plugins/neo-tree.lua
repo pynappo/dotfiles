@@ -1,5 +1,5 @@
 return {
-  'nvim-neo-tree/neo-tree.nvim',
+  'pynappo/neo-tree.nvim',
   enabled = true,
   branch = 'v3.x',
   dependencies = {
@@ -136,6 +136,8 @@ return {
       }
     end
     require('neo-tree').setup(vim.tbl_deep_extend('force', {
+      log_level = 'debug',
+      log_to_file = true,
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
       hide_root_node = true,
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
@@ -211,6 +213,7 @@ return {
         mapping_options = { noremap = true, nowait = true },
       },
       filesystem = {
+        async_directory_scan = 'never',
         hijack_netrw_behavior = 'disabled',
         commands = {
           telescope_find = function(state)
@@ -252,6 +255,7 @@ return {
           enabled = true,
         }, -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
+        use_libuv_file_watcher = true,
       },
       buffers = {
         bind_to_cwd = true,
