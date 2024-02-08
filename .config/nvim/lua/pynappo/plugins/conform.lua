@@ -56,11 +56,13 @@ return {
         },
       },
     },
-    init = function()
-      -- If you want the formatexpr, here is the place to set it
-      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-    end,
     config = function(_, opts)
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = vim.tbl_keys(require('conform').formatters_by_ft),
+        group = vim.api.nvim_create_augroup('conform_formatexpr', { clear = true }),
+        callback = function() vim.opt_local.formatexpr = 'v:lua.require("conform").formatexpr()' end,
+      })
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
       require('conform').setup(opts)
       vim.g.auto_conform_on_save = true
       vim.api.nvim_create_autocmd('BufWritePre', {
