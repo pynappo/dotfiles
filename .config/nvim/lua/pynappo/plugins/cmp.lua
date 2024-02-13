@@ -114,6 +114,10 @@ return {
           disabled = disabled or vim.g.cmp_disable
           return not disabled
         end,
+        performance = {
+          max_view_entries = 15,
+          async_budget = 2,
+        },
         window = {
           completion = {
             autocomplete = false,
@@ -166,18 +170,18 @@ return {
           { name = 'luasnip' },
         }, {
           { name = 'nerdfont' },
-          {
-            name = 'buffer',
-            option = {
-              get_bufnrs = function()
-                local bufs = {}
-                for _, win in ipairs(vim.api.nvim_list_wins()) do
-                  bufs[vim.api.nvim_win_get_buf(win)] = true
-                end
-                return vim.tbl_keys(bufs)
-              end,
-            },
-          },
+          -- {
+          --   name = 'buffer',
+          --   option = {
+          --     get_bufnrs = function()
+          --       local bufs = {}
+          --       for _, win in ipairs(vim.api.nvim_list_wins()) do
+          --         bufs[vim.api.nvim_win_get_buf(win)] = true
+          --       end
+          --       return vim.tbl_keys(bufs)
+          --     end,
+          --   },
+          -- },
         }),
         sorting = {
           comparators = {
