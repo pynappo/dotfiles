@@ -50,3 +50,9 @@
   directory = *
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+[branch]
+	sort = -committerdate
+[alias]
+	fpush = push
+	wdiff = diff
+	sclone = clone
