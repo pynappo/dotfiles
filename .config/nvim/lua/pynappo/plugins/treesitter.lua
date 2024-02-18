@@ -27,6 +27,7 @@ return {
         },
         indent = {
           enable = true,
+          disable = { 'go' },
         },
         incremental_selection = {
           enable = true,

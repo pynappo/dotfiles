@@ -20,6 +20,7 @@ if status is-interactive
   set fish_vi_force_cursor 1
   set LS_COLORS $(vivid generate ayu)
   atuin init fish | source
+  zoxide init fish | source
 
   # from nickeb96/puffer-fish
   function expand_dots -d 'expand ... to ../.. etc'

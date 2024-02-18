@@ -9,6 +9,7 @@ return {
     opts = {
       -- Define your formatters
       formatters_by_ft = {
+        go = { 'goimports', 'gofmt' },
         lua = { 'stylua' },
         cpp = { 'clang_format' },
         typescript = { prettier },
@@ -16,6 +17,8 @@ return {
         typescriptreact = { prettier },
         javascriptreact = { prettier },
         ruby = { prettier },
+        ['*'] = { 'codespell' },
+        ['_'] = { 'trim_whitespace' },
       },
       -- Set up format-on-save
       -- format_on_save = {

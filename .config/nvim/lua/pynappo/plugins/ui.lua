@@ -203,7 +203,7 @@ return {
     dependencies = {
       'MunifTanjim/nui.nvim',
       {
-        'ls-devs/nvim-notify',
+        'rcarriga/nvim-notify',
         opts = {
           render = 'wrapped-compact',
         },
