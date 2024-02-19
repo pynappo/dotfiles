@@ -90,8 +90,8 @@ M.setup = {
         -- Autoindent on insert/append
       },
       [{ 'n', 'v' }] = {
-        { 'p', 'p=`]`', { remap = true } },
-        { 'P', 'P=`]`', { remap = true } },
+        { 'p', 'p=`]', { remap = true } },
+        { 'P', 'P=`]', { remap = true } },
         { '<leader>p', '"+p' },
         { '<leader>P', '"+P' },
         { '<leader>y', '"+y' },
@@ -136,14 +136,14 @@ M.setup = {
         { 'X', '"_X' },
       },
       [{ 'i' }] = {
-        {
-          '<Esc>',
-          function()
-            local col = vim.api.nvim_win_get_cursor(0)[2]
-            return (col < 2) and '<esc>l' or '<esc>'
-          end,
-          { expr = true },
-        },
+        -- {
+        -- '<Esc>',
+        -- function()
+        --   local col = vim.api.nvim_win_get_cursor(0)[2]
+        --   return (col < 2) and 'l<esc>' or '<esc>'
+        -- end,
+        --   { expr = true },
+        -- },
         { '<C-CR>', '<Esc>o' },
         { '<C-S-CR>', '<Esc>O' },
       },

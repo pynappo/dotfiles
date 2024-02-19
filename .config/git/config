@@ -1,12 +1,12 @@
-[user]
-  email = lehtien.david@gmail.com
-  name = pynappo
+[user]
+  email = lehtien.david@gmail.com
+  name = pynappo
   signingkey = ~/.ssh/id_ed25519.pub
-[core]
-  symlinks = true
-  fsmonitor = true
-  editor = nvim
-  protectNTFS = false
+[core]
+  symlinks = true
+  fsmonitor = true
+  editor = nvim
+  protectNTFS = false
   pager = delta
   packedGitLimit = 512m
   packedGitWindowSize = 512m
@@ -14,20 +14,20 @@
   deltaCacheSize = 2047m
   packSizeLimit = 2047m
   windowMemory = 2047m
-[init]
-  defaultBranch = main
-[pull]
-  rebase = true
-[push]
-  autoSetupRemote = true
-[gpg]
-  format = ssh
-[tag]
-  gpgsign = true
-[commit]
-  gpgsign = true
-[gpg "ssh"]
-  allowedSignersFile = ~/.ssh/allowed_signers
+[init]
+  defaultBranch = main
+[pull]
+  rebase = true
+[push]
+  autoSetupRemote = true
+[gpg]
+  format = ssh
+[tag]
+  gpgsign = true
+[commit]
+  gpgsign = true
+[gpg "ssh"]
+  allowedSignersFile = ~/.ssh/allowed_signers
   defaultKeyCommand = ssh-add -L
 [diff]
   tool = nvimdiff
@@ -55,4 +55,6 @@
 [alias]
 	fpush = push
 	wdiff = diff
-	sclone = clone
+  sclone = clone --filter=blob:none
+[rebase]
+	autoStash = true
