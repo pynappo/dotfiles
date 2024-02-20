@@ -54,9 +54,11 @@
 	sort = -committerdate
 [alias]
 	fpush = push
-	wdiff = diff
+	wdiff = diff --word-diff
+  sdiff = diff --staged
   sclone = clone --filter=blob:none
-	unstage = restore
+	unstage = restore --staged
+  lg = log  --oneline --graph --all
 [rebase]
 	autoStash = true
 [rerere]

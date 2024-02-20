@@ -1,6 +1,6 @@
 -- install lazy.nvim, a plugin manager
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.uv.fs_stat(lazypath) then
+if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     'git',
     'clone',
@@ -30,25 +30,29 @@ opt.listchars = {
 vim.g.mapleader = ' '
 vim.opt.relativenumber = true
 vim.opt.number = true
+local c = 0
+
+vim.api.nvim_create_autocmd("OptionSet", {
+	pattern = "*",
+	callback = function()
+          c = c +1
+          print(c) 
+
+          vim.api.nvim_set_hl(0, "Normal", {
+		fg = "Red",
+		ctermfg = "Red",
+              })
+           
+	end,
+})
+
 -- setup plugins
 require('lazy').setup({
- {'edluffy/specs.nvim', config = function() require('specs').setup{ 
-    show_jumps  = true,
-    min_jump = 30,
-    popup = {
-        delay_ms = 0, -- delay before popup displays
-        inc_ms = 10, -- time increments used for fade/resize effects 
-        blend = 10, -- starting blend, between 0-100 (fully transparent), see :h winblend
-        width = 10,
-        winhl = "PMenu",
-        fader = require('specs').linear_fader,
-        resizer = require('specs').shrink_resizer
-    },
-    ignore_filetypes = {},
-    ignore_buftypes = {
-        nofile = true,
-    },
-}end}
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
+  },
   -- {
   --   'nvim-treesitter/nvim-treesitter',
   --   event = { 'BufNewFile', 'BufReadPost' },
