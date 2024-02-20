@@ -2,7 +2,7 @@
   "aria2-enabled": true,
   "aria2-warning-enabled": false,
   "test": true,
-  "last_update": "2024-01-30T12:30:58.3118914-08:00",
+  "last_update": "2024-02-19T16:33:30.4045315-08:00",
   "check_nightly_outdated": true,
   "update_nightly": true,
   "scoop_branch": "master",

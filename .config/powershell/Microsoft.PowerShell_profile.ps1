@@ -2,6 +2,7 @@ oh-my-posh init pwsh --config "$HOME/.files/pynappo.omp.yaml" | Invoke-Expressio
 Import-Module scoop-completion
 Import-Module cd-extras
 Import-Module gsudoModule
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
 function IsVirtualTerminalProcessingEnabled
 {
     $MethodDefinitions = @'
@@ -33,6 +34,7 @@ if (CanUsePredictionSource)
     Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin -HistoryNoDuplicates
     Import-Module -Name Terminal-Icons
 }
+
 
 $env:FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git --color=always --strip-cwd-prefix"
 $env:FZF_CTRL_T_COMMAND=$env:FZF_DEFAULT_COMMAND

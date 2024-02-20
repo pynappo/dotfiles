@@ -56,5 +56,6 @@
 	fpush = push
 	wdiff = diff
   sclone = clone --filter=blob:none
+	unstage = restore
 [rebase]
 	autoStash = true
