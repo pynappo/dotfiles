@@ -59,3 +59,6 @@
 	unstage = restore
 [rebase]
 	autoStash = true
+[rerere]
+	enabled = true
+	autoUpdate = true
