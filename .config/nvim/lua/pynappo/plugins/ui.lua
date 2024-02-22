@@ -255,4 +255,9 @@ return {
       triggers_nowait = { '<leader>', 'g' },
     },
   },
+  {
+    'SomesOver/accidentslipt',
+    config = true,
+    event = { 'WinNew' },
+  },
 }
