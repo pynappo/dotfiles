@@ -7,6 +7,7 @@ if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
   fish_add_path -p "$HOME/.bun/bin"
   fish_add_path -p "$HOME/.nimble/bin"
+  fish_add_path -p "./node_modules/bin"
   # Emulates vim's cursor shape behavior
   # Set the normal and visual mode cursors to a block
   set fish_cursor_default block
@@ -71,7 +72,7 @@ if status is-interactive
   abbr -a -- ldot 'lazygit --git-dir=$HOME/.files.git/ --work-tree=$HOME'
   abbr -a -- pm 'sudo pacman'
   abbr -a -- su 'su --shell=/usr/bin/fish'
-  abbr -a -- e '$EDITOR'
+  abbr -a -- e $EDITOR
   abbr -a -- g 'git'
   abbr_subcommand git co checkout
   abbr_subcommand git ch cherry-pick
@@ -80,6 +81,7 @@ if status is-interactive
   abbr -a -- sudo 'sudo -E -s'
   abbr -a -- sc 'systemctl'
   abbr -a -- jc 'journalctl'
+  abbr -a -- ts 'tree-sitter'
   abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
   abbr -a --position anywhere .C "$XDG_CONFIG_HOME/"
   abbr -a --set-cursor f 'fd . % | fzf'
@@ -90,6 +92,7 @@ if status is-interactive
   abbr -a --set-cursor :h 'nvim "+help %"'
   abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
   abbr -a -- pr 'paru'
+  abbr -a -- n 'nvim'
   abbr -a -- - 'prevd'
   abbr -a -- + 'nextd'
 
@@ -108,7 +111,7 @@ if status is-interactive
   abbr -a !! --position anywhere --function last_history_item
 
   abbr -a -- ls "eza --icons"
-  abbr -a -- ll "eza --icons --group --header --group-directories-first --long"
+  abbr -a -- la "eza --icons --group --header --group-directories-first --long"
   function eza -d "eza with auto-git"
     if git rev-parse --is-inside-work-tree &>/dev/null
       command eza --git --classify $argv
