@@ -1,13 +1,15 @@
 if set -q TERMUX_VERSION
   fish_add_path -g "$HOME/neovim/build/bin"
 else
-  export (systemctl show-environment --user)
+  for var in (systemctl show-environment | rg -v '^PATH=')
+    export $var
+  end
 end
+fish_add_path -p "~/.bun/bin"
+fish_add_path -p "~/.nimble/bin"
+fish_add_path -p "./node_modules/.bin"
 if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
-  fish_add_path -p "$HOME/.bun/bin"
-  fish_add_path -p "$HOME/.nimble/bin"
-  fish_add_path -p "./node_modules/bin"
   # Emulates vim's cursor shape behavior
   # Set the normal and visual mode cursors to a block
   set fish_cursor_default block

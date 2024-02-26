@@ -277,3 +277,13 @@ vim.paste = (function(overridden)
     overridden(lines, phase)
   end
 end)(vim.paste)
+
+vim.keymap.set('n', '<leader>g', function()
+  vim.lsp.buf.definition({
+    on_list = function(x)
+      local item = x.items[1]
+      vim.cmd.edit(item.filename)
+      vim.fn.setcursorcharpos(item.lnum, item.col)
+    end,
+  })
+end)

@@ -86,7 +86,7 @@ return {
       parser_config.mdx = {
         install_info = {
           url = '~/code/tree-sitter-mdx', -- local path or git repo
-          files = { 'src/parser.c' }, -- note that some parsers also require src/scanner.c or src/scanner.cc
+          files = { 'src/parser.c', 'src/scanner.c' }, -- note that some parsers also require src/scanner.c or src/scanner.cc
           -- optional entries:
           branch = 'main', -- default branch in case of git repo if different from master
           generate_requires_npm = true, -- if stand-alone parser without npm dependencies
