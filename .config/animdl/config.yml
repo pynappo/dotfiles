@@ -1,4 +1,4 @@
-default_provider: gogoanime
+default_provider: allanime
 fzf:
     executable: fzf
     opts: []

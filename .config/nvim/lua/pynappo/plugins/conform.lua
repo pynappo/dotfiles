@@ -17,7 +17,7 @@ return {
         typescriptreact = { prettier },
         javascriptreact = { prettier },
         ruby = { prettier },
-        ['*'] = { 'codespell' },
+        -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
       },
       -- Set up format-on-save
