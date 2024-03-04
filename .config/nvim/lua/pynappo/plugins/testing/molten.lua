@@ -1,6 +1,7 @@
 return {
   {
     'benlubas/molten-nvim',
+    ft = 'json',
     cond = not require('pynappo.utils').is_firenvim and not require('pynappo.utils').is_windows,
     dependencies = {
       {

@@ -5,3 +5,10 @@ Here's my neovim config that I might link on Reddit posts and stuff. Some cool t
 * indent-blankline is given cool but subtle rainbow indent lines.
 * 116 plugins using lazy.nvim (i don't use them all it's just fun to try them)
 * A self-made modes.nvim rip-off that relies on heirline mode colors (see [autocmds.lua](./lua/pynappo/autocmds.lua))
+
+```
+asdfsdf{}
+
+
+asdfs
+```

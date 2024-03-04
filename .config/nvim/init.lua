@@ -1,9 +1,9 @@
 _G.pynappo = {}
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?/init.lua;'
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?.lua;'
-local o = vim.o
+vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config')
 local g = vim.g
-local opt = vim.opt
+local o = vim.opt
 local utils = require('pynappo.utils')
 if utils.is_windows then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
@@ -36,7 +36,7 @@ o.shiftwidth = 0
 o.softtabstop = -1
 o.expandtab = true
 
--- Case insensitive searching UNLESS /C or capital in search
+-- Searching
 o.ignorecase = true
 o.smartcase = true
 
@@ -54,7 +54,12 @@ o.clipboard = 'unnamed'
 -- Pop up menu stuff
 o.pumblend = 20
 o.updatetime = 500
-opt.completeopt = { 'menu', 'menuone', 'noinsert', 'noselect' }
+o.completeopt = { 'menu', 'menuone', 'noinsert', 'noselect' }
+
+-- backup
+o.backup = true
+o.writebackup = true
+o.backupdir = { vim.fn.stdpath('state') .. '/backup' }
 
 -- Misc.
 o.confirm = true
@@ -63,7 +68,7 @@ o.history = 1000
 o.scrolloff = 4
 o.undofile = true
 o.smoothscroll = true
-opt.sessionoptions = {
+o.sessionoptions = {
   'buffers',
   'curdir',
   'folds',
@@ -74,8 +79,8 @@ opt.sessionoptions = {
   'terminal',
   'options',
 }
-opt.wildoptions:append('fuzzy')
-opt.diffopt = {
+o.wildoptions:append('fuzzy')
+o.diffopt = {
   'internal',
   'filler',
   'vertical',
@@ -84,8 +89,8 @@ opt.diffopt = {
 
 -- UI stuff
 o.cursorline = true
-opt.whichwrap:append('<,>,h,l,[,]')
-opt.fillchars = {
+o.whichwrap:append('<,>,h,l,[,]')
+o.fillchars = {
   horiz = '━',
   horizup = '┻',
   horizdown = '┳',
@@ -98,7 +103,7 @@ opt.fillchars = {
   diff = '╱',
 }
 o.list = true
-opt.listchars = {
+o.listchars = {
   extends = '⟩',
   precedes = '⟨',
   trail = '·',
@@ -107,6 +112,11 @@ opt.listchars = {
 }
 vim.api.nvim_create_autocmd('FileType', { callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end })
 o.termguicolors = true
+
+vim.schedule(function()
+  -- vim.o.spell = true
+  vim.o.spelllang = 'en'
+end)
 
 g.mapleader = ' '
 g.maplocalleader = '\\'
@@ -143,13 +153,38 @@ if not vim.uv.fs_stat(lazypath) then
     lazypath,
   })
 end
-vim.opt.runtimepath:prepend(lazypath)
+o.runtimepath:prepend(lazypath)
 
 require('pynappo.autocmds')
 require('lazy').setup({
+  profiling = {
+    require = true,
+  },
   spec = {
     {
-      { import = 'pynappo.plugins' },
+      { import = 'pynappo.plugins.actions' },
+      { import = 'pynappo.plugins.alpha' },
+      { import = 'pynappo.plugins.autopairs' },
+      { import = 'pynappo.plugins.cmp' },
+      { import = 'pynappo.plugins.colorschemes' },
+      { import = 'pynappo.plugins.conform' },
+      { import = 'pynappo.plugins.dap' },
+      { import = 'pynappo.plugins.enhancements' },
+      { import = 'pynappo.plugins.find-n-replace' },
+      { import = 'pynappo.plugins.firenvim' },
+      { import = 'pynappo.plugins.git' },
+      { import = 'pynappo.plugins.heirline' },
+      { import = 'pynappo.plugins.lint' },
+      { import = 'pynappo.plugins.lsp' },
+      { import = 'pynappo.plugins.markdown' },
+      { import = 'pynappo.plugins.mini' },
+      { import = 'pynappo.plugins.misc' },
+      { import = 'pynappo.plugins.neo-tree' },
+      { import = 'pynappo.plugins.notifications' },
+      { import = 'pynappo.plugins.telescope' },
+      { import = 'pynappo.plugins.treesitter' },
+      { import = 'pynappo.plugins.typst' },
+      { import = 'pynappo.plugins.ui' },
       { import = 'pynappo.plugins.testing', enabled = true },
     },
   },
@@ -243,8 +278,8 @@ vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
   pattern = {
-    [(vim.env.XDG_CONFIG_HOME or '.-') .. '/waybar/config'] = 'json',
-    [(vim.env.XDG_CONFIG_HOME or '.-') .. '/hypr/.-conf'] = 'hyprlang',
+    ['${XDG_CONFIG_HOME}/waybar/config'] = 'json',
+    ['${XDG_CONFIG_HOME}/hypr/.-conf'] = 'hyprlang',
   },
   extension = {
     rasi = 'rasi',
@@ -278,12 +313,9 @@ vim.paste = (function(overridden)
   end
 end)(vim.paste)
 
-vim.keymap.set('n', '<leader>g', function()
-  vim.lsp.buf.definition({
-    on_list = function(x)
-      local item = x.items[1]
-      vim.cmd.edit(item.filename)
-      vim.fn.setcursorcharpos(item.lnum, item.col)
-    end,
-  })
-end)
+-- vim.api.nvim_create_autocmd('FileType', {
+--   callback = function(...) vim.print(...) end,
+-- })
+-- vim.api.nvim_create_autocmd('BufNew', {
+--   callback = function(...) vim.print(...) end,
+-- })

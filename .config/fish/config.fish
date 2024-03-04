@@ -1,7 +1,7 @@
 if set -q TERMUX_VERSION
   fish_add_path -g "$HOME/neovim/build/bin"
 else
-  for var in (systemctl show-environment | rg -v '^PATH=')
+  for var in (systemctl show-environment --user | rg -v '^PATH=')
     export $var
   end
 end

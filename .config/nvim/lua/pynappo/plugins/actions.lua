@@ -1,5 +1,5 @@
 local keymaps = require('pynappo.keymaps')
----@type LazySpec
+---@type LazySpec[]
 return {
   {
     'numToStr/Comment.nvim',
@@ -15,16 +15,13 @@ return {
     end,
   },
   {
-    'folke/flash.nvim',
-    event = 'VeryLazy',
-    opts = {
-      modes = {
-        search = {
-          enabled = false,
-        },
-      },
-    },
-    keys = keymaps.setup.flash({ lazy = true }),
+    'ggandor/leap.nvim',
+    config = function()
+      require('leap').opts.special_keys.prev_target = '<bs>'
+      require('leap').opts.special_keys.prev_group = '<bs>'
+      require('leap.user').set_repeat_keys('<cr>', '<bs>')
+    end,
+    keys = keymaps.setup.leap({ lazy = true }),
   },
   -- { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {

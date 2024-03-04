@@ -104,11 +104,6 @@ tabline.offset = {
     self.winid = win
     return vim.tbl_contains(self.sidebar_filetypes, vim.bo[bufnr].filetype)
   end,
-  init = function(self)
-    self.width = vim.api.nvim_win_get_width(self.winid)
-    self.title = vim.fn.getcwd(self.winid) or vim.fn.getcwd(-1, 0) or vim.fn.getcwd(-1, -1)
-  end,
-
   static = {
     sidebar_filetypes = { 'neo-tree' },
     substitutions = {
@@ -131,14 +126,15 @@ tabline.offset = {
     },
   },
   provider = function(self)
-    local title = self.title
+    local width = vim.api.nvim_win_get_width(self.winid)
+    local title = vim.fn.getcwd(self.winid) or vim.fn.getcwd(-1, 0) or vim.fn.getcwd(-1, -1) or ''
     for _, func in ipairs(self.title_funcs) do
-      if #title < self.width then break end
+      if #title < width then break end
       title = func(self, title)
     end
     local length = vim.str_utfindex(title)
-    local left_pad = math.ceil((self.width - length) / 2)
-    local right_pad = math.max(0, left_pad - ((self.width - length) % 2))
+    local left_pad = math.ceil((width - length) / 2)
+    local right_pad = math.max(0, left_pad - ((width - length) % 2))
     return string.rep(' ', left_pad) .. title .. string.rep(' ', right_pad)
   end,
   hl = function(self) return vim.api.nvim_get_current_win() == self.winid and 'TablineSel' or 'Tabline' end,

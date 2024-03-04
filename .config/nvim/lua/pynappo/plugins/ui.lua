@@ -104,6 +104,7 @@ return {
   },
   {
     'dstein64/nvim-scrollview',
+    enabled = false,
     config = function()
       require('scrollview').setup({
         excluded_filetypes = { 'neo-tree' },
@@ -156,7 +157,7 @@ return {
       messages = { enabled = false },
       lsp = {
         progress = {
-          enabled = true,
+          enabled = false,
         },
         override = {
           ['vim.lsp.util.convert_input_to_markdown_lines'] = false,
@@ -280,6 +281,15 @@ return {
   },
   {
     'bennypowers/nvim-regexplainer',
+    cmd = {
+      'RegexplainerHide',
+      'RegexplainerToggle',
+      'RegexplainerDebug',
+      'RegexplainerYank',
+      'RegexplainerShowSplit',
+      'RegexplainerShowPopup',
+      'RegexplainerShow',
+    },
     config = function() require('regexplainer').setup() end,
     dependencies = {
       'nvim-treesitter/nvim-treesitter',

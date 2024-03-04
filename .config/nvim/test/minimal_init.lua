@@ -40,40 +40,16 @@ local function l_function(fn)
   self.src = fn
   return self
 end
-local keymaps = {
-  nv = {
-    ['<leader>k'] = { l_function(function() vim.print('hi') end) },
-  },
-}
-for modestr, maps in pairs(keymaps) do
-  assert(type(modestr) == 'string', 'Error! Invalid keymap argument(should be string')
-  local modes = {}
-  for char in modestr:gmatch('[%a!]') do
-    modes[#modes + 1] = char
-  end
-  if #modes == 0 then goto continue end
-  for key, map in pairs(maps) do
-    local config = map[2] or map['config'] or map['settings'] or {}
-    local cd = map[1] or map['fn'] or map['src'] or map['func'] or (map.__type and map)
-    vim.print(modes, key, cd, config)
-    if not vim.tbl_contains({ '<vim_cmd>', '<l_function>' }, cd.__type) then goto continue end
-    if cd.__type == '<l_function>' then
-      if type(cd['src']) ~= 'function' then goto local_cont end
-      vim.keymap.set(modes, key, cd['src'], config)
-    elseif cd.__type == '<vim_cmd>' then
-      if type(cd['src']) ~= 'string' then goto local_cont end
-      vim.keymap.set(modes, key, cd['src'], config)
-    end
-    ::local_cont::
-  end
-  ::continue::
-end
 -- setup plugins
 require('lazy').setup({
   {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    opts = {},
+    'chomosuke/typst-preview.nvim',
+    ft = 'typst',
+    version = '0.1.*',
+    build = function() require('typst-preview').update() end,
+    opts = {
+      debug = true,
+    },
   },
   -- {
   --   'nvim-treesitter/nvim-treesitter',

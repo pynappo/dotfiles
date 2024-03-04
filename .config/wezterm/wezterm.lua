@@ -94,7 +94,7 @@ config.font_size = 12.0
 config.font = wezterm.font_with_fallback({
 	-- { family = "Monaspace Neon", weight = "Light" },
 	{ family = "Inconsolata Nerd Font Mono" },
-	{ family = "Symbols Nerd Font" },
+	{ family = "Symbols Nerd Font Mono" },
 	"Noto Color Emoji",
 })
 config.font_rules = {

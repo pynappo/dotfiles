@@ -51,4 +51,5 @@ return {
     },
   },
   { 'tweekmonster/helpful.vim', init = function() vim.g.helpful = 1 end },
+  { 'nanotee/zoxide.vim' },
 }
