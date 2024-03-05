@@ -69,7 +69,8 @@ local transparent_highlights = {
   'TablineFill',
 }
 
-if not require('pynappo.utils').is_gui then
+local utils = require('pynappo.utils')
+if not utils.is_gui and not utils.is_termux then
   for _, hl in ipairs(transparent_highlights) do
     theme.overrides.all.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE'
   end
