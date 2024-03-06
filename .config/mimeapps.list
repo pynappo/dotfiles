@@ -3,6 +3,8 @@ application/pdf=libreoffice-draw.desktop;vivaldi-stable.desktop;
 image/png=pinta.desktop;
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop;
 application/x-osu-beatmap-archive=org.gnome.FileRoller.desktop;
+application/postscript=org.pwmt.zathura-ps.desktop;libreoffice-writer.desktop;
+image/bmp=pinta.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop
