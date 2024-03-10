@@ -8,7 +8,7 @@
     "on-scroll-up": "hyprctl dispatch workspace e+2",
     "on-scroll-down": "hyprctl dispatch workspace e-2",
     "on-click": "activate",
-    "persistent_workspaces": {
+    "persistent-workspaces": {
       "1": ["DP-2"],
       "2": ["DP-3"],
       "3": ["DP-2"],

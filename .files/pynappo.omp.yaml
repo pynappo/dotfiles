@@ -78,7 +78,6 @@ blocks:
   type: rprompt
 console_title_template: "{{.UserName}} @ {{.Folder}} ({{.Shell}}{{if .Root}} [Admin]{{end}}) "
 final_space: true
-osc99: true
 palette:
   black: "#000000"
   blue: "#4560f9"

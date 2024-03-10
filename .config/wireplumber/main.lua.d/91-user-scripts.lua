@@ -1,1 +1,1 @@
-load_script(os.getenv("XDG_CONFIG_HOME") .. "/wireplumber/scripts/auto-connect-ports.lua")
+load_script(os.getenv("HOME") .. "/.config/wireplumber/scripts/auto-connect-ports.lua")
