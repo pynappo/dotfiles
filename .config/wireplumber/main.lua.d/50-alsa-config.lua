@@ -1,7 +1,7 @@
 table.insert(alsa_monitor.rules, {
 	matches = {
 		{
-			{ "device.name", "matches", "alsa_card.*" },
+			{ "node.name", "equals", "*" },
 		},
 	},
 	apply_properties = {

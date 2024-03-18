@@ -1,5 +1,15 @@
 return {
-  { 'tpope/vim-fugitive', event = 'CmdlineEnter' },
+  {
+    'tpope/vim-fugitive',
+    dependencies = {
+      'tpope/vim-rhubarb',
+    },
+    event = 'CmdlineEnter',
+  },
+  {
+    'linrongbin16/gitlinker.nvim',
+    config = function() require('gitlinker').setup() end,
+  },
   {
     'NeogitOrg/neogit',
     dependencies = {

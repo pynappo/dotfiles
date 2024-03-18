@@ -12,7 +12,7 @@ local commands = {
     'DotfilesGit',
     function()
       vim.env.GIT_WORK_TREE = vim.fn.expand('~')
-      vim.env.GIT_DIR = vim.fn.expand('~/.dotfiles.git/')
+      vim.env.GIT_DIR = vim.fn.expand('~/.files.git/')
     end,
   },
   {
