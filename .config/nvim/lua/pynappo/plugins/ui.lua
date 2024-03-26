@@ -196,8 +196,8 @@ return {
         },
       },
       presets = {
-        inc_rename = true,
-        long_message_to_split = true,
+        inc_rename = false,
+        long_message_to_split = false,
         lsp_doc_border = true,
       },
     },
@@ -257,9 +257,9 @@ return {
     },
   },
   {
-    'SomesOver/accidentslipt',
+    'nvim-zh/colorful-winsep.nvim',
     config = function()
-      require('accidentslipt').setup({
+      require('colorful-winsep').setup({
         -- highlight for Window separator
         hi = {
           bg = '#16161E',

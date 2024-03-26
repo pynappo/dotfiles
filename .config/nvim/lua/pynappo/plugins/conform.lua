@@ -12,6 +12,7 @@ return {
         go = { 'goimports', 'gofmt' },
         lua = { 'stylua' },
         cpp = { 'clang_format' },
+        c = { 'clang_format' },
         typescript = { prettier },
         javascript = { prettier },
         typescriptreact = { prettier },

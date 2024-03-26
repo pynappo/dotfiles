@@ -30,8 +30,13 @@
   allowedSignersFile = ~/.ssh/allowed_signers
   defaultKeyCommand = ssh-add -L
 [diff]
-  tool = nvimdiff
-  colorMoved = default
+  tool = difftastic
+[difftool]
+  prompt = false
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+  difftool = true
 [interactive]
   diffFilter = delta --color-only
 [add.interactive]
@@ -59,6 +64,8 @@
   sclone = clone --filter=blob:none
 	unstage = restore --staged
   lg = log  --oneline --graph --all
+  dft = difftool
+  difft = difftool
 [rebase]
 	autoStash = true
 [rerere]

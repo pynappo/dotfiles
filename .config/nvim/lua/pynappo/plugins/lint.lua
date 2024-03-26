@@ -4,6 +4,7 @@ return {
     config = function()
       require('lint').linters_by_ft = {
         cpp = { 'cpplint' },
+        c = { 'cpplint' },
         -- astro = { 'eslint_d' },
         -- javascript = { 'eslint_d' },
         -- typescript = { 'eslint_d' },

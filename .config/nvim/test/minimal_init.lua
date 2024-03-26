@@ -31,22 +31,12 @@ o.listchars = {
 g.mapleader = ' '
 o.relativenumber = true
 o.number = true
-local function l_function(fn)
-  assert(
-    type(fn) == 'function',
-    ('Error expected type <function> as argument for l_function, got <%s>'):format(type(fn))
-  )
-  local self = {}
-  self.__type = '<l_function'
-  self.src = fn
-  return self
-end
 -- setup plugins
 require('lazy').setup({
   { 'tpope/vim-fugitive' },
   -- {
   --   'nvim-treesitter/nvim-treesitter',
-  --   event = { 'BufNewFile', 'BufReadPost' },
+  --   event = { 'BufNewFile', 'BufReaPost' },
   --   build = function()
   --     if not vim.env.GIT_WORK_TREE then vim.cmd('TSUpdate') end
   --   end,

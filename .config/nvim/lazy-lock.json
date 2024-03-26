@@ -1,7 +1,6 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
   "LuaSnip": { "branch": "master", "commit": "a7a4b4682c4b3e2ba82b82a4e6e5f5a0e79dec32" },
-  "accidentslipt": { "branch": "main", "commit": "516f838f851f9948fb0de55c3aacc4eae7fdf005" },
   "alpha-nvim": { "branch": "main", "commit": "41283fb402713fc8b327e60907f74e46166f4cfd" },
   "better-escape.nvim": { "branch": "master", "commit": "7e86edafb8c7e73699e0320f225464a298b96d12" },
   "block.nvim": { "branch": "main", "commit": "6fb969ab12579e58b9379aa51933cad4a466cf75" },
@@ -23,6 +22,7 @@
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp-spell": { "branch": "master", "commit": "32a0867efa59b43edbb2db67b0871cfad90c9b66" },
   "cmp_luasnip": { "branch": "master", "commit": "05a9ab28b53f71d1aece421ef32fee2cb857a843" },
+  "colorful-winsep.nvim": { "branch": "alpha", "commit": "bd836204f85baa4a787d3a9efee57fc000737c9a" },
   "competitest.nvim": { "branch": "master", "commit": "c3cb0e2b0916a879c4d3dcb5737e6c046dd0afc5" },
   "conform.nvim": { "branch": "master", "commit": "0a530b31acacf10eca9f9a74b2434ece4d232ca3" },
   "crates.nvim": { "branch": "main", "commit": "b4f4987ccdb1cc3899ee541ef4375c73c48c4570" },

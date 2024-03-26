@@ -136,6 +136,7 @@ end
 
 local skeletons = {}
 local function get_extension(path) return utils.truthy(vim.fn.fnamemodify(path, ':e')) end
+
 for _, s in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
   local extension = get_extension(s)
   if extension then
@@ -146,19 +147,23 @@ for _, s in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
     end
   end
 end
+
 local scratch = 'Start from scratch'
-autocmds.create({ 'BufNewFile' }, {
+vim.api.nvim_create_user_command('Skeleton', function(ctx)
+  local extension = get_extension(vim.api.nvim_buf_get_name(0))
+  if extension and skeletons[extension] then
+    vim.ui.select({ scratch, unpack(skeletons[extension]) }, {
+      prompt = 'Select skeleton',
+    }, function(choice)
+      if choice == scratch then return end
+      vim.cmd('0r ' .. choice)
+    end)
+  end
+end, {})
+
+autocmds.create({ 'BufNewFile', 'BufNew' }, {
   callback = function(ctx)
-    local extension = get_extension(ctx.match)
-    if extension and skeletons[extension] then
-      vim.ui.select({ scratch, unpack(skeletons[extension]) }, {
-        prompt = 'Select skeleton',
-      }, function(choice)
-        if choice == scratch then return end
-        vim.cmd('0r ' .. choice)
-      end)
-    end
+    if vim.api.nvim_buf_line_count(0) < 2 then vim.schedule(vim.cmd.Skeleton) end
   end,
 })
-
 return autocmds
