@@ -18,6 +18,7 @@ return {
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'davidsierradz/cmp-conventionalcommits',
       'chrisgrieser/cmp-nerdfont',
+      'https://git.sr.ht/~p00f/clangd_extensions.nvim/',
       {
         'L3MON4D3/LuaSnip',
         config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
@@ -189,6 +190,7 @@ return {
             compare.scopes,
             compare.score,
             compare.locality,
+            require('clangd_extensions.cmp_scores'),
             -- function(...) return require('cmp_buffer'):compare_locality(...) end,
             compare.recently_used,
             compare.kind,

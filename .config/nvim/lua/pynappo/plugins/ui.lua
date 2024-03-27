@@ -104,7 +104,7 @@ return {
   },
   {
     'dstein64/nvim-scrollview',
-    enabled = false,
+    enabled = true,
     config = function()
       require('scrollview').setup({
         excluded_filetypes = { 'neo-tree' },

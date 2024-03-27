@@ -8,8 +8,34 @@ local default_config = {
   flags = { debounce_text_changes = 200 },
 }
 local configs = {
+  clangd = {
+    root_dir = function(fname)
+      return require('lspconfig.util').root_pattern(
+        'Makefile',
+        'configure.ac',
+        'configure.in',
+        'config.h.in',
+        'meson.build',
+        'meson_options.txt',
+        'build.ninja'
+      )(fname) or require('lspconfig.util').root_pattern('compile_commands.json', 'compile_flags.txt')(fname) or require(
+        'lspconfig.util'
+      ).find_git_ancestor(fname)
+    end,
+    capabilities = {
+      offsetEncoding = { 'utf-16' },
+    },
+    cmd = {
+      'clangd',
+      '--background-index',
+      '--clang-tidy',
+      '--header-insertion=iwyu',
+      '--completion-style=detailed',
+      '--function-arg-placeholders',
+      '--fallback-style=llvm',
+    },
+  },
   lua_ls = {
-    log_level = vim.lsp.log_levels.TRACE,
     -- before_init = require('neodev.lsp').before_init,
     on_init = function(client)
       local path = vim.tbl_get(client, 'workspace_folders', 1, 'name')
@@ -29,11 +55,9 @@ local configs = {
         client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
           Lua = {
             runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
               version = 'LuaJIT',
               pathStrict = true,
             },
-            -- Make the server aware of Neovim runtime files
             workspace = {
               library = library,
             },

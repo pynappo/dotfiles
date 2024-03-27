@@ -30,6 +30,9 @@ return {
           },
         },
       },
+      {
+        'https://git.sr.ht/~p00f/clangd_extensions.nvim',
+      },
     },
     init = keymaps.setup.diagnostics,
     config = function()
@@ -45,6 +48,7 @@ return {
       -- end
       require('mason-lspconfig').setup({
         ensure_installed = {
+          'clangd',
           'lua_ls',
           'rust_analyzer',
           'marksman',

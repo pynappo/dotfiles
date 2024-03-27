@@ -29,7 +29,6 @@ function CanUsePredictionSource
 
 if (CanUsePredictionSource)
 { 
-    Import-Module -Name Terminal-Icons
     Import-Module PSReadLine
     Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin -HistoryNoDuplicates
     Import-Module -Name Terminal-Icons
@@ -49,6 +48,10 @@ Set-Alias -Name f -Value fzfb
 $env:PYTHONIOENCODING="utf-8"
 $env:PATH="$env:USERPROFILE\scoop\shims;$env:PATH"
 $env:PATH="$env:APPDATA\Python\Python39\Scripts;$env:PATH"
+# this doesn't work b/c powershell suck
+$env:PATH=".\node_modules\.bin;$env:PATH"
+
+# add stuff
 
 Invoke-Expression "$(thefuck --alias)"
 Function Reload-Path
@@ -65,6 +68,19 @@ Function Dotfiles
 Function Jammers
 {
     mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video @Args
+}
+Function Add-VSVars
+{
+    pushd "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools"
+    cmd /c "VsDevCmd.bat&set" |
+        foreach {
+            if ($_ -match "=")
+            {
+                $v = $_.split("=", 2); set-item -force -path "ENV:\$($v[0])"  -value "$($v[1])" 
+            }
+        }
+    popd
+    Write-Host "`nVisual Studio 2022 Command Prompt variables set." -ForegroundColor Yellow
 }
 Function Dotwindows
 {
