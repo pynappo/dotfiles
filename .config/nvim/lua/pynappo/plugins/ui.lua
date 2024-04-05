@@ -227,6 +227,9 @@ return {
           return conf
         end,
       },
+      select = {
+        backend = { 'fzf_lua', 'telescope', 'nui', 'builtin' },
+      },
     },
   },
   {

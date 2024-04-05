@@ -227,14 +227,14 @@ return {
       })
     end,
   },
-  -- {
-  --   'zbirenbaum/copilot-cmp',
-  --   event = { 'BufRead', 'BufNewFile' },
-  --   dependencies = {
-  --     { 'zbirenbaum/copilot.lua', config = function() require('copilot').setup() end },
-  --   },
-  --   config = function() require('copilot_cmp').setup() end,
-  -- },
+  {
+    'zbirenbaum/copilot-cmp',
+    event = { 'BufRead', 'BufNewFile' },
+    dependencies = {
+      { 'zbirenbaum/copilot.lua', config = function() require('copilot').setup() end },
+    },
+    config = function() require('copilot_cmp').setup() end,
+  },
   {
     'petertriho/cmp-git',
     ft = { 'gitcommit', 'gitrebase', 'octo' },

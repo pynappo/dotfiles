@@ -401,6 +401,32 @@ M.setup = {
       },
     }, {}, opts)
   end,
+  fzf = function(opts)
+    return map({
+      [{ 'n' }] = {
+        {
+          '<leader><CR>',
+          function() require('fzf-lua').builtin() end,
+          { desc = '(FZF) Telescope', remap = false },
+        },
+        { '<leader><space>', function() require('fzf-lua').buffers() end, { desc = '(FZF) Buffers' } },
+        { '<leader>ff', function() require('fzf-lua').files() end, { desc = '(FZF) Find files' } },
+        {
+          '<leader>f/',
+          function() require('fzf-lua').current_buffer_fuzzy_find() end,
+          { desc = '(FZF) Fuzzy find in buffer' },
+        },
+        { '<leader>fh', function() require('fzf-lua').help_tags() end, { desc = '(FZF) Neovim help' } },
+        { '<leader>fg', function() require('fzf-lua').live_grep() end, { desc = '(FZF) live grep a string' } },
+        {
+          '<leader>fo',
+          function() require('fzf-lua').tags({ only_current_buffer = true }) end,
+          { desc = '(FZF) Tags in buffer' },
+        },
+        { '<leader>f?', function() require('fzf-lua').oldfiles() end, { desc = '(FZF) Oldfiles' } },
+      },
+    }, {}, opts)
+  end,
   neotree = function(opts)
     return map({
       [{ 'n' }] = {

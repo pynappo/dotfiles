@@ -1,5 +1,3 @@
--- yoinked from bennetthardwick/dotfiles:
-
 -- As explained on: https://bennett.dev/auto-link-pipewire-ports-wireplumber/
 --
 -- This script keeps my stereo-null-sink connected to whatever output I'm currently using.
@@ -34,11 +32,55 @@ function link_port(output_port, input_port)
 	return true
 end
 
+function delete_link(link_om, output_port, input_port)
+	print("Trying to delete")
+
+	if not input_port or not output_port then
+		print("No ports")
+		return false
+	end
+
+	local link = link_om:lookup({
+		Constraint({
+			"link.input.node",
+			"equals",
+			input_port.properties["node.id"],
+		}),
+		Constraint({
+			"link.input.port",
+			"equals",
+			input_port.properties["object.id"],
+		}),
+		Constraint({
+			"link.output.node",
+			"equals",
+			output_port.properties["node.id"],
+		}),
+		Constraint({
+			"link.output.port",
+			"equals",
+			output_port.properties["object.id"],
+		}),
+	})
+
+	if not link then
+		print("No link!")
+
+		return
+	end
+
+	print("Deleting link!")
+
+	link:request_destroy()
+end
+
 -- Automatically link ports together by their specific audio channels.
 --
 -- ┌──────────────────┐         ┌───────────────────┐
 -- │                  │         │                   │
--- │               FL ├────────►│ AUX0              │ │      OUTPUT      │         │                   │ │               FR ├────────►│ AUX1  INPUT       │
+-- │               FL ├────────►│ AUX0              │
+-- │      OUTPUT      │         │                   │
+-- │               FR ├────────►│ AUX1  INPUT       │
 -- │                  │         │                   │
 -- └──────────────────┘         │ AUX2              │
 --                              │                   │
@@ -67,7 +109,7 @@ function auto_connect_ports(args)
 	local output_om = ObjectManager({
 		Interest({
 			type = "port",
-			args.output,
+			args["output"],
 			Constraint({ "port.direction", "equals", "out" }),
 		}),
 	})
@@ -75,7 +117,7 @@ function auto_connect_ports(args)
 	local input_om = ObjectManager({
 		Interest({
 			type = "port",
-			args.input,
+			args["input"],
 			Constraint({ "port.direction", "equals", "in" }),
 		}),
 	})
@@ -86,12 +128,32 @@ function auto_connect_ports(args)
 		}),
 	})
 
+	local unless = nil
+
+	if args["unless"] then
+		unless = ObjectManager({
+			Interest({
+				type = "port",
+				args["unless"],
+				Constraint({ "port.direction", "equals", "in" }),
+			}),
+		})
+	end
+
 	function _connect()
+		local delete_links = unless and unless:get_n_objects() > 0
+
+		print("Delete links", delete_links)
+
 		for output_name, input_name in pairs(args.connect) do
 			local output = output_om:lookup({ Constraint({ "audio.channel", "equals", output_name }) })
 			local input = input_om:lookup({ Constraint({ "audio.channel", "equals", input_name }) })
 
-			link_port(output, input)
+			if delete_links then
+				delete_link(all_links, output, input)
+			else
+				link_port(output, input)
+			end
 		end
 	end
 
@@ -102,47 +164,28 @@ function auto_connect_ports(args)
 	output_om:activate()
 	input_om:activate()
 	all_links:activate()
+
+	if unless then
+		unless:connect("object-added", _connect)
+		unless:connect("object-removed", _connect)
+		unless:activate()
+	end
 end
 
--- Auto connect SC3 to Q2U
+-- Auto connect the stereo null sink to the first two channels of the EVO16
 auto_connect_ports({
-	output = Constraint({ "object.path", "matches", "alsa:pcm:SC3*capture*" }),
-	input = Constraint({ "port.alias", "matches", "Q2U Filters*" }),
+	output = Constraint({ "port.alias", "matches", "*SC3:capture*" }),
+	input = Constraint({ "port.alias", "matches", "Q2U Filters:input*" }),
 	connect = {
 		["FL"] = "FL",
-		["FR"] = "FL",
+		["FR"] = "FR",
 	},
 })
-
--- -- Auto connect the stereo null sink to the jack_sink for when the jack server gets started
--- auto_connect_ports({
--- 	output = Constraint({ "object.path", "matches", "stereo-null-sink:*" }),
--- 	input = Constraint({ "object.path", "matches", "jack_sink:*" }),
--- 	connect = {
--- 		["FL"] = "FL",
--- 		["FR"] = "FR",
--- 	},
--- })
---
--- -- Auto connect the stereo null sink to the jack_sink for when the jack server gets started
--- auto_connect_ports({
--- 	output = Constraint({ "object.path", "matches", "stereo-null-sink:*" }),
--- 	input = Constraint({ "object.path", "matches", "alsa:pcm:*" }),
--- 	connect = {
--- 		["FL"] = "FL",
--- 		["FR"] = "FR",
--- 	},
---
--- 	-- Don't connect to speakers if there are bluetooth headphones plugged in
--- 	unless = Constraint({ "object.path", "matches", "bluez_output.*" }),
--- })
---
--- -- Auto connect the stereo null sink to bluetooth headphones
--- auto_connect_ports({
--- 	output = Constraint({ "object.path", "matches", "stereo-null-sink:*" }),
--- 	input = Constraint({ "object.path", "matches", "bluez_output.*" }),
--- 	connect = {
--- 		["FL"] = "FL",
--- 		["FR"] = "FR",
--- 	},
--- })
+auto_connect_ports({
+	output = Constraint({ "port.alias", "matches", "Q2U Filters:capture*" }),
+	input = Constraint({ "port.alias", "matches", "Noise Canceling source:input*" }),
+	connect = {
+		["FL"] = "FL",
+		["FR"] = "FR",
+	},
+})

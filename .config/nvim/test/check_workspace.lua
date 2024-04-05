@@ -22,8 +22,5 @@ local function diff_entries(t1, t2)
 end
 
 local library = vim.deepcopy(vim.lsp.get_clients()[1].config.settings.Lua.workspace.library)
-local rtp_lua = vim.api.nvim_get_runtime_file('lua', true)
-local rtp = vim.api.nvim_get_runtime_file('', true)
-local rtp_filter = vim.tbl_filter(function(str) return str:find('block') end, vim.api.nvim_get_runtime_file('', true))
 
-vim.print(diff_entries(neodev, library))
+vim.print(diff_entries(require('neodev.'), library))

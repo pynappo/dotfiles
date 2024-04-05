@@ -37,36 +37,38 @@ local configs = {
   },
   lua_ls = {
     -- before_init = require('neodev.lsp').before_init,
-    on_init = function(client)
-      local path = vim.tbl_get(client, 'workspace_folders', 1, 'name')
-      if not path then return true end
-      local nvim_workspace = path:find('nvim') or path:find('lua')
-      local test_nvim = path:find('test')
-      if nvim_workspace then
-        local library = test_nvim and { vim.env.VIMRUNTIME } or vim.api.nvim_get_runtime_file('lua', true)
-        -- add lazy-loaded plugins:
-        if package.loaded['lazy'] then
-          for _, plugin in ipairs(require('lazy').plugins()) do
-            local lua_plugin_dir = plugin.dir .. '/lua'
-            if not plugin._.loaded and vim.uv.fs_stat(lua_plugin_dir) then table.insert(library, lua_plugin_dir) end
-          end
-        end
-        library = vim.tbl_map(function(lib) return vim.fs.normalize(lib) end, library)
-        client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
-          Lua = {
-            runtime = {
-              version = 'LuaJIT',
-              pathStrict = true,
-            },
-            workspace = {
-              library = library,
-            },
-          },
-        })
-        client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
-      end
-      return true
-    end,
+    -- on_init = function(client)
+    --   local path = vim.tbl_get(client, 'workspace_folders', 1, 'name')
+    --   if not path then return true end
+    --   local nvim_workspace = path:find('nvim') or path:find('lua')
+    --   if nvim_workspace then
+    --     local library = vim.api.nvim_get_runtime_file('lua', true)
+    --     -- add lazy-loaded plugins:
+    --     if package.loaded['lazy'] then
+    --       for _, plugin in ipairs(require('lazy').plugins()) do
+    --         local lua_plugin_dir = plugin.dir .. '/lua'
+    --         if not plugin._.loaded and vim.uv.fs_stat(lua_plugin_dir) then table.insert(library, lua_plugin_dir) end
+    --       end
+    --     end
+    --     table.insert(library, vim.env.VIMRUNTIME)
+    --     library = vim.tbl_map(function(lib) return vim.fs.normalize(lib) end, library)
+    --     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+    --       runtime = {
+    --         version = 'LuaJIT',
+    --         -- path = {
+    --         --   '?.lua',
+    --         --   '?/init.lua',
+    --         -- },
+    --         -- pathStrict = false,
+    --       },
+    --       workspace = {
+    --         checkThirdParty = false,
+    --       },
+    --     })
+    --     client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+    --   end
+    --   return true
+    -- end,
     settings = {
       Lua = {
         completion = {
@@ -101,7 +103,8 @@ local configs = {
   },
 }
 
-require('pynappo.autocmds').create({ 'LspAttach' }, {
+local autocmd = require('pynappo.autocmds').create
+autocmd({ 'LspAttach' }, {
   callback = function(details)
     local bufnr = details.buf
     local client = vim.lsp.get_client_by_id(details.data.client_id) or {}
@@ -128,6 +131,24 @@ require('pynappo.autocmds').create({ 'LspAttach' }, {
     -- end
 
     if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(bufnr) end
+    if client.server_capabilities.codeLensProvider then
+      autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+        callback = function() vim.lsp.codelens.refresh({ bufnr = 0 }) end,
+        buffer = bufnr,
+      })
+      vim.keymap.set('n', '<leader>cl', vim.lsp.codelens.run, { desc = 'codelens', buffer = bufnr })
+    end
+    if client and client.server_capabilities.documentHighlightProvider then
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = bufnr,
+        callback = vim.lsp.buf.document_highlight,
+      })
+
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = bufnr,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
     vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
     keymaps.setup.lsp(bufnr)
     vim.b[bufnr].lsp_attached = true

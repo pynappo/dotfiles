@@ -1,7 +1,7 @@
-local user_command = vim.api.nvim_create_user_command
 return {
   'echasnovski/mini.nvim',
   config = function()
+    local user_command = vim.api.nvim_create_user_command
     local extra = require('mini.extra')
     local keymaps = require('pynappo.keymaps')
     -- require('mini.pairs').setup()
@@ -208,53 +208,6 @@ return {
       },
     })
     user_command('MiniMapToggle', function() map.toggle() end, {})
-    -- local animate = require('mini.animate')
-    -- animate.setup({
-    --   cursor = { enable = false },
-    --   scroll = {
-    --     enable = false,
-    --     timing = animate.gen_timing.quadratic({
-    --       easing = 'out',
-    --       duration = 40,
-    --       unit = 'total',
-    --     }),
-    --   },
-    --   resize = {
-    --     enable = false,
-    --     timing = animate.gen_timing.cubic({
-    --       easing = 'out',
-    --       duration = 40,
-    --       unit = 'total',
-    --     }),
-    --   },
-    --   open = { enable = false },
-    --   close = { enable = false },
-    -- })
-    -- local starter = require('mini.starter')
-    -- if not require('pynappo.utils').is_firenvim then
-    --   starter.setup({
-    --     evaluate_single = true,
-    --     items = {
-    --       starter.sections.builtin_actions(),
-    --       starter.sections.recent_files(10, false),
-    --       starter.sections.recent_files(10, true),
-    --       -- Use this if you set up 'mini.sessions'
-    --       starter.sections.sessions(5, true),
-    --       starter.sections.telescope(),
-    --     },
-    --     content_hooks = {
-    --       starter.gen_hook.adding_bullet(),
-    --       starter.gen_hook.padding(3, 2),
-    --       starter.gen_hook.aligning('center', 'center'),
-    --     },
-    --   })
-    -- end
-    -- user_command('MiniStarter', function() starter.open() end, {})
-    -- vim.api.nvim_create_autocmd('TabNewEntered', {
-    --   command = [[MiniStarter]],
-    -- })
-    -- require('mini.notify').setup()
-    -- vim.notify = require('mini.notify').make_notify()
     require('mini.pick').setup({
       -- Delays (in ms; should be at least 1)
       delay = {
@@ -310,7 +263,7 @@ return {
         content_from_bottom = false,
 
         -- Whether to cache matches (more speed and memory on repeated prompts)
-        use_cache = false,
+        use_cache = true,
       },
 
       -- Source definition. See `:h MiniPick-source`.
@@ -349,5 +302,16 @@ return {
         N = extra_ai.number(),
       },
     })
+    local diff = require('mini.diff')
+    -- diff.setup({
+    --   source = {
+    --     diff.gen_source.save(),
+    --   },
+    -- })
+    user_command('DiffOverlay', function() diff.toggle_overlay(0) end, {})
+    -- user_command('DiffToggle', function() diff.toggle(0) end, {})
+    -- user_command('DiffEnable', function() diff.toggle(0) end, {})
+    -- user_command('DiffDisable', function() diff.toggle(0) end, {})
+    user_command('DiffQf', function() vim.fn.setqflist(MiniDiff.export('qf')) end, {})
   end,
 }

@@ -164,6 +164,7 @@ require('lazy').setup({
   spec = {
     {
       { import = 'pynappo.plugins' },
+      -- asdf
       -- { import = 'pynappo.plugins.actions' },
       -- { import = 'pynappo.plugins.alpha' },
       -- { import = 'pynappo.plugins.autopairs' },

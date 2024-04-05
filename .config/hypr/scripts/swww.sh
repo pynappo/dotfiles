@@ -1,5 +1,5 @@
 #!/usr/bin/fish
-swww init
+swww-daemon
 if test (date +%H) -lt 6
   swww img (random choice ~/Pictures/Backgrounds/Dark/*)
 else

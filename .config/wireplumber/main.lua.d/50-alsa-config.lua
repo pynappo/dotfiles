@@ -5,7 +5,7 @@ table.insert(alsa_monitor.rules, {
 		},
 	},
 	apply_properties = {
-		["api.alsa.headroom"] = 4096,
+		["api.alsa.headroom"] = 512,
 		["api.alsa.soft-mixer"] = true,
 	},
 })

@@ -6,4 +6,4 @@
 ((markdown_section)
  @injection.content
  (#set! injection.language "markdown")
- (#set! injection.include-children))
+ (#set! injection.combined))

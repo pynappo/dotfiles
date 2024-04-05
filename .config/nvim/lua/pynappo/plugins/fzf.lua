@@ -1,10 +1,10 @@
 return {
-  {
-    'vijaymarupudi/nvim-fzf',
-    enabled = false,
-    event = 'VeryLazy',
-    config = function() local fzf = require('fzf') end,
-  },
+  -- {
+  --   'vijaymarupudi/nvim-fzf',
+  --   enabled = false,
+  --   event = 'VeryLazy',
+  --   config = function() local fzf = require('fzf') end,
+  -- },
   {
     'ibhagwan/fzf-lua',
     -- optional for icon support
@@ -19,5 +19,6 @@ return {
         { expr = true }
       )
     end,
+    keys = require('pynappo.keymaps').setup.fzf({ lazy = true }),
   },
 }

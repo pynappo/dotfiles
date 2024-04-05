@@ -36,8 +36,30 @@ return {
     },
     init = keymaps.setup.diagnostics,
     config = function()
+      local lspconfig = require('lspconfig')
+      -- lspconfig.util.add_hook_after(lspconfig.util.on_setup, function(config)
+      --   if config.name == 'lua_ls' then
+      --     -- workaround for nvim's incorrect handling of scopes in the workspace/configuration handler
+      --     -- https://github.com/folke/neodev.nvim/issues/41
+      --     -- https://github.com/LuaLS/lua-language-server/issues/1089
+      --     -- https://github.com/LuaLS/lua-language-server/issues/1596
+      --     config.handlers = vim.tbl_extend('error', {}, config.handlers)
+      --     config.handlers['workspace/configuration'] = function(...)
+      --       local _, result, ctx = ...
+      --       local client_id = ctx.client_id
+      --       local client = vim.lsp.get_client_by_id(client_id)
+      --       if client and client.workspace_folders and #client.workspace_folders then
+      --         if result.items and #result.items > 0 then
+      --           if not result.items[1].scopeUri then return vim.tbl_map(function(_) return nil end, result.items) end
+      --         end
+      --       end
+      --
+      --       return vim.lsp.handlers['workspace/configuration'](...)
+      --     end
+      --   end
+      -- end)
       local handlers = {
-        function(ls) require('lspconfig')[ls].setup(require('pynappo/lsp/configs')[ls]) end,
+        function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
         rust_analyzer = function() end, -- use rustaceanvim
         jdtls = function() end, -- use nvim-jdtls
         tsserver = function() end, -- use typescript-tools
@@ -62,10 +84,9 @@ return {
       local null_ls = require('null-ls')
       null_ls.setup({
         sources = {
-          -- null_ls.builtins.completion.spell.with({
-          --   filetypes = { 'markdown', 'text' },
-          -- }),
-          -- null_ls.builtins.code_actions.gitsigns,
+          null_ls.builtins.code_actions.gitrebase,
+          null_ls.builtins.hover.dictionary,
+          null_ls.builtins.hover.printenv,
         },
       })
     end,
