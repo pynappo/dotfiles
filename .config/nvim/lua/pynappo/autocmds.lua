@@ -135,17 +135,16 @@ end
 -- })
 
 local skeletons = {}
-local function get_extension(path) return utils.truthy(vim.fn.fnamemodify(path, ':e')) end
 
 for _, dir in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
   local ft = vim.fn.fnamemodify(dir, ':t')
   for _, skeleton in pairs(vim.api.nvim_get_runtime_file('skeleton/' .. ft .. '/*', true)) do
-    local extension = get_extension(skeleton)
-    if extension then
-      if not skeletons[extension] then
-        skeletons[extension] = { skeleton }
+    local ft = vim.filetype.match({ filename = skeleton })
+    if ft then
+      if not skeletons[ft] then
+        skeletons[ft] = { skeleton }
       else
-        table.insert(skeletons[extension], skeleton)
+        table.insert(skeletons[ft], skeleton)
       end
     end
   end
@@ -153,9 +152,9 @@ end
 
 local scratch = 'Start from scratch'
 vim.api.nvim_create_user_command('Skeleton', function(ctx)
-  local extension = get_extension(vim.api.nvim_buf_get_name(0))
-  if extension and skeletons[extension] then
-    vim.ui.select({ scratch, unpack(skeletons[extension]) }, {
+  local ft = vim.bo[0].filetype
+  if skeletons[ft] then
+    vim.ui.select({ scratch, unpack(skeletons[ft]) }, {
       prompt = 'Select skeleton',
     }, function(choice)
       if choice == scratch then return end

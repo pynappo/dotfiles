@@ -130,7 +130,8 @@ return {
           fields = { 'kind', 'abbr', 'menu' },
           format = function(entry, vim_item)
             local kind = cmp_format({
-              mode = 'symbol_text',
+              mode = 'symbol',
+              preset = 'codicons',
               menu = {
                 luasnip = '[Snip]',
                 nvim_lsp = '[LSP]',
