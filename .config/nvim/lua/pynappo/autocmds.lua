@@ -137,13 +137,16 @@ end
 local skeletons = {}
 local function get_extension(path) return utils.truthy(vim.fn.fnamemodify(path, ':e')) end
 
-for _, s in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
-  local extension = get_extension(s)
-  if extension then
-    if not skeletons[extension] then
-      skeletons[extension] = { s }
-    else
-      table.insert(skeletons[extension], s)
+for _, dir in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
+  local ft = vim.fn.fnamemodify(dir, ':t')
+  for _, skeleton in pairs(vim.api.nvim_get_runtime_file('skeleton/' .. ft .. '/*', true)) do
+    local extension = get_extension(skeleton)
+    if extension then
+      if not skeletons[extension] then
+        skeletons[extension] = { skeleton }
+      else
+        table.insert(skeletons[extension], skeleton)
+      end
     end
   end
 end
@@ -159,11 +162,12 @@ vim.api.nvim_create_user_command('Skeleton', function(ctx)
       vim.cmd('0r ' .. choice)
     end)
   end
+  vim.b[0].skeleton_prompted = true
 end, {})
 
 autocmds.create({ 'BufNewFile', 'BufNew' }, {
   callback = function(ctx)
-    if vim.api.nvim_buf_line_count(0) < 2 then vim.schedule(vim.cmd.Skeleton) end
+    if vim.api.nvim_buf_line_count(0) < 2 and not vim.b[0].skeleton_prompted then vim.schedule(vim.cmd.Skeleton) end
   end,
 })
 return autocmds
