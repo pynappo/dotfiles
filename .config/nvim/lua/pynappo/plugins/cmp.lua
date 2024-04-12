@@ -40,6 +40,12 @@ return {
     config = function()
       local cmp = require('cmp')
       local lspkind = require('lspkind')
+      lspkind.init({
+        symbol_map = {
+          Copilot = '',
+        },
+      })
+      vim.api.nvim_set_hl(0, 'CmpItemKindCopilot', { fg = '#6CC644' })
       local cmp_format = lspkind.cmp_format
       local tailwind_format = require('tailwindcss-colorizer-cmp').formatter
 
@@ -150,7 +156,7 @@ return {
             })(entry, vim_item)
             local strings = vim.split(kind.kind, '%s', { trimempty = true })
             tailwind_format(entry, vim_item)
-            kind.kind = ' ' .. strings[1] .. ' '
+            kind.kind = ' ' .. (strings[1] or '') .. ' '
             return kind
           end,
         },
@@ -160,19 +166,23 @@ return {
         completion = { completeopt = vim.o.completeopt },
         mapping = cmp_keymaps.insert(),
         preselect = cmp.PreselectMode.None,
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'crates' },
-          { name = 'emoji' },
-          { name = 'calc' },
-          { name = 'path' },
-          { name = 'nvim_lua' },
-        }, {
-          { name = 'luasnip' },
-        }, {
-          { name = 'nerdfont' },
+        sources = {
+          -- Copilot Source
+          { name = 'copilot', group_index = 2 },
+          -- Other Sources
+          { name = 'nvim_lsp', group_index = 2 },
+          { name = 'path', group_index = 2 },
+          { name = 'luasnip', group_index = 2 },
+          { name = 'emoji', group_index = 2 },
+          { name = 'path', group_index = 2 },
+          { name = 'crates', group_index = 2 },
+          { name = 'calc', group_index = 2 },
+          { name = 'nvim_lua', group_index = 2 },
+          { name = 'luasnip', group_index = 2 },
+          { name = 'nerdfont', group_index = 1 },
           -- {
           --   name = 'buffer',
+          --   group_index = 1,
           --   option = {
           --     get_bufnrs = function()
           --       local bufs = {}
@@ -183,8 +193,9 @@ return {
           --     end,
           --   },
           -- },
-        }),
+        },
         sorting = {
+          priority_weight = 2,
           comparators = {
             compare.offset,
             compare.exact,
@@ -232,7 +243,13 @@ return {
     'zbirenbaum/copilot-cmp',
     event = { 'BufRead', 'BufNewFile' },
     dependencies = {
-      { 'zbirenbaum/copilot.lua', config = function() require('copilot').setup() end },
+      {
+        'zbirenbaum/copilot.lua',
+        opts = {
+          suggestion = { enabled = false },
+          panel = { enabled = false },
+        },
+      },
     },
     config = function() require('copilot_cmp').setup() end,
   },

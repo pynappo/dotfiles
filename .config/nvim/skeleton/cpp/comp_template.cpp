@@ -31,19 +31,5 @@ typedef vector<pair<ll, ll> > vll;
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  r(people);
-  r(messages_sent);
-  ll sender;
-  unordered_map<ll, ll> last_time_sent;
-  ll unread_messages = 0;
-  vec res;
-  f(timestamp, 0, messages_sent) {
-    cin >> sender;
-    unread_messages -= timestamp - last_time_sent[sender];
-    last_time_sent[sender] = timestamp + 1;
-    // cout << unread_messages << endl;
-    // sent to all people minus the current sender
-    unread_messages += people - 1;
-    cout << unread_messages << endl;
-  }
+  TC {}
 }

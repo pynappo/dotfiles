@@ -322,3 +322,9 @@ end)(vim.paste)
 -- vim.api.nvim_create_autocmd('BufNew', {
 --   callback = function(...) vim.print(...) end,
 -- })
+vim.treesitter.language.register('rust', 'lalrpop')
+vim.filetype.add({
+  extension = {
+    lalrpop = 'lalrpop',
+  },
+})
