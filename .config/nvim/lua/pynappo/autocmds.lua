@@ -142,6 +142,7 @@ autocmds.create({ 'BufNewFile', 'BufNew' }, {
   desc = 'Lazy-loaded skeletons',
   callback = function(ctx)
     if skeletons_loaded then return end
+    skeletons_loaded = true
     for _, dir in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
       local ft = vim.fn.fnamemodify(dir, ':t')
       for _, skeleton in pairs(vim.api.nvim_get_runtime_file('skeleton/' .. ft .. '/*', true)) do
@@ -172,7 +173,6 @@ autocmds.create({ 'BufNewFile', 'BufNew' }, {
       end
       vim.b[0].skeleton_prompted = true
     end, {})
-    skeletons_loaded = true
   end,
 })
 autocmds.create({ 'BufNewFile', 'BufNew' }, {
