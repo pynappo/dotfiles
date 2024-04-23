@@ -56,6 +56,8 @@ o.clipboard = 'unnamed'
 o.pumblend = 20
 o.updatetime = 500
 o.completeopt = { 'menu', 'menuone', 'noinsert', 'noselect' }
+o.grepprg = 'rg --vimgrep'
+o.grepformat = '%f:%l:%c:%m'
 
 -- backup
 o.backup = true

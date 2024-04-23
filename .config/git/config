@@ -48,7 +48,7 @@
   light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
   hyperlinks = true
   side-by-side = false
-  features = pynappo
+  colorMoved = default
 [merge]
   conflictstyle = diff3
 [safe]
@@ -58,12 +58,15 @@
 [branch]
 	sort = -committerdate
 [alias]
-	fpush = push
+	fpush = push --force-with-lease
 	wdiff = diff --word-diff
   sdiff = diff --staged
   sclone = clone --filter=blob:none
 	unstage = restore --staged
-  lg = log  --oneline --graph --all
+  lg = log --pretty=format:'%C(auto)%h %C(brightwhite)%cs %C(auto)%s %C(blue)%(describe:tags)' --graph --all
+  lgdiff = log --pretty=format:'%C(auto)%h %C(brightwhite)%cs %C(auto)%s %C(blue)%(describe:tags)' --graph --all --compact-summary
+  pl = pull
+  ps = push
   dft = difftool
   difft = difftool
 [rebase]
@@ -71,3 +74,5 @@
 [rerere]
 	enabled = true
 	autoUpdate = true
+[color]
+

@@ -130,7 +130,7 @@ autocmd({ 'LspAttach' }, {
     --   })
     -- end
 
-    if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(bufnr) end
+    if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end
     if client.server_capabilities.codeLensProvider then
       autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
         callback = function() vim.lsp.codelens.refresh({ bufnr = 0 }) end,

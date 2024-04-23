@@ -6,6 +6,29 @@ return {
       'nvim-tree/nvim-web-devicons',
       {
         'pynappo/tabnames.nvim',
+        opts = {
+          a = {
+            c = true,
+          },
+          list = {
+            1,
+            3,
+            4,
+          },
+        },
+        config = function(_, opts) require('tabnames').setup(opts) end,
+      },
+      {
+        'pynappo/tabnames.nvim',
+        opts = {
+          a = {
+            b = true,
+          },
+          list = {
+            1,
+            2,
+          },
+        },
       },
       {
         'Bekaboo/dropbar.nvim',

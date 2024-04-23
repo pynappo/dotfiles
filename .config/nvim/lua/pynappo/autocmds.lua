@@ -25,7 +25,7 @@ autocmds.create('BufReadPost', {
     local fn = vim.fn
     if fn.line('\'"') > 0 and fn.line('\'"') <= fn.line('$') then
       fn.setpos('.', fn.getpos('\'"'))
-      vim.cmd.normal('zz')
+      -- vim.cmd.normal('zz')
       vim.cmd('silent! foldopen')
     end
   end,
@@ -136,37 +136,49 @@ end
 
 local skeletons = {}
 
-for _, dir in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
-  local ft = vim.fn.fnamemodify(dir, ':t')
-  for _, skeleton in pairs(vim.api.nvim_get_runtime_file('skeleton/' .. ft .. '/*', true)) do
-    local ft = vim.filetype.match({ filename = skeleton })
-    if ft then
-      if not skeletons[ft] then
-        skeletons[ft] = { skeleton }
-      else
-        table.insert(skeletons[ft], skeleton)
+local skeletons_loaded = false
+autocmds.create({ 'BufNewFile', 'BufNew' }, {
+  once = true,
+  desc = 'Lazy-loaded skeletons',
+  callback = function(ctx)
+    if skeletons_loaded then return end
+    for _, dir in pairs(vim.api.nvim_get_runtime_file('skeleton/*', true)) do
+      local ft = vim.fn.fnamemodify(dir, ':t')
+      for _, skeleton in pairs(vim.api.nvim_get_runtime_file('skeleton/' .. ft .. '/*', true)) do
+        if not skeletons[ft] then
+          skeletons[ft] = { skeleton }
+        else
+          table.insert(skeletons[ft], skeleton)
+        end
       end
     end
-  end
-end
 
-local scratch = 'Start from scratch'
-vim.api.nvim_create_user_command('Skeleton', function(ctx)
-  local ft = vim.bo[0].filetype
-  if skeletons[ft] then
-    vim.ui.select({ scratch, unpack(skeletons[ft]) }, {
-      prompt = 'Select skeleton',
-    }, function(choice)
-      if choice == scratch then return end
-      vim.cmd('0r ' .. choice)
-    end)
-  end
-  vim.b[0].skeleton_prompted = true
-end, {})
-
+    local scratch = 'Start from scratch'
+    vim.api.nvim_create_user_command('Skeleton', function(ctx)
+      local ft = vim.bo[0].filetype
+      if skeletons[ft] then
+        vim.ui.select({ scratch, unpack(skeletons[ft]) }, {
+          prompt = 'Select skeleton',
+        }, function(choice)
+          if not choice then
+            vim.notify('No skeleton selected', vim.log.levels.INFO)
+            return
+          end
+          if choice == scratch then return end
+          vim.cmd('0r ' .. choice)
+        end)
+      else
+        vim.notify('no skeleton found, skeletons:', vim.log.levels.INFO)
+      end
+      vim.b[0].skeleton_prompted = true
+    end, {})
+    skeletons_loaded = true
+  end,
+})
 autocmds.create({ 'BufNewFile', 'BufNew' }, {
   callback = function(ctx)
     if vim.api.nvim_buf_line_count(0) < 2 and not vim.b[0].skeleton_prompted then vim.schedule(vim.cmd.Skeleton) end
   end,
 })
+
 return autocmds

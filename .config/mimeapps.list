@@ -85,3 +85,4 @@ inode/directory=thunar.desktop
 x-scheme-handler/nxm=vortex-steamtinkerlaunch-dl.desktop
 x-scheme-handler/nxm-protocol=vortex-steamtinkerlaunch-dl.desktop
 x-scheme-handler/fleet=jetbrains-fleet.desktop
+x-scheme-handler/postman=Postman.desktop
