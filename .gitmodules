@@ -1,3 +1,6 @@
 [submodule ".config/mpv/scripts/mpv-cut"]
 	path = .config/mpv/scripts/mpv-cut
 	url = git@github.com:familyfriendlymikey/mpv-cut.git
+[submodule ".config/mpv/scripts/mpv-gif-generator"]
+	path = .config/mpv/scripts/mpv-gif-generator
+	url = https://github.com/tyalie/mpv-gif-generator.git
