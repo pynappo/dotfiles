@@ -63,5 +63,41 @@ require('lazy').setup({
   --       },
   --     })
   --   end,
-  -- },
+  {
+    'nvim-lualine/lualine.nvim',
+    priority = 1000,
+    opts = {
+      options = {
+        theme = 'auto',
+        section_separators = '',
+        component_separators = '',
+      },
+      sections = {
+        lualine_b = { {
+          'branch',
+        } },
+        lualine_c = {
+          {
+            'buffers',
+            hide_filename_extension = true,
+            mode = 4,
+            symbols = {
+              modified = ' ',
+              alternate_file = '',
+            },
+          },
+        },
+        lualine_x = {
+          {
+            'diagnostics',
+          },
+        },
+      },
+    },
+  }, -- },
 })
+vim.api.nvim_set_hl(0, "hl_1", {bg = "#000000"})
+vim.api.nvim_set_hl(0, "hl_2", {bg = "#FFFFFF"})
+for _, value in ipairs({ 'hl_1', 'hl_2' }) do
+  vim.api.nvim_buf_add_highlight(0, 0, value, 0, 0, 10)
+end

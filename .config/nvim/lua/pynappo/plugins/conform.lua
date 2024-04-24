@@ -18,6 +18,7 @@ return {
         typescriptreact = { prettier },
         javascriptreact = { prettier },
         ruby = { prettier },
+        svelte = { prettier },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
       },

@@ -8,6 +8,12 @@ local default_config = {
   flags = { debounce_text_changes = 200 },
 }
 local configs = {
+  eslint = {
+    settings = {
+      -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
+      workingDirectories = { mode = 'auto' },
+    },
+  },
   clangd = {
     root_dir = function(fname)
       return require('lspconfig.util').root_pattern(
@@ -108,11 +114,6 @@ autocmd({ 'LspAttach' }, {
   callback = function(details)
     local bufnr = details.buf
     local client = vim.lsp.get_client_by_id(details.data.client_id) or {}
-    -- local config = vim.tbl_get(client, 'config')
-    -- if config then
-    --   table.sort(config)
-    --   vim.print(#config, config)
-    -- end
     if not client then return end
     if vim.tbl_contains({ 'copilot', 'null-ls' }, client.name or vim.print('no client found')) then return end
 
