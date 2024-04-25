@@ -17,7 +17,7 @@
 [init]
   defaultBranch = main
 [pull]
-	rebase = false
+	rebase = true
 [push]
   autoSetupRemote = true
 [gpg]
@@ -51,6 +51,7 @@
   colorMoved = default
 [merge]
   conflictstyle = diff3
+	autostash = true
 [safe]
   directory = *
 [credential "https://dev.azure.com"]
