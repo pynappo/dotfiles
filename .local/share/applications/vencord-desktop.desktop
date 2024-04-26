@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Vesktop
+Exec=vesktop --enable-features=VaapiIgnoreDriverChecks,VaapiVideoEncoder,VaapiVideoDecoder,CanvasOopRasterization,UseMultiPlaneFormatForHardwareVideo
+Terminal=false
+Type=Application
+Icon=vesktop
+StartupWMClass=Vesktop
+GenericName=Internet Messenger
+Categories=Network;
+Keywords=discord;vencord;electron;chat;vesktop;
