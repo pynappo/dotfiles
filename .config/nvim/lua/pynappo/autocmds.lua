@@ -169,15 +169,23 @@ autocmds.create({ 'BufNewFile', 'BufNew' }, {
           vim.cmd('0r ' .. choice)
         end)
       else
-        vim.notify('no skeleton found, skeletons:', vim.log.levels.INFO)
+        vim.notify('no skeleton found for ' .. ft .. ', skeletons:' .. vim.inspect(skeletons), vim.log.levels.INFO)
       end
-      vim.b[0].skeleton_prompted = true
     end, {})
   end,
 })
-autocmds.create({ 'BufNewFile', 'BufNew' }, {
+
+autocmds.create({ 'BufNewFile' }, {
   callback = function(ctx)
-    if vim.api.nvim_buf_line_count(0) < 2 and not vim.b[0].skeleton_prompted then vim.schedule(vim.cmd.Skeleton) end
+    if vim.b[ctx.buf].skeleton_prompted then return end
+    if vim.bo[ctx.buf].buftype ~= '' then return end
+    if vim.api.nvim_buf_line_count(ctx.buf) > 1 then return end
+    vim.schedule(vim.cmd.Skeleton)
+    vim.b[ctx.buf].skeleton_prompted = true
+    -- if vim.api.nvim_buf_line_count(ctx.buf) < 2 and not vim.b[ctx.buf].skeleton_prompted then
+    --   vim.b[ctx.buf].skeleton_prompted = true
+    --   vim.schedule(vim.cmd.Skeleton)
+    -- end
   end,
 })
 

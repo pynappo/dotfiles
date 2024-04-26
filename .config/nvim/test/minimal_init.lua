@@ -34,6 +34,44 @@ o.number = true
 -- setup plugins
 require('lazy').setup({
   { 'tpope/vim-fugitive' },
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'MunifTanjim/nui.nvim',
+    },
+    opts = {
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          show_hidden_count = true,
+          hide_dotfiles = false,
+          hide_gitignored = true,
+          hide_by_name = {
+            -- '.git',
+            -- '.DS_Store',
+            -- 'thumbs.db',
+          },
+          never_show = {},
+        },
+      },
+    },
+    config = function()
+      require('neo-tree').setup({
+        event_handlers = {
+          {
+            event = 'file_opened',
+            handler = function(file_path)
+              vim.print('hi')
+              require('neo-tree').close_all()
+            end,
+          },
+        },
+      })
+    end,
+  },
   -- {
   --   'nvim-treesitter/nvim-treesitter',
   --   event = { 'BufNewFile', 'BufReaPost' },
@@ -96,8 +134,3 @@ require('lazy').setup({
     },
   }, -- },
 })
-vim.api.nvim_set_hl(0, "hl_1", {bg = "#000000"})
-vim.api.nvim_set_hl(0, "hl_2", {bg = "#FFFFFF"})
-for _, value in ipairs({ 'hl_1', 'hl_2' }) do
-  vim.api.nvim_buf_add_highlight(0, 0, value, 0, 0, 10)
-end

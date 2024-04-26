@@ -9,16 +9,6 @@ return {
     'ibhagwan/fzf-lua',
     -- optional for icon support
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      -- calling `setup` is optional for customization
-      require('fzf-lua').setup({})
-      vim.keymap.set(
-        'c',
-        '<C-H>',
-        "getcmdtype() == ':' ? '<Home>FzfLua command_history query=<End><CR>' : '<C-R>'",
-        { expr = true }
-      )
-    end,
     keys = require('pynappo.keymaps').setup.fzf({ lazy = true }),
   },
 }
