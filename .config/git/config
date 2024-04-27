@@ -64,16 +64,19 @@
   sdiff = diff --staged
   sclone = clone --filter=blob:none
 	unstage = restore --staged
-  lg = log --pretty=format:'%C(auto)%h %C(brightwhite)%cs %C(auto)%s %C(blue)%(describe:tags)' --graph --all
-  lgdiff = log --pretty=format:'%C(auto)%h %C(brightwhite)%cs %C(auto)%s %C(blue)%(describe:tags)' --graph --all --compact-summary
+  lg = lg1
+  lg-basic = log --graph --abbrev-commit --decorate
+ ; --pretty=format:'%C(auto)%h %C(brightwhite)%cs %C(auto)%s %C(blue)%d%(describe:tags)'
+  lg1 = lg-basic --format=format:'%C(auto)%h %C(bold green)(%as)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+  lg2 = lg-basic --format=format:'%C(auto)%h %C(bold cyan)%ad%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+  lg3 = lg-basic --format=format:'%C(auto)%h %C(bold cyan)%ad%C(reset) %C(bold green)(%ar)%C(reset) %C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
   pl = pull
   ps = push
   dft = difftool
   difft = difftool
 [rebase]
-	autoStash = true
+  autoStash = true
 [rerere]
-	enabled = true
-	autoUpdate = true
+  enabled = true
+  autoUpdate = true
 [color]
-
