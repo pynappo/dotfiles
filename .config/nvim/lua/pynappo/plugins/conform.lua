@@ -19,6 +19,7 @@ return {
         javascriptreact = { prettier },
         ruby = { prettier },
         svelte = { prettier },
+        prisma = { prettier },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
       },

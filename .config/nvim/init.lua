@@ -65,6 +65,8 @@ o.writebackup = true
 o.backupdir = { vim.fn.stdpath('state') .. '/backup' }
 
 -- Misc.
+o.concealcursor = ''
+o.conceallevel = 2
 o.confirm = true
 o.showmode = false
 o.history = 1000
