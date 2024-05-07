@@ -69,6 +69,8 @@ config.unix_domains = {
 	},
 }
 
+config.freetype_load_flags = "DEFAULT"
+
 -- This causes `wezterm` to act as though it was started as
 -- `wezterm connect unix` by default, connecting to the unix
 -- domain on startup.
@@ -90,6 +92,7 @@ config.debug_key_events = true
 config.max_fps = 144
 config.color_scheme = "Ayu Mirage"
 config.scrollback_lines = 10000
+-- config.freetype_load_target = "HorizontalLcd"
 config.font_size = 12.0
 config.font = wezterm.font_with_fallback({
 	-- { family = "Monaspace Neon", weight = "Light" },

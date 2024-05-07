@@ -47,8 +47,6 @@ M.setup = {
         { 'i', autoindent('i'), { expr = true } },
         { 'a', autoindent('a'), { expr = true } },
         { 'A', autoindent('A'), { expr = true } },
-        { 'j', function() return vim.v.count > 0 and 'j' or 'gj' end, { expr = true } },
-        { 'k', function() return vim.v.count > 0 and 'k' or 'gk' end, { expr = true } },
         { 'x', '"_dl' },
         { 'X', '"_dh' },
         {
