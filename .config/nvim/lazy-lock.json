@@ -40,10 +40,15 @@
   "gitlinker.nvim": { "branch": "master", "commit": "542f51784f20107ef9ecdadc47825204837efed5" },
   "gitsigns.nvim": { "branch": "main", "commit": "41dc075ef67b556b0752ad3967649371bd95cb95" },
   "guess-indent.nvim": { "branch": "main", "commit": "b8ae749fce17aa4c267eec80a6984130b94f80b2" },
+  "haskell-tools.nvim": { "branch": "master", "commit": "35ac2d964b004d0d0e0cc9bab039b70be36ca0f7" },
   "heirline.nvim": { "branch": "master", "commit": "03cff30d7e7d3ba6fdc00925f015822f79cef908" },
-  "helpful.vim": { "branch": "master", "commit": "ab20b339311041676f9fc449bd7a09a929793f09" },
-  "lazy.nvim": { "branch": "main", "commit": "83493db50a434a4c5c648faf41e2ead80f96e478" },
-  "leap.nvim": { "branch": "main", "commit": "bf5d64f072a74968191f9994b0c05fac64f5f015" },
+  "helpful.vim": { "branch": "master", "commit": "3cde57504326f810fb8788f83b7aa42ecf3d5653" },
+  "image.nvim": { "branch": "master", "commit": "604692f493519128c58893c28273d4247bc71a4d" },
+  "img-clip.nvim": { "branch": "main", "commit": "c55f988972be0027316889c57ffe49f2bf8f67fd" },
+  "inc-rename.nvim": { "branch": "main", "commit": "1d7d3f647d0928614c00ca9ef4ce695c45147c05" },
+  "indent-blankline.nvim": { "branch": "master", "commit": "3d08501caef2329aba5121b753e903904088f7e6" },
+  "lazy.nvim": { "branch": "main", "commit": "d3974346b6cef2116c8e7b08423256a834cb7cbc" },
+  "leap.nvim": { "branch": "main", "commit": "f1f19fc268b406b00b50091f51f16d9634fbe449" },
   "lspkind.nvim": { "branch": "master", "commit": "1735dd5a5054c1fb7feaf8e8658dbab925f4f0cf" },
   "luarocks.nvim": { "branch": "main", "commit": "d3dda396d66e484590f253d1ac6d8980e3130807" },
   "mini.nvim": { "branch": "main", "commit": "e025ee74705b04dd25a132a521c9c535dc78a8d8" },
@@ -102,4 +107,3 @@
   "vim-rhubarb": { "branch": "master", "commit": "ee69335de176d9325267b0fd2597a22901d927b1" },
   "window-picker": { "branch": "main", "commit": "41cfaa428577c53552200a404ae9b3a0b5719706" },
   "zoxide.vim": { "branch": "master", "commit": "b1e70b6fc1682a83929aee63680d2b43456fe9a5" }
-}

@@ -5,9 +5,12 @@ else
     export $var
   end
 end
-fish_add_path -p "~/.bun/bin"
-fish_add_path -p "~/.nimble/bin"
-fish_add_path -p "./node_modules/.bin"
+fish_add_path "$HOME/.bun/bin"
+fish_add_path "$HOME/.local/bin"
+fish_add_path "$HOME/.nimble/bin"
+fish_add_path "./node_modules/.bin"
+fish_add_path "$HOME/.cabal/bin"
+fish_add_path "$HOME/.ghcup/bin"
 if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
   # Emulates vim's cursor shape behavior

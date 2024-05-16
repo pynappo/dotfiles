@@ -175,26 +175,25 @@ autocmds.create({ 'BufNewFile', 'BufNew' }, {
   end,
 })
 
-local iterations = 2
-local BUFSIZE = 2 ^ 13
+local iterations = 1
+local BUFSIZE = 2 ^ 13 -- 4KB
 autocmds.create({ 'BufNewFile', 'BufNew' }, {
   callback = function(ctx)
     if vim.b[ctx.buf].skeleton_prompted then return end
     vim.b[ctx.buf].skeleton_prompted = true
     if vim.bo[ctx.buf].buftype ~= '' then return end
-    if ctx.event == 'BufNew' then
-      -- read 2 bufsize worth, return early if we have too many lines
-      local f = io.open(ctx.file, 'r')
-      if not f then return end
-      local t = 0
-      local lc = 0
-      for i = 0, iterations do
-        local lines, rest = f:read(BUFSIZE, '*line')
-        if not lines then return end
-        if rest then lines = lines .. rest .. '\n' end
-        _, t = string.gsub(lines, '\n', '\n')
-        lc = lc + t
-      end
+    -- read 1 bufsize worth, return early if we have too many lines
+    local f = io.open(ctx.file, 'r')
+    if not f then return end
+    local t = 0
+    local lc = 0
+    for i = 0, iterations do
+      local lines, rest = f:read(BUFSIZE, '*line')
+      if not lines then return end
+      if rest then lines = lines .. rest .. '\n' end
+      _, t = string.gsub(lines, '\n', '\n')
+      lc = lc + t
+      if lc > 3 then return end
     end
     vim.schedule(vim.cmd.Skeleton)
     -- if vim.api.nvim_buf_line_count(ctx.buf) < 2 and not vim.b[ctx.buf].skeleton_prompted then

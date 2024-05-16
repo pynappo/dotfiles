@@ -52,4 +52,15 @@ return {
   },
   { 'tweekmonster/helpful.vim', init = function() vim.g.helpful = 1 end },
   { 'nanotee/zoxide.vim' },
+  {
+    'HakonHarnes/img-clip.nvim',
+    event = 'VeryLazy',
+    opts = {
+      -- add options here
+      -- or leave it empty to use the default settings
+    },
+    keys = {
+      { '<leader><C-p>', '<cmd>PasteImage<cr>', desc = 'Paste image from system clipboard' },
+    },
+  },
 }

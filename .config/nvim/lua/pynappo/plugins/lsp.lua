@@ -31,6 +31,11 @@ return {
         },
       },
       {
+        'mrcjkb/haskell-tools.nvim',
+        version = '^3', -- Recommended
+        lazy = false, -- This plugin is already lazy
+      },
+      {
         'https://git.sr.ht/~p00f/clangd_extensions.nvim',
       },
     },
@@ -63,6 +68,7 @@ return {
         rust_analyzer = function() end, -- use rustaceanvim
         jdtls = function() end, -- use nvim-jdtls
         tsserver = function() end, -- use typescript-tools
+        hls = function() end, -- use haskell-tools
       }
       -- if vim.fn.executable('ccls') == 1 then
       --   handlers.clangd = function() end
