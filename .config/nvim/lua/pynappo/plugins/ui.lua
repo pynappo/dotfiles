@@ -213,7 +213,9 @@ return {
         'smjonas/inc-rename.nvim',
         dependencies = 'stevearc/dressing.nvim',
         init = keymaps.setup.incremental_rename,
-        config = true,
+        opts = {
+          input_buffer_type = 'dressing',
+        },
       },
     },
   },

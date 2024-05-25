@@ -79,10 +79,11 @@ if status is-interactive
   abbr -a -- su 'su --shell=/usr/bin/fish'
   abbr -a -- e $EDITOR
   abbr -a -- g 'git'
-  abbr_subcommand git co checkout
-  abbr_subcommand git ch cherry-pick
-  abbr_subcommand git c commit
-  abbr_subcommand git a add
+  abbr -a --command git co checkout
+  abbr -a --command git ch cherry-pick
+  abbr -a --command git c commit
+  abbr -a --command git a add
+  abbr -a --command git t tag
   abbr -a -- sudo 'sudo -E -s'
   abbr -a -- sc 'systemctl'
   abbr -a -- jc 'journalctl'
@@ -92,8 +93,8 @@ if status is-interactive
   abbr -a --set-cursor f 'fd . % | fzf'
   abbr -a -- jammers 'mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video --no-resume-playback'
   abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
-  abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
-  abbr -a --set-cursor ibmconnect 'IBM_USER="%" begin; echo (secret-tool lookup ibmconnect $IBM_USER) | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u $IBM_USER --passwd-on-stdin; end'
+  # abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
+  # abbr -a --set-cursor ibmconnect 'IBM_USER="%" begin; echo (secret-tool lookup ibmconnect $IBM_USER) | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u $IBM_USER --passwd-on-stdin; end'
   abbr -a --set-cursor :h 'nvim "+help %"'
   abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
   abbr -a -- pr 'paru'
@@ -116,7 +117,7 @@ if status is-interactive
   abbr -a !! --position anywhere --function last_history_item
 
   abbr -a -- ls "eza --icons"
-  abbr -a -- la "eza --icons --group --header --group-directories-first --long"
+  abbr -a -- la "eza --icons --group --header --group-directories-first --long --all"
   function eza -d "eza with auto-git"
     if git rev-parse --is-inside-work-tree &>/dev/null
       command eza --git --classify $argv

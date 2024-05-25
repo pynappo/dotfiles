@@ -1,15 +1,19 @@
-import Widget from 'resource:///com/github/Aylur/ags/widget.js'
-const myLabel = Widget.Label({
-  label: 'some example content',
+const date = Variable("", {
+  poll: [1000, "date"],
 });
+function Bar(monitor = 0) {
+  const myLabel = Widget.Label({
+    label: "Example",
+  });
 
-const myBar = Widget.Window({
-  name: 'bar',
-  anchor: ['bottom', 'left', 'right'],
-  child: myLabel,
+  return Widget.Window({
+    monitor,
+    name: `bar${monitor}`,
+    anchor: ["top", "left", "right"],
+    child: myLabel,
+  });
+}
+
+App.config({
+  windows: [Bar(0), Bar(1)],
 });
-export default {
-  windows: [
-    myBar
-  ]
-};

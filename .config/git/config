@@ -62,6 +62,9 @@
 	fpush = push --force-with-lease
 	wdiff = diff --word-diff
   sdiff = diff --staged
+  cdiff = diff origin...
+  odiff = diff origin...
+  t = tag
   sclone = clone --filter=blob:none
 	unstage = restore --staged
   lg = lg1

@@ -10,8 +10,9 @@ A set of dotfiles containing most of my Linux and Windows dotfiles. For Windows-
 
 See [.files/install.ps1](./.files/scoop.json)
 
+TK
+
 ## Arch
-:qa
 
 ```
 cd $HOME
@@ -35,5 +36,3 @@ winget import -i $HOME/.files/winget.txt --accept-package-agreements --accept-so
 |Command|Description|
 |:-|:-:|
 |```pacup```|It literally just runs ```scoop export``` and ```winget export``` to the aforementioned package lists.|
-
-**Inspect**

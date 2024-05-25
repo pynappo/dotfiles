@@ -282,8 +282,8 @@ M.setup = {
     map({
       [{ 'n' }] = {
         { '<leader>k', diag.open_float, { desc = 'Floating Diagnostics' } },
-        { '[d', diag.goto_prev, { desc = 'Previous diagnostic' } },
-        { ']d', diag.goto_next, { desc = 'Next diagnostic' } },
+        -- { '[d', diag.goto_prev, { desc = 'Previous diagnostic' } },
+        -- { ']d', diag.goto_next, { desc = 'Next diagnostic' } },
         { '<leader>q', diag.setloclist, { desc = 'Add diagnostics to location list' } },
       },
     })
