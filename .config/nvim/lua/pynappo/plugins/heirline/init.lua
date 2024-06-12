@@ -220,7 +220,12 @@ return {
           },
           { p.dropbar, u.align, b.diagnostics, b.gitsigns, u.space, b.file_info },
         },
-        tabline = { t.offset, t.bufferline, u.align, t.tabpages },
+        tabline = {
+          t.offset,
+          -- t.bufferline,
+          u.align,
+          t.tabpages,
+        },
         statuscolumn = {
           condition = function()
             return not conditions.buffer_matches({ buftype = { 'nofile', 'prompt', 'quickfix', 'help' } })
@@ -233,12 +238,12 @@ return {
             end
             self.current_line = vim.api.nvim_win_get_cursor(0)[1]
           end,
-          {
-            provider = function(self)
-              if self.marks[vim.v.lnum] then return self.marks[vim.v.lnum].mark:sub(2) end
-            end,
-            hl = '@comment.note',
-          },
+          -- {
+          --   provider = function(self)
+          --     if self.marks[vim.v.lnum] then return self.marks[vim.v.lnum].mark:sub(2) end
+          --   end,
+          --   hl = '@comment.note',
+          -- },
           { provider = [[%s]] },
           {
             fallthrough = false,

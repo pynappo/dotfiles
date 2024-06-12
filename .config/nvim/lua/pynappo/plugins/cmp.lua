@@ -168,6 +168,10 @@ return {
         preselect = cmp.PreselectMode.None,
         sources = {
           -- Copilot Source
+          {
+            name = 'lazydev',
+            group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+          },
           { name = 'copilot', group_index = 2 },
           -- Other Sources
           { name = 'nvim_lsp', group_index = 2 },
@@ -241,6 +245,7 @@ return {
   },
   {
     'zbirenbaum/copilot-cmp',
+    enabled = false,
     event = { 'BufRead', 'BufNewFile' },
     dependencies = {
       {

@@ -17,7 +17,7 @@ if utils.is_windows then
 end
 
 o.cmdheight = 1
-o.showtabline = 2
+o.showtabline = 1
 o.laststatus = 3
 
 -- Line numbers

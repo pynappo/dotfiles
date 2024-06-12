@@ -1,4 +1,5 @@
 [Unit]
-Description=Hyprland startup
-StopWhenUnneeded=yes
-Wants=xdg-desktop-autostart.target
+Description=Hyprland user session
+BindsTo=graphical-session.target
+Wants=graphical-session-pre.target
+After=graphical-session-pre.target
