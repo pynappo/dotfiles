@@ -261,12 +261,22 @@ function BatteryLabel() {
     class_name: "battery",
     visible: battery.bind("available"),
     children: [
-      Widget.Icon({ icon }),
-      Widget.LevelBar({
-        widthRequest: 140,
-        vpack: "center",
-        value,
+      // Widget.Icon({ icon }),
+      Widget.Label({
+        label: battery.bind("percent").as((p) => `${p}%`),
       }),
+      Widget.CircularProgress({
+        visible: battery.bind("available"),
+        value: battery.bind("percent").as((p) => (p > 0 ? p / 100 : 0)),
+        class_name: battery
+          .bind("charging")
+          .as((ch) => (ch ? "charging" : "") + " batterycircle"),
+      }),
+      // Widget.LevelBar({
+      //   widthRequest: 140,
+      //   vpack: "center",
+      //   value,
+      // }),
     ],
   });
 }
@@ -309,7 +319,7 @@ function Bar(monitor = 0, workspaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
       end_widget: Widget.Box({
         hpack: "end",
         spacing: 8,
-        children: [SysTray(), Volume(), Media(), Clock()],
+        children: [SysTray(), Volume(), Media(), Clock(), BatteryLabel()],
       }),
     }),
   });

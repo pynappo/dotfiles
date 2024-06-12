@@ -67,6 +67,8 @@
   t = tag
   sclone = clone --filter=blob:none
 	unstage = restore --staged
+  z = switch
+  l = lg
   lg = lg1
   lg-basic = log --graph --abbrev-commit --decorate
  ; --pretty=format:'%C(auto)%h %C(brightwhite)%cs %C(auto)%s %C(blue)%d%(describe:tags)'

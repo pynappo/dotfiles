@@ -106,6 +106,12 @@ label {
     color: yellow;
 }
 
+.batterycircle {
+    font-size: 2px;
+    min-height: 9px;
+    min-width: 9px;
+}
+
 levelbar block,
 highlight {
     min-height: 10px;

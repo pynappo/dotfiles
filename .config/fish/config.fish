@@ -28,6 +28,8 @@ if status is-interactive
   atuin init fish | source
   zoxide init fish | source
 
+  bind \cz 'fg 2>/dev/null; commandline -f repaint'
+
   # from nickeb96/puffer-fish
   function expand_dots -d 'expand ... to ../.. etc'
     set -l cmd (commandline --cut-at-cursor)
@@ -118,6 +120,8 @@ if status is-interactive
 
   abbr -a -- ls "eza --icons"
   abbr -a -- la "eza --icons --group --header --group-directories-first --long --all"
+  abbr -a -- l "eza --icons"
+  abbr -a -- la "eza --icons --group --header --group-directories-first --long"
   function eza -d "eza with auto-git"
     if git rev-parse --is-inside-work-tree &>/dev/null
       command eza --git --classify $argv
