@@ -1,0 +1,2 @@
+;; extends
+(identifier) @property
