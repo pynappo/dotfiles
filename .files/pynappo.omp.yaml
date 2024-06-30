@@ -73,7 +73,7 @@ blocks:
     type: battery
   - foreground: darkGray
     style: plain
-    template: " {{ .CurrentDate | date .Format }} "
+    template: "{{ if gt .Code 0 }}(exit code: {{ .Code }}){{ end }} {{ .CurrentDate | date .Format }} "
     type: time
   type: rprompt
 console_title_template: "{{.UserName}} @ {{.Folder}} ({{.Shell}}{{if .Root}} [Admin]{{end}}) "

@@ -30,14 +30,13 @@
   allowedSignersFile = ~/.ssh/allowed_signers
   defaultKeyCommand = ssh-add -L
 [diff]
-  tool = difftastic
+  tool = nvimdiff
 [difftool]
   prompt = false
+  trustExitCode = true
 [difftool "difftastic"]
   cmd = difft "$LOCAL" "$REMOTE"
 [pager]
-  difftool = true
-[interactive]
   diffFilter = delta --color-only
 [add.interactive]
   useBuiltin = false # required for git 2.37.0
@@ -50,8 +49,14 @@
   side-by-side = false
   colorMoved = default
 [merge]
+  tool = nvimdiff
   conflictstyle = diff3
 	autostash = true
+[mergetool]
+  trustExitCode = true
+  keepBackup = false
+[mergetool "diffview"]
+  cmd = nvim -n -c "DiffviewOpen" "$MERGE"
 [safe]
   directory = *
 [credential "https://dev.azure.com"]
@@ -78,10 +83,12 @@
   pl = pull
   ps = push
   dft = difftool
-  difft = difftool
+  df = diff
+  difftastic = difftool -t difftastic
+  difft = difftastic
+  mergeview = mergetool -t diffview
 [rebase]
   autoStash = true
 [rerere]
   enabled = true
   autoUpdate = true
-[color]

@@ -303,15 +303,12 @@ return {
       },
     })
     local diff = require('mini.diff')
-    -- diff.setup({
-    --   source = {
-    --     diff.gen_source.save(),
-    --   },
-    -- })
+    diff.setup({
+      -- source = {
+      --   -- diff.gen_source.save(),
+      -- },
+    })
     user_command('DiffOverlay', function() diff.toggle_overlay(0) end, {})
-    -- user_command('DiffToggle', function() diff.toggle(0) end, {})
-    -- user_command('DiffEnable', function() diff.toggle(0) end, {})
-    -- user_command('DiffDisable', function() diff.toggle(0) end, {})
-    user_command('DiffQf', function() vim.fn.setqflist(MiniDiff.export('qf')) end, {})
+    user_command('DiffQf', function() vim.fn.setqflist(diff.export('qf')) end, {})
   end,
 }

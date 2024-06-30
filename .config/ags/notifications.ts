@@ -1,5 +1,5 @@
 const notifications = await Service.import("notifications");
-notifications.popupTimeout = 600;
+notifications.popupTimeout = 10 * 1000; // 10s
 
 /** @param {import('resource:///com/github/Aylur/ags/service/notifications.js').Notification} n */
 function NotificationIcon({ app_entry, app_icon, image }) {

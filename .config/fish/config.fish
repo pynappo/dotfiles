@@ -30,6 +30,11 @@ if status is-interactive
 
   bind \cz 'fg 2>/dev/null; commandline -f repaint'
 
+  # function git-auto-fetch --on-variable PWD
+  #   if git rev-parse --is-inside-work-tree &>/dev/null
+  #     git fetch &
+  #   end
+  # end
   # from nickeb96/puffer-fish
   function expand_dots -d 'expand ... to ../.. etc'
     set -l cmd (commandline --cut-at-cursor)

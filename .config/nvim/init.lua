@@ -164,6 +164,7 @@ require('pynappo.autocmds')
 require('lazy').setup({
   profiling = {
     require = true,
+    loader = true,
   },
   spec = {
     {
@@ -310,25 +311,4 @@ vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
 
-vim.paste = (function(overridden)
-  return function(lines, phase)
-    for i, line in ipairs(lines) do
-      -- Scrub ANSI color codes from paste input.
-      lines[i] = line:gsub('\27%[[0-9;mK]+', '')
-    end
-    overridden(lines, phase)
-  end
-end)(vim.paste)
-
--- vim.api.nvim_create_autocmd('FileType', {
---   callback = function(...) vim.print(...) end,
--- })
--- vim.api.nvim_create_autocmd('BufNew', {
---   callback = function(...) vim.print(...) end,
--- })
-vim.treesitter.language.register('rust', 'lalrpop')
-vim.filetype.add({
-  extension = {
-    lalrpop = 'lalrpop',
-  },
-})
+vim.filetype.add({})
