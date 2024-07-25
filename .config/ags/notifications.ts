@@ -1,4 +1,5 @@
 const notifications = await Service.import("notifications");
+import GLib from "gi://GLib";
 notifications.popupTimeout = 10 * 1000; // 10s
 
 /** @param {import('resource:///com/github/Aylur/ags/service/notifications.js').Notification} n */
@@ -83,7 +84,11 @@ function Notification(n) {
     ),
   );
 }
-
+const urgency_to_priority = {
+  low: 2,
+  normal: 3,
+  urgent: 4,
+};
 export function NotificationPopups(monitor = 0) {
   const list = Widget.Box({
     vertical: true,
@@ -92,7 +97,9 @@ export function NotificationPopups(monitor = 0) {
 
   function onNotified(_, id: number) {
     const n = notifications.getNotification(id);
-    if (n) list.children = [Notification(n), ...list.children];
+    if (n) {
+      list.children = [Notification(n), ...list.children];
+    }
   }
 
   function onDismissed(_, id: number) {
@@ -102,6 +109,34 @@ export function NotificationPopups(monitor = 0) {
   list
     .hook(notifications, onNotified, "notified")
     .hook(notifications, onDismissed, "dismissed");
+
+  const NTFYSH_URL = GLib.getenv("NTFYSH_TO_PHONE_URL");
+  if (!NTFYSH_URL) {
+    Utils.notify({
+      urgency: "low",
+      summary: "NTFYSH_TO_PHONE_URL not set",
+    });
+  }
+  if (NTFYSH_URL && monitor == 0) {
+    list.hook(
+      notifications,
+      (_, id) => {
+        const n = notifications.getNotification(id);
+        console.log(n);
+        // prettier-ignore
+        if (n) {
+          Utils.execAsync([
+            "curl",
+            "-H", `Title: (${n.app_name}) ${n.summary}`,
+            "-H", `Priority: ${urgency_to_priority[n.urgency]}`,
+            "-d", n.body,
+            NTFYSH_URL,
+          ]);
+        }
+      },
+      "notified",
+    );
+  }
 
   return Widget.Window({
     monitor,

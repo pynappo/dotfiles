@@ -21,7 +21,7 @@ return {
             MsgArea = { link = 'NormalFloat' },
             HlSearchLens = { fg = colors.accent, bg = colors.guide_normal },
             HlSearchLensNear = { fg = colors.string, bg = colors.guide_active },
-            WinSeparator = { link = 'VertSplit' },
+            -- WinSeparator = { link = 'VertSplit' },
             FloatBorder = { fg = colors.comment, bg = colors.bg },
             TelescopePromptBorder = { fg = colors.accent, bg = colors.bg },
           }

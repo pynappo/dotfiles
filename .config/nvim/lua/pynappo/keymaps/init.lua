@@ -17,15 +17,13 @@ local function map(keymaps, keymap_opts, extra_opts)
   return lazy_keymaps
 end
 
-function M.abbr_command(abbr, expansion)
+function M.fish_style_abbr(abbr, expansion)
   return {
     abbr,
     function()
-      local valid, cmd = pcall(vim.api.nvim_parse_cmd, vim.fn.getcmdline(), {})
-      -- vim.print(cmd)
-      local has_range = valid and cmd.range and #cmd.range == 2
-      local offset = has_range and 7 or 2
-      local typing_command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdpos() < (#abbr + offset)
+      local cmdline = vim.fn.getcmdline()
+      local first_word = cmdline:match('%S+')
+      local typing_command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdpos() == (#first_word + 1)
       if not typing_command then return abbr end
       if type(expansion) == 'function' then return expansion() or abbr end
       return expansion
@@ -102,10 +100,10 @@ M.setup = {
         { '<C-S-c>', '"+y' },
       },
       [{ 'ca' }] = {
-        M.abbr_command('L', 'Lazy'),
-        M.abbr_command('s', 's/g<Left><Left>'),
-        M.abbr_command('h', 'vert h'),
-        M.abbr_command('w', function()
+        M.fish_style_abbr('L', 'Lazy'),
+        M.fish_style_abbr('s', 's/g<Left><Left>'),
+        M.fish_style_abbr('h', 'vert h'),
+        M.fish_style_abbr('w', function()
           local auto_p = 'w ++p'
           if vim.env.USER == 'root' then return auto_p end
           local prefixes = { '/etc' }
@@ -114,7 +112,7 @@ M.setup = {
           end
           return auto_p
         end),
-        M.abbr_command('!', 'term'),
+        M.fish_style_abbr('!', 'term'),
       },
       [{ 'v' }] = {
         {

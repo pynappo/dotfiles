@@ -20,6 +20,8 @@ return {
         ruby = { prettier },
         svelte = { prettier },
         prisma = { prettier },
+        css = { 'stylelint' },
+        less = { 'stylelint' },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
       },

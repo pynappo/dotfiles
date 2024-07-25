@@ -31,6 +31,7 @@
   defaultKeyCommand = ssh-add -L
 [diff]
   tool = nvimdiff
+  context = 5
 [difftool]
   prompt = false
   trustExitCode = true

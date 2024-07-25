@@ -31,7 +31,7 @@ const { icon_names, icon_binaries } = applications.list.reduce(
     icon_binaries: {},
   },
 );
-console.log(icon_names, icon_binaries);
+// console.log(icon_names, icon_binaries);
 
 let cache = {};
 // wine classes are not reliable so we don't index by classname
@@ -42,8 +42,12 @@ function escapePath(path: string) {
 function isWindowsExe(pid: number) {
   // full cmd/args
   const cmd = Utils.exec(`ps -q ${pid} -o args=`);
-  const matches = cmd.match(/[\\].*[\\](\w+\.exe)/);
-  console.log(matches);
+  const cwd = Utils.exec(`readlink -e /proc/${pid}/cwd/`);
+  if (cmd.match(/^\w:[\\]/)) {
+    const matches = cmd.match(/\\.*\\(.+?\.exe)/);
+    return matches ? escapePath(matches[0]) : false;
+  }
+  const matches = (cwd + "/" + cmd).match(/[\\\/].*[\\\/](.+?\.exe)/);
   return matches ? escapePath(matches[0]) : false;
 }
 
@@ -66,6 +70,7 @@ function getIcon(client: Client) {
       cache[clientClass] = clientClass;
       return clientClass;
     }
+
     // fetch icon from cmd
     const extracted_icon_path = escapePath(
       `${icons_path}${client.initialTitle.replaceAll(" ", "_") || client.pid}.ico`,

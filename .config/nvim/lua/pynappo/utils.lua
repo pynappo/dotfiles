@@ -7,12 +7,11 @@ utils.is_goneovim = g.gonvim_running
 utils.is_gui = utils.is_firenvim or utils.is_goneovim
 utils.config_home = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config')
 -- considers empty string and 0 falsy
+local conditions = {}
+conditions.string = function(s) return #s ~= 0 end
+conditions.number = function(n) return n ~= 0 end
 function utils.truthy(object)
-  local conditions = { object, {
-    __index = function(table, key) return object end,
-  } }
-  conditions.string = function(s) return #s ~= 0 end
-  conditions.number = function(n) return n ~= 0 end
+  if object == nil then return nil end
   return conditions[type(object)](object) and object
 end
 

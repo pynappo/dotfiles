@@ -72,6 +72,32 @@ local commands = {
       vim.cmd.diffthis() -- current buffer
     end,
   },
+  {
+    'CDRoot',
+    function(args)
+      -- check lsp root dirs
+      local clients = vim.lsp.get_clients({ bufnr = 0 })
+      for i, c in ipairs(clients) do
+        if utils.truthy(c.root_dir) then
+          vim.cmd.tcd(c.root_dir)
+          return
+        end
+      end
+      -- check for .git above bufnr
+      local git_dirs = vim.fs.find('.git', {
+        limit = 1,
+        upward = true,
+        type = 'directory',
+        path = vim.fn.expand('%'),
+      })
+      if #git_dirs == 1 then
+        vim.cmd.tcd(git_dirs[1])
+        return
+      end
+
+      vim.notify('could not find a root_dir for this buffer')
+    end,
+  },
 }
 for _, cmd in ipairs(commands) do
   vim.api.nvim_create_user_command(

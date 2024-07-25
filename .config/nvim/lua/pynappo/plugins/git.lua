@@ -213,6 +213,7 @@ return {
       current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
       current_line_blame_formatter = '<author>@<author_time:%Y-%m-%d>: <summary>',
       max_file_length = 40000, -- Disable if file is longer than this (in lines)
+      sign_priority = 2,
     },
   },
   {
