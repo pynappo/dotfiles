@@ -100,7 +100,7 @@ return {
       local p = require('pynappo.plugins.heirline.components.plugins')
       local function cond_append(base, ...)
         local copy = vim.deepcopy(base, true)
-        condition = copy.condition
+        local condition = copy.condition
         if not copy.condition then
           condition = copy[1].condition
           copy[1].condition = nil
@@ -138,6 +138,8 @@ return {
         }),
       }
       local t = require('pynappo.plugins.heirline.components.tabline')
+      local fcs = vim.opt.fillchars:get()
+      local heirline_namespace = vim.api.nvim_create_namespace('pynappo_heirline')
       require('heirline').setup({
         statusline = {
           hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' or nil end,
@@ -206,6 +208,7 @@ return {
           condition = function()
             return not conditions.buffer_matches({ buftype = { 'nofile', 'prompt', 'quickfix', 'help' } })
           end,
+          ---@class self StatusLine
           init = function(self)
             self.marks = {}
             local marks = vim.list_extend(vim.fn.getmarklist(vim.api.nvim_get_current_buf()), vim.fn.getmarklist())
@@ -213,25 +216,44 @@ return {
               self.marks[mark.pos[2]] = mark
             end
             self.current_line = vim.api.nvim_win_get_cursor(0)[1]
+            self.lnum = vim.v.lnum
+            self.fold_opened = vim.fn.foldclosed(self.lnum) == -1
+            self.foldlevel = vim.fn.foldlevel(self.lnum)
+            -- self.foldtextresult = vim.fn.foldtextresult(self.lnum)
           end,
-          -- {
-          --   provider = function(self)
-          --     if self.marks[vim.v.lnum] then return self.marks[vim.v.lnum].mark:sub(2) end
-          --   end,
-          --   hl = '@comment.note',
-          -- },
-          { provider = [[%s]] },
+          -- signcolumn
+          {
+            provider = [[%s]],
+          },
+          -- line numbers
           {
             fallthrough = false,
             { condition = function() return vim.v.virtnum ~= 0 end },
             {
-              condition = function(self) return vim.v.lnum == self.current_line end,
+              condition = function(self) return self.lnum == self.current_line end,
               u.align,
-              { provider = function() return vim.v.lnum end },
+              { provider = function(self) return self.lnum end },
             },
             { u.align, { provider = function() return vim.v.relnum end } },
           },
-          { provider = [[%1(%C%)]] },
+          -- foldcolumn
+          {
+            provider = function(self)
+              local lnum = self.lnum
+              if self.foldlevel > 1 or (self.fold_opened and self.foldlevel <= vim.fn.foldlevel(lnum - 1)) then
+                return ' '
+              end
+              return (self.fold_opened and fcs.foldopen or fcs.foldclose)
+            end,
+            hl = 'normal',
+            on_click = {
+              callback = function(self, minwid, nclicks, button, mods)
+                if button == 'l' then
+                end
+              end,
+              name = 'hi',
+            },
+          },
         },
         opts = {
           disable_winbar_cb = function(args)

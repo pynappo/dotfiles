@@ -1,7 +1,6 @@
 return {
   'nvim-telescope/telescope.nvim',
   cmd = 'Telescope',
-  enabled = false,
   dependencies = {
     'nvim-lua/plenary.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -44,5 +43,5 @@ return {
     require('pynappo.theme').overrides.all.links['TelescopeNormal'] = 'NormalFloat'
     require('pynappo.theme').overrides.all.links['TelescopeBorder'] = 'FloatBorder'
   end,
-  keys = require('pynappo.keymaps').setup.telescope({ lazy = true }),
+  -- keys = require('pynappo.keymaps').setup.telescope({ lazy = true }),
 }

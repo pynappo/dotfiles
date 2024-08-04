@@ -1,6 +1,10 @@
 local keymaps, theme = require('pynappo.keymaps'), require('pynappo.theme')
 return {
   {
+    'lewis6991/foldsigns.nvim',
+    config = true,
+  },
+  {
     'lukas-reineke/indent-blankline.nvim',
     event = { 'BufNewFile', 'BufReadPre' },
     config = function()
@@ -18,6 +22,7 @@ return {
         },
         indent = {
           highlight = theme.set_rainbow_colors('IndentBlanklineLevel', colors),
+          tab_char = '▎',
         },
         scope = {
           enabled = false,
@@ -26,6 +31,38 @@ return {
       })
       local hooks = require('ibl.hooks')
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+
+      -- setup fold markers
+      local fcs = vim.opt.fillchars:get()
+      local hsluv = require('pynappo.theme.hsluv')
+
+      for _, c in pairs(colors) do
+        local hex = c[2]
+        local hsl = hsluv.hex_to_hsluv(hex)
+        hsl[2] = hsl[2] + 10
+        hsl[3] = hsl[3] + 30
+        c[2] = hsluv.hsluv_to_hex(hsl)
+      end
+
+      local fold_marker_hl_prefix = 'IndentBlanklineFoldmarker'
+      local fold_marker_colors = theme.set_rainbow_colors(fold_marker_hl_prefix, colors)
+      hooks.register(hooks.type.VIRTUAL_TEXT, function(_, _, row, virt_text)
+        row = row + 1
+        for i = #virt_text, 1, -1 do
+          -- replace first blank character with fold marker if possible
+          if virt_text[i][1] ~= ' ' then
+            local fold_opened = vim.fn.foldclosed(row) == -1
+            local no_fold_marker = fold_opened and vim.fn.foldlevel(row) <= vim.fn.foldlevel(row - 1)
+            if not no_fold_marker then
+              local hl_number = tonumber(virt_text[i][2][2]:sub(-1))
+              virt_text[i][1] = fold_opened and fcs.foldopen or fcs.foldclose
+              virt_text[i][2][#virt_text[i][2]] = fold_marker_colors[hl_number]
+            end
+            break
+          end
+        end
+        return virt_text
+      end)
     end,
   },
   {
@@ -43,6 +80,7 @@ return {
   -- },
   {
     'RRethy/vim-illuminate',
+    dev = true,
     event = { 'BufNewFile', 'BufRead' },
     config = function()
       require('illuminate').configure({

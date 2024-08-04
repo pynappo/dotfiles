@@ -65,6 +65,7 @@ local transparent_highlights = {
   'SpecialKey',
   'VertSplit',
   'SignColumn',
+  'FoldColumn',
   'EndOfBuffer',
   'TablineFill',
 }

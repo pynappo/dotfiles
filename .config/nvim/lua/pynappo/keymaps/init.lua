@@ -101,6 +101,8 @@ M.setup = {
       },
       [{ 'ca' }] = {
         M.fish_style_abbr('L', 'Lazy'),
+        M.fish_style_abbr('V', 'vert'),
+        M.fish_style_abbr('VS', 'vert sb'),
         M.fish_style_abbr('s', 's/g<Left><Left>'),
         M.fish_style_abbr('h', 'vert h'),
         M.fish_style_abbr('w', function()
@@ -197,19 +199,6 @@ M.setup = {
         { 'ga', lsp.code_action, { desc = '(LSP) Get code actions' } },
         { 'gr', lsp.references, { desc = '(LSP) Get references' } },
         {
-          '<leader>ff',
-          function()
-            local buf = vim.api.nvim_get_current_buf()
-            local ft = vim.bo[buf].filetype
-            local have_nls = #require('null-ls.sources').get_available(ft, 'NULL_LS_FORMATTING') > 0
-            lsp.format({
-              async = true,
-              filter = function(client) return have_nls and client.name == 'null-ls' or client.name ~= 'null-ls' end,
-            })
-          end,
-          { desc = '(LSP) Format (priority to null-ls)' },
-        },
-        {
           '<leader>f',
           function()
             local client_names = vim.tbl_map(
@@ -219,7 +208,7 @@ M.setup = {
             vim.ui.select(client_names, { prompt = 'Select a client to format current buffer:' }, function(client_name)
               if vim.tbl_contains(client_names, client_name) then
                 local choice = client_name
-                lsp.format({ filter = function(client) return client.name == choice end })
+                require('conform').format({ filter = function(client) return client.name == choice end })
               else
                 vim.notify('invalid client name', vim.log.levels.INFO)
               end
@@ -677,59 +666,6 @@ M.neoscroll = {
   ['zt'] = { 'zt', { '50' } },
   ['zz'] = { 'zz', { '50' } },
   ['zb'] = { 'zb', { '50' } },
-}
-
-M.treesitter = {
-  textsubjects = {
-    keymaps = {
-      ['.'] = 'textsubjects-smart',
-      ['a.'] = 'textsubjects-container-outer',
-      ['i.'] = 'textsubjects-container-inner',
-    },
-  },
-  incremental_selection = {
-    keymaps = {
-      init_selection = 'gcn', -- set to `false` to disable one of the mappings
-      node_incremental = 'grn',
-      scope_incremental = 'grc',
-      node_decremental = 'grm',
-    },
-  },
-  textobjects = {
-    keymaps = {
-      -- You can use the capture groups defined in textobjects.scm
-      ['af'] = '@function.outer',
-      ['if'] = '@function.inner',
-      ['ac'] = '@class.outer',
-      ['ic'] = '@class.inner',
-    },
-  },
-  swap = {
-    swap_next = {
-      ['<leader>a'] = '@parameter.inner',
-    },
-    swap_previous = {
-      ['<leader>A'] = '@parameter.inner',
-    },
-  },
-  move = {
-    goto_next_start = {
-      [']m'] = '@function.outer',
-      [']]'] = '@class.outer',
-    },
-    goto_next_end = {
-      [']M'] = '@function.outer',
-      [']['] = '@class.outer',
-    },
-    goto_previous_start = {
-      ['[m'] = '@function.outer',
-      ['[['] = '@class.outer',
-    },
-    goto_previous_end = {
-      ['[M'] = '@function.outer',
-      ['[]'] = '@class.outer',
-    },
-  },
 }
 
 M.mini = {

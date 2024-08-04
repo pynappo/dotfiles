@@ -111,31 +111,38 @@ export function NotificationPopups(monitor = 0) {
     .hook(notifications, onDismissed, "dismissed");
 
   const NTFYSH_URL = GLib.getenv("NTFYSH_TO_PHONE_URL");
-  if (!NTFYSH_URL) {
-    Utils.notify({
-      urgency: "low",
-      summary: "NTFYSH_TO_PHONE_URL not set",
-    });
-  }
-  if (NTFYSH_URL && monitor == 0) {
-    list.hook(
-      notifications,
-      (_, id) => {
-        const n = notifications.getNotification(id);
-        console.log(n);
-        // prettier-ignore
-        if (n) {
-          Utils.execAsync([
-            "curl",
-            "-H", `Title: (${n.app_name}) ${n.summary}`,
-            "-H", `Priority: ${urgency_to_priority[n.urgency]}`,
-            "-d", n.body,
-            NTFYSH_URL,
-          ]);
-        }
-      },
-      "notified",
-    );
+  if (monitor != 0) {
+    const NTFYSH_IGNORE = {
+      vesktop: true,
+    };
+    if (!NTFYSH_URL) {
+      Utils.notify({
+        urgency: "low",
+        summary: "Incomplete configuration",
+        body: "NTFYSH_TO_PHONE_URL not set",
+      });
+    } else {
+      list.hook(
+        notifications,
+        (_, id) => {
+          const n = notifications.getNotification(id);
+          console.log(n);
+          // prettier-ignore
+          if (n) {
+            if (!NTFYSH_IGNORE[n.app_name]) {
+              Utils.execAsync([
+                "curl",
+                "-H", `Title: (${n.app_name}) ${n.summary}`,
+                "-H", `Priority: ${urgency_to_priority[n.urgency]}`,
+                "-d", n.body,
+                NTFYSH_URL,
+              ]);
+            }
+          }
+        },
+        "notified",
+      );
+    }
   }
 
   return Widget.Window({

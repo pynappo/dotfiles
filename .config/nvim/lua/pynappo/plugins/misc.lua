@@ -15,12 +15,6 @@ return {
     end,
   },
   {
-    'nvim-neorg/neorg',
-    ft = 'norg',
-    cmd = 'Neorg',
-    config = function() require('neorg').setup({ load = { ['core.defaults'] = {} } }) end,
-  },
-  {
     'xeluxee/competitest.nvim',
     event = 'VeryLazy',
     dependencies = { 'MunifTanjim/nui.nvim' },

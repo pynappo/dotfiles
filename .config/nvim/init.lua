@@ -1,4 +1,5 @@
 _G.pynappo = {}
+
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?/init.lua;'
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?.lua;'
 vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config')
@@ -22,6 +23,7 @@ o.laststatus = 3
 
 -- Line numbers
 o.signcolumn = 'auto:2'
+o.foldcolumn = 'auto:1'
 o.relativenumber = true
 o.number = true
 
@@ -95,6 +97,8 @@ o.diffopt = {
 -- UI stuff
 o.cursorline = true
 o.whichwrap:append('<,>,h,l,[,]')
+o.foldlevelstart = 4
+o.foldtext = ''
 o.fillchars = {
   horiz = '━',
   horizup = '┻',
@@ -105,6 +109,9 @@ o.fillchars = {
   verthoriz = '╋',
   eob = ' ',
   fold = ' ',
+  foldopen = '',
+  foldsep = ' ',
+  foldclose = '',
   diff = '╱',
 }
 o.list = true
@@ -167,34 +174,8 @@ require('lazy').setup({
     loader = true,
   },
   spec = {
-    {
-      { import = 'pynappo.plugins' },
-      -- asdf
-      -- { import = 'pynappo.plugins.actions' },
-      -- { import = 'pynappo.plugins.alpha' },
-      -- { import = 'pynappo.plugins.autopairs' },
-      -- { import = 'pynappo.plugins.cmp' },
-      -- { import = 'pynappo.plugins.colorschemes' },
-      -- { import = 'pynappo.plugins.conform' },
-      -- { import = 'pynappo.plugins.dap' },
-      -- { import = 'pynappo.plugins.enhancements' },
-      -- { import = 'pynappo.plugins.find-n-replace' },
-      -- { import = 'pynappo.plugins.firenvim' },
-      -- { import = 'pynappo.plugins.git' },
-      -- { import = 'pynappo.plugins.heirline' },
-      -- { import = 'pynappo.plugins.lint' },
-      -- { import = 'pynappo.plugins.lsp' },
-      -- { import = 'pynappo.plugins.markdown' },
-      -- { import = 'pynappo.plugins.mini' },
-      -- { import = 'pynappo.plugins.misc' },
-      -- { import = 'pynappo.plugins.neo-tree' },
-      -- { import = 'pynappo.plugins.notifications' },
-      -- { import = 'pynappo.plugins.telescope' },
-      -- { import = 'pynappo.plugins.treesitter' },
-      -- { import = 'pynappo.plugins.typst' },
-      -- { import = 'pynappo.plugins.ui' },
-      { import = 'pynappo.plugins.testing', enabled = true },
-    },
+    { import = 'pynappo.plugins' },
+    'stevearc/profile.nvim',
   },
   -- debug = true,
   git = {
@@ -282,6 +263,7 @@ require('lazy').setup({
 require('pynappo.keymaps').setup.regular()
 require('pynappo.theme')
 require('pynappo.commands')
+require('pynappo.tweaks')
 vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
@@ -310,3 +292,30 @@ vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
+
+local should_profile = os.getenv('NVIM_PROFILE')
+
+if should_profile then
+  require('profile').instrument_autocmds()
+  if should_profile:lower():match('^start') then
+    require('profile').start('*')
+  else
+    require('profile').instrument('*')
+  end
+end
+
+local function toggle_profile()
+  local prof = require('profile')
+  if prof.is_recording() then
+    prof.stop()
+    vim.ui.input({ prompt = 'Save profile to:', completion = 'file', default = 'profile.json' }, function(filename)
+      if filename then
+        prof.export(filename)
+        vim.notify(string.format('Wrote %s', filename))
+      end
+    end)
+  else
+    prof.start('*')
+  end
+end
+vim.keymap.set('', '<f1>', toggle_profile)

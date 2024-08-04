@@ -189,6 +189,7 @@ function Windows(monitor = 0) {
                 maxWidthChars: 30,
                 label:
                   client.title ||
+                  client.initialTitle ||
                   client.class ||
                   client.initialClass ||
                   `(PID ${client.pid})`,

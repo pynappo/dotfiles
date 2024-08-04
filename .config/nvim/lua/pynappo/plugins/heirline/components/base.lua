@@ -127,50 +127,6 @@ local M = {
     },
     update = { 'BufEnter', 'BufWritePost' },
   },
-  dropbar_str = {
-    condition = function() return not vim.tbl_isempty(dropbar) end,
-    provider = function() return dropbar.get_dropbar_str() end,
-  },
-  dropbar = {
-    condition = function(self)
-      self.data = vim.tbl_get(dropbar.bars or {}, vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win())
-      return self.data
-    end,
-    static = { dropbar_on_click_string = 'v:lua.dropbar.on_click_callbacks.buf%s.win%s.fn%s' },
-    init = function(self)
-      local components = self.data.components
-      local children = {}
-      for i, c in ipairs(components) do
-        local child = {
-          {
-            provider = c.icon,
-            hl = c.icon_hl,
-          },
-          {
-            hl = c.name_hl,
-            provider = c.name,
-          },
-          on_click = {
-            callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i),
-            name = 'heirline_dropbar',
-          },
-        }
-        if i < #components then
-          local sep = self.data.separator
-          table.insert(child, {
-            provider = sep.icon,
-            hl = sep.icon_hl,
-            on_click = {
-              callback = self.dropbar_on_click_string:format(self.data.buf, self.data.win, i + 1),
-            },
-          })
-        end
-        table.insert(children, child)
-      end
-      self.child = self:new(children, 1)
-    end,
-    provider = function(self) return self.child:eval() end,
-  },
   diagnostics = {
     {
       condition = conditions.has_diagnostics,
@@ -305,6 +261,10 @@ local M = {
     { provider = function(self) return vim.fn.pathshorten(self.lfilename) end },
   },
   file_icon = {
+    init = function(self)
+      self.icon, self.icon_color =
+        require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+    end,
     provider = function(self) return self.icon and (self.icon .. ' ') end,
     hl = function(self) return { fg = self.icon_color } end,
     update = { 'FileType', 'BufEnter' },
@@ -320,8 +280,6 @@ M.file_info = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(0)
     self.extension = vim.fn.expand('%:e')
-    self.icon, self.icon_color =
-      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
   end,
   M.file_icon,
   M.filename,

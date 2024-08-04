@@ -2,6 +2,7 @@
 return {
   {
     'hrsh7th/nvim-cmp',
+    dev = true,
     version = false,
     dependencies = {
       'onsails/lspkind.nvim',
@@ -113,15 +114,13 @@ return {
 
       cmp.setup({
         enabled = function()
-          local disabled = false
-          disabled = disabled or (vim.bo[0].buftype == 'prompt')
-          disabled = disabled or (vim.fn.reg_recording() ~= '')
-          disabled = disabled or (vim.fn.reg_executing() ~= '')
-          disabled = disabled or vim.g.cmp_disable
+          local disabled = (vim.bo[0].buftype == 'prompt')
+            or (vim.fn.reg_recording() ~= '')
+            or (vim.fn.reg_executing() ~= '')
+            or vim.g.cmp_disable
           return not disabled
         end,
         performance = {
-          max_view_entries = 15,
           async_budget = 2,
         },
         window = {
@@ -167,7 +166,6 @@ return {
         mapping = cmp_keymaps.insert(),
         preselect = cmp.PreselectMode.None,
         sources = {
-          -- Copilot Source
           {
             name = 'lazydev',
             group_index = 0, -- set group index to 0 to skip loading LuaLS completions

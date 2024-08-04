@@ -91,14 +91,14 @@ return {
     })
 
     vim.keymap.del('x', keymaps.mini.surround.add)
-    local indentscope = require('mini.indentscope')
-    indentscope.setup({
-      draw = {
-        animation = indentscope.gen_animation.quadratic({ easing = 'out', duration = 10, unit = 'step' }),
-      },
-      options = { try_as_border = true },
-      symbol = '󰇙',
-    })
+    -- local indentscope = require('mini.indentscope')
+    -- indentscope.setup({
+    --   draw = {
+    --     animation = indentscope.gen_animation.quadratic({ easing = 'out', duration = 10, unit = 'step' }),
+    --   },
+    --   options = { try_as_border = true },
+    --   symbol = '󰇙',
+    -- })
     vim.api.nvim_create_autocmd('FileType', {
       callback = function(args)
         if vim.tbl_contains({ 'nofile', 'help' }, vim.bo[args.buf].buftype) then
