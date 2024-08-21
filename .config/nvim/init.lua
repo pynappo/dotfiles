@@ -67,6 +67,7 @@ o.writebackup = true
 o.backupdir = { vim.fn.stdpath('state') .. '/backup' }
 
 -- Misc.
+o.exrc = true
 o.concealcursor = ''
 o.conceallevel = 2
 o.confirm = true
@@ -274,6 +275,7 @@ vim.filetype.add({
   extension = {
     rasi = 'rasi',
     mdx = 'mdx',
+    sxcu = 'json',
   },
 })
 -- GUI stuff

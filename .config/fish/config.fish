@@ -86,6 +86,7 @@ if status is-interactive
   abbr -a -- su 'su --shell=/usr/bin/fish'
   abbr -a -- e $EDITOR
   abbr -a -- g 'git'
+  abbr -a -- gdnvim 'nvim --listen /tmp/godot.pipe'
   abbr -a --command git co checkout
   abbr -a --command git ch cherry-pick
   abbr -a --command git c commit

@@ -7,7 +7,12 @@ local default_config = {
   ),
   flags = { debounce_text_changes = 200 },
 }
+
 local configs = {
+  gdscript = {
+    cmd = require('pynappo.utils').is_windows and { 'ncat', '127.0.0.1', '6005' }
+      or vim.lsp.rpc.connect('127.0.0.1', 6005),
+  },
   eslint = {
     settings = {
       -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
@@ -43,39 +48,6 @@ local configs = {
     },
   },
   lua_ls = {
-    -- before_init = require('neodev.lsp').before_init,
-    -- on_init = function(client)
-    --   local path = vim.tbl_get(client, 'workspace_folders', 1, 'name')
-    --   if not path then return true end
-    --   local nvim_workspace = path:find('nvim') or path:find('lua')
-    --   if nvim_workspace then
-    --     local library = vim.api.nvim_get_runtime_file('lua', true)
-    --     -- add lazy-loaded plugins:
-    --     if package.loaded['lazy'] then
-    --       for _, plugin in ipairs(require('lazy').plugins()) do
-    --         local lua_plugin_dir = plugin.dir .. '/lua'
-    --         if not plugin._.loaded and vim.uv.fs_stat(lua_plugin_dir) then table.insert(library, lua_plugin_dir) end
-    --       end
-    --     end
-    --     table.insert(library, vim.env.VIMRUNTIME)
-    --     library = vim.tbl_map(function(lib) return vim.fs.normalize(lib) end, library)
-    --     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-    --       runtime = {
-    --         version = 'LuaJIT',
-    --         -- path = {
-    --         --   '?.lua',
-    --         --   '?/init.lua',
-    --         -- },
-    --         -- pathStrict = false,
-    --       },
-    --       workspace = {
-    --         checkThirdParty = false,
-    --       },
-    --     })
-    --     client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
-    --   end
-    --   return true
-    -- end,
     settings = {
       Lua = {
         completion = {

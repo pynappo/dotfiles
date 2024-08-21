@@ -19,16 +19,18 @@ scale {
   /* transition-property: box-shadow; */
 }
 
+.bar circular-progress {
+  font-size: 2px;
+  min-height: 9px;
+  min-width: 9px;
+}
+
 .bar button:active {
   background-color: @theme_selected_bg_color;
 }
 
 .bar button:hover {
   box-shadow: inset 0 -4px @theme_fg_color;
-}
-
-label {
-  /* font-weight: bold; */
 }
 
 .workspaces button {
@@ -48,13 +50,7 @@ label {
 }
 
 .notification {
-  color: yellow;
-}
-
-.batterycircle {
-  font-size: 2px;
-  min-height: 9px;
-  min-width: 9px;
+  color: purple;
 }
 
 levelbar block,

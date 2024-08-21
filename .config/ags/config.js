@@ -19,4 +19,27 @@ try {
   console.error(error);
 }
 
+Utils.monitorFile(
+  // directory that contains the scss files
+  `${App.configDir}`,
+
+  function () {
+    App.resetCss();
+    App.applyCss(`${App.configDir}/main.css`);
+  },
+  // // reload function
+  // function () {
+  //   // main scss file
+  //   const scss = `${App.configDir}/main.scss`;
+  //
+  //   // target css file
+  //   const css = `/tmp/ags/main.css`;
+  //
+  //   // compile, reset, apply
+  //   Utils.exec(`sassc ${scss} ${css}`);
+  //   App.resetCss();
+  //   App.applyCss(css);
+  // },
+);
+
 export {};

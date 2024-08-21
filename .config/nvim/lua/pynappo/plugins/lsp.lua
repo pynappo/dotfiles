@@ -82,6 +82,7 @@ return {
         },
         handlers = handlers,
       })
+      require('lspconfig').gdscript.setup(require('pynappo/lsp/configs').gdscript)
       local null_ls = require('null-ls')
       null_ls.setup({
         sources = {
@@ -98,5 +99,6 @@ return {
       ui = { border = 'single' },
       PATH = 'append',
     },
+    config = function(_, opts) require('mason').setup(opts) end,
   },
 }

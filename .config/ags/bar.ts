@@ -55,7 +55,7 @@ const icons_path = "/tmp/ags/icons/";
 Utils.exec(`mkdir ${icons_path} -p`);
 
 function getIcon(client: Client) {
-  const clientClass = client.initialClass;
+  const clientClass = client.class || client.initialClass;
   if (!clientClass) return "";
 
   // check cache
@@ -97,15 +97,17 @@ function getIcon(client: Client) {
   }
 
   // query applications service
-  const query_result = applications.query(client.initialClass)[0];
+  const query_result = applications.query(clientClass)[0];
   if (query_result) {
     console.log(`query for ${client.initialClass}: ${query_result}`);
     icon = query_result["icon-name"];
     cache[clientClass] = icon;
     return icon;
   }
+  console.log(client);
 
   console.log("couldn't find class for " + client);
+  // const icon = Utils.lookUpIcon(clientClass);
   cache[clientClass] = clientClass;
   return clientClass;
 }
@@ -273,14 +275,19 @@ function Volume() {
     icon: Utils.watch(getIcon(), audio.speaker, getIcon),
   });
 
-  const slider = Widget.Slider({
-    hexpand: true,
-    draw_value: false,
-    on_change: ({ value }) => (audio.speaker.volume = value),
-    setup: (self) =>
-      self.hook(audio.speaker, () => {
-        self.value = audio.speaker.volume || 0;
-      }),
+  // const slider = Widget.Slider({
+  //   hexpand: true,
+  //   draw_value: false,
+  //   on_change: ({ value }) => (audio.speaker.volume = value),
+  //   setup: (self) =>
+  //     self.hook(audio.speaker, () => {
+  //       self.value = audio.speaker.volume || 0;
+  //     }),
+  // });
+  const circle = Widget.CircularProgress({
+    value: audio.speaker.bind("volume").as((v) => {
+      return v;
+    }),
   });
 
   const label = Widget.Label({
@@ -291,8 +298,7 @@ function Volume() {
 
   return Widget.Box({
     class_name: "volume",
-    css: "min-width: 140px",
-    children: [icon, slider, label],
+    children: [circle, label, icon],
   });
 }
 

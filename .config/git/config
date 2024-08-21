@@ -93,3 +93,6 @@
 [rerere]
   enabled = true
   autoUpdate = true
+[credential]
+	helper = 
+	helper = /usr/bin/git-credential-manager

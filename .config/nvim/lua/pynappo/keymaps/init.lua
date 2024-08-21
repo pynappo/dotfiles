@@ -115,6 +115,7 @@ M.setup = {
           return auto_p
         end),
         M.fish_style_abbr('!', 'term'),
+        M.fish_style_abbr('=', 'term'),
       },
       [{ 'v' }] = {
         {
@@ -239,18 +240,27 @@ M.setup = {
     local dap = require('dap')
     map({
       [{ 'n' }] = {
-        { '<F5>', dap.continue },
-        { '<leader>db', dap.toggle_breakpoint },
-        { '<leader>dB', dap.set_breakpoint },
+        { '<leader>b', dap.toggle_breakpoint },
+        { '<leader>ds', dap.stop },
+        { '<leader>db', dap.run_to_cursor },
         { '<leader>dc', dap.disconnect },
         { '<leader>dk', dap.up },
-        { '<leader>dj', dap.down },
-        { '<leader>di', dap.step_into },
-        { '<leader>do', dap.step_out },
-        { '<leader>du', dap.step_over },
-        { '<leader>ds', dap.stop },
-        { '<leader>dn', dap.run_to_cursor },
         { '<leader>de', dap.set_exception_breakpoints },
+        { '<leader>dj', dap.down },
+
+        { '<F9>', dap.continue },
+        { '<F11>', dap.step_into },
+        { '<S-F11>', dap.step_out },
+        { '<F10>', dap.step_over },
+      },
+    })
+  end,
+  dapgo = function()
+    local dap_go = require('dap-go')
+    map({
+      [{ 'n' }] = {
+        { '<localleader>dt', dap_go.debug_test },
+        { '<localleader>dlt', dap_go.debug_last_test },
       },
     })
   end,
@@ -259,6 +269,7 @@ M.setup = {
     map({
       [{ 'n' }] = {
         { '<S-F5>', ui.toggle },
+        { '<S-F5>', function() require('dapui').eval(nil, { enter = true }) end },
         { '<S-F6>', ui.close },
         { '<S-F7>', ui.float_element },
       },

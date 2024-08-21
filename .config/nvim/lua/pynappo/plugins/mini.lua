@@ -295,7 +295,7 @@ return {
     local extra_ai = extra.gen_ai_spec
     require('mini.ai').setup({
       custom_textobjects = {
-        ['%'] = extra_ai.buffer(),
+        -- ['%'] = extra_ai.buffer(),
         D = extra_ai.diagnostic(),
         I = extra_ai.indent(),
         L = extra_ai.line(),
