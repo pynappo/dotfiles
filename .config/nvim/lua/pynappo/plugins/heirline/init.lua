@@ -229,7 +229,7 @@ return {
             if vim.fn.mode():lower():find('v') then
               local visual_lnum = vim.fn.getpos('v')[2]
               local cursor_lnum = vim.api.nvim_win_get_cursor(0)[1]
-              -- force visual_lnum < cursor_lnum
+              -- make sure that visual_range is ascending
               if visual_lnum > cursor_lnum then
                 self.visual_range = { cursor_lnum, visual_lnum }
               else
