@@ -12,10 +12,7 @@ return {
           general = { enable = false },
           icons = {
             ui = {
-              bar = {
-                separator = '  ',
-                extends = '…',
-              },
+              bar = { separator = '  ', extends = '…' },
             },
           },
           bar = {
@@ -141,6 +138,15 @@ return {
       local fcs = vim.opt.fillchars:get()
       local heirline_namespace = vim.api.nvim_create_namespace('pynappo_heirline')
       require('heirline').setup({
+        opts = {
+          disable_winbar_cb = function(args)
+            return conditions.buffer_matches({
+              buftype = { 'nofile', 'prompt', 'quickfix' },
+              filetype = { '^git.*', 'fugitive', 'Trouble', 'dashboard' },
+            }, args.buf)
+          end,
+          colors = heirline_colors(),
+        },
         statusline = {
           hl = function() return not conditions.buffer_matches({ buftype = { 'terminal' } }) and 'StatusLine' or nil end,
           static = {
@@ -210,16 +216,26 @@ return {
           end,
           ---@class self StatusLine
           init = function(self)
-            self.marks = {}
-            local marks = vim.list_extend(vim.fn.getmarklist(vim.api.nvim_get_current_buf()), vim.fn.getmarklist())
-            for _, mark in pairs(marks) do
-              self.marks[mark.pos[2]] = mark
-            end
+            -- self.marks = {}
+            -- local marks = vim.list_extend(vim.fn.getmarklist(vim.api.nvim_get_current_buf()), vim.fn.getmarklist())
+            -- for _, mark in pairs(marks) do
+            --   self.marks[mark.pos[2]] = mark
+            -- end
             self.current_line = vim.api.nvim_win_get_cursor(0)[1]
             self.lnum = vim.v.lnum
             self.fold_opened = vim.fn.foldclosed(self.lnum) == -1
             self.foldlevel = vim.fn.foldlevel(self.lnum)
-            -- self.foldtextresult = vim.fn.foldtextresult(self.lnum)
+            self.visual_range = nil
+            if vim.fn.mode():lower():find('v') then
+              local visual_lnum = vim.fn.getpos('v')[2]
+              local cursor_lnum = vim.api.nvim_win_get_cursor(0)[1]
+              -- force visual_lnum < cursor_lnum
+              if visual_lnum > cursor_lnum then
+                self.visual_range = { cursor_lnum, visual_lnum }
+              else
+                self.visual_range = { visual_lnum, cursor_lnum }
+              end
+            end
           end,
           -- signcolumn
           {
@@ -234,7 +250,17 @@ return {
               u.align,
               { provider = function(self) return self.lnum end },
             },
-            { u.align, { provider = function() return vim.v.relnum end } },
+            {
+              u.align,
+              {
+                hl = function(self)
+                  if self.visual_range then
+                    if self.lnum >= self.visual_range[1] and self.lnum <= self.visual_range[2] then return 'normal' end
+                  end
+                end,
+                provider = function() return vim.v.relnum end,
+              },
+            },
           },
           -- foldcolumn
           {
@@ -245,7 +271,6 @@ return {
               end
               return (self.fold_opened and fcs.foldopen or fcs.foldclose)
             end,
-            hl = 'normal',
             on_click = {
               callback = function(self, minwid, nclicks, button, mods)
                 if button == 'l' then
@@ -254,15 +279,6 @@ return {
               name = 'hi',
             },
           },
-        },
-        opts = {
-          disable_winbar_cb = function(args)
-            return conditions.buffer_matches({
-              buftype = { 'nofile', 'prompt', 'quickfix' },
-              filetype = { '^git.*', 'fugitive', 'Trouble', 'dashboard' },
-            }, args.buf)
-          end,
-          colors = heirline_colors(),
         },
       })
       -- need to ensure this happens after tint.nvim sets up
