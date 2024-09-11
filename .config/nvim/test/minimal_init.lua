@@ -1,16 +1,15 @@
--- install lazy.nvim, a plugin manager
--- local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
--- if not vim.loop.fs_stat(lazypath) then
---   vim.fn.system({
---     'git',
---     'clone',
---     '--filter=blob:none',
---     'https://github.com/folke/lazy.nvim.git',
---     '--branch=stable', -- latest stable release
---     lazypath,
---   })
--- end
--- vim.opt.rtp:prepend(lazypath)
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
 -- some nice-to-have settings
 vim.cmd.colorscheme('habamax')
@@ -32,5 +31,10 @@ g.mapleader = ' '
 o.relativenumber = true
 o.number = true
 vim.keymap.set('n', '<leader>cc', 'gcc', { remap = true })
--- setup plugins
--- require('lazy').setup({ })
+require('lazy').setup({
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = true,
+  },
+})
