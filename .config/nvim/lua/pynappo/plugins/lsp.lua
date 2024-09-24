@@ -24,24 +24,6 @@ return {
         'williamboman/mason-lspconfig.nvim',
         dependencies = { 'williamboman/mason.nvim' },
       },
-      -- 'alaviss/nim.nvim',
-      -- {
-      --   'pmizio/typescript-tools.nvim',
-      --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-      --   opts = {
-      --     settings = {
-      --       tsserver_file_preferences = {
-      --         includeInlayParameterNameHints = 'all',
-      --         includeCompletionsForModuleExports = true,
-      --         quotePreference = 'auto',
-      --       },
-      --       tsserver_format_options = {
-      --         allowIncompleteCompletions = false,
-      --         allowRenameOfImportPath = false,
-      --       },
-      --     },
-      --   },
-      -- },
       {
         'yioneko/nvim-vtsls',
       },
@@ -62,7 +44,6 @@ return {
         function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
         rust_analyzer = function() end, -- use rustaceanvim
         jdtls = function() end, -- use nvim-jdtls
-        tsserver = function() end, -- use typescript-tools
         hls = function() end, -- use haskell-tools
       }
       -- if vim.fn.executable('ccls') == 1 then

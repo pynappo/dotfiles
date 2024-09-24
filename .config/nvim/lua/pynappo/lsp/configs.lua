@@ -38,7 +38,6 @@ local configs = {
     },
     cmd = {
       'clangd',
-      '-Wunused-variable',
       '--background-index',
       '--clang-tidy',
       '--header-insertion=iwyu',
