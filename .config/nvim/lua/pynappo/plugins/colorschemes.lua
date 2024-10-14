@@ -24,6 +24,8 @@ return {
             -- WinSeparator = { link = 'VertSplit' },
             FloatBorder = { fg = colors.comment, bg = colors.bg },
             TelescopePromptBorder = { fg = colors.accent, bg = colors.bg },
+            ['@lsp.mod.strong'] = { bold = true },
+            ['@lsp.mod.emph'] = { italic = true },
           }
         end,
       })

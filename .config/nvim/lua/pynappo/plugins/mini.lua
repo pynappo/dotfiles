@@ -310,5 +310,6 @@ return {
     })
     user_command('DiffOverlay', function() diff.toggle_overlay(0) end, {})
     user_command('DiffQf', function() vim.fn.setqflist(diff.export('qf')) end, {})
+    require('mini.git').setup()
   end,
 }

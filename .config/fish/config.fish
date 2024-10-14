@@ -99,7 +99,7 @@ if status is-interactive
   abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
   abbr -a --position anywhere .C "$XDG_CONFIG_HOME/"
   abbr -a --set-cursor f 'fd . % | fzf'
-  abbr -a -- jammers 'mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video --no-resume-playback'
+  abbr -a -- jammers 'mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video --no-resume-playback --volume=20'
   abbr -a -- ocr 'grim -g "$(slurp)" - | tesseract - - | wl-copy'
   # abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
   # abbr -a --set-cursor ibmconnect 'IBM_USER="%" begin; echo (secret-tool lookup ibmconnect $IBM_USER) | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u $IBM_USER --passwd-on-stdin; end'
@@ -110,8 +110,8 @@ if status is-interactive
   abbr -a -- - 'prevd'
   abbr -a -- + 'nextd'
 
-  abbr -a -- pacsearch 'pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S'
-  abbr -a -- pacremove 'pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns'
+  abbr -a -- pacsearch 'pacman -Slq | fzf --multi --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
+  abbr -a -- pacremove 'pacman -Qq | fzf --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
   abbr -a -- parusearch 'paru -Sl | awk \'{print $2($4=="" ? "" : " *")}\' | fzf --multi --preview \'paru -Si {1}\' | cut -d " " -f 1 | xargs -ro paru -S'
   function edit
     echo $EDITOR $argv
@@ -138,3 +138,6 @@ if status is-interactive
   # refresh sudo timeout
   alias sudo="/usr/bin/sudo -v; /usr/bin/sudo"
 end
+# for the sce dev tool
+alias sce="/home/dle/code/sce/SCE-CLI/sce.sh"
+

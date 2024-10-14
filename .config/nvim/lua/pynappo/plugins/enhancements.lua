@@ -62,12 +62,7 @@ return {
   { 'tiagovla/scope.nvim', opts = {} },
   {
     'karb94/neoscroll.nvim',
-    enabled = true,
-    event = 'VeryLazy',
-    config = function()
-      require('neoscroll').setup({ easing_function = 'quadratic' })
-      require('neoscroll.config').set_mappings(keymaps.neoscroll)
-    end,
+    config = function() require('neoscroll').setup({ easing_function = 'quadratic' }) end,
   },
   'tpope/vim-repeat',
   {

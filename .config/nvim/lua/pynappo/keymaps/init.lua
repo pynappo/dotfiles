@@ -355,18 +355,18 @@ M.setup = {
   dial = function(opts)
     return map({
       [{ 'n' }] = {
-        { '<C-a>', function() return require('dial.map').inc_normal() end },
-        { '<C-x>', function() return require('dial.map').dec_normal() end },
-        { 'g<C-a>', function() return require('dial.map').inc_gnormal() end },
-        { 'g<C-x>', function() return require('dial.map').dec_gnormal() end },
+        { '<C-a>', function() require('dial.map').manipulate('increment', 'normal') end },
+        { '<C-x>', function() require('dial.map').manipulate('decrement', 'normal') end },
+        { 'g<C-a>', function() require('dial.map').manipulate('increment', 'gnormal') end },
+        { 'g<C-x>', function() require('dial.map').manipulate('decrement', 'gnormal') end },
       },
       [{ 'v' }] = {
-        { '<C-a>', function() return require('dial.map').inc_visual() end },
-        { '<C-x>', function() return require('dial.map').dec_visual() end },
-        { 'g<C-a>', function() return require('dial.map').inc_gvisual() end },
-        { 'g<c-x>', function() return require('dial.map').dec_gvisual() end },
+        { '<C-a>', function() require('dial.map').manipulate('increment', 'visual') end },
+        { '<C-x>', function() require('dial.map').manipulate('decrement', 'visual') end },
+        { 'g<C-a>', function() require('dial.map').manipulate('increment', 'visual') end },
+        { 'g<C-a>', function() require('dial.map').manipulate('decrement', 'visual') end },
       },
-    }, { noremap = true, expr = true }, opts)
+    }, {}, opts)
   end,
   telescope = function(opts)
     return map({
@@ -666,17 +666,6 @@ M.neotree = {
       },
     },
   },
-}
-M.neoscroll = {
-  ['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '100', [["sine"]] } },
-  ['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '100', [["sine"]] } },
-  ['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '50', [["circular"]] } },
-  ['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '50', [["circular"]] } },
-  ['<C-y>'] = { 'scroll', { '-0.10', 'false', '50', nil } },
-  ['<C-e>'] = { 'scroll', { '0.10', 'false', '50', nil } },
-  ['zt'] = { 'zt', { '50' } },
-  ['zz'] = { 'zz', { '50' } },
-  ['zb'] = { 'zb', { '50' } },
 }
 
 M.mini = {

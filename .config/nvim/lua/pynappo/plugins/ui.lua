@@ -189,10 +189,9 @@ return {
     },
     opts = {
       cmdline = {
-        enabled = false,
+        enabled = true,
         view = 'cmdline',
       },
-      messages = { enabled = false },
       lsp = {
         progress = {
           enabled = false,

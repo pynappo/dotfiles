@@ -38,18 +38,25 @@ return {
       local augend = require('dial.augend')
       require('dial.config').augends:register_group({
         default = {
+          augend.case.new({
+            types = { 'snake_case', 'kebab-case', 'camelCase', 'PascalCase', 'SCREAMING_SNAKE_CASE' },
+            cyclic = true,
+          }),
           augend.integer.alias.decimal,
           augend.integer.alias.hex,
           augend.date.alias['%Y/%m/%d'],
           augend.hexcolor.new({ case = 'lower' }),
           augend.constant.alias.bool,
+          augend.semver.alias.semver,
         },
         visual = {
+          augend.case.new({
+            types = { 'snake_case', 'kebab-case', 'camelCase', 'PascalCase', 'SCREAMING_SNAKE_CASE' },
+            cyclic = true,
+          }),
           augend.integer.alias.decimal,
           augend.integer.alias.hex,
           augend.date.alias['%Y/%m/%d'],
-          augend.constant.alias.alpha,
-          augend.constant.alias.Alpha,
           augend.constant.alias.bool,
         },
       })
