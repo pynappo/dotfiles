@@ -73,12 +73,6 @@ local configs = {
       'tex',
     },
   },
-  jdtls = {
-    on_attach = function(_, bufnr)
-      keymaps.setup.jdtls(bufnr)
-      require('jdtls').setup_dap({ hotcodereplace = 'auto' })
-    end,
-  },
 }
 
 local autocmd = require('pynappo.autocmds').create

@@ -164,7 +164,7 @@ return {
         },
         completion = { completeopt = vim.o.completeopt },
         mapping = cmp_keymaps.insert(),
-        preselect = cmp.PreselectMode.None,
+        preselect = cmp.PreselectMode.Item,
         sources = {
           {
             name = 'lazydev',
@@ -266,6 +266,5 @@ return {
     'saecki/crates.nvim',
     event = 'BufRead Cargo.toml',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function() require('crates').setup() end,
   },
 }
