@@ -27,7 +27,7 @@ blocks:
   - background: lightBlue
     background_templates:
     - "{{ if gt .Ahead 0 }}p:green{{ end }}"
-    - "{{ if gt .Behind 0 }}p:red{{ end }}"
+    - "{{ if gt .Behind 0 }}p:yellow{{ end }}"
     foreground: black
     powerline_symbol: ""
     properties:
