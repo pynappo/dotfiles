@@ -6,6 +6,8 @@ application/x-osu-beatmap-archive=org.gnome.FileRoller.desktop;
 application/postscript=org.pwmt.zathura-ps.desktop;libreoffice-writer.desktop;
 image/bmp=pinta.desktop;
 application/x-xpinstall=zotero.desktop;
+application/java-archive=org.gnome.FileRoller.desktop;
+image/svg+xml=org.inkscape.Inkscape.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop

@@ -1,4 +1,4 @@
-local prettier = { 'prettierd', 'prettier' }
+local prettier = 'prettier'
 return {
   {
     'stevearc/conform.nvim',

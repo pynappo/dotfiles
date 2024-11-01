@@ -1,11 +1,5 @@
 local utils = require('pynappo.utils')
-local normalize_system_command = function(cmd)
-  return utils.is_windows and vim.list_extend({ 'pwsh', '-NoProfile', '-c' }, cmd) or cmd
-end
-local print_system_command = function(cmd)
-  local result = vim.system(normalize_system_command(cmd), { cwd = vim.fn.getcwd(), text = true }):wait()
-  print(utils.is_windows and result.stdout:gsub('%%', [[\]]) or result.stdout:gsub([[%%]], [[/]]))
-end
+---@param cmd string[]
 local commands = {
   { 'CDhere', 'tcd %:p:h' },
   {
@@ -17,15 +11,19 @@ local commands = {
   },
   {
     'SwapFiles',
-    function(args)
+    function(ctx)
       local command_map = { list = 'ls', remove = 'rm' }
-      if utils.truthy(args.args) and not command_map[args.args] then
+      if utils.truthy(ctx.args) and not command_map[ctx.args] then
         vim.notify('SwapFiles: not a valid argument', vim.log.levels.ERROR)
         return
       end
-      local command = command_map[args.args] or command_map.list
-      local modifiers = (args.bang and args.args == 'remove') and (utils.is_windows and '-Force' or '-f') or nil
-      print_system_command({ command, vim.fn.stdpath('data') .. '/swap/*', modifiers })
+      local command = command_map[ctx.args] or command_map.list
+      local mods = {}
+      if ctx.bang and ctx.args == 'remove' then table.insert(mods, utils.is_windows and '-Force' or '-f') end
+      ---@diagnostic disable-next-line: param-type-mismatch
+      vim.system({ command, vim.fs.joinpath(vim.fn.stdpath('data'), '/swap/*') }, {
+        stdout = function(out) vim.notify(out) end,
+      })
     end,
     {
       nargs = '?',
@@ -40,8 +38,8 @@ local commands = {
   },
   {
     'Config',
-    function(args)
-      local new_tab = utils.truthy(args.args) and args.args == 'tab'
+    function(ctx)
+      local new_tab = utils.truthy(ctx.args) and ctx.args == 'tab'
       if new_tab then vim.cmd.tabnew() end
       vim.cmd.tcd(vim.fn.stdpath('config'))
       require('tabnames').set_tab_name(0, 'Config')
@@ -77,7 +75,7 @@ local commands = {
     function(args)
       -- check lsp root dirs
       local clients = vim.lsp.get_clients({ bufnr = 0 })
-      for i, c in ipairs(clients) do
+      for _, c in ipairs(clients) do
         if utils.truthy(c.root_dir) then
           vim.cmd.tcd(c.root_dir)
           return
@@ -100,9 +98,5 @@ local commands = {
   },
 }
 for _, cmd in ipairs(commands) do
-  vim.api.nvim_create_user_command(
-    cmd[1],
-    type(cmd[2]) == 'table' and function() print_system_command(cmd[2]) end or cmd[2],
-    cmd[3] or {}
-  )
+  vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {})
 end

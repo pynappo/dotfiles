@@ -112,7 +112,7 @@ function getIcon(client: Client) {
   return clientClass;
 }
 
-function Workspaces(workspace_ids: Number[]) {
+function Workspaces(workspace_ids: number[]) {
   const workspaces = Utils.merge(
     [Variable(workspace_ids).bind(), hyprland.bind("monitors")],
     (ids, monitors) => {
@@ -124,17 +124,51 @@ function Workspaces(workspace_ids: Number[]) {
       });
       return ids.map((id) =>
         Widget.Button({
+          attribute: { id, urgent: false },
           on_clicked: () => hyprland.messageAsync(`dispatch workspace ${id}`),
           child: Widget.Label(`${id}`),
-          class_name:
-            (active_workspaces.find((active_ws) => active_ws.id === id)
-              ? "active"
-              : "") +
-            (active_workspaces.find(
-              (active_ws) => active_ws.id === id && active_ws.focused,
-            )
-              ? " focused"
-              : ""),
+          class_name: "workspace",
+          setup: (self) => {
+            self.hook(hyprland.active, () => {
+              //unset urgent if ws gets focus
+              if (hyprland.active.workspace.id === id)
+                self.attribute.urgent = false;
+              self.toggleClassName(
+                "active",
+                Boolean(
+                  active_workspaces.find((ws) => {
+                    return id == ws.id;
+                  }),
+                ),
+              );
+              self.toggleClassName(
+                "focused",
+                Boolean(
+                  active_workspaces.find((ws) => {
+                    return id == ws.id && ws.focused;
+                  }),
+                ),
+              );
+              self.toggleClassName(
+                "occupied",
+                (hyprland.getWorkspace(id)?.windows || 0) > 0,
+              );
+              self.toggleClassName("urgent", self.attribute.urgent);
+            });
+            self.hook(
+              hyprland,
+              (_, address) => {
+                //set urgent on ws containing the urgent window
+                if (
+                  hyprland.getClient(address)?.workspace.id == self.attribute.id
+                ) {
+                  self.attribute.urgent = true;
+                  self.toggleClassName("urgent", self.attribute.urgent);
+                }
+              },
+              "urgent-window",
+            );
+          },
         }),
       );
     },
@@ -147,7 +181,7 @@ function Workspaces(workspace_ids: Number[]) {
 }
 
 function Windows(monitor = 0) {
-  const window_titles = hyprland.bind("clients").as((clients) => {
+  const windows = hyprland.bind("clients").as((clients) => {
     return clients
       .filter(
         (client) =>
@@ -159,8 +193,18 @@ function Windows(monitor = 0) {
         return a.workspace.id - b.workspace.id;
       })
       .map((client) => {
+        const windowtitle =
+          client.title ||
+          client.initialTitle ||
+          client.class ||
+          client.initialClass ||
+          `(PID ${client.pid})`;
+
         const menu = Widget.Menu({
           children: [
+            Widget.MenuItem({
+              label: "Close window",
+            }),
             Widget.MenuItem({
               label: "Close window",
               onActivate: () => {
@@ -169,6 +213,13 @@ function Windows(monitor = 0) {
             }),
           ],
         });
+        const label = Widget.Label({
+          className: "windowtitle",
+          truncate: "end",
+          maxWidthChars: 30,
+          label: windowtitle,
+        });
+
         return Widget.Button({
           onPrimaryClick: () => {
             hyprland.messageAsync(`dispatch workspace ${client.workspace.id}`);
@@ -179,31 +230,38 @@ function Windows(monitor = 0) {
           onSecondaryClick: (_, event) => {
             menu.popup_at_pointer(event);
           },
+          className: "window",
           child: Widget.Box({
             children: [
               Widget.Icon({
                 className: "windowicon",
                 icon: getIcon(client),
               }),
-              Widget.Label({
-                className: "windowtitle",
-                truncate: "end",
-                maxWidthChars: 30,
-                label:
-                  client.title ||
-                  client.initialTitle ||
-                  client.class ||
-                  client.initialClass ||
-                  `(PID ${client.pid})`,
-              }),
+              label,
             ],
           }),
+          setup: (self) => {
+            self.hook(hyprland, () => {
+              const visible = Boolean(
+                hyprland.monitors.find(
+                  (monitor) =>
+                    client.workspace.id === monitor.activeWorkspace.id,
+                ),
+              );
+              label.set_max_width_chars(visible ? 40 : 15);
+              self.toggleClassName("visible", visible);
+              self.toggleClassName(
+                "focused",
+                hyprland.active.monitor.id === client.monitor,
+              );
+            });
+          },
         });
       });
   });
   return Widget.Box({
     class_name: "windows",
-    children: window_titles,
+    children: windows,
   });
 }
 function Clock() {
@@ -319,9 +377,12 @@ function Battery() {
       Widget.CircularProgress({
         visible: battery.bind("available"),
         value: battery.bind("percent").as((p) => (p > 0 ? p / 100 : 0)),
-        class_name: battery
-          .bind("charging")
-          .as((ch) => (ch ? "charging" : "") + " batterycircle"),
+        class_name: "batterycircle",
+        setup: (self) => {
+          self.hook(battery, () => {
+            self.toggleClassName("charging", battery.charging);
+          });
+        },
       }),
     ],
   });

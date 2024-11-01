@@ -13,11 +13,14 @@ return {
   },
   { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
   {
+    'nvim-java/nvim-java',
+    lazy = true,
+  },
+  {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       -- { 'folke/neodev.nvim', config = true },
-      'nvim-java/nvim-java',
       'mrcjkb/rustaceanvim',
       'nvimtools/none-ls.nvim',
       {
@@ -40,10 +43,13 @@ return {
     config = function()
       local lspconfig = require('lspconfig')
       require('lspconfig.configs').vtsls = require('vtsls').lspconfig
-      require('java').setup()
       local handlers = {
         function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
         rust_analyzer = function() end, -- use rustaceanvim
+        jdtls = function()
+          require('java').setup()
+          lspconfig.jdtls.setup(require('pynappo/lsp/configs').jdtls)
+        end, -- use nvim-jdtls
         hls = function() end, -- use haskell-tools
       }
       -- if vim.fn.executable('ccls') == 1 then

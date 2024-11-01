@@ -1,18 +1,26 @@
 ---@diagnostic disable: missing-fields
 return {
   {
-    'hrsh7th/nvim-cmp',
+    'pynappo/nvim-cmp',
+    name = 'nvim-cmp', -- Otherwise highlighting gets messed up
     dev = true,
     version = false,
     dependencies = {
+
+      --* the sources *--
+      { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp', opts = {} },
+      { 'iguanacucumber/mag-buffer', name = 'cmp-buffer' },
+      { 'iguanacucumber/mag-cmdline', name = 'cmp-cmdline' },
+      'https://codeberg.org/FelipeLema/cmp-async-path',
+
       'onsails/lspkind.nvim',
-      'hrsh7th/cmp-buffer',
+      -- 'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-calc',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
+      -- 'hrsh7th/cmp-path',
+      -- 'hrsh7th/cmp-cmdline',
       'dmitmel/cmp-cmdline-history',
       'hrsh7th/cmp-emoji',
-      'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-nvim-lsp',
       'f3fora/cmp-spell',
       'hrsh7th/cmp-nvim-lsp-document-symbol',
       'octaltree/cmp-look',
@@ -113,6 +121,10 @@ return {
       }
 
       cmp.setup({
+        completion = {
+          completeopt = vim.o.completeopt,
+          autocomplete = false,
+        },
         enabled = function()
           local disabled = (vim.bo[0].buftype == 'prompt')
             or (vim.fn.reg_recording() ~= '')
@@ -125,7 +137,6 @@ return {
         },
         window = {
           completion = {
-            autocomplete = false,
             winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
             col_offset = -3,
             side_padding = 0,
@@ -162,9 +173,8 @@ return {
         snippet = {
           expand = function(args) require('luasnip').lsp_expand(args.body) end,
         },
-        completion = { completeopt = vim.o.completeopt },
-        mapping = cmp_keymaps.insert(),
-        preselect = cmp.PreselectMode.Item,
+        -- mapping = cmp_keymaps.insert(),
+        preselect = cmp.PreselectMode.None,
         sources = {
           {
             name = 'lazydev',
@@ -217,15 +227,10 @@ return {
         experimental = { ghost_text = true },
       })
 
-      cmp.setup.filetype('gitcommit', {
-        sources = cmp.config.sources({
-          { name = 'git' },
-          { name = 'buffer' },
-          { name = 'conventionalcommits' },
-          { name = 'luasnip' },
-        }),
-      })
       cmp.setup.cmdline(':', {
+        completion = {
+          autocomplete = { 'InsertEnter', 'TextChanged' },
+        },
         mapping = cmp_keymaps.cmdline(),
         confirmation = { completeopt = 'menu,menuone,noinsert' },
         sources = cmp.config.sources({
@@ -235,7 +240,10 @@ return {
           { name = 'cmdline_history' },
         }),
       })
-      cmp.setup.cmdline('/', {
+      cmp.setup.cmdline({ '/', '?' }, {
+        completion = {
+          autocomplete = { 'InsertEnter', 'TextChanged' },
+        },
         mapping = cmp_keymaps.cmdline(),
         sources = cmp.config.sources({ { name = 'nvim_lsp_document_symbol' } }, { { name = 'buffer' } }),
       })

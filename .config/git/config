@@ -88,11 +88,12 @@
   difftastic = difftool -t difftastic
   difft = difftastic
   mergeview = mergetool -t diffview
+  amend = commit --amend
 [rebase]
   autoStash = true
 [rerere]
   enabled = true
   autoUpdate = true
 [credential]
-	helper = 
+	helper =
 	helper = /usr/bin/git-credential-manager
