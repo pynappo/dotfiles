@@ -178,6 +178,7 @@ return {
   },
   {
     'folke/noice.nvim',
+    enabled = false,
     lazy = false,
     keys = {
       {
@@ -240,20 +241,20 @@ return {
     },
     dependencies = {
       'MunifTanjim/nui.nvim',
-      {
-        'rcarriga/nvim-notify',
-        opts = {
-          render = 'wrapped-compact',
-        },
-      },
-      {
-        'smjonas/inc-rename.nvim',
-        dependencies = 'stevearc/dressing.nvim',
-        init = keymaps.setup.incremental_rename,
-        opts = {
-          input_buffer_type = 'dressing',
-        },
-      },
+    },
+  },
+  {
+    'rcarriga/nvim-notify',
+    opts = {
+      render = 'wrapped-compact',
+    },
+  },
+  {
+    'smjonas/inc-rename.nvim',
+    dependencies = 'stevearc/dressing.nvim',
+    init = keymaps.setup.incremental_rename,
+    opts = {
+      input_buffer_type = 'dressing',
     },
   },
   {

@@ -33,7 +33,7 @@ const { icon_names, icon_binaries } = applications.list.reduce(
 );
 // console.log(icon_names, icon_binaries);
 
-let cache = {};
+let icon_cache = {};
 // wine classes are not reliable so we don't index by classname
 let wine_cache = {};
 function escapePath(path: string) {
@@ -54,12 +54,16 @@ function isWindowsExe(pid: number) {
 const icons_path = "/tmp/ags/icons/";
 Utils.exec(`mkdir ${icons_path} -p`);
 
-function getIcon(client: Client) {
+function getIcon(client?: Client, fallback?: string) {
+  if (!Boolean(client) || client === undefined) return fallback;
+  console.log({
+    title: client.title,
+    class: client.class,
+  });
   const clientClass = client.class || client.initialClass;
-  if (!clientClass) return "";
 
   // check cache
-  let icon = cache[clientClass] || wine_cache[client.pid];
+  let icon = icon_cache[clientClass] || wine_cache[client.pid];
   if (icon) return icon;
 
   // check exe icon file
@@ -67,7 +71,7 @@ function getIcon(client: Client) {
   if (exe) {
     // steam games have consistent class names so we use those
     if (clientClass.match(/^steam/) && clientClass !== "steam_app_0") {
-      cache[clientClass] = clientClass;
+      icon_cache[clientClass] = clientClass;
       return clientClass;
     }
 
@@ -84,7 +88,7 @@ function getIcon(client: Client) {
   // search by icon name
   icon = icon_names.has(clientClass) ? clientClass : false;
   if (icon) {
-    cache[clientClass] = icon;
+    icon_cache[clientClass] = icon;
     return icon;
   }
 
@@ -92,7 +96,7 @@ function getIcon(client: Client) {
   const binary_name = Utils.exec(`ps -p ${client.pid} -o comm=`);
   icon = icon_binaries[binary_name];
   if (icon) {
-    cache[clientClass] = icon;
+    icon_cache[clientClass] = icon;
     return icon;
   }
 
@@ -101,32 +105,64 @@ function getIcon(client: Client) {
   if (query_result) {
     console.log(`query for ${client.initialClass}: ${query_result}`);
     icon = query_result["icon-name"];
-    cache[clientClass] = icon;
+    icon_cache[clientClass] = icon;
     return icon;
   }
   console.log(client);
 
   console.log("couldn't find class for " + client);
   // const icon = Utils.lookUpIcon(clientClass);
-  cache[clientClass] = clientClass;
+  icon_cache[clientClass] = clientClass;
   return clientClass;
 }
 
-function Workspaces(workspace_ids: number[]) {
+const workspace_fallback_icons = [
+  "",
+  "headset-symbolic", // 1
+  "web-browser-symbolic",
+  "terminal-symbolic",
+  "terminal-symbolic",
+  "totem-tv-symbolic",
+  "xbox-controller-symbolic",
+  "tool-circle-symbolic",
+  "tool-circle-symbolic",
+  "tool-circle-symbolic",
+  "tool-circle-symbolic",
+];
+function Workspaces(main_workspace_ids: number[]) {
   const workspaces = Utils.merge(
-    [Variable(workspace_ids).bind(), hyprland.bind("monitors")],
-    (ids, monitors) => {
+    [
+      Variable(main_workspace_ids).bind(),
+      hyprland
+        .bind("workspaces")
+        .as((workspaces) => new Map(workspaces.map((ws) => [ws.id, ws]))),
+      hyprland.bind("monitors"),
+    ],
+    (ids, workspaces, monitors) => {
       const active_workspaces = monitors.map((monitor) => {
         return {
           id: monitor.activeWorkspace.id,
           focused: monitor.focused,
         };
       });
-      return ids.map((id) =>
-        Widget.Button({
+      console.log(icon_cache);
+      return ids.map((id) => {
+        const ws = workspaces.get(id);
+        return Widget.Button({
           attribute: { id, urgent: false },
           on_clicked: () => hyprland.messageAsync(`dispatch workspace ${id}`),
-          child: Widget.Label(`${id}`),
+          child: Widget.Box({
+            children: [
+              Widget.Icon({
+                className: "windowicon",
+                icon: getIcon(
+                  hyprland.getClient(ws?.lastwindow || ""),
+                  workspace_fallback_icons[id],
+                ),
+              }),
+              Widget.Label(`${id}`),
+            ],
+          }),
           class_name: "workspace",
           setup: (self) => {
             self.hook(hyprland.active, () => {
@@ -169,8 +205,8 @@ function Workspaces(workspace_ids: number[]) {
               "urgent-window",
             );
           },
-        }),
-      );
+        });
+      });
     },
   );
 
@@ -182,11 +218,12 @@ function Workspaces(workspace_ids: number[]) {
 
 function Windows(monitor = 0) {
   const windows = hyprland.bind("clients").as((clients) => {
+    console.log({ icon_cache });
     return clients
       .filter(
         (client) =>
           client.monitor === monitor &&
-          !client.hidden &&
+          // !client.hidden &&
           !client.tags.includes("hidden*"),
       )
       .sort((a, b) => {

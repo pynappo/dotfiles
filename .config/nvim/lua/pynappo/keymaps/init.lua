@@ -87,8 +87,6 @@ M.setup = {
         -- Autoindent on insert/append
       },
       [{ 'n', 'v' }] = {
-        { 'p', 'p=`]', { remap = true } },
-        { 'P', 'P=`]', { remap = true } },
         { '<leader>p', '"+p' },
         { '<leader>P', '"+P' },
         { '<leader>y', '"+y' },

@@ -9,13 +9,13 @@ return {
       {
         'Bekaboo/dropbar.nvim',
         opts = {
-          general = { enable = false },
           icons = {
             ui = {
               bar = { separator = '  ', extends = '…' },
             },
           },
           bar = {
+            enable = false,
             sources = function()
               local sources = require('dropbar.sources')
               return {
