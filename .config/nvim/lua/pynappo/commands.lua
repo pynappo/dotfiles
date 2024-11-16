@@ -96,6 +96,14 @@ local commands = {
       vim.notify('could not find a root_dir for this buffer')
     end,
   },
+  {
+    'ProfileStart',
+    function() require('plenary.profile').start('profile.log', { flame = true }) end,
+  },
+  {
+    'ProfileEnd',
+    function() require('plenary.profile').stop() end,
+  },
 }
 for _, cmd in ipairs(commands) do
   vim.api.nvim_create_user_command(cmd[1], cmd[2], cmd[3] or {})

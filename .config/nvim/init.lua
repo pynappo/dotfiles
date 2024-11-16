@@ -2,10 +2,12 @@ _G.pynappo = {}
 
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?/init.lua;'
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?.lua;'
+
 vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config')
 local g = vim.g
 local o = vim.opt
 local utils = require('pynappo.utils')
+
 if utils.is_windows then
   o.shell = vim.fn.executable('pwsh') and 'pwsh' or 'powershell'
   o.shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
@@ -155,7 +157,6 @@ vim.diagnostic.config({
 })
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
----@diagnostic disable-next-line: undefined-field
 if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     'git',
@@ -175,8 +176,8 @@ require('lazy').setup({
     loader = true,
   },
   spec = {
+    { import = 'pynappo.plugins.extras' },
     { import = 'pynappo.plugins' },
-    'stevearc/profile.nvim',
   },
   -- debug = true,
   git = {
@@ -239,18 +240,18 @@ require('lazy').setup({
         'netrwPlugin',
         'netrwSettings',
         'netrwFileHandlers',
-        'gzip',
-        'zip',
-        'zipPlugin',
-        'tar',
-        'tarPlugin',
-        'getscript',
-        'getscriptPlugin',
-        'vimball',
-        'vimballPlugin',
-        '2html_plugin',
-        'logipat',
-        'rrhelper',
+        -- 'gzip',
+        -- 'zip',
+        -- 'zipPlugin',
+        -- 'tar',
+        -- 'tarPlugin',
+        -- 'getscript',
+        -- 'getscriptPlugin',
+        -- 'vimball',
+        -- 'vimballPlugin',
+        -- '2html_plugin',
+        -- 'logipat',
+        -- 'rrhelper',
       },
     },
   },
@@ -294,30 +295,3 @@ vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
-
-local should_profile = os.getenv('NVIM_PROFILE')
-
-if should_profile then
-  require('profile').instrument_autocmds()
-  if should_profile:lower():match('^start') then
-    require('profile').start('*')
-  else
-    require('profile').instrument('*')
-  end
-end
-
-local function toggle_profile()
-  local prof = require('profile')
-  if prof.is_recording() then
-    prof.stop()
-    vim.ui.input({ prompt = 'Save profile to:', completion = 'file', default = 'profile.json' }, function(filename)
-      if filename then
-        prof.export(filename)
-        vim.notify(string.format('Wrote %s', filename))
-      end
-    end)
-  else
-    prof.start('*')
-  end
-end
-vim.keymap.set('', '<f1>', toggle_profile)

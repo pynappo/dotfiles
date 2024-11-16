@@ -17,9 +17,7 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       -- { 'folke/neodev.nvim', config = true },
-      {
-        'nvim-java/nvim-java',
-      },
+      'mfussenegger/nvim-jdtls',
       'mrcjkb/rustaceanvim',
       'nvimtools/none-ls.nvim',
       {
@@ -45,10 +43,7 @@ return {
       local handlers = {
         function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
         rust_analyzer = function() end, -- use rustaceanvim
-        jdtls = function()
-          require('java').setup()
-          lspconfig.jdtls.setup(require('pynappo/lsp/configs').jdtls)
-        end, -- use nvim-jdtls
+        jdtls = function() end, -- use nvim-jdtls
         hls = function() end, -- use haskell-tools
       }
       -- if vim.fn.executable('ccls') == 1 then

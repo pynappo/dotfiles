@@ -2,16 +2,15 @@ local keymaps = require('pynappo.keymaps')
 return {
   {
     'rcarriga/nvim-notify',
-    cond = true,
-    opts = {
-      background_colour = '#000000',
-      render = 'wrapped-compact',
-      stages = 'slide',
-      timeout = require('pynappo.utils').is_termux and 2000 or 5000,
-      minimum_width = 10,
-    },
     config = function(_, opts)
-      require('notify').setup(opts)
+      require('notify').setup({
+        background_colour = '#000000',
+        render = 'wrapped-compact',
+        stages = 'slide',
+        timeout = require('pynappo.utils').is_termux and 2000 or 5000,
+        minimum_width = 10,
+      })
+      vim.notify = require('notify').notify
       local levels = {
         ERROR = 'Error',
         WARN = 'Warn',

@@ -244,12 +244,6 @@ return {
     },
   },
   {
-    'rcarriga/nvim-notify',
-    opts = {
-      render = 'wrapped-compact',
-    },
-  },
-  {
     'smjonas/inc-rename.nvim',
     dependencies = 'stevearc/dressing.nvim',
     init = keymaps.setup.incremental_rename,
