@@ -169,14 +169,15 @@ function Workspaces({
   );
 }
 
-function getIcon(client: Hyprland.Client, cache: { [key: number]: string }) {
+const cache: { [key: number]: string } = {};
+const wine_cache: { [key: number]: string } = {};
+function getIcon(client: Hyprland.Client) {
   return client.class;
 }
+
 function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   const hypr = Hyprland.get_default();
   const clientsBinding = bind(hypr, "clients");
-  const cache: { [key: number]: string } = {};
-  const wine_cache: { [key: number]: string } = {};
 
   return (
     <box className="clients">
@@ -195,9 +196,10 @@ function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
               );
             });
             var urgent = false;
+            var focusedClient = bind(hypr, "focusedClient");
             return (
               <button
-                onClick={(self) => {
+                onClick={() => {
                   hypr.dispatch("workspace", `${client.workspace.id}`);
                 }}
                 setup={(self) => {
@@ -205,13 +207,18 @@ function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
                     if (client == urgent_client) urgent = true;
                     self.toggleClassName("urgent", urgent);
                   });
+                  bind(focusedClient).as((focused) => {
+                    self.toggleClassName("focused", client === focused);
+                  });
                 }}
               >
                 <box>
-                  <icon icon={getIcon(client, cache)} />
+                  <icon icon={getIcon(client)} />
                   <label
-                    maxWidthChars={visible ? 20 : 10}
-                    label={client.title}
+                    maxWidthChars={bind(visible).as((val) => {
+                      return val ? 20 : 10;
+                    })}
+                    label={bind(client, "title")}
                     truncate={true}
                   />
                 </box>

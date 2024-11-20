@@ -176,7 +176,7 @@ require('lazy').setup({
     loader = true,
   },
   spec = {
-    { import = 'pynappo.plugins.extras' },
+    -- { import = 'pynappo.plugins.extras' },
     { import = 'pynappo.plugins' },
   },
   -- debug = true,
