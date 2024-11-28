@@ -1,14 +1,33 @@
-import { App } from "astal/gtk3";
-import { Variable, GLib, bind, execAsync } from "astal";
-import { Astal, Gtk, Gdk } from "astal/gtk3";
+import { Variable, GLib, bind, execAsync, Binding, GObject } from "astal";
+import { App, Astal, Gtk, Gdk } from "astal/gtk3";
 import Hyprland from "gi://AstalHyprland";
 import Mpris from "gi://AstalMpris";
 import Battery from "gi://AstalBattery";
 import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
+import AstalApps from "gi://AstalApps?version=0.1";
 import { coordinateEquals, Coordinates } from "../util";
+const apps = AstalApps.Apps.new();
 
+const hyprland = Hyprland.get_default();
+hyprland.connect("event", (_, event, args) => {
+  console.log("[hyprland]:", event, args);
+});
+hyprland.connect("event", (_, event, args) => {
+  if (event === "workspacev2") {
+    hyprland.notify("monitors");
+  }
+  if (event === "activewindowv2") {
+    hyprland.notify("workspaces");
+  }
+});
+bind(hyprland, "monitors").as(() => {
+  console.log("monitors updated");
+});
+bind(hyprland, "workspaces").as(() => {
+  console.log("workspaces updated");
+});
 function SysTray() {
   const tray = Tray.get_default();
 
@@ -120,104 +139,141 @@ function Workspaces({
   gdkmonitor: Gdk.Monitor;
   sticky_workspace_ids: number[];
 }) {
-  const hypr = Hyprland.get_default();
-
+  const ids = bind(hyprland, "workspaces").as((workspaces) => {
+    return [
+      ...new Set([...workspaces.map((ws) => ws.id), ...sticky_workspace_ids]),
+    ];
+  });
   return (
     <box className="Workspaces">
-      {bind(hypr, "workspaces").as((workspaces) =>
-        workspaces
-          .filter((ws) => {
-            return coordinateEquals(gdkmonitor.geometry, ws.monitor);
-          })
-          .sort((a, b) => a.id - b.id)
-          .map((ws) => {
-            var has_urgent_client = false;
+      {bind(ids).as((ids) => {
+        return ids
+          .sort((a, b) => a - b)
+          .map((id) => {
+            const ws = hyprland.get_workspace(id);
+            if (ws === null)
+              return (
+                <button
+                  className={"Workspace"}
+                  onClicked={() => hyprland.dispatch("workspace", String(id))}
+                >
+                  <box>
+                    <icon icon={""} />
+                    {id}
+                  </box>
+                </button>
+              );
+            if (!coordinateEquals(ws.monitor, gdkmonitor.geometry))
+              return <></>;
+            var visible = bind(hyprland, "monitors").as((monitors) => {
+              return Boolean(
+                monitors.find((m) => m.active_workspace.id == ws.id),
+              );
+            });
+            var urgent_handler = -1;
+            var disconnect = () => {};
             return (
               <button
                 className={"Workspace"}
                 onClicked={() => ws.focus()}
                 setup={(self) => {
-                  bind(hypr, "monitors").subscribe((monitors) => {
-                    self.toggleClassName(
-                      "visible",
-                      Boolean(
-                        monitors.find((m) => {
-                          return m.get_active_workspace().id === ws.id;
-                        }),
-                      ),
-                    );
-                  });
-                  bind(hypr, "focusedWorkspace").subscribe((fw) => {
-                    self.toggleClassName("focused", ws === fw);
-                    if (ws === fw) {
-                      has_urgent_client = false;
-                      self.toggleClassName("urgent", has_urgent_client);
+                  urgent_handler = hyprland.connect("urgent", (_, client) => {
+                    if (client.workspace.id == ws.id) {
+                      self.toggleClassName("urgent", true);
                     }
                   });
-                  hypr.connect("urgent", (_, client) => {
-                    if (client.workspace == ws) has_urgent_client = true;
-                    self.toggleClassName("urgent", has_urgent_client);
+                  self.hook(hyprland, "notify::focused-workspace", (self) => {
+                    const currentFocused =
+                      hyprland.focused_workspace.id === ws.id;
+                    if (currentFocused) {
+                      self.toggleClassName("urgent", false);
+                    }
+                    self.toggleClassName("focused", currentFocused);
+                  });
+                  disconnect = bind(visible).subscribe((v) => {
+                    self.toggleClassName("visible", v);
                   });
                 }}
+                onDestroy={() => {
+                  hyprland.disconnect(urgent_handler);
+                  disconnect();
+                }}
               >
-                {ws.id}
+                <box>
+                  <icon icon={getClientIcon(ws.get_last_client())} />
+                  {ws.name}
+                </box>
               </button>
             );
-          }),
-      )}
+          });
+      })}
     </box>
   );
 }
 
 const cache: { [key: number]: string } = {};
-const wine_cache: { [key: number]: string } = {};
-function getIcon(client: Hyprland.Client) {
-  return client.class;
+function getClientIcon(client?: Hyprland.Client): string {
+  if (client === undefined || !Boolean(client)) return "";
+  if (cache[client.pid]) return cache[client.pid];
+  const clientClass = client.class || client.initialClass;
+  const results = apps.fuzzy_query(clientClass);
+  const iconName = results?.[0]?.iconName || clientClass;
+  cache[client.pid] = iconName;
+  return iconName;
 }
 
 function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
-  const hypr = Hyprland.get_default();
-  const clientsBinding = bind(hypr, "clients");
-
+  const bindings = Variable.derive([
+    bind(hyprland, "clients"),
+    bind(hyprland, "monitors"),
+  ]);
   return (
-    <box className="clients">
-      {clientsBinding.as((clients) => {
+    <box className="Clients">
+      {bind(hyprland, "clients").as((clients) => {
         return clients
-          .filter((client) =>
-            coordinateEquals(client.monitor, gdkmonitor.geometry),
+          .filter(
+            (client) =>
+              client && coordinateEquals(client.monitor, gdkmonitor.geometry),
           )
           .sort((a, b) => a.workspace.id - b.workspace.id)
           .map((client) => {
-            var visible = bind(hypr, "monitors").as((monitors) => {
+            const visible = bind(hyprland, "monitors").as((monitors) => {
               return Boolean(
                 monitors.find(
-                  (m) => m.get_active_workspace().id == client.workspace.id,
+                  (m) => m.activeWorkspace.id === client.workspace.id,
                 ),
               );
             });
-            var urgent = false;
-            var focusedClient = bind(hypr, "focusedClient");
+            var urgent_handler: number;
             return (
               <button
                 onClick={() => {
-                  hypr.dispatch("workspace", `${client.workspace.id}`);
+                  client.workspace.focus();
                 }}
                 setup={(self) => {
-                  hypr.connect("urgent", (_, urgent_client) => {
-                    if (client == urgent_client) urgent = true;
-                    self.toggleClassName("urgent", urgent);
-                  });
-                  bind(focusedClient).as((focused) => {
-                    self.toggleClassName("focused", client === focused);
+                  urgent_handler = hyprland.connect(
+                    "urgent",
+                    (_, urgent_client) => {
+                      if (client == urgent_client) {
+                        self.toggleClassName("urgent", true);
+                      }
+                    },
+                  );
+                  self.hook(hyprland, "notify::focused-client", (self) => {
+                    if (hyprland.focused_client?.pid === client.pid) {
+                      self.toggleClassName("urgent", false);
+                    }
                   });
                 }}
+                onDestroy={() => {
+                  hyprland.disconnect(urgent_handler);
+                }}
+                className={"Client"}
               >
                 <box>
-                  <icon icon={getIcon(client)} />
+                  <icon icon={getClientIcon(client)} />
                   <label
-                    maxWidthChars={bind(visible).as((val) => {
-                      return val ? 20 : 10;
-                    })}
+                    maxWidthChars={bind(visible).as((val) => (val ? 20 : 10))}
                     label={bind(client, "title")}
                     truncate={true}
                   />
@@ -245,17 +301,14 @@ export default function Bar(
   monitor: Gdk.Monitor,
   sticky_workspace_ids: number[] = [],
 ) {
-  const anchor =
-    Astal.WindowAnchor.BOTTOM |
-    Astal.WindowAnchor.LEFT |
-    Astal.WindowAnchor.RIGHT;
+  const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
 
   return (
     <window
       className="Bar"
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
-      anchor={anchor}
+      anchor={BOTTOM | LEFT | RIGHT}
     >
       <centerbox>
         <box hexpand halign={Gtk.Align.START}>

@@ -17,12 +17,12 @@ window.Bar {
         all: unset;
         background-color: transparent;
 
-        &:hover label {
+        &:hover {
             background-color: transparentize($fg, 0.84);
             border-color: transparentize($accent, 0.8);
         }
 
-        &:active label {
+        &:active {
             background-color: transparentize($fg, 0.8)
         }
     }
@@ -37,6 +37,8 @@ window.Bar {
 
     .Workspaces .focused label {
         color: $accent;
+    }
+    .Workspaces .visible label {
         border-color: $accent;
     }
 
@@ -86,6 +88,9 @@ window.Bar {
             min-width: 1em;
             margin: -.2em;
         }
+    }
+    .Client.urgent {
+        background-color: red;
     }
 }
 

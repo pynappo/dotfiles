@@ -105,6 +105,12 @@ local configs = {
       'tex',
     },
   },
+  tinymist = {
+    settings = {
+      exportPdf = 'onType',
+      formatterMode = 'typstyle',
+    },
+  },
 }
 
 local autocmd = require('pynappo.autocmds').create
