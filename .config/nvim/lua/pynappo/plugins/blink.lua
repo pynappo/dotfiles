@@ -2,6 +2,7 @@ return {
   'Saghen/blink.cmp',
   dependencies = 'rafamadriz/friendly-snippets',
   version = 'v0.*',
+  enabled = true,
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {

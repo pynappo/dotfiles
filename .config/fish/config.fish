@@ -97,7 +97,7 @@ if status is-interactive
   abbr -a -- sc 'systemctl'
   abbr -a -- jc 'journalctl'
   abbr -a -- ts 'tree-sitter'
-  abbr -a --position anywhere --set-cursor nman 'nvim "+Man %"'
+  abbr -a --set-cursor nman 'nvim "+Man %"'
   abbr -a --position anywhere .C "$XDG_CONFIG_HOME/"
   abbr -a --set-cursor f 'fd . % | fzf'
   abbr -a -- jammers 'mpv "https://www.youtube.com/playlist?list=PLg-SQpG3Qf59d1hzWtxsFqZt9n0e2llep" --no-video --no-resume-playback --volume=20'
@@ -116,6 +116,10 @@ if status is-interactive
   abbr -a -- parusearch 'paru -Sl | awk \'{print $2($4=="" ? "" : " *")}\' | fzf --multi --preview \'paru -Si {1}\' | cut -d " " -f 1 | xargs -ro paru -S'
   function edit
     echo $EDITOR $argv
+  end
+  function mz -d "mkdir and then z into it"
+    mkdir $argv
+    z $argv
   end
   # abbr -a edit_texts --position command --regex ".+\.txt" --function edit
 

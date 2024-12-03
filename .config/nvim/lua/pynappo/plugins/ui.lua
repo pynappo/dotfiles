@@ -295,20 +295,20 @@ return {
     event = { 'WinNew' },
   },
   {
-    'bennypowers/nvim-regexplainer',
-    cmd = {
-      'RegexplainerHide',
-      'RegexplainerToggle',
-      'RegexplainerDebug',
-      'RegexplainerYank',
-      'RegexplainerShowSplit',
-      'RegexplainerShowPopup',
-      'RegexplainerShow',
-    },
-    config = function() require('regexplainer').setup() end,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'MunifTanjim/nui.nvim',
+    'rachartier/tiny-inline-diagnostic.nvim',
+    event = 'LspAttach', -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function() require('tiny-inline-diagnostic').setup({}) end,
+  },
+  {
+    'sphamba/smear-cursor.nvim',
+
+    opts = {
+      cursor_color = '#d3cdc3',
+      normal_bg = '#282828',
+      smear_between_buffers = true,
+      smear_between_neighbor_lines = false,
+      legacy_computing_symbols_support = true,
     },
   },
 }

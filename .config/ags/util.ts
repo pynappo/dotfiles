@@ -1,5 +1,3 @@
-import { Gdk } from "astal/gtk3";
-import Hyprland from "gi://AstalHyprland";
 export type Coordinates = {
   x: number;
   y: number;

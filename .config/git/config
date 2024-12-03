@@ -97,3 +97,4 @@
 [credential]
 	helper =
 	helper = /usr/bin/git-credential-manager
+  credentialStore = secretservice

@@ -3,6 +3,20 @@ _G.pynappo = {}
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?/init.lua;'
 package.path = package.path .. ';' .. vim.env.HOME .. '/.luarocks/share/lua/5.1/?.lua;'
 
+if vim.env.NVIM_PROFILE then
+  -- example for lazy.nvim
+  -- change this to the correct path for your plugin manager
+  local snacks = vim.fn.stdpath('data') .. '/lazy/snacks.nvim'
+  vim.opt.rtp:append(snacks)
+  require('snacks.profiler').startup({
+    startup = {
+      event = 'VimEnter', -- stop profiler on this event. Defaults to `VimEnter`
+      -- event = "UIEnter",
+      -- event = "VeryLazy",
+    },
+  })
+end
+
 vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config')
 local g = vim.g
 local o = vim.opt
@@ -168,7 +182,7 @@ if not vim.uv.fs_stat(lazypath) then
   })
 end
 o.runtimepath:prepend(lazypath)
-
+vim.b.minitrailspace_disable = true
 require('pynappo.autocmds')
 require('lazy').setup({
   profiling = {
@@ -176,7 +190,8 @@ require('lazy').setup({
     loader = true,
   },
   spec = {
-    -- { import = 'pynappo.plugins.extras' },
+    { import = 'pynappo.plugins.extras' },
+    { import = 'pynappo.plugins.lang' },
     { import = 'pynappo.plugins' },
   },
   -- debug = true,

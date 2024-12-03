@@ -1,6 +1,15 @@
 local keymaps = require('pynappo.keymaps')
+--- @class lsp.ServerCapabilities
+local capabilities = {}
+local ok, blink = pcall(require, 'blink.cmp')
+if ok then capabilities = require('blink.cmp').get_lsp_capabilities(capabilities) end
+if not ok then
+  local ok, cmp = pcall(require, 'cmp_nvim_lsp')
+  capabilities = cmp.default_capabilities()
+end
+capabilities.positionEncoding = 'utf-8'
 local default_config = {
-  capabilities = require('blink.cmp').get_lsp_capabilities(),
+  capabilities = capabilities,
   flags = { debounce_text_changes = 200 },
 }
 
@@ -155,6 +164,11 @@ autocmd({ 'LspAttach' }, {
       })
     end
     vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    autocmd('LspNotify', {
+      callback = function(args)
+        if args.data.method == 'textDocument/didOpen' then vim.lsp.foldclose('imports', vim.fn.bufwinid(args.buf)) end
+      end,
+    })
     keymaps.setup.lsp(bufnr)
     vim.b[bufnr].lsp_attached = true
   end,

@@ -1,10 +1,9 @@
 ---@diagnostic disable: missing-fields
 return {
+
   {
     'pynappo/nvim-cmp',
     name = 'nvim-cmp', -- Otherwise highlighting gets messed up
-    emabled = true,
-    dev = true,
     version = false,
     dependencies = {
 
@@ -29,23 +28,6 @@ return {
       'davidsierradz/cmp-conventionalcommits',
       'chrisgrieser/cmp-nerdfont',
       'https://git.sr.ht/~p00f/clangd_extensions.nvim/',
-      {
-        'L3MON4D3/LuaSnip',
-        config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
-        dependencies = {
-          'rafamadriz/friendly-snippets',
-          'saadparwaiz1/cmp_luasnip',
-        },
-      },
-      {
-        'roobert/tailwindcss-colorizer-cmp.nvim',
-        -- optionally, override the default options:
-        config = function()
-          require('tailwindcss-colorizer-cmp').setup({
-            color_square_width = 1,
-          })
-        end,
-      },
     },
     config = function()
       local cmp = require('cmp')
@@ -57,7 +39,6 @@ return {
       })
       vim.api.nvim_set_hl(0, 'CmpItemKindCopilot', { fg = '#6CC644' })
       local cmp_format = lspkind.cmp_format
-      local tailwind_format = require('tailwindcss-colorizer-cmp').formatter
 
       local compare = require('cmp.config.compare')
       local cmp_keymaps = require('pynappo.keymaps').cmp
@@ -125,6 +106,7 @@ return {
         completion = {
           completeopt = vim.o.completeopt,
           autocomplete = false,
+          -- autocomplete = { 'TextChanged' },
         },
         enabled = function()
           local disabled = (vim.bo[0].buftype == 'prompt')
@@ -146,11 +128,10 @@ return {
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
           format = function(entry, vim_item)
-            local kind = cmp_format({
+            local item = cmp_format({
               mode = 'symbol',
               preset = 'codicons',
               menu = {
-                luasnip = '[Snip]',
                 nvim_lsp = '[LSP]',
                 nvim_lsp_signature_help = '[Sign]',
                 nvim_lsp_document_symbol = '[Sym]',
@@ -165,10 +146,18 @@ return {
                 calc = '[Calc]',
               },
             })(entry, vim_item)
-            local strings = vim.split(kind.kind, '%s', { trimempty = true })
-            tailwind_format(entry, vim_item)
-            kind.kind = ' ' .. (strings[1] or '') .. ' '
-            return kind
+            local strings = vim.split(item.kind, '%s', { trimempty = true })
+            -- tailwind
+            local completion_item = entry.completion_item
+            local color = vim.tbl_get(completion_item, 'documentation', 'value')
+            if color and #color == 7 then
+              local hl = 'color-literal-' .. color:sub(2)
+              if #vim.api.nvim_get_hl(0, { name = hl }) == 0 then vim.api.nvim_set_hl(0, hl, { fg = color }) end
+              item.menu = 'o'
+              item.menu_hl_group = hl
+            end
+            item.kind = ' ' .. (strings[1] or '') .. ' '
+            return item
           end,
         },
         snippet = {

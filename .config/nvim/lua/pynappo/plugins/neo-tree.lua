@@ -2,7 +2,7 @@ return {
   'nvim-neo-tree/neo-tree.nvim',
   branch = 'v3.x',
   dependencies = {
-    'antosha417/nvim-lsp-file-operations',
+    'folke/snacks.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
     {
@@ -134,9 +134,15 @@ return {
         end,
       }
     end
+    local function on_move(data) Snacks.rename.on_rename_file(data.source, data.destination) end
+    local events = require('neo-tree.events')
     require('neo-tree').setup(vim.tbl_deep_extend('force', {
       -- log_level = 'debug',
       -- log_to_file = true,
+      event_handlers = {
+        { event = events.FILE_MOVED, handler = on_move },
+        { event = events.FILE_RENAMED, handler = on_move },
+      },
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
       hide_root_node = true,
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
@@ -266,6 +272,5 @@ return {
         scan_mode = 'deep',
       },
     }, require('pynappo.keymaps').neotree))
-    require('lsp-file-operations').setup()
   end,
 }

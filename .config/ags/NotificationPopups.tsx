@@ -19,7 +19,7 @@ class NotificationMap implements Subscribable {
   private var: Variable<Array<Gtk.Widget>> = Variable([]);
 
   // notify subscribers to rerender when state changes
-  private notifiy() {
+  private notify() {
     this.var.set([...this.map.values()].reverse());
   }
 
@@ -73,13 +73,13 @@ class NotificationMap implements Subscribable {
     // in case of replacecment destroy previous widget
     this.map.get(key)?.destroy();
     this.map.set(key, value);
-    this.notifiy();
+    this.notify();
   }
 
   private delete(key: number) {
     this.map.get(key)?.destroy();
     this.map.delete(key);
-    this.notifiy();
+    this.notify();
   }
 
   // needed by the Subscribable interface
@@ -94,7 +94,7 @@ class NotificationMap implements Subscribable {
 }
 
 export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
-  const { TOP, RIGHT } = Astal.WindowAnchor;
+  const { BOTTOM, RIGHT } = Astal.WindowAnchor;
   const notifs = new NotificationMap();
 
   return (
@@ -102,7 +102,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
       className="NotificationPopups"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
-      anchor={TOP | RIGHT}
+      anchor={BOTTOM | RIGHT}
     >
       <box vertical>{bind(notifs)}</box>
     </window>

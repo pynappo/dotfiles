@@ -2,9 +2,6 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
-    build = function()
-      if not vim.env.GIT_WORK_TREE then vim.cmd('TSUpdate') end
-    end,
     config = function()
       ---@diagnostic disable-next-line: param-type-mismatch
       require('nvim-treesitter').setup({

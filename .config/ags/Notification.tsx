@@ -1,5 +1,6 @@
 import { GLib } from "astal";
 import { Gtk, Astal } from "astal/gtk3";
+import { type EventBox } from "astal/gtk3/widget";
 import Notifd from "gi://AstalNotifd";
 
 const isIcon = (icon: string) => !!Astal.Icon.lookup_icon(icon);
@@ -33,6 +34,7 @@ export default function Notification(props: Props) {
   const { notification: n, onHoverLost, setup } = props;
   const { START, CENTER, END } = Gtk.Align;
 
+  const icon = n.appIcon || n.desktopEntry;
   return (
     <eventbox
       className={`Notification ${urgency(n)}`}
@@ -41,12 +43,8 @@ export default function Notification(props: Props) {
     >
       <box vertical>
         <box className="header">
-          {(n.appIcon || n.desktopEntry) && (
-            <icon
-              className="app-icon"
-              visible={Boolean(n.appIcon || n.desktopEntry)}
-              icon={n.appIcon || n.desktopEntry}
-            />
+          {icon && (
+            <icon className="app-icon" visible={Boolean(icon)} icon={icon} />
           )}
           <label
             className="app-name"
@@ -96,15 +94,13 @@ export default function Notification(props: Props) {
             )}
           </box>
         </box>
-        {n.get_actions().length > 0 && (
-          <box className="actions">
-            {n.get_actions().map(({ label, id }) => (
-              <button hexpand onClicked={() => n.invoke(id)}>
-                <label label={label} halign={CENTER} hexpand />
-              </button>
-            ))}
-          </box>
-        )}
+        <box className="actions" visible={n.get_actions().length > 0}>
+          {n.get_actions().map(({ label, id }) => (
+            <button hexpand onClicked={() => n.invoke(id)}>
+              <label label={label} halign={CENTER} hexpand />
+            </button>
+          ))}
+        </box>
       </box>
     </eventbox>
   );

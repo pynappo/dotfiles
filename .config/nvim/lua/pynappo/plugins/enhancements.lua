@@ -86,8 +86,7 @@ return {
   {
     'jinh0/eyeliner.nvim',
     opts = {
-      highlight_on_key = true, -- show highlights only after keypress
-      dim = false, -- dim all other characters if set to true (recommended!)
+      highlight_on_key = true, -- show highlights only after keypress dim = false, -- dim all other characters if set to true (recommended!)
     },
   },
   { 'tweekmonster/helpful.vim', init = function() vim.g.helpful = 1 end },

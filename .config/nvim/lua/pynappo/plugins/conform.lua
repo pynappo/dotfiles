@@ -17,6 +17,7 @@ return {
         javascript = { prettier },
         typescriptreact = { prettier },
         javascriptreact = { prettier },
+        typst = { 'typstyle' },
         ruby = { prettier },
         svelte = { prettier },
         prisma = { prettier },
