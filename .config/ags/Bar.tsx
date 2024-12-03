@@ -258,6 +258,61 @@ function getClientIcon(client?: Hyprland.Client): string {
   return iconName;
 }
 
+function Client(client: Hyprland.Client) {
+  var connections: number[] = [];
+  var visible = bind(hyprland, "focusedWorkspace").as(() => {
+    return client.workspace.id == client.monitor.activeWorkspace.id;
+  });
+  var disconnectors: { (): any }[] = [];
+  return (
+    <button
+      onClick={() => {
+        client.workspace.focus();
+      }}
+      setup={(self) => {
+        connections.push(
+          hyprland.connect("urgent", () => {
+            if (urgent_clients[client.address]) {
+              self.toggleClassName("urgent", true);
+            }
+          }),
+        );
+        self.hook(hyprland, "notify::focused-client", (self) => {
+          if (hyprland.focused_client?.pid === client.pid) {
+            self.toggleClassName("urgent", false);
+          }
+        });
+        disconnectors.push(
+          bind(visible).subscribe((v) => {
+            self.toggleClassName("visible", v);
+          }),
+        );
+        disconnectors.push(
+          bind(hyprland, "focused_client").subscribe((focused) => {
+            self.toggleClassName("focused", client == focused);
+          }),
+        );
+        self.toggleClassName("visible", visible.get());
+        self.toggleClassName("focused", hyprland.focused_client == client);
+      }}
+      onDestroy={() => {
+        connections.forEach((n) => hyprland.disconnect(n));
+        disconnectors.forEach((d) => d());
+        delete cache[client.pid];
+      }}
+      className={"Client"}
+    >
+      <box>
+        <icon icon={getClientIcon(client)} />
+        <label
+          maxWidthChars={bind(visible).as((v) => (v ? 20 : 10))}
+          label={bind(client, "title")}
+          truncate={true}
+        />
+      </box>
+    </button>
+  );
+}
 function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   return (
     <box className="Clients">
@@ -273,77 +328,7 @@ function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
                 })}
               >
                 {bind(workspace, "clients").as((clients) => {
-                  return clients.map((client) => {
-                    var connections: number[] = [];
-                    var visible = bind(hyprland, "focusedWorkspace").as(() => {
-                      return (
-                        client.workspace.id == client.monitor.activeWorkspace.id
-                      );
-                    });
-                    var disconnectors: { (): any }[] = [];
-                    return (
-                      <button
-                        onClick={() => {
-                          client.workspace.focus();
-                        }}
-                        setup={(self) => {
-                          connections.push(
-                            hyprland.connect("urgent", () => {
-                              if (urgent_clients[client.address]) {
-                                self.toggleClassName("urgent", true);
-                              }
-                            }),
-                          );
-                          self.hook(
-                            hyprland,
-                            "notify::focused-client",
-                            (self) => {
-                              if (hyprland.focused_client?.pid === client.pid) {
-                                self.toggleClassName("urgent", false);
-                              }
-                            },
-                          );
-                          disconnectors.push(
-                            bind(visible).subscribe((v) => {
-                              self.toggleClassName("visible", v);
-                            }),
-                          );
-                          disconnectors.push(
-                            bind(hyprland, "focused_client").subscribe(
-                              (focused) => {
-                                self.toggleClassName(
-                                  "focused",
-                                  client == focused,
-                                );
-                              },
-                            ),
-                          );
-                          self.toggleClassName("visible", visible.get());
-                          self.toggleClassName(
-                            "focused",
-                            hyprland.focused_client == client,
-                          );
-                        }}
-                        onDestroy={() => {
-                          connections.forEach((n) => hyprland.disconnect(n));
-                          disconnectors.forEach((d) => d());
-                          delete cache[client.pid];
-                        }}
-                        className={"Client"}
-                      >
-                        <box>
-                          <icon icon={getClientIcon(client)} />
-                          <label
-                            maxWidthChars={bind(visible).as((v) =>
-                              v ? 20 : 10,
-                            )}
-                            label={bind(client, "title")}
-                            truncate={true}
-                          />
-                        </box>
-                      </button>
-                    );
-                  });
+                  return clients.map(Client);
                 })}
               </box>
             );
