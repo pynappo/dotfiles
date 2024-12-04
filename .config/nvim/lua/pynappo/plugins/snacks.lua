@@ -39,7 +39,6 @@ return {
         bigfile = { enabled = true },
         notifier = { enabled = true },
         quickfile = { enabled = true },
-        statuscolumn = { enabled = true },
         terminal = { enabled = true },
       })
       vim.api.nvim_create_autocmd('User', {

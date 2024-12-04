@@ -13,8 +13,9 @@ const apps = new AstalApps.Apps({
   entryMultiplier: 2,
   executableMultiplier: 2,
 });
+var class_to_icon: { [key: string]: string } = {};
 for (const app of apps.list) {
-  app.icon;
+  class_to_icon[app.wm_class] = app.icon_name;
 }
 
 const hyprland = Hyprland.get_default();
@@ -95,7 +96,7 @@ function BatteryLevel() {
   const bat = Battery.get_default();
 
   return (
-    <box className="Battery" visible={bind(bat, "isPresent")}>
+    <box className="Battmery" visible={bind(bat, "isPresent")}>
       <icon icon={bind(bat, "batteryIconName")} />
       <label
         label={bind(bat, "percentage").as((p) => `${Math.floor(p * 100)} %`)}
@@ -251,8 +252,15 @@ function getClientIcon(client?: Hyprland.Client): string {
   if (client === undefined || !Boolean(client)) return "";
   if (cache[client.pid]) return cache[client.pid];
   const clientClass = client.class || client.initialClass;
-  const results = apps.fuzzy_query(clientClass);
-  console.log(`results for ${clientClass}:`, results);
+  const classIcon = class_to_icon[clientClass];
+  if (classIcon) {
+    cache[client.pid] = classIcon;
+    return classIcon;
+  }
+  var results = apps.fuzzy_query(clientClass);
+  if (results.length == 0) {
+    results = apps.fuzzy_query(client.title);
+  }
   const iconName = results?.[0]?.iconName || clientClass;
   cache[client.pid] = iconName;
   return iconName;

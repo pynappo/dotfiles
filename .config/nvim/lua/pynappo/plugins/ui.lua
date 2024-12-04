@@ -302,7 +302,7 @@ return {
   },
   {
     'sphamba/smear-cursor.nvim',
-
+    cond = vim.env.TERM ~= 'xterm-kitty',
     opts = {
       cursor_color = '#d3cdc3',
       normal_bg = '#282828',
