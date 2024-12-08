@@ -320,13 +320,6 @@
             "Source": "extras"
         },
         {
-            "Name": "kdenlive",
-            "Updated": "2023-07-24T16:06:33.7694446-07:00",
-            "Info": "",
-            "Version": "23.04.3",
-            "Source": "extras"
-        },
-        {
             "Name": "keepassxc",
             "Updated": "2023-04-04T02:01:04.8734265-07:00",
             "Info": "",
