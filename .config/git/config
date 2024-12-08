@@ -70,6 +70,8 @@
   sdiff = diff --staged
   cdiff = diff origin...
   odiff = diff origin...
+  s = status
+  stat = status
   t = tag
   sclone = clone --filter=blob:none
 	unstage = restore --staged

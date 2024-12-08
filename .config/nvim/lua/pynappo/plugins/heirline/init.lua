@@ -2,6 +2,7 @@
 return {
   {
     'rebelot/heirline.nvim',
+    priority = require('pynappo.priorities').heirline,
     dependencies = {
       'nvim-tree/nvim-web-devicons',
       'pynappo/tabnames.nvim',
@@ -95,6 +96,7 @@ return {
       local b = require('pynappo.plugins.heirline.components.base')
       local u = require('pynappo.plugins.heirline.components.utils')
       local p = require('pynappo.plugins.heirline.components.plugins')
+
       local function cond_append(base, ...)
         local copy = vim.deepcopy(base, true)
         local condition = copy.condition
@@ -113,10 +115,12 @@ return {
         end
         return result
       end
+
       local function surround_label(label, delimiters, color, component)
         return utils.surround({ label .. delimiters[1], delimiters[2] }, color, component),
           utils.surround(delimiters, color, component)
       end
+
       local vi_mode_block = utils.surround({ '', ' ' }, get_mode_color, { b.vi_mode, hl = { fg = 'black' } })
       local ruler_block = utils.surround({ '', '' }, get_mode_color, { b.ruler, hl = { fg = 'black' } })
       local tools_block = {
@@ -140,10 +144,19 @@ return {
       require('heirline').setup({
         opts = {
           disable_winbar_cb = function(args)
-            return conditions.buffer_matches({
+            local res = conditions.buffer_matches({
               buftype = { 'nofile', 'prompt', 'quickfix' },
-              filetype = { '^git.*', 'fugitive', 'Trouble', 'dashboard' },
+              filetype = {
+                '^git.*',
+                'fugitive',
+                'Trouble',
+                'dashboard',
+                'snacks_dashboard',
+                'snacks_dashboard_terminal',
+                'fzf',
+              },
             }, args.buf)
+            return res
           end,
           colors = heirline_colors(),
         },
@@ -281,10 +294,7 @@ return {
           },
         },
       })
-      -- need to ensure this happens after tint.nvim sets up
-      vim.api.nvim_create_autocmd('VimEnter', {
-        callback = function() require('pynappo.autocmds').heirline_mode_cursorline(mode_colors) end,
-      })
+      require('pynappo.autocmds').heirline_mode_cursorline(mode_colors)
     end,
   },
 }

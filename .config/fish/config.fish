@@ -93,6 +93,7 @@ if status is-interactive
   abbr -a --command git c commit
   abbr -a --command git a add
   abbr -a --command git t tag
+  abbr -a --command git s status
   abbr -a -- sudo 'sudo -E -s'
   abbr -a -- sc 'systemctl'
   abbr -a -- jc 'journalctl'

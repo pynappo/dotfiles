@@ -281,6 +281,7 @@ require('pynappo.keymaps').setup.regular()
 require('pynappo.theme')
 require('pynappo.commands')
 require('pynappo.tweaks')
+require('pynappo.autocmds').setup_overrides()
 vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({

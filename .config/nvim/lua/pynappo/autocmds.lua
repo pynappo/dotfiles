@@ -111,7 +111,7 @@ function autocmds.heirline_mode_cursorline(mode_colors)
   })
 end
 
--- called after setting up tint
+-- called after setting up tint plugins
 function autocmds.setup_overrides()
   autocmds.create({ 'ColorScheme' }, {
     callback = function(details)
@@ -121,18 +121,6 @@ function autocmds.setup_overrides()
     end,
   })
 end
-
--- autocmds.create({'VimEnter', 'BufReadPre', 'FileType'}, {
---   callback = function(details)
---     print(details.event)
---   end
--- })
--- autocmds.create({'User'}, {
---   pattern = 'VeryLazy',
---   callback = function(details)
---     print(details.event)
---   end
--- })
 
 local skeletons = {}
 

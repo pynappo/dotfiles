@@ -75,6 +75,7 @@ if not utils.is_gui and not utils.is_termux then
   for _, hl in ipairs(transparent_highlights) do
     theme.overrides.all.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE'
   end
+  vim.print(theme.overrides.all)
 end
 
 function theme.set_rainbow_colors(prefix, colors)

@@ -1,5 +1,6 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
+  dev = true,
   branch = 'v3.x',
   dependencies = {
     'folke/snacks.nvim',
@@ -199,6 +200,9 @@ return {
             conflict = '',
           },
           align = 'right',
+        },
+        symlink_target = {
+          enabled = true,
         },
       },
       window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
