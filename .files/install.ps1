@@ -10,7 +10,8 @@ Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 irm get.scoop.sh | iex
 $env:Path += "$HOME\scoop\shims"
-winget install git -s winget -i
+winget install Git.Git -s winget -i
+winget install GitHub.cli -s winget
 Reload-Path
 
 scoop install gsudo
