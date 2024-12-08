@@ -28,7 +28,7 @@ function CanUsePredictionSource
 }
 
 if (CanUsePredictionSource)
-{ 
+{
     Import-Module PSReadLine
     Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin -HistoryNoDuplicates
     Import-Module -Name Terminal-Icons
@@ -42,7 +42,7 @@ $env:XDG_CONFIG_HOME = "$HOME\.config"
 $env:MPV_HOME = "$HOME\.config\mpv"
 $env:ANIMDL_CONFIG = "$HOME\.config\animdl\config.yml"
 Function fzfb
-{ fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' @Args 
+{ fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' @Args
 }
 Set-Alias -Name f -Value fzfb
 $env:PYTHONIOENCODING="utf-8"
@@ -53,13 +53,12 @@ $env:PATH=".\node_modules\.bin;$env:PATH"
 
 # add stuff
 
-Invoke-Expression "$(thefuck --alias)"
 Function Reload-Path
 {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 }
 Function Notepad
-{ Notepads @Args 
+{ Notepads @Args
 }
 Function Dotfiles
 {
@@ -76,7 +75,7 @@ Function Add-VSVars
         foreach {
             if ($_ -match "=")
             {
-                $v = $_.split("=", 2); set-item -force -path "ENV:\$($v[0])"  -value "$($v[1])" 
+                $v = $_.split("=", 2); set-item -force -path "ENV:\$($v[0])"  -value "$($v[1])"
             }
         }
     popd
@@ -106,14 +105,14 @@ Function Dotwindows
             Dotfiles add $Target
         }
     } else
-    { git --git-dir=$Home/.windows.git/ --work-tree=$HOME @Args 
+    { git --git-dir=$Home/.windows.git/ --work-tree=$HOME @Args
     }
 }
 Function Lazy-Dotfiles
-{ lazygit --git-dir=$Home/.files.git/ --work-tree=$HOME @Args 
+{ lazygit --git-dir=$Home/.files.git/ --work-tree=$HOME @Args
 }
 Function Lazy-Dotwindows
-{ lazygit --git-dir=$Home/.windows.git/ --work-tree=$HOME @Args 
+{ lazygit --git-dir=$Home/.windows.git/ --work-tree=$HOME @Args
 }
 
 Function Pacup ([string]$Path = "$Home\.files\")
@@ -431,4 +430,4 @@ Register-ArgumentCompleter -CommandName 'gh' -ScriptBlock {
     }
 }
 
-Import-Module "C:\Users\lehti\scoop\apps\gsudo\current\gsudoModule.psd1"
+Import-Module "$HOME\scoop\apps\gsudo\current\gsudoModule.psd1"
