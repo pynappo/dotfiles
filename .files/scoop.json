@@ -103,13 +103,6 @@
             "Source": "main"
         },
         {
-            "Name": "armcord",
-            "Updated": "2023-07-18T16:29:09.6662622-07:00",
-            "Info": "",
-            "Version": "3.2.1",
-            "Source": "extras"
-        },
-        {
             "Name": "bat",
             "Updated": "2023-05-23T14:37:55.4602735-07:00",
             "Info": "",
