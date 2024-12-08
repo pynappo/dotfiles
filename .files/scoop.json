@@ -264,13 +264,6 @@
             "Source": "extras"
         },
         {
-            "Name": "gradle",
-            "Updated": "2023-07-18T16:33:53.4872258-07:00",
-            "Info": "",
-            "Version": "8.2.1",
-            "Source": "main"
-        },
-        {
             "Name": "gsudo",
             "Updated": "2023-07-18T16:33:57.7811356-07:00",
             "Info": "",
@@ -390,13 +383,6 @@
             "Source": "main"
         },
         {
-            "Name": "libgen-desktop",
-            "Updated": "2022-10-07T01:59:07.9998741-07:00",
-            "Info": "",
-            "Version": "1.4.1",
-            "Source": "extras"
-        },
-        {
             "Name": "lightbulb",
             "Updated": "2023-01-10T15:26:20.2618511-08:00",
             "Info": "",
@@ -453,25 +439,11 @@
             "Source": "main"
         },
         {
-            "Name": "miru",
-            "Updated": "2023-07-24T16:06:46.5844178-07:00",
-            "Info": "",
-            "Version": "4.2.7",
-            "Source": "extras"
-        },
-        {
             "Name": "ModAssistant",
             "Updated": "2023-07-07T22:09:53.812343-07:00",
             "Info": "",
             "Version": "1.1.32",
             "Source": "Sirius708_Scoop-Sirius708"
-        },
-        {
-            "Name": "monofur-nf",
-            "Updated": "2023-06-06T15:45:25.33028-07:00",
-            "Info": "",
-            "Version": "3.0.2",
-            "Source": "nerd-fonts"
         },
         {
             "Name": "Mononoki-NF-mono",
@@ -523,25 +495,11 @@
             "Source": "main"
         },
         {
-            "Name": "nodejs16",
-            "Updated": "2023-06-22T10:15:55.8552245-07:00",
-            "Info": "",
-            "Version": "16.20.1",
-            "Source": "versions"
-        },
-        {
             "Name": "Noto-NF",
             "Updated": "2023-06-06T15:46:16.5380578-07:00",
             "Info": "",
             "Version": "3.0.2",
             "Source": "nerd-fonts"
-        },
-        {
-            "Name": "NTFSLinksView",
-            "Updated": "2023-05-31T14:21:55.3413037-07:00",
-            "Info": "",
-            "Version": "1.33",
-            "Source": "nirsoft"
         },
         {
             "Name": "openrgb",
@@ -633,13 +591,6 @@
             "Info": "",
             "Version": "7.3.4",
             "Source": "extras"
-        },
-        {
-            "Name": "rust-analyzer",
-            "Updated": "2023-07-24T16:07:03.6270842-07:00",
-            "Info": "",
-            "Version": "2023-07-24",
-            "Source": "main"
         },
         {
             "Name": "rustup",
