@@ -29,8 +29,8 @@ gsudo {
 gh auth -p ssh -h GitHub.com -w
 ssh-add ~/.ssh/id_ed25519
 
-git clone --bare https://github.com/pynappo/dotfiles.git .dotfiles.git
-git clone --bare https://github.com/pynappo/dotwindows.git .dotwindows.git
+git clone --bare https://github.com/pynappo/dotfiles.git .files.git
+git clone --bare https://github.com/pynappo/dotwindows.git .windows.git
 git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME checkout --force
 git --git-dir=$HOME/.dotwindows.git/ --work-tree=$HOME checkout --force
 
