@@ -176,7 +176,7 @@ function Workspaces({
             if (ws === null)
               return (
                 <button
-                  className={"Workspace"}
+                  className={"Workspace empty"}
                   onClicked={() => hyprland.dispatch("workspace", String(id))}
                 >
                   <box>

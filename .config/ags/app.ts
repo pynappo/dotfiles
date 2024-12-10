@@ -25,22 +25,39 @@ App.start({
     res("ok");
   },
   main: () => {
-    const monitors = App.get_monitors();
-    const bars = new Map<Gdk.Monitor, Gtk.Widget>();
+    const notifications = new Map<Gdk.Monitor, Gtk.Widget>();
 
     // initialize
+    reset_bars();
     for (const gdkmonitor of App.get_monitors()) {
-      bars.set(gdkmonitor, Bar(gdkmonitor));
-      NotificationPopups(gdkmonitor);
+      notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
     }
 
     App.connect("monitor-added", (_, gdkmonitor) => {
-      bars.set(gdkmonitor, Bar(gdkmonitor));
+      reset_bars();
+      notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
     });
 
     App.connect("monitor-removed", (_, gdkmonitor) => {
-      bars.get(gdkmonitor)?.destroy();
-      bars.delete(gdkmonitor);
+      reset_bars();
+      notifications.get(gdkmonitor)?.destroy();
+      notifications.delete(gdkmonitor);
     });
   },
 });
+
+const bars = new Map<Gdk.Monitor, Gtk.Widget>();
+function reset_bars() {
+  const monitors = App.get_monitors();
+
+  for (const bar of bars) {
+    bar[1].destroy();
+  }
+  bars.clear();
+  if (monitors.length == 2) {
+    bars.set(monitors[0], Bar(monitors[0], [1, 3, 5, 7]));
+    bars.set(monitors[1], Bar(monitors[1], [2, 4, 6, 8]));
+  } else {
+    bars.set(monitors[0], Bar(monitors[1], [1, 2, 3, 4, 5, 6, 7, 8]));
+  }
+}
