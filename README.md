@@ -19,7 +19,7 @@ cd $HOME
 git clone --bare git@github.com:pynappo/dotfiles.git $HOME/.files.git/
 git --git-dir=$HOME/.files.git/ --work-tree=$HOME checkout --force
 . $PROFILE
-df config status.showUntrackedFiles no
+dot config status.showUntrackedFiles no
 ```
 
 # Package lists:
