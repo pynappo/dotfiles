@@ -80,9 +80,8 @@ if status is-interactive
   end
 
   # see ./conf.d/abbr_helpers.fish
-  abbr -a -- dotfiles 'git -C HOME/.files.git/ --work-tree=$HOME'
-  abbr -a -- dot 'git -C $HOME/.files.git/ --work-tree=$HOME'
-  abbr -a -- ldot 'lazygit -C $HOME/.files.git/ --work-tree=$HOME'
+  abbr -a -- dot 'git --git-dir=$HOME/.files.git/ --work-tree=$HOME'
+  abbr -a -- ldot 'lazygit --git-dir=$HOME/.files.git/ --work-tree=$HOME'
   abbr -a -- pm 'sudo pacman'
   abbr -a -- su 'su --shell=/usr/bin/fish'
   abbr -a -- e $EDITOR
@@ -94,6 +93,7 @@ if status is-interactive
   abbr -a --command git a add
   abbr -a --command git t tag
   abbr -a --command git s status
+  abbr -a -- gpr 'gh pr checkout'
   abbr -a -- sudo 'sudo -s'
   abbr -a -- sc 'systemctl'
   abbr -a -- jc 'journalctl'

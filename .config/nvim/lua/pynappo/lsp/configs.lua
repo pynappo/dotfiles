@@ -100,6 +100,7 @@ local configs = {
           propertyDeclarationTypes = { enabled = true },
           variableTypes = { enabled = false },
         },
+        maxTsServerMemory = 8 * 1024,
       },
     },
   },

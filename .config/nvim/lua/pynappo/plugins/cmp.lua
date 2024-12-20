@@ -5,6 +5,7 @@ return {
     'pynappo/nvim-cmp',
     name = 'nvim-cmp', -- Otherwise highlighting gets messed up
     version = false,
+    enabled = false,
     dependencies = {
 
       --* the sources *--
