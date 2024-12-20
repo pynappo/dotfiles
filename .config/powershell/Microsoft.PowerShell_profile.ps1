@@ -62,7 +62,7 @@ Function Notepad
 }
 Function Dotfiles
 {
-    git -C $HOME/.files.git/ --work-tree=$HOME @Args
+    git --git-dir=$HOME/.files.git/ --work-tree=$HOME @Args
 }
 Function Jammers
 {
@@ -106,14 +106,14 @@ Function Dotwindows
         }
     } else
     {
-      git -C $HOME/.windows.git/ --work-tree=$HOME @Args
+      git --git-dir=$HOME/.windows.git/ --work-tree=$HOME @Args
     }
 }
 Function Lazy-Dotfiles
-{ lazygit -C $HOME/.files.git/ --work-tree=$HOME @Args
+{ lazygit --git-dir=$HOME/.files.git/ --work-tree=$HOME @Args
 }
 Function Lazy-Dotwindows
-{ lazygit -C $HOME/.windows.git/ --work-tree=$HOME @Args
+{ lazygit --git-dir=$HOME/.windows.git/ --work-tree=$HOME @Args
 }
 
 Function Pacup ([string]$Path = "$Home\.files\")

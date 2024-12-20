@@ -79,8 +79,8 @@ return {
   --   opts = { highlight = { keyword = 'fg', after = '' } },
   -- },
   {
-    'RRethy/vim-illuminate',
-    dev = true,
+    'pynappo/vim-illuminate',
+branch = 'patch-nvim-ts-main',
     event = { 'BufNewFile', 'BufRead' },
     config = function()
       require('illuminate').configure({
@@ -302,7 +302,7 @@ return {
   },
   {
     'sphamba/smear-cursor.nvim',
-    cond = vim.env.TERM ~= 'xterm-kitty',
+    cond = vim.env.TERM ~= 'xterm-kitty' and not require('pynappo.utils').is_windows,
     opts = {
       cursor_color = '#d3cdc3',
       normal_bg = '#282828',
