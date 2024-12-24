@@ -21,7 +21,8 @@ return {
     end,
   },
   {
-    'OXY2DEV/markview.nvim',
+    'dsully/markview.nvim',
+    branch = 'treesitter-compat',
     lazy = false, -- Recommended
     -- ft = "markdown" -- If you decide to lazy-load anyway
 

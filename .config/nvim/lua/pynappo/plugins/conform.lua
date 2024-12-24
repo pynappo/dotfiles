@@ -1,3 +1,4 @@
+local web_dev = { stop_after_first = true, 'biome', 'prettier' }
 return {
   {
     'stevearc/conform.nvim',
@@ -12,16 +13,17 @@ return {
         lua = { 'stylua' },
         cpp = { 'clang_format' },
         c = { 'clang_format' },
-        typescript = { 'biome' },
-        javascript = { 'biome' },
-        typescriptreact = { 'biome' },
-        javascriptreact = { 'biome' },
+        typescript = web_dev,
+        javascript = web_dev,
+        typescriptreact = web_dev,
+        javascriptreact = web_dev,
         typst = { 'typstyle' },
         ruby = { 'prettier' },
         svelte = { 'prettier' },
         prisma = { 'prettier' },
-        css = { 'stylelint' },
-        less = { 'stylelint' },
+        css = web_dev,
+        less = { 'prettier' },
+        scss = { 'prettier' },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
       },
