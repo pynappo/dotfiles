@@ -1,5 +1,5 @@
 local utils = require('pynappo.utils')
----@param cmd string[]
+---@type [string, string|fun(ctx: vim.api.keyset.create_user_command.command_args), vim.api.keyset.user_command|nil][]
 local commands = {
   { 'CDhere', 'tcd %:p:h' },
   {
@@ -45,6 +45,7 @@ local commands = {
       require('tabnames').set_tab_name(0, 'Config')
       if new_tab then vim.cmd('Alpha') end
     end,
+    {},
   },
   {
     'Messages',
@@ -86,7 +87,7 @@ local commands = {
         limit = 1,
         upward = true,
         type = 'directory',
-        path = vim.fn.expand('%'),
+        path = vim.api.nvim_buf_get_name(0),
       })
       if #git_dirs == 1 then
         vim.cmd.tcd(git_dirs[1])

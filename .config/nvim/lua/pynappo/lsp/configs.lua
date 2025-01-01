@@ -57,6 +57,9 @@ local configs = {
         completion = {
           callSnippet = 'Both',
         },
+        globals = {
+          'stacktrace',
+        },
         hint = {
           enable = true,
           arrayIndex = 'Disable',

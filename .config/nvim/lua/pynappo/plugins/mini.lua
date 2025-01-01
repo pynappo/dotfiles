@@ -1,5 +1,11 @@
 return {
   'echasnovski/mini.nvim',
+  init = function()
+    -- package.preload['nvim-web-devicons'] = function()
+    --   require('mini.icons').mock_nvim_web_devicons()
+    --   return package.loaded['nvim-web-devicons']
+    -- end
+  end,
   config = function()
     local user_command = vim.api.nvim_create_user_command
     local extra = require('mini.extra')

@@ -54,3 +54,19 @@ export class VarMap<K, T = Gtk.Widget> implements Subscribable {
 		return () => this.#subs.delete(callback);
 	}
 }
+//
+// const shell_map: { [key: string]: string[] } = {
+// 	["bash"]: ["bash", "-c"],
+// 	["fish"]: ["fish", "-c"],
+// };
+//
+// export function shell(
+// 	shell: "bash" | "fish",
+// 	cmd: string | string[],
+// ): string[] {
+// 	const final_cmd = shell_map[shell];
+// 	cmd = typeof cmd == "string" ? cmd : cmd.join(" ");
+// 	cmd = cmd.replaceAll('"', '\\"');
+// 	cmd = `"${cmd}"`;
+// 	return final_cmd.concat([cmd]);
+// }

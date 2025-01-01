@@ -6,6 +6,7 @@ return {
     'folke/snacks.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
+    'saifulapm/neotree-file-nesting-config',
     {
       's1n7ax/nvim-window-picker',
       name = 'window-picker',
@@ -117,24 +118,6 @@ return {
   },
   init = function() require('pynappo.keymaps').setup.neotree() end,
   config = function()
-    local function getTelescopeOpts(state, path)
-      return {
-        cwd = path,
-        search_dirs = { path },
-        attach_mappings = function(prompt_bufnr, map)
-          local actions = require('telescope.actions')
-          actions.select_default:replace(function()
-            actions.close(prompt_bufnr)
-            local action_state = require('telescope.actions.state')
-            local selection = action_state.get_selected_entry()
-            local filename = selection.filename or selection[1]
-            -- any way to open the file without triggering auto-close event of neo-tree?
-            require('neo-tree.sources.filesystem').navigate(state, state.path, filename, function() vim.print('hi') end)
-          end)
-          return true
-        end,
-      }
-    end
     local function on_move(data) require('snacks').rename.on_rename_file(data.source, data.destination) end
     local events = require('neo-tree.events')
     require('neo-tree').setup({
@@ -143,11 +126,20 @@ return {
       -- You can also add an external source by adding it's name to this list.
       -- The name used here must be the same name you would use in a require() call.
 
-      -- log_level = 'debug',
+      log_level = 'debug',
       -- log_to_file = true,
       event_handlers = {
         { event = events.FILE_MOVED, handler = on_move },
         { event = events.FILE_RENAMED, handler = on_move },
+        -- {
+        --   event = events.NEO_TREE_BUFFER_ENTER,
+        --   handler = function()
+        --     backtrace()
+        --     vim.print('bufenter')
+        --     local state = require('neo-tree.sources.manager').get_state(vim.b['neo_tree_source'])
+        --     require('neo-tree.sources.common.commands').toggle_preview(state)
+        --   end,
+        -- },
       },
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
       hide_root_node = true,
@@ -169,7 +161,7 @@ return {
           { source = 'filesystem', display_name = ' 󰉓 Files ' },
           { source = 'buffers', display_name = ' 󰈙 Buffers ' },
           { source = 'git_status', display_name = ' 󰊢 Git ' },
-          { source = 'diagnostics', display_name = ' 󰒡 Diagnostics ' },
+          { source = 'document_symbols', display_name = ' 󰊕 Symbols ' },
         },
         content_layout = 'center', -- only with `tabs_layout` = "equal", "focus"
         tabs_layout = 'equal', -- start, end, center, equal, focus
@@ -210,22 +202,22 @@ return {
         file_size = {
           enabled = true,
           width = 12, -- width of the column
-          required_width = 64, -- min width of window required to show this column
+          required_width = 0, -- min width of window required to show this column
         },
         type = {
           enabled = true,
           width = 10, -- width of the column
-          required_width = 122, -- min width of window required to show this column
+          required_width = 0, -- min width of window required to show this column
         },
         last_modified = {
           enabled = true,
           width = 5, -- width of the column
-          required_width = 88, -- min width of window required to show this column
+          required_width = 0, -- min width of window required to show this column
         },
         created = {
           enabled = true,
           width = 20, -- width of the column
-          required_width = 110, -- min width of window required to show this column
+          required_width = 0, -- min width of window required to show this column
         },
         symlink_target = {
           enabled = true,
@@ -255,7 +247,7 @@ return {
           ['<cr>'] = 'open',
           -- ["<cr>"] = { "open", config = { expand_nested_files = true } }, -- expand nested file takes precedence
           ['<esc>'] = 'cancel', -- close preview or floating neo-tree window
-          ['P'] = { 'toggle_preview', config = { use_float = true, use_image_nvim = false } },
+          ['P'] = { 'toggle_preview', config = { use_float = true, use_image_nvim = true } },
           ['<C-f>'] = { 'scroll_preview', config = { direction = -10 } },
           ['<C-b>'] = { 'scroll_preview', config = { direction = 10 } },
           ['l'] = 'focus_preview',
@@ -299,16 +291,6 @@ return {
         async_directory_scan = 'never',
         hijack_netrw_behavior = 'disabled',
         commands = {
-          telescope_find = function(state)
-            local node = state.tree:get_node()
-            local path = node:get_id()
-            require('telescope.builtin').find_files(getTelescopeOpts(state, path))
-          end,
-          telescope_grep = function(state)
-            local node = state.tree:get_node()
-            local path = node:get_id()
-            require('telescope.builtin').live_grep(getTelescopeOpts(state, path))
-          end,
           run_command = function(state)
             local node = state.tree:get_node()
             local path = node:get_id()
@@ -347,6 +329,7 @@ return {
         -- the current file is changed while the tree is open.
         use_libuv_file_watcher = true,
         window = {
+          auto_expand_width = true,
           mappings = {
             ['^'] = 'focus_parent',
             ['H'] = 'toggle_hidden',
@@ -422,10 +405,9 @@ return {
         max_lines = 10000, -- How many lines of git status results to process. Anything after this will be dropped.
         -- Anything before this will be used. The last items to be processed are the untracked files.
       },
-      retain_hidden_root_indent = false, -- IF the root node is hidden, keep the indentation anyhow.
+      retain_hidden_root_indent = true, -- IF the root node is hidden, keep the indentation anyhow.
       -- This is needed if you use expanders because they render in the indent.
-      log_level = 'info', -- "trace", "debug", "info", "warn", "error", "fatal"
-      log_to_file = false, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
+      log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
       -- popup_border_style is for input and confirmation dialogs.
       -- Configurtaion of floating window is done in the individual source sections.
       -- "NC" is a special style that works well with NormalNC set
@@ -434,7 +416,7 @@ return {
       -- set to -1 to disable the resize timer entirely
       --                           -- NOTE: this will speed up to 50 ms for 1 second following a resize
       sort_function = nil, -- uses a custom function for sorting files and directories in the tree
-      use_popups_for_input = true, -- If false, inputs will use vim.ui.input() instead of custom floats.
+      use_popups_for_input = false, -- If false, inputs will use vim.ui.input() instead of custom floats.
       -- source_selector provides clickable tabs to switch between sources.
       --
       renderers = {
@@ -499,7 +481,7 @@ return {
           { 'bufnr' },
         },
       },
-      nesting_rules = {},
+      nesting_rules = require('neotree-file-nesting-config').nesting_rules,
       -- Global custom commands that will be available in all sources (if not overridden in `opts[source_name].commands`)
       --
       -- You can then reference the custom command by adding a mapping to it:

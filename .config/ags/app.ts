@@ -18,46 +18,46 @@ App.add_icons(path);
 const a = Gtk.IconTheme.get_default();
 const { FORCE_SYMBOLIC, GENERIC_FALLBACK, USE_BUILTIN } = Gtk.IconLookupFlags;
 App.start({
-  css: style,
-  instanceName: "astal",
-  requestHandler(request, res) {
-    print(request);
-    res("ok");
-  },
-  main: () => {
-    const notifications = new Map<Gdk.Monitor, Gtk.Widget>();
+	css: style,
+	instanceName: "astal",
+	requestHandler(request, res) {
+		print(request);
+		res("ok");
+	},
+	main: () => {
+		const notifications = new Map<Gdk.Monitor, Gtk.Widget>();
 
-    // initialize
-    reset_bars();
-    for (const gdkmonitor of App.get_monitors()) {
-      notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
-    }
+		// initialize
+		reset_bars();
+		for (const gdkmonitor of App.get_monitors()) {
+			notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
+		}
 
-    App.connect("monitor-added", (_, gdkmonitor) => {
-      reset_bars();
-      notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
-    });
+		App.connect("monitor-added", (_, gdkmonitor) => {
+			reset_bars();
+			notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
+		});
 
-    App.connect("monitor-removed", (_, gdkmonitor) => {
-      reset_bars();
-      notifications.get(gdkmonitor)?.destroy();
-      notifications.delete(gdkmonitor);
-    });
-  },
+		App.connect("monitor-removed", (_, gdkmonitor) => {
+			reset_bars();
+			notifications.get(gdkmonitor)?.destroy();
+			notifications.delete(gdkmonitor);
+		});
+	},
 });
 
 const bars = new Map<Gdk.Monitor, Gtk.Widget>();
 function reset_bars() {
-  const monitors = App.get_monitors();
+	const monitors = App.get_monitors();
 
-  for (const bar of bars) {
-    bar[1].destroy();
-  }
-  bars.clear();
-  if (monitors.length == 2) {
-    bars.set(monitors[0], Bar(monitors[0], [1, 3, 5, 7]));
-    bars.set(monitors[1], Bar(monitors[1], [2, 4, 6, 8]));
-  } else {
-    bars.set(monitors[0], Bar(monitors[1], [1, 2, 3, 4, 5, 6, 7, 8]));
-  }
+	for (const bar of bars) {
+		bar[1].destroy();
+	}
+	bars.clear();
+	if (monitors.length == 2) {
+		bars.set(monitors[0], Bar(monitors[0], [1, 3, 5, 7]));
+		bars.set(monitors[1], Bar(monitors[1], [2, 4, 6, 8]));
+	} else {
+		bars.set(monitors[0], Bar(monitors[1], [1, 2, 3, 4, 5, 6, 7, 8]));
+	}
 }

@@ -37,27 +37,27 @@ o.relativenumber = true
 o.number = true
 vim.keymap.set('n', '<leader>cc', 'gcc', { remap = true })
 require('lazy').setup({
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup({
-        sections = {},
-        winbar = {},
-        inactive_winbar = {},
-        extensions = {},
-        tabline = {
-          lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
-          lualine_c = { 'filename' },
-          lualine_x = { 'encoding', 'fileformat', 'filetype' },
-          lualine_y = { 'progress' },
-          lualine_z = { 'location' },
-        },
-      })
-      o.laststatus = 0
-    end,
-  },
+  -- {
+  --   'nvim-lualine/lualine.nvim',
+  --   dependencies = { 'nvim-tree/nvim-web-devicons' },
+  --   config = function()
+  --     require('lualine').setup({
+  --       sections = {},
+  --       winbar = {},
+  --       inactive_winbar = {},
+  --       extensions = {},
+  --       tabline = {
+  --         lualine_a = { 'mode' },
+  --         lualine_b = { 'branch', 'diff', 'diagnostics' },
+  --         lualine_c = { 'filename' },
+  --         lualine_x = { 'encoding', 'fileformat', 'filetype' },
+  --         lualine_y = { 'progress' },
+  --         lualine_z = { 'location' },
+  --       },
+  --     })
+  --     o.laststatus = 0
+  --   end,
+  -- },
 })
 
 vim.opt.laststatus = 0

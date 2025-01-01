@@ -8,7 +8,11 @@ utils.is_gui = utils.is_firenvim or utils.is_goneovim
 utils.config_home = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config')
 -- considers empty string and 0 falsy
 local conditions = {}
-conditions.string = function(s) return #s ~= 0 end
+---@type fun(s: string): boolean
+conditions.string = function(s)
+  local not_whitespace_only = s:find('[^%s%c]')
+  return not_whitespace_only ~= nil
+end
 conditions.number = function(n) return n ~= 0 end
 function utils.truthy(object)
   if object == nil then return nil end

@@ -4,7 +4,7 @@ return {
     'rebelot/heirline.nvim',
     priority = require('pynappo.priorities').heirline,
     dependencies = {
-      'nvim-tree/nvim-web-devicons',
+      'echasnovski/mini.nvim',
       'pynappo/tabnames.nvim',
       'pynappo/git-notify.nvim',
       {
@@ -234,19 +234,21 @@ return {
             -- for _, mark in pairs(marks) do
             --   self.marks[mark.pos[2]] = mark
             -- end
-            self.current_line = vim.api.nvim_win_get_cursor(0)[1]
-            self.lnum = vim.v.lnum
-            self.fold_opened = vim.fn.foldclosed(self.lnum) == -1
-            self.foldlevel = vim.fn.foldlevel(self.lnum)
-            self.visual_range = nil
-            if vim.fn.mode():lower():find('v') then
-              local visual_lnum = vim.fn.getpos('v')[2]
-              local cursor_lnum = vim.api.nvim_win_get_cursor(0)[1]
-              -- make sure that visual_range is ascending
-              if visual_lnum > cursor_lnum then
-                self.visual_range = { cursor_lnum, visual_lnum }
-              else
-                self.visual_range = { visual_lnum, cursor_lnum }
+            if true then
+              self.current_line = vim.api.nvim_win_get_cursor(0)[1]
+              self.lnum = vim.v.lnum
+              self.fold_opened = vim.fn.foldclosed(self.lnum) == -1
+              self.foldlevel = vim.fn.foldlevel(self.lnum)
+              self.visual_range = nil
+              if vim.fn.mode():lower():find('v') then
+                local visual_lnum = vim.fn.getpos('v')[2]
+                local cursor_lnum = vim.api.nvim_win_get_cursor(0)[1]
+                -- make sure that visual_range is ascending
+                if visual_lnum > cursor_lnum then
+                  self.visual_range = { cursor_lnum, visual_lnum }
+                else
+                  self.visual_range = { visual_lnum, cursor_lnum }
+                end
               end
             end
           end,
@@ -267,8 +269,12 @@ return {
               u.align,
               {
                 hl = function(self)
-                  if self.visual_range then
-                    if self.lnum >= self.visual_range[1] and self.lnum <= self.visual_range[2] then return 'normal' end
+                  if true then
+                    if self.visual_range then
+                      if self.lnum >= self.visual_range[1] and self.lnum <= self.visual_range[2] then
+                        return 'normal'
+                      end
+                    end
                   end
                 end,
                 provider = function() return vim.v.relnum end,

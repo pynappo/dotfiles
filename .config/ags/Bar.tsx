@@ -1,5 +1,22 @@
-import { Variable, GLib, bind, execAsync, Binding, GObject } from "astal";
-import { App, Astal, Gtk, Gdk } from "astal/gtk3";
+import {
+	Variable,
+	GLib,
+	bind,
+	execAsync,
+	Binding,
+	GObject,
+	subprocess,
+	exec,
+} from "astal";
+import {
+	App,
+	Astal,
+	Gtk,
+	Gdk,
+	astalify,
+	ConstructProps,
+	Widget,
+} from "astal/gtk3";
 import Hyprland from "gi://AstalHyprland";
 import Mpris from "gi://AstalMpris";
 import Battery from "gi://AstalBattery";
@@ -9,6 +26,7 @@ import Tray from "gi://AstalTray";
 import AstalApps from "gi://AstalApps?version=0.1";
 import { coordinateEquals } from "./util";
 import { VarMap } from "./util";
+const getenv = GLib.getenv;
 const apps = new AstalApps.Apps({
 	nameMultiplier: 2,
 	entryMultiplier: 2,
@@ -37,28 +55,21 @@ function SysTray() {
 	const tray = Tray.get_default();
 
 	return (
-		<box>
+		<box className="Systray">
 			{bind(tray, "items").as((items) =>
 				items.map((item) => {
-					if (item.iconThemePath) App.add_icons(item.iconThemePath);
-
-					const menu = item.create_menu();
-
 					return (
-						<button
+						<menubutton
 							tooltipMarkup={bind(item, "tooltipMarkup")}
-							onDestroy={() => menu?.destroy()}
-							onClickRelease={(self) => {
-								menu?.popup_at_widget(
-									self,
-									Gdk.Gravity.SOUTH,
-									Gdk.Gravity.NORTH,
-									null,
-								);
-							}}
+							usePopover={false}
+							actionGroup={bind(item, "action-group").as((ag) => [
+								"dbusmenu",
+								ag,
+							])}
+							menuModel={bind(item, "menu-model")}
 						>
-							<icon gIcon={bind(item, "gicon")} />
-						</button>
+							<icon gicon={bind(item, "gicon")} />
+						</menubutton>
 					);
 				}),
 			)}
@@ -287,8 +298,12 @@ function Client(client: Hyprland.Client) {
 	var disconnectors: { (): any }[] = [];
 	return (
 		<button
-			onClick={() => {
-				client.workspace.focus();
+			onClick={(self, event) => {
+				switch (event.button) {
+					case Astal.MouseButton.PRIMARY:
+						client.workspace.focus();
+					case Astal.MouseButton.SECONDARY:
+				}
 			}}
 			setup={(self) => {
 				self.hook(hyprland, "notify::focused-client", (self) => {
@@ -369,6 +384,46 @@ function Time({ format = "%F %X" }) {
 	);
 }
 
+const inhibitList = ["bash", "-c", `./scripts/systemd-inhibit/list.sh`];
+const inhibitCmd = ["bash", "-c", `./scripts/systemd-inhibit/inhibit.sh`];
+console.log(inhibitList, inhibitCmd);
+function Idle({}) {
+	const idle_inhibited = Variable(false).poll(
+		2000,
+		inhibitList,
+		(stdout, _) => {
+			var ags_inhibitor_found = stdout.indexOf("ags") > -1;
+			idle_inhibited.set(ags_inhibitor_found);
+			return ags_inhibitor_found;
+		},
+	);
+	return (
+		<box className={"Idle"} onDestroy={idle_inhibited.drop}>
+			<button
+				className={bind(idle_inhibited).as((active) => {
+					return active ? "test" : "";
+				})}
+				onClick={() => {
+					var inhibited = idle_inhibited.get();
+					if (!inhibited) {
+						execAsync(inhibitCmd).catch(console.log);
+					} else {
+						execAsync(`pkill ${inhibitCmd[0]}`);
+					}
+				}}
+			>
+				<icon
+					icon={bind(idle_inhibited).as((inhibited) => {
+						return inhibited
+							? "bed-symbolic"
+							: "eye-open-negative-filled-symbolic";
+					})}
+				/>
+			</button>
+		</box>
+	);
+}
+
 export default function Bar(
 	monitor: Gdk.Monitor,
 	sticky_workspace_ids: number[] = [],
@@ -398,6 +453,7 @@ export default function Bar(
 				<box hexpand halign={END}>
 					<Media />
 					<SysTray />
+					<Idle />
 					<Wifi />
 					<AudioSlider />
 					<BatteryLevel />

@@ -80,7 +80,7 @@ return {
   -- },
   {
     'pynappo/vim-illuminate',
-branch = 'patch-nvim-ts-main',
+    branch = 'patch-nvim-ts-main',
     event = { 'BufNewFile', 'BufRead' },
     config = function()
       require('illuminate').configure({
@@ -166,10 +166,7 @@ branch = 'patch-nvim-ts-main',
     'kosayoda/nvim-lightbulb',
     config = function()
       require('nvim-lightbulb').setup({
-        sign = { enabled = false },
-        virtual_text = {
-          enabled = true,
-        },
+        sign = { enabled = true },
       })
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
         callback = function() require('nvim-lightbulb').update_lightbulb() end,
@@ -296,7 +293,6 @@ branch = 'patch-nvim-ts-main',
   },
   {
     'rachartier/tiny-inline-diagnostic.nvim',
-    event = 'LspAttach', -- Or `LspAttach`
     priority = 1000, -- needs to be loaded in first
     config = function() require('tiny-inline-diagnostic').setup({}) end,
   },

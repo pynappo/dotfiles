@@ -198,7 +198,7 @@ local M = {
       for i, client in ipairs(self.clients) do
         ---@diagnostic disable-next-line: undefined-field
         local icon = self.ls_icons[client.name]
-          or require('nvim-web-devicons').get_icon_by_filetype(client.config.filetypes[1])
+          or require('mini.icons').get('filetype', client.config.filetypes[1])
           or '?'
         local child = {
           { provider = icon, hl = { bold = client.attached_buffers[vim.api.nvim_get_current_buf()] } },
@@ -262,11 +262,11 @@ local M = {
   },
   file_icon = {
     init = function(self)
-      self.icon, self.icon_color =
-        require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+      local ft = vim.bo[0].filetype or 'text'
+      self.icon, self.icon_color = require('mini.icons').get('filetype', ft)
     end,
     provider = function(self) return self.icon and (self.icon .. ' ') end,
-    hl = function(self) return { fg = self.icon_color } end,
+    hl = function(self) return self.icon_color end,
     update = { 'FileType', 'BufEnter' },
   },
   filetype = {

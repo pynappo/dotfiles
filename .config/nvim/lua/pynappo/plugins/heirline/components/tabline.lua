@@ -69,9 +69,8 @@ local file_icon = require('pynappo.plugins.heirline.components.base').file_icon
 
 tabline.filename_block = {
   init = function(self)
-    self.filename = vim.api.nvim_buf_get_name(self.bufnr)
-    self.icon, self.icon_color =
-      require('nvim-web-devicons').get_icon_color(self.filename, self.extension, { default = true })
+    local ft = vim.bo[self.bufnr].filetype
+    self.icon, self.icon_color = require('mini.icons').get('filetype', ft)
   end,
   hl = function(self) return self.is_active and 'TabLineSel' or 'TabLine' end,
   on_click = {

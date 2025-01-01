@@ -12,6 +12,9 @@ return {
         dashboard = {
           sections = {
             { section = 'header' },
+            { section = 'keys', gap = 1, padding = 1 },
+            { section = 'recent_files', cwd = true },
+            { section = 'startup' },
             {
               pane = 2,
               section = 'terminal',
@@ -19,30 +22,65 @@ return {
               height = 5,
               padding = 1,
             },
-            { section = 'keys', gap = 1, padding = 1 },
             {
               pane = 2,
-              icon = ' ',
-              title = 'Recent Files',
-              section = 'recent_files',
-              cwd = true,
-              indent = 2,
+              icon = ' ',
+              desc = 'Browse Repo',
               padding = 1,
+              key = 'b',
+              action = function() Snacks.gitbrowse() end,
             },
-            { pane = 2, icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
-            {
-              pane = 2,
-              icon = ' ',
-              title = 'Git Status',
-              section = 'terminal',
-              enabled = function() return Snacks.git.get_root() ~= nil end,
-              cmd = 'git status --short --branch --renames',
-              height = 5,
-              padding = 1,
-              ttl = 5 * 60,
-              indent = 3,
-            },
-            { section = 'startup' },
+            function()
+              local in_git = Snacks.git.get_root() ~= nil
+              local cmds = {
+                {
+                  title = 'Notifications',
+                  cmd = 'gh notify -s -a -n5',
+                  action = function() vim.ui.open('https://github.com/notifications') end,
+                  key = 'n',
+                  icon = ' ',
+                  height = 5,
+                  enabled = true,
+                },
+                {
+                  title = 'Open Issues',
+                  cmd = 'gh issue list -L 3',
+                  key = 'i',
+                  action = function() vim.fn.jobstart('gh issue list --web', { detach = true }) end,
+                  icon = ' ',
+                  height = 7,
+                },
+                {
+                  icon = ' ',
+                  title = 'Open PRs',
+                  cmd = 'gh pr list -L 3',
+                  key = 'p',
+                  action = function() vim.fn.jobstart('gh pr list --web', { detach = true }) end,
+                  height = 7,
+                },
+                {
+                  icon = ' ',
+                  title = 'Git Status',
+                  cmd = 'git --no-pager diff --stat -B -M -C',
+                  height = 10,
+                },
+              }
+              return vim
+                .iter(cmds)
+                :map(
+                  function(cmd)
+                    return vim.tbl_extend('force', {
+                      pane = 2,
+                      section = 'terminal',
+                      enabled = in_git,
+                      padding = 1,
+                      ttl = 5 * 60,
+                      indent = 3,
+                    }, cmd)
+                  end
+                )
+                :totable()
+            end,
           },
         },
         bigfile = { enabled = true },
@@ -66,11 +104,20 @@ return {
         end,
         {}
       )
+      vim.print = function(...)
+        require('snacks').debug.inspect(...)
+        return ...
+      end
+      _G.backtrace = Snacks.debug.backtrace
+      _G.bt = Snacks.debug.backtrace
+      vim.api.nvim_create_user_command('Notifications', function() Snacks.notifier.show_history() end, {})
       vim.api.nvim_create_user_command('ScratchPick', function() Snacks.scratch.select() end, {})
+      vim.api.nvim_create_user_command('Dashboard', function() Snacks.dashboard.open() end, {})
       -- Toggle the profiler
       Snacks.toggle.profiler():map('<leader>pp')
       -- Toggle the profiler highlights
       Snacks.toggle.profiler_highlights():map('<leader>ph')
+      vim.api.nvim_create_user_command('ScratchProfile', function() Snacks.profiler.scratch() end, {})
     end,
   },
 }
