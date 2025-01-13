@@ -1,7 +1,10 @@
+---@type string|"relative"
+
 return {
   'Saghen/blink.cmp',
   dependencies = 'rafamadriz/friendly-snippets',
   version = 'v0.*',
+  build = 'cargo build --release',
   enabled = true,
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
@@ -35,7 +38,10 @@ return {
     },
     completion = {
       list = {
-        selection = 'auto_insert',
+        selection = {
+          auto_insert = true,
+          preselect = false,
+        },
       },
       menu = {
         winblend = vim.o.winblend,
@@ -43,6 +49,12 @@ return {
       ghost_text = {
         enabled = true,
       },
+      documentation = {
+        auto_show = true,
+      },
+    },
+    signature = {
+      enabled = true,
     },
   },
 }

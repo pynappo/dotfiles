@@ -202,22 +202,24 @@ return {
         file_size = {
           enabled = true,
           width = 12, -- width of the column
-          required_width = 0, -- min width of window required to show this column
+          required_width = 64, -- min width of window required to show this column
         },
         type = {
           enabled = true,
           width = 10, -- width of the column
-          required_width = 0, -- min width of window required to show this column
+          required_width = 122, -- min width of window required to show this column
         },
         last_modified = {
           enabled = true,
-          width = 5, -- width of the column
-          required_width = 0, -- min width of window required to show this column
+          width = 20, -- width of the column
+          required_width = 88, -- min width of window required to show this column
+          format = 'relative',
         },
         created = {
           enabled = true,
           width = 20, -- width of the column
-          required_width = 0, -- min width of window required to show this column
+          required_width = 110, -- min width of window required to show this column
+          format = 'relative',
         },
         symlink_target = {
           enabled = true,
@@ -329,7 +331,6 @@ return {
         -- the current file is changed while the tree is open.
         use_libuv_file_watcher = true,
         window = {
-          auto_expand_width = true,
           mappings = {
             ['^'] = 'focus_parent',
             ['H'] = 'toggle_hidden',
@@ -344,7 +345,10 @@ return {
             ['.'] = 'set_root',
             ['[g'] = 'prev_git_modified',
             [']g'] = 'next_git_modified',
-            ['i'] = 'show_file_details',
+            ['i'] = {
+              'show_file_details',
+              config = { modified_format = function() return '' end, created_format = 'relative' },
+            },
             ['o'] = { 'show_help', nowait = false, config = { title = 'Order by', prefix_key = 'o' } },
             ['oc'] = { 'order_by_created', nowait = false },
             ['od'] = { 'order_by_diagnostics', nowait = false },

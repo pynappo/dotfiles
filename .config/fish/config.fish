@@ -133,7 +133,6 @@ if status is-interactive
   abbr -a -- ls "eza --icons"
   abbr -a -- la "eza --icons --group --header --group-directories-first --long --all"
   abbr -a -- l "eza --icons"
-  abbr -a -- la "eza --icons --group --header --group-directories-first --long"
   function eza -d "eza with auto-git"
     if git rev-parse --is-inside-work-tree &>/dev/null
       command eza --git --classify $argv
@@ -146,4 +145,4 @@ if status is-interactive
 end
 # for the sce dev tool
 alias sce="/home/dle/code/sce/SCE-CLI/sce.sh"
-
+mise activate fish | source

@@ -204,7 +204,7 @@ require('lazy').setup({
     fallback = true,
     path = '~/code/nvim',
     ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-    patterns = { 'pynappo' }, -- For example {"folke"}
+    patterns = { 'pynappo', 'nvim-neo-tree' }, -- For example {"folke"}
   },
   install = {
     missing = true,

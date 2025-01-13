@@ -1,5 +1,6 @@
 local utils = require('pynappo.utils')
 ---@type [string, string|fun(ctx: vim.api.keyset.create_user_command.command_args), vim.api.keyset.user_command|nil][]
+local start = vim.fn.getcwd()
 local commands = {
   { 'CDhere', 'tcd %:p:h' },
   {
@@ -96,6 +97,10 @@ local commands = {
 
       vim.notify('could not find a root_dir for this buffer')
     end,
+  },
+  {
+    'CDStart',
+    function(args) vim.cmd.cd(start) end,
   },
 }
 for _, cmd in ipairs(commands) do

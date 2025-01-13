@@ -386,19 +386,16 @@ function Time({ format = "%F %X" }) {
 
 const inhibitList = ["bash", "-c", `./scripts/systemd-inhibit/list.sh`];
 const inhibitCmd = ["bash", "-c", `./scripts/systemd-inhibit/inhibit.sh`];
+
+const idle_inhibited = Variable(false).poll(2000, inhibitList, (stdout, _) => {
+	var ags_inhibitor_found = stdout.indexOf("ags") > -1;
+	idle_inhibited.set(ags_inhibitor_found);
+	return ags_inhibitor_found;
+});
 console.log(inhibitList, inhibitCmd);
 function Idle({}) {
-	const idle_inhibited = Variable(false).poll(
-		2000,
-		inhibitList,
-		(stdout, _) => {
-			var ags_inhibitor_found = stdout.indexOf("ags") > -1;
-			idle_inhibited.set(ags_inhibitor_found);
-			return ags_inhibitor_found;
-		},
-	);
 	return (
-		<box className={"Idle"} onDestroy={idle_inhibited.drop}>
+		<box className={"Idle"}>
 			<button
 				className={bind(idle_inhibited).as((active) => {
 					return active ? "test" : "";

@@ -17,13 +17,6 @@ return {
             { section = 'startup' },
             {
               pane = 2,
-              section = 'terminal',
-              cmd = 'colorscript -e square',
-              height = 5,
-              padding = 1,
-            },
-            {
-              pane = 2,
               icon = ' ',
               desc = 'Browse Repo',
               padding = 1,
@@ -81,6 +74,15 @@ return {
                 )
                 :totable()
             end,
+          },
+        },
+        profiler = {
+          enabled = true,
+          globals = {
+            'vim',
+            'vim.api',
+            'vim.uv',
+            'vim.loop',
           },
         },
         bigfile = { enabled = true },
