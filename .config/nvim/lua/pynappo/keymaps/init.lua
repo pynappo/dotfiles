@@ -189,6 +189,8 @@ M.setup = {
         { 'gk', lsp.signature_help, { desc = '(LSP) Get signature help' } },
         { '<leader>wa', lsp.add_workspace_folder, { desc = '(LSP) Add workspace folder' } },
         { '<leader>wr', lsp.remove_workspace_folder, { desc = '(LSP) Remove workspace folder' } },
+        { '<leader>gi', lsp.incoming_calls, { desc = '(LSP) Get incoming calls' } },
+        { '<leader>go', lsp.outgoing_calls, { desc = '(LSP) Get outgoing calls' } },
         {
           '<leader>wl',
           function() vim.print(lsp.list_workspace_folders()) end,

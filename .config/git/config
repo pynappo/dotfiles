@@ -1,5 +1,7 @@
+[include]
+  path = ~/.config/delta/themes.gitconfig
 [user]
-  email = lehtien.david@gmail.com
+  email = pynappo@proton.me
   name = pynappo
   signingkey = ~/.ssh/id_ed25519.pub
 [core]
@@ -30,6 +32,7 @@
   allowedSignersFile = ~/.ssh/allowed_signers
   defaultKeyCommand = ssh-add -L
 [diff]
+  colorMoved = default
   tool = nvimdiff
   context = 5
 [difftool]
@@ -41,9 +44,8 @@
   diffFilter = delta --color-only
 [add.interactive]
   useBuiltin = false # required for git 2.37.0
-[include]
-  path = ~/.config/delta/themes.gitconfig
 [delta]
+	features = catppuccin-macchiato
   navigate = true    # use n and N to move between diff sections
   light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
   hyperlinks = true
@@ -68,7 +70,6 @@
 	fpush = push --force-with-lease
 	wdiff = diff --word-diff
   sdiff = diff --staged
-  cdiff = diff origin...
   odiff = diff origin...
   s = status
   stat = status
@@ -79,12 +80,12 @@
   l = lg
   lg = lg1
   lg-basic = log --graph --abbrev-commit --decorate
- ; --pretty=format:'%C(auto)%h %C(brightwhite)%cs %C(auto)%s %C(blue)%d%(describe:tags)'
   lg1 = lg-basic --format=format:'%C(auto)%h %C(bold green)(%as)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
   lg2 = lg-basic --format=format:'%C(auto)%h %C(bold cyan)%ad%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
   lg3 = lg-basic --format=format:'%C(auto)%h %C(bold cyan)%ad%C(reset) %C(bold green)(%ar)%C(reset) %C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
   pl = pull
   ps = push
+  dpush = push --dry-run
   dft = difftool
   df = diff
   difftastic = difftool -t difftastic
@@ -100,3 +101,5 @@
 	helper =
 	helper = /usr/bin/git-credential-manager
   credentialStore = secretservice
+[help]
+	autocorrect = prompt

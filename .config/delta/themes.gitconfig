@@ -25,6 +25,8 @@
 #
 # 4. Feel free to include a comment line indicating who is the author of the
 #    theme. E.g. a link to your github user page.
+[include]
+	path = ~/.config/delta/themes/catppuccin.gitconfig
 [delta "pynappo"]
     # author: https://github.com/Kr1ss-XD
     # commit-decoration-style = 232 130 box

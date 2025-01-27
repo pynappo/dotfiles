@@ -21,11 +21,7 @@ return {
     end,
   },
   {
-    'dsully/markview.nvim',
-    branch = 'treesitter-compat',
-    lazy = false, -- Recommended
-    -- ft = "markdown" -- If you decide to lazy-load anyway
-
+    'OXY2DEV/markview.nvim',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
       'echasnovski/mini.icons',

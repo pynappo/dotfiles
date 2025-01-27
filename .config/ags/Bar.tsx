@@ -38,9 +38,9 @@ for (const app of apps.list) {
 }
 
 const hyprland = Hyprland.get_default();
-hyprland.connect("event", (_, event, args) => {
-	console.log("[hyprland]:", event, args);
-});
+// hyprland.connect("event", (_, event, args) => {
+// 	console.log("[hyprland]:", event, args);
+// });
 hyprland.connect("event", (_, event, args) => {});
 bind(hyprland, "monitors").subscribe(() => {
 	console.log("monitors updated");
@@ -221,27 +221,27 @@ function Workspaces({
 						if (!coordinateEquals(ws.monitor, gdkmonitor.geometry))
 							return <></>;
 						var urgent_handler = -1;
-						var disconnectors: { (): any }[] = [];
+						// var disconnectors: { (): any }[] = [];
 						return (
 							<button
 								className={"Workspace"}
 								onClicked={() => ws.focus()}
 								setup={(self) => {
-									disconnectors.push(
-										bind(hyprland, "focused_workspace").subscribe((focused) => {
-											self.toggleClassName("focused", focused.id === ws.id);
-										}),
-									);
-									disconnectors.push(
-										urgent_workspaces.subscribe((urgent) => {
-											self.toggleClassName("urgent", urgent[ws.id] > 0);
-										}),
-									);
-									disconnectors.push(
-										bind(visible).subscribe((v) => {
-											self.toggleClassName("visible", v);
-										}),
-									);
+									// disconnectors.push(
+									// 	bind(hyprland, "focused_workspace").subscribe((focused) => {
+									// 		self.toggleClassName("focused", focused.id === ws.id);
+									// 	}),
+									// );
+									// disconnectors.push(
+									// 	urgent_workspaces.subscribe((urgent) => {
+									// 		self.toggleClassName("urgent", urgent[ws.id] > 0);
+									// 	}),
+									// );
+									// disconnectors.push(
+									// 	bind(visible).subscribe((v) => {
+									// 		self.toggleClassName("visible", v);
+									// 	}),
+									// );
 									self.toggleClassName(
 										"focused",
 										hyprland.focused_workspace.id == ws.id,
@@ -250,9 +250,9 @@ function Workspaces({
 								}}
 								onDestroy={() => {
 									hyprland.disconnect(urgent_handler);
-									disconnectors.forEach((d) => {
-										d();
-									});
+									// disconnectors.forEach((d) => {
+									// 	d();
+									// });
 								}}
 							>
 								<box>

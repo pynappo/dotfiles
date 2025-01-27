@@ -47,7 +47,7 @@ return {
       -- Clone every cursor and disable the originals.
       set({ 'n', 'v' }, '<leader><c-q>', mc.duplicateCursors)
 
-      set('n', '<esc>', function()
+      set({ 'n', 'v' }, '<leader>X', function()
         if not mc.cursorsEnabled() then
           mc.enableCursors()
         elseif mc.hasCursors() then

@@ -9,6 +9,12 @@ if vim.env.NVIM_PROFILE then
   local snacks = vim.fn.stdpath('data') .. '/lazy/snacks.nvim'
   vim.opt.rtp:append(snacks)
   require('snacks.profiler').startup({
+    -- globals = {
+    --   'vim',
+    --   'vim.api',
+    --   'vim.uv',
+    --   'vim.loop',
+    -- },
     startup = {
       event = 'VimEnter', -- stop profiler on this event. Defaults to `VimEnter`
       -- event = "UIEnter",
@@ -311,3 +317,4 @@ vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>x', function() vim.print(vim.fn.mode()) end, {})

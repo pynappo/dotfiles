@@ -99,6 +99,15 @@ local commands = {
     end,
   },
   {
+    'Debug',
+    function(args)
+      vim.print({
+        win = vim.api.nvim_get_current_win(),
+        buf = vim.api.nvim_get_current_buf(),
+      })
+    end,
+  },
+  {
     'CDStart',
     function(args) vim.cmd.cd(start) end,
   },

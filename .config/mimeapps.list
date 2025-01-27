@@ -1,5 +1,5 @@
 [Added Associations]
-application/pdf=okularApplication_pdf.desktop;libreoffice-draw.desktop;vivaldi-stable.desktop;
+application/pdf=libreoffice-draw.desktop;okularApplication_pdf.desktop;vivaldi-stable.desktop;
 image/png=pinta.desktop;
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop;
 application/x-osu-beatmap-archive=org.gnome.FileRoller.desktop;
@@ -102,3 +102,4 @@ image/x-xpixmap=sxiv.desktop
 image/x-kodak-dcr=sxiv.desktop
 image/tiff=sxiv.desktop
 image/x-tga=sxiv.desktop
+text/html=vivaldi-stable.desktop

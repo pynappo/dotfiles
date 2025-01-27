@@ -1,6 +1,6 @@
 return {
-  {
-    'rest-nvim/rest.nvim',
-    config = function() require('rest-nvim').setup() end,
-  },
+  -- {
+  --   'rest-nvim/rest.nvim',
+  --   config = function() require('rest-nvim').setup() end,
+  -- },
 }

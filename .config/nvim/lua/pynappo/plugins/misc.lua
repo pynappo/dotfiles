@@ -1,6 +1,5 @@
 local keymaps = require('pynappo.keymaps')
 return {
-  { 'simrat39/symbols-outline.nvim', config = function() require('symbols-outline').setup() end },
   {
     'xeluxee/competitest.nvim',
     event = 'VeryLazy',

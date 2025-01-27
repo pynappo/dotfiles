@@ -81,7 +81,7 @@ return {
         i = 'string',
         v = 'func',
         V = 'func',
-        ['\22'] = '',
+        ['\22'] = 'comment',
         c = 'debug',
         s = 'constant',
         S = 'constant',
@@ -192,8 +192,10 @@ return {
           },
           u.align,
           {
-            condition = function() return conditions.buffer_matches({ filetype = { 'alpha', 'starter' } }) end,
-            lazy_block,
+            condition = function()
+              return conditions.buffer_matches({ filetype = { 'alpha', 'starter', 'snacks_dashboard' } })
+            end,
+            p.lazy,
             u.space,
           },
           { p.dap, tools_block, u.space, ruler_block },
