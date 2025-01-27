@@ -26,13 +26,13 @@ gsudo {
   Set-Service -StartupType Automatic -Name ssh-agent
   Start-Service ssh-agent
 }
-gh auth -p ssh -h GitHub.com -w
+gh auth login -p ssh -h GitHub.com -w
 ssh-add ~/.ssh/id_ed25519
 
 git clone --bare https://github.com/pynappo/dotfiles.git .files.git
 git clone --bare https://github.com/pynappo/dotwindows.git .windows.git
-git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME checkout --force
-git --git-dir=$HOME/.dotwindows.git/ --work-tree=$HOME checkout --force
+git --git-dir=$HOME/.files.git/ --work-tree=$HOME checkout --force
+git --git-dir=$HOME/.windows.git/ --work-tree=$HOME checkout --force
 
 Start-Process -FilePath 'powershell' -ArgumentList ('gsudo {scoop import $HOME\.files\scoop.json}')
 winget import .\.files\winget.json --accept-source-agreements --accept-package-agreements --disable-interactivity
