@@ -106,7 +106,7 @@ if status is-interactive
   # abbr -a -- wlsudo 'socat UNIX-LISTEN:/tmp/.X11-unix/X1 UNIX-CONNECT:/tmp/.X11-unix/X0 & sudo DISPLAY=:1'
   # abbr -a --set-cursor ibmconnect 'IBM_USER="%" begin; echo (secret-tool lookup ibmconnect $IBM_USER) | sudo openconnect https://vpnisv.isv.ihost.com --authgroup Anyconnect -u $IBM_USER --passwd-on-stdin; end'
   abbr -a --set-cursor :h 'nvim "+help %"'
-  abbr -a -- pacup 'sudo pacman -Qqen > ~/.files/pacman.txt && sudo pacman -Qqen > ~/.files/paru.txt'
+  abbr -a -- pacup 'sudo pacman -Qqe > ~/.files/pacman.txt && sudo pacman -Qqm > ~/.files/paru.txt'
   abbr -a -- pr 'paru'
   abbr -a -- n 'nvim'
   abbr -a -- - 'prevd'

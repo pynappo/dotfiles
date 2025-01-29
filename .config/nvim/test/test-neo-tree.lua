@@ -41,86 +41,77 @@ require('lazy').setup({
           end,
         },
       },
-      event = 'BufEnter',
-      config = function()
-        -- If you want icons for diagnostic errors, you'll need to define them somewhere:
-        vim.fn.sign_define('DiagnosticSignError', { text = ' ', texthl = 'DiagnosticSignError' })
-        vim.fn.sign_define('DiagnosticSignWarn', { text = ' ', texthl = 'DiagnosticSignWarn' })
-        vim.fn.sign_define('DiagnosticSignInfo', { text = ' ', texthl = 'DiagnosticSignInfo' })
-        vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticSignHint' })
-
-        require('neo-tree').setup({
-          filesystem = {
-            hijack_netrw_behavior = 'open_current',
-          },
-        })
-      end,
+      -- opts = {}
     },
-    {
-      'folke/snacks.nvim',
-      config = function()
-        local Snacks = require('snacks')
-        Snacks.setup({
-          -- your configuration comes here
-          -- or leave it empty to use the default settings
-          -- refer to the configuration section below
-          profiler = {
-            enabled = true,
-            globals = {
-              'vim',
-              'vim.api',
-              'vim.uv',
-              'vim.loop',
-            },
-          },
-          bigfile = { enabled = true },
-          notifier = { enabled = true },
-          quickfile = { enabled = true },
-          terminal = { enabled = true },
-          scratch = { enabled = true },
-        })
-        vim.notify = Snacks.notifier.notify
-        vim.api.nvim_create_autocmd('User', {
-          pattern = 'MiniFilesActionRename',
-          callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
-        })
-        vim.api.nvim_create_user_command('RenameFile', function() Snacks.rename.rename_file() end, {})
-        vim.api.nvim_create_user_command('Scratch', function() Snacks.scratch.open({}) end, {})
-        vim.api.nvim_create_user_command(
-          'ScratchLua',
-          function()
-            Snacks.scratch.open({
-              ft = 'lua',
-            })
-          end,
-          {}
-        )
-        vim.print = Snacks.debug.inspect
-        _G.backtrace = Snacks.debug.backtrace
-        _G.bt = Snacks.debug.backtrace
-        vim.api.nvim_create_user_command('Notifications', function() Snacks.notifier.show_history() end, {})
-        vim.api.nvim_create_user_command('ScratchPick', function() Snacks.scratch.select() end, {})
-        vim.api.nvim_create_user_command('Dashboard', function() Snacks.dashboard.open() end, {})
-        -- Toggle the profiler
-        Snacks.toggle.profiler():map('<leader>pp')
-        -- Toggle the profiler highlights
-        Snacks.toggle.profiler_highlights():map('<leader>ph')
-        vim.api.nvim_create_user_command('ScratchProfile', function() Snacks.profiler.scratch() end, {})
-      end,
-    },
-    {
-      'ellisonleao/gruvbox.nvim',
-    },
+    --   {
+    --     'folke/snacks.nvim',
+    --     config = function()
+    --       local Snacks = require('snacks')
+    --       Snacks.setup({
+    --         -- your configuration comes here
+    --         -- or leave it empty to use the default settings
+    --         -- refer to the configuration section below
+    --         profiler = {
+    --           enabled = true,
+    --           globals = {
+    --             'vim',
+    --             'vim.api',
+    --             'vim.uv',
+    --             'vim.loop',
+    --           },
+    --         },
+    --         bigfile = { enabled = true },
+    --         notifier = { enabled = true },
+    --         quickfile = { enabled = true },
+    --         terminal = { enabled = true },
+    --         scratch = { enabled = true },
+    --       })
+    --       vim.notify = Snacks.notifier.notify
+    --       vim.api.nvim_create_autocmd('User', {
+    --         pattern = 'MiniFilesActionRename',
+    --         callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
+    --       })
+    --       vim.api.nvim_create_user_command('RenameFile', function() Snacks.rename.rename_file() end, {})
+    --       vim.api.nvim_create_user_command('Scratch', function() Snacks.scratch.open({}) end, {})
+    --       vim.api.nvim_create_user_command(
+    --         'ScratchLua',
+    --         function()
+    --           Snacks.scratch.open({
+    --             ft = 'lua',
+    --           })
+    --         end,
+    --         {}
+    --       )
+    --       vim.print = Snacks.debug.inspect
+    --       _G.backtrace = Snacks.debug.backtrace
+    --       _G.bt = Snacks.debug.backtrace
+    --       vim.api.nvim_create_user_command('Notifications', function() Snacks.notifier.show_history() end, {})
+    --       vim.api.nvim_create_user_command('ScratchPick', function() Snacks.scratch.select() end, {})
+    --       vim.api.nvim_create_user_command('Dashboard', function() Snacks.dashboard.open() end, {})
+    --       -- Toggle the profiler
+    --       Snacks.toggle.profiler():map('<leader>pp')
+    --       -- Toggle the profiler highlights
+    --       Snacks.toggle.profiler_highlights():map('<leader>ph')
+    --       vim.api.nvim_create_user_command('ScratchProfile', function() Snacks.profiler.scratch() end, {})
+    --     end,
+    --   },
   },
-  dev = {
-    fallback = true,
-    path = '~/code/nvim',
-    ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-    patterns = { 'pynappo', 'neo-tree.nvim' }, -- For example {"folke"}
-  },
+  -- dev = {
+  --   fallback = true,
+  --   path = '~/code/nvim',
+  --   ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
+  --   patterns = { 'pynappo', 'neo-tree.nvim' }, -- For example {"folke"}
+  -- },
 })
 
+vim.o.number = true
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>e', '<Cmd>Neotree<CR>')
 
-vim.cmd.colorscheme('gruvbox')
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    require('neo-tree.command').execute({
+      action = 'show',
+    })
+  end,
+})

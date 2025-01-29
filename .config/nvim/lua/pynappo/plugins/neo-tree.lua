@@ -293,7 +293,7 @@ return {
         -- set to -1 to disable the resize timer entirely
         --                           -- NOTE: this will speed up to 50 ms for 1 second following a resize
         sort_function = nil, -- uses a custom function for sorting files and directories in the tree
-        use_popups_for_input = false, -- If false, inputs will use vim.ui.input() instead of custom floats.
+        use_popups_for_input = true, -- If false, inputs will use vim.ui.input() instead of custom floats.
         -- source_selector provides clickable tabs to switch between sources.
         --
         renderers = {
