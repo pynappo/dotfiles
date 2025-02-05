@@ -1,6 +1,6 @@
 [Added Associations]
 application/pdf=libreoffice-draw.desktop;okularApplication_pdf.desktop;vivaldi-stable.desktop;
-image/png=pinta.desktop;
+image/png=vivaldi-stable.desktop;pinta.desktop;
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop;
 application/x-osu-beatmap-archive=org.gnome.FileRoller.desktop;
 application/postscript=org.pwmt.zathura-ps.desktop;libreoffice-writer.desktop;
@@ -8,6 +8,7 @@ image/bmp=pinta.desktop;
 application/x-xpinstall=zotero.desktop;
 application/java-archive=org.gnome.FileRoller.desktop;
 image/svg+xml=org.inkscape.Inkscape.desktop;
+image/webp=vivaldi-stable.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop

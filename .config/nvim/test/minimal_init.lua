@@ -35,7 +35,6 @@ g.mapleader = ' '
 o.relativenumber = true
 o.number = true
 vim.keymap.set('n', '<leader>cc', 'gcc', { remap = true })
-vim.on_key(function(...) vim.print({ ... }) end)
 require('lazy').setup({
   {
     {
@@ -54,6 +53,4 @@ require('lazy').setup({
     },
   },
 })
-
-vim.opt.laststatus = 0
-vim.go.laststatus = 0
+vim.api.nvim_set_keymap('n', '<C-Right>', '<cmd>tabn<CR>', { noremap = true, silent = true })
