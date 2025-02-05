@@ -87,6 +87,7 @@ if status is-interactive
   abbr -a -- e $EDITOR
   abbr -a -- g 'git'
   abbr -a -- gdnvim 'nvim --listen /tmp/godot.pipe'
+  abbr -a -- ntnvim 'nvim -u $HOME/.config/nvim/test/test-neo-tree.lua'
   abbr -a --command git co checkout
   abbr -a --command git ch cherry-pick
   abbr -a --command git c commit

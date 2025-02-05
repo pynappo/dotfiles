@@ -96,22 +96,15 @@ require('lazy').setup({
     --     end,
     --   },
   },
-  -- dev = {
-  --   fallback = true,
-  --   path = '~/code/nvim',
-  --   ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-  --   patterns = { 'pynappo', 'neo-tree.nvim' }, -- For example {"folke"}
-  -- },
+  dev = {
+    fallback = true,
+    path = '~/code/nvim',
+    ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
+    patterns = { 'pynappo', 'neo-tree.nvim' }, -- For example {"folke"}
+  },
 })
 
 vim.o.number = true
 vim.g.mapleader = ' '
-vim.keymap.set('n', '<leader>e', '<Cmd>Neotree<CR>')
-
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    require('neo-tree.command').execute({
-      action = 'show',
-    })
-  end,
-})
+vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle reveal left<CR>')
+vim.keymap.set('n', '<leader>E', '<Cmd>Neotree filesystem reveal float<CR>', {})
