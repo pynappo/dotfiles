@@ -28,6 +28,7 @@
   gpgsign = true
 [commit]
   gpgsign = true
+  template = ~/.config/git/templates/conventional-commit
 [gpg "ssh"]
   allowedSignersFile = ~/.ssh/allowed_signers
   defaultKeyCommand = ssh-add -L
