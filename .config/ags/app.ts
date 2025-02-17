@@ -58,6 +58,6 @@ function reset_bars() {
 		bars.set(monitors[0], Bar(monitors[0], [1, 3, 5, 7]));
 		bars.set(monitors[1], Bar(monitors[1], [2, 4, 6, 8]));
 	} else {
-		bars.set(monitors[0], Bar(monitors[1], [1, 2, 3, 4, 5, 6, 7, 8]));
+		bars.set(monitors[0], Bar(monitors[0], [1, 2, 3, 4, 5, 6, 7, 8]));
 	}
 }

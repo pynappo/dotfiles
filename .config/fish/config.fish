@@ -146,4 +146,6 @@ if status is-interactive
 end
 # for the sce dev tool
 alias sce="/home/dle/code/sce/SCE-CLI/sce.sh"
+
 mise activate fish | source
+

@@ -104,3 +104,4 @@ image/x-kodak-dcr=sxiv.desktop
 image/tiff=sxiv.desktop
 image/x-tga=sxiv.desktop
 text/html=vivaldi-stable.desktop
+x-scheme-handler/discord=vesktop.desktop

@@ -1,6 +1,5 @@
 amdgpu_top-bin
 an-anime-game-launcher-bin
-anitopy-git
 ast-grep-bin
 bruno-bin
 bun-bin
@@ -13,15 +12,12 @@ ddstats-rust-bin
 discord-canary
 dotnet-runtime-6.0-bin
 dotnet-targeting-pack-6.0-bin
-eclipse-jee-bin
 fswatch
 gddccontrol
 ghcup-hs-bin
-goneovim-bin
 graphql-cli
 hexabyte
 httpdirfs
-ida-free
 inferno
 inotify-info
 jflap
@@ -29,11 +25,7 @@ lib32-ncurses5-compat-libs
 lobster-git
 logisim
 lsdesktopf
-mars-mips
 memtest_vulkan-git
-modelsim-intel-starter
-mysql80
-neovim-nightly
 nexusmods-app-bin
 numbat-bin
 osu-lazer-bin
@@ -43,7 +35,6 @@ python-anchor-kr-git
 python-hid-parser
 python-hilbertcurve
 python-pyrsistent
-python2-bin
 qtforkawesome
 qtutilities
 r2modman-appimage

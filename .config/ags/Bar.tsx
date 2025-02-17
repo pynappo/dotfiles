@@ -417,8 +417,13 @@ function Idle({}) {
 					})}
 				/>
 			</button>
-		</box>
-	);
+		</box>);
+}
+
+const awk = ["awk", '{print $1*10^-6 "W"}', `/sys/class/power_supply/BAT0/power_now`];
+const wattage = Variable("").poll(5000, awk);
+function Wattage() {
+			return <button label={bind(wattage)}/>
 }
 
 export default function Bar(
@@ -448,6 +453,7 @@ export default function Bar(
 					<Clients gdkmonitor={monitor} />
 				</box>
 				<box hexpand halign={END}>
+          <Wattage/>
 					<Media />
 					<SysTray />
 					<Idle />
@@ -456,6 +462,7 @@ export default function Bar(
 					<BatteryLevel />
 					<Time />
 				</box>
+        
 			</centerbox>
 		</window>
 	);
