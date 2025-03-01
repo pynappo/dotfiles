@@ -1,9 +1,9 @@
 local utils = {}
 local g = vim.g
 utils.is_windows = vim.fn.has('win32') == 1
-utils.is_termux = vim.env.TERMUX_VERSION
-utils.is_firenvim = g.started_by_firenvim
-utils.is_goneovim = g.gonvim_running
+utils.is_termux = vim.env.TERMUX_VERSION or false
+utils.is_firenvim = g.started_by_firenvim or false
+utils.is_goneovim = g.gonvim_running or false
 utils.is_gui = utils.is_firenvim or utils.is_goneovim
 utils.config_home = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config')
 -- considers empty string and 0 falsy

@@ -203,7 +203,7 @@ function Workspaces({
 					.sort((a, b) => a - b)
 					.map((id) => {
 						const ws = hyprland.get_workspace(id);
-						if (ws === null)
+						if (ws === null) {
 							return (
 								<button
 									className={"Workspace empty"}
@@ -215,33 +215,19 @@ function Workspaces({
 									</box>
 								</button>
 							);
+						}
 						const visible = bind(hyprland, "focusedWorkspace").as(() => {
 							return ws.id == ws.monitor.activeWorkspace.id;
 						});
-						if (!coordinateEquals(ws.monitor, gdkmonitor.geometry))
+						if (!coordinateEquals(ws.monitor, gdkmonitor.geometry)) {
 							return <></>;
+						}
 						var urgent_handler = -1;
-						// var disconnectors: { (): any }[] = [];
 						return (
 							<button
 								className={"Workspace"}
 								onClicked={() => ws.focus()}
 								setup={(self) => {
-									// disconnectors.push(
-									// 	bind(hyprland, "focused_workspace").subscribe((focused) => {
-									// 		self.toggleClassName("focused", focused.id === ws.id);
-									// 	}),
-									// );
-									// disconnectors.push(
-									// 	urgent_workspaces.subscribe((urgent) => {
-									// 		self.toggleClassName("urgent", urgent[ws.id] > 0);
-									// 	}),
-									// );
-									// disconnectors.push(
-									// 	bind(visible).subscribe((v) => {
-									// 		self.toggleClassName("visible", v);
-									// 	}),
-									// );
 									self.toggleClassName(
 										"focused",
 										hyprland.focused_workspace.id == ws.id,
@@ -250,9 +236,6 @@ function Workspaces({
 								}}
 								onDestroy={() => {
 									hyprland.disconnect(urgent_handler);
-									// disconnectors.forEach((d) => {
-									// 	d();
-									// });
 								}}
 							>
 								<box>

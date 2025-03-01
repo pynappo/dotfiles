@@ -12,6 +12,7 @@ fish_add_path "$HOME/.nimble/bin"
 fish_add_path -g "./node_modules/.bin"
 fish_add_path "$HOME/.cabal/bin"
 fish_add_path "$HOME/.ghcup/bin"
+fish_add_path "$HOME/.luarocks/bin"
 if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
   # Emulates vim's cursor shape behavior
@@ -116,6 +117,8 @@ if status is-interactive
   abbr -a -- pacsearch 'pacman -Slq | fzf --multi --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
   abbr -a -- pacremove 'pacman -Qq | fzf --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
   abbr -a -- parusearch 'paru -Sl | awk \'{print $2($4=="" ? "" : " *")}\' | fzf --multi --preview \'paru -Si {1}\' | cut -d " " -f 1 | xargs -ro paru -S'
+  abbr -a -- sshp 'ssh -o ServerAliveInterval=240'
+
   function edit
     echo $EDITOR $argv
   end
@@ -146,6 +149,6 @@ if status is-interactive
 end
 # for the sce dev tool
 alias sce="/home/dle/code/sce/SCE-CLI/sce.sh"
-
+export PG_OF_PATH=/home/dle/code/cs134/of_v0.12.0_linux64gcc6_release
 mise activate fish | source
 

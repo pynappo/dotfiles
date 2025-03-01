@@ -15,8 +15,8 @@ return {
         callback = function(details)
           local bufnr = details.buf
           if not pcall(vim.treesitter.start, bufnr) then return end
-          -- vim.wo.foldmethod = 'expr'
-          -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+          vim.wo.foldmethod = 'expr'
+          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
           vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })

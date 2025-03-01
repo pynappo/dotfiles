@@ -1,12 +1,84 @@
 ---@diagnostic disable: missing-fields
+local utils = require('pynappo.utils')
 return {
+  {
+    'Saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets',
+    build = 'cargo build --release',
+    enabled = not utils.is_termux,
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        preset = 'enter',
+        ['<C-p>'] = { 'show', 'select_prev', 'fallback' },
+        ['<C-n>'] = { 'show', 'select_next', 'fallback' },
+      },
+      cmdline = {
+        keymap = {
+
+          preset = 'super-tab',
+          ['<Tab>'] = { 'select_prev', 'fallback' },
+          ['<S-Tab>'] = { 'select_next', 'fallback' },
+        },
+      },
+      completion = {
+        list = {
+          selection = {
+            auto_insert = true,
+            preselect = false,
+          },
+        },
+        menu = {
+          winblend = 25,
+        },
+        ghost_text = {
+          enabled = true,
+        },
+        documentation = {
+          auto_show = true,
+        },
+      },
+      signature = {
+        enabled = true,
+      },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+      },
+    },
+  },
   {
     'pynappo/nvim-cmp',
     name = 'nvim-cmp', -- Otherwise highlighting gets messed up
     version = false,
+    enabled = utils.is_termux,
     dependencies = {
-
-      --* the sources *--
+      {
+        'zbirenbaum/copilot-cmp',
+        enabled = false,
+        event = { 'BufRead', 'BufNewFile' },
+        dependencies = {
+          {
+            'zbirenbaum/copilot.lua',
+            opts = {
+              suggestion = { enabled = false },
+              panel = { enabled = false },
+            },
+          },
+        },
+        config = function() require('copilot_cmp').setup() end,
+      },
+      {
+        'petertriho/cmp-git',
+        ft = { 'gitcommit', 'gitrebase', 'octo' },
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        config = function() require('cmp_git').setup() end,
+      },
+      {
+        'saecki/crates.nvim',
+        event = 'BufRead Cargo.toml',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+      },
       { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp', opts = {} },
       { 'iguanacucumber/mag-buffer', name = 'cmp-buffer' },
       { 'iguanacucumber/mag-cmdline', name = 'cmp-cmdline' },
@@ -237,31 +309,5 @@ return {
         sources = cmp.config.sources({ { name = 'nvim_lsp_document_symbol' } }, { { name = 'buffer' } }),
       })
     end,
-  },
-  {
-    'zbirenbaum/copilot-cmp',
-    enabled = false,
-    event = { 'BufRead', 'BufNewFile' },
-    dependencies = {
-      {
-        'zbirenbaum/copilot.lua',
-        opts = {
-          suggestion = { enabled = false },
-          panel = { enabled = false },
-        },
-      },
-    },
-    config = function() require('copilot_cmp').setup() end,
-  },
-  {
-    'petertriho/cmp-git',
-    ft = { 'gitcommit', 'gitrebase', 'octo' },
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function() require('cmp_git').setup() end,
-  },
-  {
-    'saecki/crates.nvim',
-    event = 'BufRead Cargo.toml',
-    dependencies = { 'nvim-lua/plenary.nvim' },
   },
 }

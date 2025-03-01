@@ -24,6 +24,7 @@ return {
         css = web_dev,
         less = { 'prettier' },
         scss = { 'prettier' },
+        json = { 'jq' },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
       },

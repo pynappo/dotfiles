@@ -2,7 +2,6 @@
 return {
   {
     'rebelot/heirline.nvim',
-    priority = require('pynappo.priorities').heirline,
     dependencies = {
       'echasnovski/mini.nvim',
       'pynappo/tabnames.nvim',
@@ -38,6 +37,7 @@ return {
         },
       },
     },
+    enabled = not vim.env.NVIM_FAST,
     init = require('pynappo.keymaps').setup.heirline,
     config = function()
       local utils = require('heirline.utils')
@@ -140,7 +140,6 @@ return {
       }
       local t = require('pynappo.plugins.heirline.components.tabline')
       local fcs = vim.opt.fillchars:get()
-      local heirline_namespace = vim.api.nvim_create_namespace('pynappo_heirline')
       require('heirline').setup({
         opts = {
           disable_winbar_cb = function(args)

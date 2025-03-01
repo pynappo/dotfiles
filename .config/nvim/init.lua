@@ -95,6 +95,7 @@ o.conceallevel = 2
 o.confirm = true
 o.showmode = false
 o.history = 1000
+o.winblend = 0
 o.scrolloff = 4
 o.undofile = true
 o.smoothscroll = true
@@ -121,7 +122,7 @@ o.diffopt = {
 o.cursorline = true
 o.whichwrap:append('<,>,h,l,[,]')
 o.foldlevelstart = 4
-o.foldtext = ''
+o.foldtext = [[v:lua.require'pynappo.tweaks.foldtext'()]]
 o.fillchars = {
   horiz = '━',
   horizup = '┻',
@@ -317,4 +318,3 @@ vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
-vim.keymap.set({ 'n', 'v', 'x' }, '<leader>x', function() vim.print(vim.fn.mode()) end, {})

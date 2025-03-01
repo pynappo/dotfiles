@@ -7,7 +7,7 @@ return {
       library = {
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
     },
   },
@@ -19,7 +19,6 @@ return {
       -- { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',
       'mrcjkb/rustaceanvim',
-      'nvimtools/none-ls.nvim',
       {
         'williamboman/mason-lspconfig.nvim',
         dependencies = { 'williamboman/mason.nvim' },
@@ -38,6 +37,9 @@ return {
     },
     init = keymaps.setup.diagnostics,
     config = function()
+      if vim.lsp.config then
+      else
+      end
       local lspconfig = require('lspconfig')
       require('lspconfig.configs').vtsls = require('vtsls').lspconfig
       local handlers = {
@@ -50,6 +52,7 @@ return {
       --   handlers.clangd = function() end
       --   require('lspconfig').ccls.setup({})
       -- end
+      require('lspconfig').gdscript.setup(require('pynappo/lsp/configs').gdscript)
       require('mason-lspconfig').setup({
         ensure_installed = {
           'clangd',
@@ -63,7 +66,11 @@ return {
         },
         handlers = handlers,
       })
-      require('lspconfig').gdscript.setup(require('pynappo/lsp/configs').gdscript)
+    end,
+  },
+  {
+    'nvimtools/none-ls.nvim',
+    config = function()
       local null_ls = require('null-ls')
       null_ls.setup({
         sources = {

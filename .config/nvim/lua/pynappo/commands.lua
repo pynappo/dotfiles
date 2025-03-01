@@ -1,6 +1,6 @@
 local utils = require('pynappo.utils')
----@type [string, string|fun(ctx: vim.api.keyset.create_user_command.command_args), vim.api.keyset.user_command|nil][]
 local start = vim.fn.getcwd()
+---@type [string, string|fun(ctx: vim.api.keyset.create_user_command.command_args), vim.api.keyset.user_command|nil][]
 local commands = {
   { 'CDhere', 'tcd %:p:h' },
   {
@@ -100,7 +100,7 @@ local commands = {
   },
   {
     'Debug',
-    function(args)
+    function(_)
       vim.print({
         win = vim.api.nvim_get_current_win(),
         buf = vim.api.nvim_get_current_buf(),
@@ -109,7 +109,7 @@ local commands = {
   },
   {
     'CDStart',
-    function(args) vim.cmd.cd(start) end,
+    function(_) vim.cmd.cd(start) end,
   },
 }
 for _, cmd in ipairs(commands) do

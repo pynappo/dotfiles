@@ -90,6 +90,9 @@ return {
         quickfile = { enabled = true },
         terminal = { enabled = true },
         scratch = { enabled = true },
+        picker = {
+          enabled = true,
+        },
       })
       vim.api.nvim_create_autocmd('User', {
         pattern = 'MiniFilesActionRename',
@@ -120,6 +123,8 @@ return {
       -- Toggle the profiler highlights
       Snacks.toggle.profiler_highlights():map('<leader>ph')
       vim.api.nvim_create_user_command('ScratchProfile', function() Snacks.profiler.scratch() end, {})
+      vim.keymap.set('n', '<leader>uC', function() Snacks.picker.colorschemes() end, { desc = 'Colorschemes' })
+      vim.keymap.set('n', '<leader>fu', function() Snacks.picker.colorschemes() end, { desc = 'Colorschemes' })
     end,
   },
 }
