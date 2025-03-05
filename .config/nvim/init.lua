@@ -162,7 +162,7 @@ vim.diagnostic.config({
     severity = vim.diagnostic.severity.ERROR,
     source = 'if_many',
   },
-  virtual_lines = { only_current_line = true },
+  -- virtual_lines = { only_current_line = true },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = '',
@@ -318,3 +318,16 @@ vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
+
+vim.api.nvim_create_autocmd('UIEnter', {
+  callback = function()
+    local logpath = vim.fn.stdpath('state') .. '/log'
+    local log = vim.uv.fs_stat(logpath)
+    if not log then return end
+    if log.size > 1024 * 1024 then
+      if not utils.is_windows then
+        vim.system({ 'bash', '-c', ('tail -n 10000 %s > %s'):format(logpath, logpath) }):wait()
+      end
+    end
+  end,
+})

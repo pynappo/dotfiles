@@ -3,8 +3,8 @@ local utils = require('pynappo.utils')
 return {
   {
     'Saghen/blink.cmp',
+    version = '*',
     dependencies = 'rafamadriz/friendly-snippets',
-    build = 'cargo build --release',
     enabled = not utils.is_termux,
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config

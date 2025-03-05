@@ -8,6 +8,7 @@ return {
     -- init = require('pynappo.keymaps').setup.conform(),
     opts = {
       -- Define your formatters
+      ---@see vim.o.formatoptions
       formatters_by_ft = {
         go = { 'goimports', 'gofmt' },
         lua = { 'stylua' },
@@ -22,8 +23,6 @@ return {
         svelte = { 'prettier' },
         prisma = { 'prettier' },
         css = web_dev,
-        less = { 'prettier' },
-        scss = { 'prettier' },
         json = { 'jq' },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
