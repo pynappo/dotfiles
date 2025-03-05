@@ -21,14 +21,24 @@
 [pull]
 	rebase = true
 [push]
+  default = simple
   autoSetupRemote = true
+  followTags = true
 [gpg]
   format = ssh
 [tag]
   gpgsign = true
+  sort = version:refname
+[column]
+  ui = auto
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
 [commit]
   gpgsign = true
   template = ~/.config/git/templates/conventional-commit
+  verbose = true
 [gpg "ssh"]
   allowedSignersFile = ~/.ssh/allowed_signers
   defaultKeyCommand = ssh-add -L
@@ -36,6 +46,10 @@
   colorMoved = default
   tool = nvimdiff
   context = 5
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
 [difftool]
   prompt = false
   trustExitCode = true
@@ -54,7 +68,7 @@
   colorMoved = default
 [merge]
   tool = nvimdiff
-  conflictstyle = diff3
+  conflictstyle = zdiff3
 	autostash = true
 [mergetool]
   trustExitCode = true
@@ -95,6 +109,8 @@
   amend = commit --amend
 [rebase]
   autoStash = true
+  autoSquash = true
+  updateRefs = true
 [rerere]
   enabled = true
   autoUpdate = true
