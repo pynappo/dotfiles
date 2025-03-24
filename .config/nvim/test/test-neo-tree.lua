@@ -13,34 +13,71 @@ end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   spec = {
-    { import = 'pynappo.plugins.lsp' },
+    -- {
+    --   'nvim-neo-tree/neo-tree.nvim',
+    --   dependencies = {
+    --     'nvim-lua/plenary.nvim',
+    --     'nvim-tree/nvim-web-devicons',
+    --     'MunifTanjim/nui.nvim',
+    --     -- "3rd/image.nvim",  -- delay until needed
+    --   },
+    --   enabled = false,
+    --   ---@module "neo-tree"
+    --   ---@type neotree.Config
+    --   opts = {
+    --     default_component_configs = {
+    --       symlink_target = {
+    --         enabled = true,
+    --       },
+    --     },
+    --     filesystem = {
+    --       bind_to_cwd = false,
+    --       window = {
+    --         mappings = {
+    --           ['Esc'] = 'close_window',
+    --           ['l'] = 'open',
+    --           ['_'] = function(state) vim.print(state.tree:get_node()) end,
+    --         },
+    --       },
+    --       follow_current_file = {
+    --         enabled = true,
+    --       },
+    --     },
+    --   },
+    -- },
     {
       'nvim-neo-tree/neo-tree.nvim',
-      branch = 'v3.x',
-      dev = true,
       dependencies = {
         'nvim-lua/plenary.nvim',
         'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-        'MunifTanjim/nui.nvim',
-        -- {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
+        'muniftanjim/nui.nvim', -- "3rd/image.nvim", -- optional image support in preview window: see `# preview mode` for more information
+      },
+
+      keys = {
         {
-          's1n7ax/nvim-window-picker',
-          version = '2.*',
-          config = function()
-            require('window-picker').setup({
-              filter_rules = {
-                include_current_win = false,
-                autoselect_one = true,
-                -- filter using buffer options
-                bo = {
-                  -- if the file type is one of following, the window will be ignored
-                  filetype = { 'neo-tree', 'neo-tree-popup', 'notify' },
-                  -- if the buffer type is one of following, the window will be ignored
-                  buftype = { 'terminal', 'quickfix' },
-                },
-              },
+          '<leader>e',
+          function()
+            local reveal_file = vim.fn.expand('%:p')
+            if reveal_file == '' then
+              reveal_file = vim.fn.getcwd()
+            else
+              local f = io.open(reveal_file, 'r')
+              if f then
+                f:close()
+              else
+                reveal_file = vim.fn.getcwd()
+              end
+            end
+            require('neo-tree.command').execute({
+              toggle = true,
+              reveal = true,
+              reveal_file = reveal_file,
+              reveal_force_cwd = true,
+              source = 'filesystem',
+              position = 'left',
             })
           end,
+          desc = 'Neotree',
         },
       },
       -- opts = {}
@@ -140,21 +177,8 @@ vim.api.nvim_create_user_command('Debug', function()
   vim.print(bufs)
   vim.print(wins)
 end, {})
-vim.api.nvim_create_autocmd('VimEnter', {
-  pattern = '*',
-  group = vim.api.nvim_create_augroup('NeotreeOnOpen', { clear = true }),
-  once = true,
-  callback = function(_)
-    if vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) ~= 1 then
-      if vim.fn.winwidth('%') >= 120 then
-        vim.cmd('Neotree')
-        vim.cmd('wincmd p')
-      end
-    end
+vim.api.nvim_create_autocmd('BufEnter', {
+  callback = function()
+    if vim.bo.buftype == '' then vim.cmd('Neotree close') end
   end,
 })
-
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-vim.opt.foldtext = 'v:lua.vim.treesitter.foldtext()'
-vim.opt.foldlevelstart = 0

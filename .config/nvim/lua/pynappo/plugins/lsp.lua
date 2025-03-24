@@ -37,9 +37,6 @@ return {
     },
     init = keymaps.setup.diagnostics,
     config = function()
-      if vim.lsp.config then
-      else
-      end
       local lspconfig = require('lspconfig')
       require('lspconfig.configs').vtsls = require('vtsls').lspconfig
       local handlers = {
@@ -68,19 +65,19 @@ return {
       })
     end,
   },
-  {
-    'nvimtools/none-ls.nvim',
-    config = function()
-      local null_ls = require('null-ls')
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.code_actions.gitrebase,
-          null_ls.builtins.hover.dictionary,
-          null_ls.builtins.hover.printenv,
-        },
-      })
-    end,
-  },
+  -- {
+  --   'nvimtools/none-ls.nvim',
+  --   config = function()
+  --     local null_ls = require('null-ls')
+  --     null_ls.setup({
+  --       sources = {
+  --         null_ls.builtins.code_actions.gitrebase,
+  --         null_ls.builtins.hover.dictionary,
+  --         null_ls.builtins.hover.printenv,
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     'williamboman/mason.nvim',
     opts = {

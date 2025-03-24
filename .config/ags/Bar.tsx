@@ -370,11 +370,17 @@ function Time({ format = "%F %X" }) {
 const inhibitList = ["bash", "-c", `./scripts/systemd-inhibit/list.sh`];
 const inhibitCmd = ["bash", "-c", `./scripts/systemd-inhibit/inhibit.sh`];
 
-const idle_inhibited = Variable(false).poll(2000, inhibitList, (stdout, _) => {
-	var ags_inhibitor_found = stdout.indexOf("ags") > -1;
-	idle_inhibited.set(ags_inhibitor_found);
-	return ags_inhibitor_found;
-});
+const idle_inhibited = Variable(false);
+// .poll(2000, inhibitList, (stdout, _) => {
+// 	var ags_inhibitor_found;
+// 	try {
+// 		ags_inhibitor_found = stdout.indexOf("ags") > -1;
+// 		idle_inhibited.set(ags_inhibitor_found);
+// 		return ags_inhibitor_found;
+// 	} catch {
+// 		return false;
+// 	}
+// });
 console.log(inhibitList, inhibitCmd);
 function Idle({}) {
 	return (
@@ -400,13 +406,14 @@ function Idle({}) {
 					})}
 				/>
 			</button>
-		</box>);
+		</box>
+	);
 }
 
-const awk = ["awk", '{print $1*10^-6 "W"}', `/sys/class/power_supply/BAT0/power_now`];
-const wattage = Variable("").poll(5000, awk);
+const battery_cmd = ["bash", "-c", `./scripts/battery.sh`];
+const wattage = Variable("").poll(5000, battery_cmd);
 function Wattage() {
-			return <button label={bind(wattage)}/>
+	return <button label={bind(wattage)} />;
 }
 
 export default function Bar(
@@ -436,7 +443,7 @@ export default function Bar(
 					<Clients gdkmonitor={monitor} />
 				</box>
 				<box hexpand halign={END}>
-          <Wattage/>
+					<Wattage />
 					<Media />
 					<SysTray />
 					<Idle />
@@ -445,7 +452,6 @@ export default function Bar(
 					<BatteryLevel />
 					<Time />
 				</box>
-        
 			</centerbox>
 		</window>
 	);

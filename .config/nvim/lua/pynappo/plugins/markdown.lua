@@ -20,11 +20,11 @@ return {
       vim.keymap.set('n', '<leader>mpd', fns.details_tags_toggle)
     end,
   },
-  {
-    'OXY2DEV/markview.nvim',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'echasnovski/mini.icons',
-    },
-  },
+  -- {
+  --   'OXY2DEV/markview.nvim',
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'echasnovski/mini.icons',
+  --   },
+  -- },
 }

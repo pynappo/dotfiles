@@ -63,7 +63,7 @@ return {
         'windwp/nvim-ts-autotag',
         config = true,
       },
-      -- 'RRethy/nvim-treesitter-textsubjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
     },
   },
 }

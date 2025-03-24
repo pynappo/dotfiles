@@ -303,6 +303,7 @@ return {
       },
     })
     local extra_ai = extra.gen_ai_spec
+    local ai = require('mini.ai')
     require('mini.ai').setup({
       custom_textobjects = {
         -- ['%'] = extra_ai.buffer(),
@@ -310,7 +311,16 @@ return {
         I = extra_ai.indent(),
         L = extra_ai.line(),
         N = extra_ai.number(),
+        ['f'] = ai.gen_spec.treesitter({
+          a = '@function.outer',
+          i = '@function.inner',
+        }),
+        ['F'] = ai.gen_spec.treesitter({
+          a = '@function.outer',
+          i = '@function.inner',
+        }),
       },
+      n_lines = 1000,
     })
     local diff = require('mini.diff')
     diff.setup({

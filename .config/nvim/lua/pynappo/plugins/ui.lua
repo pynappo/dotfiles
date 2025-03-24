@@ -79,9 +79,8 @@ return {
   --   opts = { highlight = { keyword = 'fg', after = '' } },
   -- },
   {
-    'pynappo/vim-illuminate',
-    branch = 'patch-nvim-ts-main',
-    event = { 'BufNewFile', 'BufRead' },
+    'RRethy/vim-illuminate',
+    enabled = not vim.env.NVIM_FAST,
     config = function()
       require('illuminate').configure({
         filetypes_denylist = {

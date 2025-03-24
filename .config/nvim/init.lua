@@ -331,3 +331,6 @@ vim.api.nvim_create_autocmd('UIEnter', {
     end
   end,
 })
+if vim.version().minor > 10 then
+  if vim.env.EMMYLUA then vim.lsp.enable('emmylua') end
+end
