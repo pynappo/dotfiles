@@ -295,6 +295,7 @@ vim.filetype.add({
   pattern = {
     ['${XDG_CONFIG_HOME}/waybar/config'] = 'json',
     ['${XDG_CONFIG_HOME}/hypr/.-conf'] = 'hyprlang',
+    ['${HOME}/%.ssh/config.-'] = 'sshconfig',
   },
   extension = {
     rasi = 'rasi',
