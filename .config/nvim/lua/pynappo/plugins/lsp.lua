@@ -14,7 +14,6 @@ return {
   { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
   {
     'neovim/nvim-lspconfig',
-    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       -- { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',
@@ -37,19 +36,6 @@ return {
     },
     init = keymaps.setup.diagnostics,
     config = function()
-      local lspconfig = require('lspconfig')
-      require('lspconfig.configs').vtsls = require('vtsls').lspconfig
-      local handlers = {
-        function(ls) lspconfig[ls].setup(require('pynappo/lsp/configs')[ls]) end,
-        rust_analyzer = function() end, -- use rustaceanvim
-        jdtls = function() end, -- use nvim-jdtls
-        hls = function() end, -- use haskell-tools
-      }
-      -- if vim.fn.executable('ccls') == 1 then
-      --   handlers.clangd = function() end
-      --   require('lspconfig').ccls.setup({})
-      -- end
-      require('lspconfig').gdscript.setup(require('pynappo/lsp/configs').gdscript)
       require('mason-lspconfig').setup({
         ensure_installed = {
           'clangd',
@@ -61,7 +47,13 @@ return {
           'ltex',
           'clangd',
         },
-        handlers = handlers,
+        handlers = {
+          function(ls) vim.lsp.enable(ls) end,
+          rust_analyzer = function() end, -- use rustaceanvim
+          jdtls = function() end, -- use nvim-jdtls
+          hls = function() end, -- use haskell-tools
+        },
+        automatic_installation = true,
       })
     end,
   },

@@ -20,7 +20,7 @@ return {
         -- You can also add an external source by adding it's name to this list.
         -- The name used here must be the same name you would use in a require() call.
 
-        log_level = 'debug',
+        log_level = 'trace',
         log_to_file = true,
         -- use_console = true,
         event_handlers = {
@@ -164,8 +164,8 @@ return {
           },
         },
         filesystem = {
-          async_directory_scan = 'never',
-          hijack_netrw_behavior = 'open_default',
+          async_directory_scan = 'auto',
+          hijack_netrw_behavior = 'open_current',
           commands = {
             run_command = function(state)
               local node = state.tree:get_node()
@@ -396,7 +396,7 @@ return {
           },
         },
         document_symbols = {
-          follow_cursor = false,
+          follow_cursor = true,
           client_filters = 'first',
           renderers = {
             root = {

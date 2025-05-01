@@ -191,4 +191,56 @@ autocmds.create({ 'BufNewFile', 'BufNew' }, {
   end,
 })
 
+vim.api.nvim_create_autocmd({ 'LspAttach' }, {
+  callback = function(details)
+    local keymaps = require('pynappo.keymaps')
+    local bufnr = details.buf
+    local client = vim.lsp.get_client_by_id(details.data.client_id) or {}
+    if not client then return end
+    if vim.tbl_contains({ 'copilot', 'null-ls' }, client.name or vim.print('no client found')) then return end
+
+    -- local ok, hover = pcall(require, 'hover')
+    -- hover = ok and hover.hover() or vim.lsp.buf.hover
+    -- if not vim.b[bufnr].lsp_attached then
+    --   require('pynappo.autocmds').create({ 'CursorHold' }, {
+    --     callback = function()
+    --       for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    --         if vim.bo[vim.api.nvim_win_get_buf(winid)].filetype == 'noice' then return end
+    --       end
+    --       hover()
+    --     end,
+    --     buffer = bufnr,
+    --   })
+    -- end
+
+    if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end
+    if client.server_capabilities.codeLensProvider then
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+        callback = function() vim.lsp.codelens.refresh({ bufnr = 0 }) end,
+        buffer = bufnr,
+      })
+      vim.keymap.set('n', '<leader>cl', vim.lsp.codelens.run, { desc = 'codelens', buffer = bufnr })
+    end
+    if client and client.server_capabilities.documentHighlightProvider then
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = bufnr,
+        callback = vim.lsp.buf.document_highlight,
+      })
+
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = bufnr,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
+    vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    vim.api.nvim_create_autocmd('LspNotify', {
+      callback = function(args)
+        if args.data.method == 'textDocument/didOpen' then vim.lsp.foldclose('imports', vim.fn.bufwinid(args.buf)) end
+      end,
+    })
+    keymaps.setup.lsp(bufnr)
+    vim.b[bufnr].lsp_attached = true
+  end,
+})
+
 return autocmds

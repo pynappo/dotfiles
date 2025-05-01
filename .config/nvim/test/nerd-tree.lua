@@ -13,38 +13,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   spec = {
-    -- {
-    --   'nvim-tree/nvim-tree.lua',
-    --   config = true,
-    -- },
     {
-      'nvim-neo-tree/neo-tree.nvim',
-      dependencies = {
-        'nvim-lua/plenary.nvim',
-        'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-        'muniftanjim/nui.nvim', -- "3rd/image.nvim", -- optional image support in preview window: see `# preview mode` for more information
-      },
-      enabled = true,
+      'nvim-tree/nvim-tree.lua',
       lazy = false,
-      config = function()
-        require('neo-tree').setup({
-          event_handlers = {
-            {
-              event = 'after_render',
-              handler = function(state)
-                state.config = { use_float = true, force = true } -- or whatever your config is
-                state.commands.toggle_preview(state)
-              end,
-            },
-          },
-          window = {
-            mappings = {
-              ['ff'] = 'filter_on_submit',
-            },
-          },
-        })
-        vim.keymap.set('n', '<leader>ee', '<Cmd>Neotree toggle=true<CR>')
-      end,
+      opts = {},
     },
     {
       'folke/snacks.nvim',
@@ -106,28 +78,6 @@ require('lazy').setup({
     patterns = { 'pynappo', 'neo-tree.nvim' }, -- For example {"folke"}
   },
 })
-
-local get_all_vim_vars = function(scope)
-  local lines = vim.split(vim.fn.execute(('let %s:'):format(scope)), '\n')
-  local vars = {}
-  for _, line in ipairs(lines) do
-    local k, v = line:match([[(%S+)%s+(.+)]])
-    if k and v then vars[k] = v end
-  end
-  return vars
-end
-
-local function bufinfo(bufnr)
-  return {
-    name = vim.api.nvim_buf_get_name(bufnr),
-    vars = get_all_vim_vars('b'),
-  }
-end
-local autocmd = vim.api.nvim_create_autocmd
-
--- autocmd({ 'BufEnter', 'BufAdd' }, {
---   callback = function(args) vim.print(args, bufinfo(args.buf)) end,
--- })
 
 vim.o.number = true
 vim.g.mapleader = ' '

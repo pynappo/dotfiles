@@ -184,8 +184,6 @@ return {
     event = { 'BufNewFile', 'BufReadPre' },
     enabled = not vim.env.NVIM_FAST,
     dependencies = { 'nvim-lua/plenary.nvim' },
-    ---@module 'gitsigns'
-    ---@type gitsigns
     opts = {
       signs = {
         add = {

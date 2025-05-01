@@ -12,6 +12,7 @@
   pager = delta
   packedGitLimit = 512m
   packedGitWindowSize = 512m
+  untrackedCache = true
 [pack]
   deltaCacheSize = 2047m
   packSizeLimit = 2047m
@@ -34,7 +35,6 @@
 [fetch]
   prune = true
   pruneTags = true
-  all = true
 [commit]
   gpgsign = true
   template = ~/.config/git/templates/conventional-commit

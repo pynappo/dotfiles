@@ -13,6 +13,7 @@ fish_add_path -g "./node_modules/.bin"
 fish_add_path "$HOME/.cabal/bin"
 fish_add_path "$HOME/.ghcup/bin"
 fish_add_path "$HOME/.luarocks/bin"
+fish_add_path "$HOME/go/bin"
 if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
   # Emulates vim's cursor shape behavior

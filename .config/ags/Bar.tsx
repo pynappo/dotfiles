@@ -285,7 +285,10 @@ function Client(client: Hyprland.Client) {
 				switch (event.button) {
 					case Astal.MouseButton.PRIMARY:
 						client.workspace.focus();
+						break;
 					case Astal.MouseButton.SECONDARY:
+						client.focus();
+						break;
 				}
 			}}
 			setup={(self) => {
