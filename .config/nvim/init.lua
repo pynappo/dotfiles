@@ -335,3 +335,4 @@ vim.api.nvim_create_autocmd('UIEnter', {
 if vim.version().minor > 10 then
   if vim.env.EMMYLUA then vim.lsp.enable('emmylua') end
 end
+require('pynappo.lang.c')
