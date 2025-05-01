@@ -29,5 +29,6 @@ return {
   {
     'reachingforthejack/cursortab.nvim',
     dev = true,
+    enabled = false,
   },
 }
