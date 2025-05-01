@@ -1,12 +1,28 @@
 import { type Subscribable } from "astal/binding";
-import Gtk from "gi://Gtk?version=3.0";
+import {
+	App,
+	Astal,
+	Gtk,
+	Gdk,
+	astalify,
+	ConstructProps,
+	Widget,
+} from "astal/gtk3";
+import Hyprland from "gi://AstalHyprland";
 
-export type Coordinates = {
+export interface Coordinates {
 	x: number;
 	y: number;
-};
-export function coordinateEquals(a: Coordinates, b: Coordinates) {
+}
+export function coordinateEquals(a: Coordinates, b: Coordinates): boolean {
 	return a.x == b.x && a.y == b.y;
+}
+
+export function wsOnMonitor(a: Hyprland.Workspace, b: Gdk.Monitor): boolean {
+	if (!b.model) {
+		return false;
+	}
+	return coordinateEquals(a.monitor, b.geometry);
 }
 
 export class VarMap<K, T = Gtk.Widget> implements Subscribable {

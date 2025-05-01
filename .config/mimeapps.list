@@ -9,6 +9,7 @@ application/x-xpinstall=zotero.desktop;
 application/java-archive=org.gnome.FileRoller.desktop;
 image/svg+xml=org.inkscape.Inkscape.desktop;
 image/webp=vivaldi-stable.desktop;
+application/x-msdownload=org.gnome.FileRoller.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop

@@ -15,8 +15,6 @@ const E = GLib.getenv;
 // https://www.reddit.com/r/archlinux/comments/10b8t89/question_how_to_set_a_fallback_icon_theme/
 const path = `${E("XDG_DATA_HOME")}/icons/hicolor/32x32/apps`;
 App.add_icons(path);
-const a = Gtk.IconTheme.get_default();
-const { FORCE_SYMBOLIC, GENERIC_FALLBACK, USE_BUILTIN } = Gtk.IconLookupFlags;
 App.start({
 	css: style,
 	instanceName: "astal",
@@ -30,18 +28,23 @@ App.start({
 		// initialize
 		reset_bars();
 		for (const gdkmonitor of App.get_monitors()) {
+			console.log(gdkmonitor.model);
 			notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
 		}
 
 		App.connect("monitor-added", (_, gdkmonitor) => {
-			reset_bars();
-			notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
+			if (gdkmonitor.model) {
+				reset_bars();
+				notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
+			}
 		});
 
 		App.connect("monitor-removed", (_, gdkmonitor) => {
-			reset_bars();
-			notifications.get(gdkmonitor)?.destroy();
-			notifications.delete(gdkmonitor);
+			if (gdkmonitor.model) {
+				reset_bars();
+				notifications.get(gdkmonitor)?.destroy();
+				notifications.delete(gdkmonitor);
+			}
 		});
 	},
 });

@@ -85,7 +85,7 @@ if status is-interactive
   abbr -a -- dot 'git --git-dir=$HOME/.files.git/ --work-tree=$HOME'
   abbr -a -- ldot 'lazygit --git-dir=$HOME/.files.git/ --work-tree=$HOME'
   abbr -a -- pm 'sudo pacman'
-  abbr -a -- su 'su --shell=/usr/bin/fish'
+  abbr -a -- sufish
   abbr -a -- e $EDITOR
   abbr -a -- g 'git'
   abbr -a -- gdnvim 'nvim --listen /tmp/godot.pipe'
@@ -98,6 +98,7 @@ if status is-interactive
   abbr -a --command git s status
   abbr -a -- gpr 'gh pr checkout'
   abbr -a -- sudo 'sudo -s'
+  abbr -a -- sn 'sudo EDITOR=nvim'
   abbr -a -- sc 'systemctl'
   abbr -a -- jc 'journalctl'
   abbr -a -- ts 'tree-sitter'
@@ -135,9 +136,9 @@ if status is-interactive
   end
   abbr -a !! --position anywhere --function last_history_item
 
-  abbr -a -- ls "eza --icons"
-  abbr -a -- la "eza --icons --group --header --group-directories-first --long --all"
-  abbr -a -- l "eza --icons"
+  abbr -a -- ls "eza --icons=auto"
+  abbr -a -- la "eza --icons=auto --group --header --group-directories-first --long --all"
+  abbr -a -- l "eza --icons=auto"
   function eza -d "eza with auto-git"
     if git rev-parse --is-inside-work-tree &>/dev/null
       command eza --git --classify $argv

@@ -24,7 +24,7 @@ import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
 import AstalApps from "gi://AstalApps?version=0.1";
-import { coordinateEquals } from "./util";
+import { wsOnMonitor } from "./util";
 import { VarMap } from "./util";
 const getenv = GLib.getenv;
 const apps = new AstalApps.Apps({
@@ -203,6 +203,9 @@ function Workspaces({
 					.sort((a, b) => a - b)
 					.map((id) => {
 						const ws = hyprland.get_workspace(id);
+						if (id == 0) {
+							return <></>;
+						}
 						if (ws === null) {
 							return (
 								<button
@@ -219,7 +222,7 @@ function Workspaces({
 						const visible = bind(hyprland, "focusedWorkspace").as(() => {
 							return ws.id == ws.monitor.activeWorkspace.id;
 						});
-						if (!coordinateEquals(ws.monitor, gdkmonitor.geometry)) {
+						if (!wsOnMonitor(ws, gdkmonitor)) {
 							return <></>;
 						}
 						var urgent_handler = -1;
@@ -234,9 +237,9 @@ function Workspaces({
 									);
 									self.toggleClassName("visible", visible.get());
 								}}
-								onDestroy={() => {
-									hyprland.disconnect(urgent_handler);
-								}}
+								// onDestroy={() => {
+								// 	hyprland.disconnect(urgent_handler);
+								// }}
 							>
 								<box>
 									<icon
@@ -279,6 +282,9 @@ function Client(client: Hyprland.Client) {
 		return client.workspace.id == client.monitor.activeWorkspace.id;
 	});
 	var disconnectors: { (): any }[] = [];
+	if (!client.title) {
+		return <></>;
+	}
 	return (
 		<button
 			onClick={(self, event) => {
@@ -316,11 +322,10 @@ function Client(client: Hyprland.Client) {
 				self.toggleClassName("visible", visible.get());
 				self.toggleClassName("focused", hyprland.focused_client == client);
 			}}
-			onDestroy={() => {
-				connections.forEach((n) => hyprland.disconnect(n));
-				disconnectors.forEach((d) => d());
-				delete cache[client.pid];
-			}}
+			// onDestroy={() => {
+			// 	connections.forEach((n) => hyprland.disconnect(n));
+			// 	disconnectors.forEach((d) => d());
+			// }}
 			className={"Client"}
 		>
 			<box>
@@ -344,9 +349,7 @@ function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 						return (
 							<box
 								className={"WorkspaceClients"}
-								visible={bind(workspace, "monitor").as((m) => {
-									return coordinateEquals(m, gdkmonitor.geometry);
-								})}
+								visible={wsOnMonitor(workspace, gdkmonitor)}
 							>
 								{bind(workspace, "clients").as((clients) => {
 									return clients.map(Client);
