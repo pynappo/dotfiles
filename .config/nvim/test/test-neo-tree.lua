@@ -10,7 +10,12 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     lazypath,
   })
 end
+
+vim.o.number = true
+vim.g.mapleader = ' '
 vim.opt.rtp:prepend(lazypath)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 require('lazy').setup({
   spec = {
     -- {
@@ -104,6 +109,26 @@ require('lazy').setup({
     path = '~/code/nvim',
     ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
     patterns = { 'pynappo', 'neo-tree.nvim' }, -- For example {"folke"}
+  },
+  disabled_plugins = {
+    -- 'matchit',
+    -- 'matchparen',
+    'netrw',
+    'netrwPlugin',
+    'netrwSettings',
+    'netrwFileHandlers',
+    -- 'gzip',
+    -- 'zip',
+    -- 'zipPlugin',
+    -- 'tar',
+    -- 'tarPlugin',
+    -- 'getscript',
+    -- 'getscriptPlugin',
+    -- 'vimball',
+    -- 'vimballPlugin',
+    -- '2html_plugin',
+    -- 'logipat',
+    -- 'rrhelper',
   },
 })
 
