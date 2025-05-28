@@ -7,7 +7,7 @@ application/postscript=org.pwmt.zathura-ps.desktop;libreoffice-writer.desktop;
 image/bmp=pinta.desktop;
 application/x-xpinstall=zotero.desktop;
 application/java-archive=org.gnome.FileRoller.desktop;
-image/svg+xml=org.inkscape.Inkscape.desktop;
+image/svg+xml=vivaldi-stable.desktop;org.inkscape.Inkscape.desktop;
 image/webp=vivaldi-stable.desktop;
 application/x-msdownload=org.gnome.FileRoller.desktop;
 

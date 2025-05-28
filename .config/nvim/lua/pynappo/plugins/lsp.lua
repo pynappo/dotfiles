@@ -2,7 +2,6 @@ local keymaps = require('pynappo.keymaps')
 return {
   {
     'folke/lazydev.nvim',
-    ft = 'lua', -- only load on lua files
     opts = {
       library = {
         -- See the configuration section for more details
@@ -22,60 +21,28 @@ return {
         'williamboman/mason-lspconfig.nvim',
         dependencies = { 'williamboman/mason.nvim' },
       },
-      {
-        'yioneko/nvim-vtsls',
-      },
+      'yioneko/nvim-vtsls',
       {
         'mrcjkb/haskell-tools.nvim',
         version = '^3', -- Recommended
         lazy = false, -- This plugin is already lazy
       },
-      {
-        'https://git.sr.ht/~p00f/clangd_extensions.nvim',
-      },
+      'https://git.sr.ht/~p00f/clangd_extensions.nvim',
     },
-    init = keymaps.setup.diagnostics,
     config = function()
       require('mason-lspconfig').setup({
         ensure_installed = {
-          'clangd',
           'lua_ls',
-          'rust_analyzer',
-          'marksman',
-          'jdtls',
-          'powershell_es',
-          'ltex',
           'clangd',
         },
-        handlers = {
-          function(ls) vim.lsp.enable(ls) end,
-          rust_analyzer = function() end, -- use rustaceanvim
-          jdtls = function() end, -- use nvim-jdtls
-          hls = function() end, -- use haskell-tools
-        },
-        automatic_installation = true,
+        automatic_enable = true,
       })
     end,
   },
-  -- {
-  --   'nvimtools/none-ls.nvim',
-  --   config = function()
-  --     local null_ls = require('null-ls')
-  --     null_ls.setup({
-  --       sources = {
-  --         null_ls.builtins.code_actions.gitrebase,
-  --         null_ls.builtins.hover.dictionary,
-  --         null_ls.builtins.hover.printenv,
-  --       },
-  --     })
-  --   end,
-  -- },
   {
     'williamboman/mason.nvim',
     opts = {
-      ui = { border = 'single' },
       PATH = 'append',
     },
-    config = function(_, opts) require('mason').setup(opts) end,
   },
 }

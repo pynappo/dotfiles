@@ -1,5 +1,13 @@
 return {
   {
+    'antosha417/nvim-lsp-file-operations',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-neo-tree/neo-tree.nvim',
+    },
+    config = function() require('lsp-file-operations').setup() end,
+  },
+  {
     'nvim-neo-tree/neo-tree.nvim',
     dev = true,
     branch = 'v3.x',
@@ -8,12 +16,9 @@ return {
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
       'saifulapm/neotree-file-nesting-config',
-      -- 'mrbjarksen/neo-tree-diagnostics.nvim',
     },
     init = function() require('pynappo.keymaps').setup.neotree() end,
     config = function()
-      local function on_move(data) require('snacks').rename.on_rename_file(data.source, data.destination) end
-      local events = require('neo-tree.events')
       require('neo-tree').setup({
         -- If a user has a sources list it will replace this one.
         -- Only sources listed here will be loaded.
@@ -23,21 +28,8 @@ return {
         log_level = 'trace',
         log_to_file = true,
         -- use_console = true,
-        event_handlers = {
-          { event = events.FILE_MOVED, handler = on_move },
-          { event = events.FILE_RENAMED, handler = on_move },
-          -- {
-          --   event = events.NEO_TREE_BUFFER_ENTER,
-          --   handler = function()
-          --     backtrace()
-          --     vim.print('bufenter')
-          --     local state = require('neo-tree.sources.manager').get_state(vim.b['neo_tree_source'])
-          --     require('neo-tree.sources.common.commands').toggle_preview(state)
-          --   end,
-          -- },
-        },
         sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
-        hide_root_node = true,
+        hide_root_node = false,
         add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
         close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
         default_source = 'filesystem',

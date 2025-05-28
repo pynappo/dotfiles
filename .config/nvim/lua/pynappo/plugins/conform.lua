@@ -23,6 +23,7 @@ return {
         svelte = { 'prettier' },
         prisma = { 'prettier' },
         css = web_dev,
+        less = { 'deno_fmt' },
         json = { 'jq' },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },

@@ -92,7 +92,8 @@
   sclone = clone --filter=blob:none
 	unstage = restore --staged
   z = switch
-  l = lg
+  l = lg -15
+  ll = lg -30
   lg = lg1
   lg-basic = log --graph --abbrev-commit --decorate
   lg1 = lg-basic --format=format:'%C(auto)%h %C(bold green)(%as)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
