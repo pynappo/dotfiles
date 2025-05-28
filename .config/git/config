@@ -1,9 +1,5 @@
 [include]
   path = ~/.config/delta/themes.gitconfig
-[user]
-  email = pynappo@proton.me
-  name = pynappo
-  signingkey = ~/.ssh/id_ed25519.pub
 [core]
   symlinks = true
   fsmonitor = true
@@ -115,10 +111,6 @@
 [rerere]
   enabled = true
   autoUpdate = true
-[credential]
-	helper =
-	helper = /usr/bin/git-credential-manager
-  credentialStore = secretservice
 [help]
 	autocorrect = prompt
 [filter "lfs"]
@@ -128,3 +120,5 @@
 	required = true
 [credential "https://gerrit.wikimedia.org"]
 	provider = generic
+[include]
+  path = ~/.config/git/local

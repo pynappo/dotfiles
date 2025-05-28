@@ -1,19 +1,32 @@
 if set -q TERMUX_VERSION
   fish_add_path -g "$HOME/neovim/build/bin"
-else
+end
+if type -q systemctl
   for var in (systemctl show-environment --user | rg -v '^PATH=')
     export $var
   end
 end
-fish_add_path "$HOME/.bun/bin"
-fish_add_path "$HOME/.local/bin"
-fish_add_path "$HOME/.local/state/cargo/bin"
-fish_add_path "$HOME/.nimble/bin"
-fish_add_path -g "./node_modules/.bin"
-fish_add_path "$HOME/.cabal/bin"
-fish_add_path "$HOME/.ghcup/bin"
-fish_add_path "$HOME/.luarocks/bin"
+if test -d /home/linuxbrew/.linuxbrew # Linux
+	set -gx HOMEBREW_PREFIX "/home/linuxbrew/.linuxbrew"
+	set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"
+	set -gx HOMEBREW_REPOSITORY "$HOMEBREW_PREFIX/Homebrew"
+else if test -d /opt/homebrew # MacOS
+	set -gx HOMEBREW_PREFIX "/opt/homebrew"
+	set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"
+	set -gx HOMEBREW_REPOSITORY "$HOMEBREW_PREFIX/homebrew"
+end
+fish_add_path -g "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin";
+! set -q MANPATH; and set MANPATH ''; set -gx MANPATH "$HOMEBREW_PREFIX/share/man" $MANPATH;
+! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH "$HOMEBREW_PREFIX/share/info" $INFOPATH;
+eval ($HOMEBREW_PREFIX/bin/brew shellenv)
+# Set up mise for runtime management
+for local_bin_dir in $HOME/.*/bin
+  fish_add_path "$local_bin_dir"
+end
+fish_add_path "/usr/local/bin"
+fish_add_path "/usr/local/sbin"
 fish_add_path "$HOME/go/bin"
+fish_add_path -g "./node_modules/.bin"
 if status is-interactive
   oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
   # Emulates vim's cursor shape behavior
@@ -27,9 +40,15 @@ if status is-interactive
   # visual mode, but due to fish_cursor_default, is redundant here
   set fish_cursor_visual block
   set fish_vi_force_cursor 1
-  set LS_COLORS $(vivid generate ayu)
-  atuin init fish | source
-  zoxide init fish | source
+  if type -q vivid
+    set LS_COLORS $(vivid generate ayu)
+  end
+  if type -q atuin
+    atuin init fish | source
+  end
+  if type -q zoxide
+    zoxide init fish | source
+  end
 
   bind \cz 'fg 2>/dev/null; commandline -f repaint'
 
@@ -136,21 +155,24 @@ if status is-interactive
   end
   abbr -a !! --position anywhere --function last_history_item
 
-  abbr -a -- ls "eza --icons=auto"
-  abbr -a -- la "eza --icons=auto --group --header --group-directories-first --long --all"
-  abbr -a -- l "eza --icons=auto"
-  function eza -d "eza with auto-git"
-    if git rev-parse --is-inside-work-tree &>/dev/null
-      command eza --git --classify $argv
-    else
-      command eza --classify $argv
+  if type -q eza
+    abbr -a -- ls "eza --icons=auto"
+    abbr -a -- la "eza --icons=auto --group --header --group-directories-first --long --all"
+    abbr -a -- l "eza --icons=auto"
+    function eza -d "eza with auto-git"
+      if git rev-parse --is-inside-work-tree &>/dev/null
+        command eza --git --classify $argv
+      else
+        command eza --classify $argv
+      end
     end
   end
   # refresh sudo timeout
   alias sudo="/usr/bin/sudo -v; /usr/bin/sudo"
 end
 # for the sce dev tool
-alias sce="/home/dle/code/sce/SCE-CLI/sce.sh"
 export PG_OF_PATH=/home/dle/code/cs134/of_v0.12.0_linux64gcc6_release
-mise activate fish | source
+# if type -q mise
+#   mise activate fish | source
+# end
 

@@ -4,3 +4,4 @@ packer_compiled.lua
 .config/fish/functions
 .config/fish/conf.d
 .steam
+.ssh
