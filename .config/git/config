@@ -120,5 +120,3 @@
 	required = true
 [credential "https://gerrit.wikimedia.org"]
 	provider = generic
-[include]
-  path = ~/.config/git/local

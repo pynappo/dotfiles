@@ -5,3 +5,4 @@ packer_compiled.lua
 .config/fish/conf.d
 .steam
 .ssh
+.gitconfig*
