@@ -25,7 +25,7 @@ fish_add_path "$HOME/.*/bin"
 fish_add_path "$HOME/go/bin"
 fish_add_path -g "./node_modules/.bin"
 if status is-interactive
-  oh-my-posh init fish --config '~/.files/pynappo.omp.yaml' | source
+  oh-my-posh init fish --config '~/.config/pynappo.omp.yaml' | source
   # Emulates vim's cursor shape behavior
   # Set the normal and visual mode cursors to a block
   set fish_cursor_default block

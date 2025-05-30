@@ -198,10 +198,11 @@ local M = {
       for i, client in ipairs(self.clients) do
         ---@diagnostic disable-next-line: undefined-field
         local icon = self.ls_icons[client.name]
-          or require('mini.icons').get('filetype', client.config.filetypes[1])
-          or '?'
+        if not icon and client.config.filetypes then
+          icon = require('mini.icons').get('filetype', client.config.filetypes[1])
+        end
         local child = {
-          { provider = icon, hl = { bold = client.attached_buffers[vim.api.nvim_get_current_buf()] } },
+          { provider = icon or '?', hl = { bold = client.attached_buffers[vim.api.nvim_get_current_buf()] } },
           -- {
           --   condition = function() return not self.ignore_messages[client.name] end,
           --   provider = function()
