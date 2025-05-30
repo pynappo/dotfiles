@@ -15,16 +15,13 @@ else if test -d /opt/homebrew # MacOS
 	set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"
 	set -gx HOMEBREW_REPOSITORY "$HOMEBREW_PREFIX/homebrew"
 end
-fish_add_path -g "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin";
-! set -q MANPATH; and set MANPATH ''; set -gx MANPATH "$HOMEBREW_PREFIX/share/man" $MANPATH;
-! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH "$HOMEBREW_PREFIX/share/info" $INFOPATH;
-eval ($HOMEBREW_PREFIX/bin/brew shellenv)
-# Set up mise for runtime management
-for local_bin_dir in $HOME/.*/bin
-  fish_add_path "$local_bin_dir"
+if set -q HOMEBREW_PREFIX
+  fish_add_path -g "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin";
+  ! set -q MANPATH; and set MANPATH ''; set -gx MANPATH "$HOMEBREW_PREFIX/share/man" $MANPATH;
+  ! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH "$HOMEBREW_PREFIX/share/info" $INFOPATH;
+  eval ($HOMEBREW_PREFIX/bin/brew shellenv)
 end
-fish_add_path "/usr/local/bin"
-fish_add_path "/usr/local/sbin"
+fish_add_path "$HOME/.*/bin"
 fish_add_path "$HOME/go/bin"
 fish_add_path -g "./node_modules/.bin"
 if status is-interactive
@@ -104,8 +101,6 @@ if status is-interactive
   abbr -a -- dot 'git --git-dir=$HOME/.files.git/ --work-tree=$HOME'
   abbr -a -- ldot 'lazygit --git-dir=$HOME/.files.git/ --work-tree=$HOME'
   abbr -a -- pm 'sudo pacman'
-  abbr -a -- sufish
-  abbr -a -- e $EDITOR
   abbr -a -- g 'git'
   abbr -a -- gdnvim 'nvim --listen /tmp/godot.pipe'
   abbr -a -- ntnvim 'nvim -u $HOME/.config/nvim/test/test-neo-tree.lua'
@@ -145,7 +140,7 @@ if status is-interactive
   end
   function mz -d "mkdir and then z into it"
     mkdir $argv
-    z $argv
+    cd $argv
   end
   # abbr -a edit_texts --position command --regex ".+\.txt" --function edit
 
@@ -172,7 +167,7 @@ if status is-interactive
 end
 # for the sce dev tool
 export PG_OF_PATH=/home/dle/code/cs134/of_v0.12.0_linux64gcc6_release
-# if type -q mise
-#   mise activate fish | source
-# end
+if type -q mise
+  mise activate fish | source
+end
 

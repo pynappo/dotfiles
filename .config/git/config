@@ -120,3 +120,6 @@
 	required = true
 [credential "https://gerrit.wikimedia.org"]
 	provider = generic
+[user]
+	email = pynappo@proton.me
+	name = pynappo
