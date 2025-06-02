@@ -1,7 +1,6 @@
 return {
   {
     'folke/snacks.nvim',
-    dev = true,
     priority = 20000,
     config = function()
       local Snacks = require('snacks')

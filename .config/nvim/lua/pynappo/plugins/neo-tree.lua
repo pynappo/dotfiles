@@ -486,6 +486,9 @@ return {
             },
           },
         },
+        clipboard = {
+          sync = 'global',
+        },
       })
     end,
   },

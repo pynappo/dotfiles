@@ -294,8 +294,18 @@ M.setup = {
           { expr = true, desc = 'rename (incrementally)' },
         },
         {
+          '<leader>Rn',
+          function() return ':IncRename ' .. vim.fn.expand('<cWORD>') end,
+          { expr = true, desc = 'rename (incrementally)' },
+        },
+        {
           '<F6>',
           function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
+          { expr = true, desc = 'rename (incrementally)' },
+        },
+        {
+          '<Shift-F6>',
+          function() return ':IncRename ' .. vim.fn.expand('<cWORD>') end,
           { expr = true, desc = 'rename (incrementally)' },
         },
       },
