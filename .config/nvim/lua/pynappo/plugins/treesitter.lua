@@ -8,7 +8,7 @@ return {
         auto_install = true,
         ensure_installed = {
           'stable',
-          'core',
+          'unstable',
         },
       })
       vim.api.nvim_create_autocmd('FileType', {

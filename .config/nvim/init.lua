@@ -191,6 +191,7 @@ end
 o.runtimepath:prepend(lazypath)
 vim.b.minitrailspace_disable = true
 require('pynappo.autocmds')
+local has_private = pcall(require, 'pynappo.private')
 require('lazy').setup({
   profiling = {
     require = true,
@@ -203,6 +204,7 @@ require('lazy').setup({
     { import = 'pynappo.private.plugins' },
     -- { import = 'pynappo.plugins.colorschemes' },
   },
+  lockfile = has_private and vim.fn.stdpath('config') .. '/private-lazy-lock.json' or nil,
   -- debug = true,
   git = {
     log = { '--since=3 days ago' }, -- show commits from the last 3 days
@@ -291,7 +293,6 @@ require('pynappo.theme')
 require('pynappo.commands')
 require('pynappo.tweaks')
 require('pynappo.autocmds').setup_overrides()
-pcall(require, 'pynappo.private')
 vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({

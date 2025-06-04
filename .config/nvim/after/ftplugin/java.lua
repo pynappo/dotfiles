@@ -15,8 +15,8 @@ vim.list_extend(
 
 local ok, jdtls_helper = pcall(require, 'pynappo.private.jdtls')
 
-local workspace_dirs = nil
-if ok then workspace_dirs = jdtls_helper.find_workspace_dirs() end
+local workspace_folders = nil
+if ok then workspace_folders = jdtls_helper.find_workspace_folders() end
 
 local config = {
   cmd = {
@@ -57,7 +57,7 @@ local config = {
   -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
   init_options = {
     bundles = bundles,
-    workspaceFolders = workspace_dirs,
+    workspaceFolders = workspace_folders,
   },
 }
 config = vim.tbl_extend('force', config, require('pynappo/lsp/configs').jdtls)
