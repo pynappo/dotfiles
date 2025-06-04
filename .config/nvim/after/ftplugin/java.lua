@@ -60,5 +60,4 @@ local config = {
     workspaceFolders = workspace_folders,
   },
 }
-config = vim.tbl_extend('force', config, require('pynappo/lsp/configs').jdtls)
 require('jdtls').start_or_attach(config)
