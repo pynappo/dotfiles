@@ -26,7 +26,7 @@ blocks:
     background: white
     type: os
   - style: powerline
-    template: " {{if .SSHSession}}\U000f0318 {{ .UserName }}@{{ .HostName }}{{end}}"
+    template: " {{if .SSHSession}}\U000f0318 {{ .UserName }}@{{ truncE 12 .HostName }}{{end}}"
     foreground: "#ffffff"
     powerline_symbol: 
     background: "#c386f1"
