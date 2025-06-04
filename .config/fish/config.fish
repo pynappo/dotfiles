@@ -134,6 +134,9 @@ if status is-interactive
   abbr -a -- pacremove 'pacman -Qq | fzf --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
   abbr -a -- parusearch 'paru -Sl | awk \'{print $2($4=="" ? "" : " *")}\' | fzf --multi --preview \'paru -Si {1}\' | cut -d " " -f 1 | xargs -ro paru -S'
   abbr -a -- sshp 'ssh -o ServerAliveInterval=240'
+  if test "$TERM" = "xterm-kitty"
+    abbr -a -- ssh 'kitten ssh'
+  end
 
   function edit
     echo $EDITOR $argv

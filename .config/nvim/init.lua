@@ -290,6 +290,7 @@ require('pynappo.theme')
 require('pynappo.commands')
 require('pynappo.tweaks')
 require('pynappo.autocmds').setup_overrides()
+pcall(require, 'pynappo.private')
 vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({

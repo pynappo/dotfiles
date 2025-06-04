@@ -4,6 +4,7 @@ local workspace_dir = vim.fn.expand('~/code/jdtls_workspaces/') .. vim.fn.fnamem
 
 local bundles =
   { vim.fn.glob(mason_packages_path .. '/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar') }
+
 vim.list_extend(
   bundles,
   vim.split(
@@ -11,6 +12,11 @@ vim.list_extend(
     '\n'
   )
 )
+
+local ok, jdtls_helper = pcall(require, 'pynappo.private.jdtls')
+
+local workspace_dirs = nil
+if ok then workspace_dirs = jdtls_helper.find_workspace_dirs() end
 
 local config = {
   cmd = {
@@ -51,6 +57,7 @@ local config = {
   -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
   init_options = {
     bundles = bundles,
+    workspaceFolders = workspace_dirs,
   },
 }
 config = vim.tbl_extend('force', config, require('pynappo/lsp/configs').jdtls)

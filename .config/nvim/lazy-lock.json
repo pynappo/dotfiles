@@ -1,5 +1,6 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "e30b7f2008e52442154b66f7c519bfd2f1e32acb" },
+  "Vim-code-browse": { "branch": "mainline", "commit": "faeaa00981605e173e482225059a7573460544e7" },
   "amazonq": { "branch": "mainline", "commit": "f42c2283a86668cfb5e99916bf9d07bdaa556e7c" },
   "better-escape.nvim": { "branch": "master", "commit": "19a38aab94961016430905ebec30d272a01e9742" },
   "blink.cmp": { "branch": "main", "commit": "cb5e346d9e0efa7a3eee7fd4da0b690c48d2a98e" },
@@ -44,7 +45,6 @@
   "molten-nvim": { "branch": "main", "commit": "ffa2c3b211a3a975919ce3a0b450f4579cde40a6" },
   "multicursor.nvim": { "branch": "1.0", "commit": "b2167370e8103ae94b6b0999524f0f45f7fd07e7" },
   "muren.nvim": { "branch": "main", "commit": "fa18f2df80a52afd201da062d1af0e80c8d1988e" },
-  "neo-tree.nvim": { "branch": "v3.x", "commit": "f481de16a0eb59c985abac8985e3f2e2f75b4875" },
   "neogit": { "branch": "master", "commit": "9bb1e73c534f767607e0a888f3de4c942825c501" },
   "neoscroll.nvim": { "branch": "master", "commit": "f957373912e88579e26fdaea4735450ff2ef5c9c" },
   "neotest": { "branch": "master", "commit": "6267dcd577aa519c828d2526b05844770d3a2c6a" },
