@@ -200,6 +200,7 @@ require('lazy').setup({
     { import = 'pynappo.plugins.extras' },
     { import = 'pynappo.plugins.lang' },
     { import = 'pynappo.plugins' },
+    { import = 'pynappo.private.plugins' },
     -- { import = 'pynappo.plugins.colorschemes' },
   },
   -- debug = true,
