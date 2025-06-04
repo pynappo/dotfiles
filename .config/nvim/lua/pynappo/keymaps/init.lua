@@ -115,19 +115,6 @@ M.setup = {
         M.fish_style_abbr('!', 'term'),
       },
       [{ 'v' }] = {
-        {
-          'I',
-          function()
-            local old = vim.o.cursorcolumn
-            if vim.fn.mode() == '\22' then vim.o.cursorcolumn = true end
-            vim.api.nvim_create_autocmd(
-              'InsertLeave',
-              { once = true, callback = function() vim.o.cursorcolumn = old end }
-            )
-            return vim.fn.mode() == [[\22n]] and 'I' or [[<Esc>`<i]]
-          end,
-          { expr = true },
-        },
         { 'A', function() return vim.fn.mode() == [[\22n]] and 'A' or [[<Esc>`>a]] end, { expr = true } },
         { 'x', '"_x' },
         { 'X', '"_X' },

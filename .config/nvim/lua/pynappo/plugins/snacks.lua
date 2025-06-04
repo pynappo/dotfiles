@@ -1,6 +1,7 @@
 return {
   {
     'folke/snacks.nvim',
+    enabled = true,
     priority = 20000,
     config = function()
       local Snacks = require('snacks')
@@ -9,6 +10,7 @@ return {
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
         dashboard = {
+          enabled = false,
           sections = {
             { section = 'header' },
             { section = 'keys', gap = 1, padding = 1 },
@@ -75,17 +77,9 @@ return {
             end,
           },
         },
-        profiler = {
-          enabled = true,
-          globals = {
-            'vim',
-            'vim.api',
-            'vim.uv',
-            'vim.loop',
-          },
-        },
+        profiler = { enabled = true, globals = { 'vim', 'vim.api', 'vim.uv', 'vim.loop' } },
         bigfile = { enabled = true },
-        notifier = { enabled = true },
+        notifier = { enabled = false },
         quickfile = { enabled = true },
         terminal = { enabled = true },
         scratch = { enabled = true },

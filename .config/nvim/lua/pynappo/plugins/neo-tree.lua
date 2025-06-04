@@ -29,7 +29,7 @@ return {
         log_to_file = true,
         -- use_console = true,
         sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
-        hide_root_node = false,
+        hide_root_node = true,
         add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
         close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
         default_source = 'filesystem',
