@@ -1,6 +1,3 @@
-if set -q TERMUX_VERSION
-  fish_add_path -g "$HOME/neovim/build/bin"
-end
 if type -q systemctl
   for var in (systemctl show-environment --user | rg -v '^PATH=')
     export $var
@@ -173,4 +170,9 @@ export PG_OF_PATH=/home/dle/code/cs134/of_v0.12.0_linux64gcc6_release
 if type -q mise
   mise activate fish | source
 end
-
+for private_config in $HOME/.config/fish/private/*
+  source $private_config
+end
+if set -q TERMUX_VERSION
+  fish_add_path -g "$HOME/neovim/build/bin"
+end
