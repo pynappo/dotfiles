@@ -37,7 +37,7 @@ return {
         },
       },
     },
-    enabled = not vim.env.NVIM_FAST,
+    -- enabled = not vim.env.NVIM_FAST,
     init = require('pynappo.keymaps').setup.heirline,
     config = function()
       local utils = require('heirline.utils')

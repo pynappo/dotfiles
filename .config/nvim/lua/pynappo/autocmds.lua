@@ -97,7 +97,7 @@ function autocmds.heirline_mode_cursorline(mode_colors)
       end
       vim.cmd.highlight('ModeCursorLine guibg=#' .. hex)
       vim.opt_local.winhighlight:append('CursorLine:ModeCursorLine')
-      vim.cmd.redraw()
+      -- vim.cmd.redraw()
     end,
     desc = 'Change mode cursorline',
   })

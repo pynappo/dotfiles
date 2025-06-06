@@ -80,7 +80,6 @@ return {
   -- },
   {
     'RRethy/vim-illuminate',
-    enabled = not vim.env.NVIM_FAST,
     config = function()
       require('illuminate').configure({
         filetypes_denylist = {
@@ -141,7 +140,7 @@ return {
   },
   {
     'dstein64/nvim-scrollview',
-    enabled = true,
+    enabled = false, -- debug perf issues
     config = function()
       require('scrollview').setup({
         excluded_filetypes = { 'neo-tree' },

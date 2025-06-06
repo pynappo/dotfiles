@@ -20,7 +20,7 @@ return {
           vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
-      -- vim.treesitter.language.register('markdown', 'mdx')
+      vim.treesitter.language.register('markdown', 'mdx')
       require('nvim-treesitter.parsers').mdx = {
         install_info = {
           url = '~/code/tree-sitter-mdx', -- local path or git repo

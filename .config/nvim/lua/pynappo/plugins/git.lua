@@ -182,7 +182,6 @@ return {
   {
     'lewis6991/gitsigns.nvim',
     event = { 'BufNewFile', 'BufReadPre' },
-    enabled = not vim.env.NVIM_FAST,
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = {
       signs = {

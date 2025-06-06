@@ -329,11 +329,7 @@ vim.api.nvim_create_autocmd('UIEnter', {
     local logpath = vim.fn.stdpath('state') .. '/log'
     local log = vim.uv.fs_stat(logpath)
     if not log then return end
-    if log.size > 1024 * 1024 then
-      if not utils.is_windows then
-        vim.system({ 'bash', '-c', ('tail -n 10000 %s > %s'):format(logpath, logpath) }):wait()
-      end
-    end
+    if log.size > 1024 * 1024 then vim.notify('log >1mb') end
   end,
 })
 if vim.version().minor > 10 then
