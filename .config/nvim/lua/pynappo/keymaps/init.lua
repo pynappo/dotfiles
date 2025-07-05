@@ -35,7 +35,10 @@ end
 M.setup = {
   regular = function()
     local autoindent = function(key)
-      return function() return not vim.api.nvim_get_current_line():match('%g') and 'cc' or key end
+      return function()
+        if vim.bo[0].buftype == 'prompt' then return key end
+        return not vim.api.nvim_get_current_line():match('%g') and 'cc' or key
+      end
     end
     map({
       [{ 'n' }] = {
@@ -403,6 +406,7 @@ M.setup = {
         },
         { '<leader><space>', function() require('fzf-lua').buffers() end, { desc = '(FZF) Buffers' } },
         { '<leader>ff', function() require('fzf-lua').files() end, { desc = '(FZF) Find files' } },
+        { '<leader>fd', function() require('fzf-lua').diagnostics_workspace() end, { desc = '(FZF) Find files' } },
         {
           '<leader>f/',
           function() require('fzf-lua').current_buffer_fuzzy_find() end,
@@ -557,124 +561,4 @@ M.cmp = {
   cmdline = function() return require('cmp').mapping.preset.cmdline({}) end,
 }
 
-M.toggleterm = { open_mapping = [[<C-\>]] }
-M.neotree = {
-  window = {
-    mappings = {
-      ['<tab>'] = function(state)
-        local node = state.tree:get_node()
-        if require('neo-tree.utils').is_expandable(node) then
-          state.commands['toggle_node'](state)
-        else
-          state.commands['open'](state)
-          vim.cmd('Neotree reveal')
-        end
-      end,
-      ['<space>'] = {
-        'toggle_node',
-        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
-      },
-      ['<2-LeftMouse>'] = 'open',
-      ['<cr>'] = 'open',
-      ['S'] = 'split_with_window_picker',
-      ['s'] = 'vsplit_with_window_picker',
-      ['t'] = 'open_tabnew',
-      ['w'] = 'open_with_window_picker',
-      ['P'] = { 'toggle_preview', config = { use_float = true } },
-      ['C'] = 'close_node',
-      ['z'] = 'close_all_nodes',
-      ['Z'] = 'expand_all_nodes',
-      ['a'] = { 'add', config = { show_path = 'relative' } },
-      ['A'] = { 'add_directory', config = { show_path = 'relative' } },
-      ['h'] = function(state)
-        local node = state.tree:get_node()
-        if node.type == 'directory' and node:is_expanded() then
-          require('neo-tree.sources.filesystem').toggle_directory(state, node)
-        else
-          require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
-        end
-      end,
-      ['l'] = function(state)
-        local node = state.tree:get_node()
-        if node.type == 'directory' then
-          if not node:is_expanded() then
-            require('neo-tree.sources.filesystem').toggle_directory(state, node)
-          elseif node:has_children() then
-            require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
-          end
-        end
-      end,
-      ['d'] = 'delete',
-      ['r'] = 'rename',
-      ['y'] = 'copy_to_clipboard',
-      ['x'] = 'cut_to_clipboard',
-      ['p'] = 'paste_from_clipboard',
-      ['c'] = 'copy',
-      ['m'] = 'move',
-      ['q'] = 'close_window',
-      ['R'] = 'refresh',
-      ['?'] = 'show_help',
-      ['<'] = 'prev_source',
-      ['>'] = 'next_source',
-      ['<LocalLeader>e'] = function() vim.cmd('Neotree focus filesystem left') end,
-      ['<LocalLeader>b'] = function() vim.cmd('Neotree focus buffers left') end,
-      ['<LocalLeader>g'] = function() vim.cmd('Neotree focus git_status left') end,
-    },
-  },
-  filesystem = {
-    window = {
-      mappings = {
-        ['tf'] = 'telescope_find',
-        ['tg'] = 'telescope_grep',
-        ['<bs>'] = 'navigate_up',
-        ['.'] = 'set_root',
-        ['i'] = 'run_command',
-        ['o'] = 'system_open',
-        ['H'] = 'toggle_hidden',
-        ['/'] = 'fuzzy_finder',
-        ['D'] = 'fuzzy_finder_directory',
-        ['f'] = 'filter_on_submit',
-        ['<c-x>'] = 'clear_filter',
-        ['[g'] = 'prev_git_modified',
-        [']g'] = 'next_git_modified',
-      },
-    },
-  },
-  buffers = {
-    window = {
-      mappings = {
-        ['bd'] = 'buffer_delete',
-        ['<bs>'] = 'navigate_up',
-        ['.'] = 'set_root',
-      },
-    },
-  },
-  git_status = {
-    window = {
-      mappings = {
-        ['A'] = 'git_add_all',
-        ['gu'] = 'git_unstage_file',
-        ['ga'] = 'git_add_file',
-        ['gr'] = 'git_revert_file',
-        ['gc'] = 'git_commit',
-        ['gp'] = 'git_push',
-        ['gg'] = 'git_commit_and_push',
-      },
-    },
-  },
-}
-
-M.mini = {
-  surround = {
-    add = 'ys', -- Add surrounding in Normal and Visual modes
-    delete = 'ds', -- Delete surrounding
-    find = '<leader>sf', -- Find surrounding (to the right)
-    find_left = '<leader>sF', -- Find surrounding (to the left)
-    highlight = '<leader>sh', -- Highlight surrounding
-    replace = 'cs', -- Replace surrounding
-    update_n_lines = '<leader>sn', -- Update `n_lines`
-    suffix_last = 'l', -- Suffix to search with "prev" method
-    suffix_next = 'n', -- Suffix to search with "next" method
-  },
-}
 return M

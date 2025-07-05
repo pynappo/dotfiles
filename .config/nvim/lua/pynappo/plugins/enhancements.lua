@@ -4,55 +4,57 @@ return {
   -- { 'winston0410/range-highlight.nvim', dependencies = { 'winston0410/cmd-parser.nvim' }, config = true },
   {
     'max397574/better-escape.nvim',
-    opts = {
-      mappings = {
-        i = {
-          j = {
-            k = '<Esc>',
-            j = false,
+    config = function()
+      require('better_escape').setup({
+        mappings = {
+          i = {
+            j = {
+              k = '<Esc>',
+              j = false,
+            },
+            k = {
+              j = '<Esc>',
+            },
           },
-          k = {
-            j = '<Esc>',
+          c = {
+            j = {
+              k = '<Esc>',
+              j = false,
+            },
+            k = {
+              j = '<Esc>',
+            },
+          },
+          t = {
+            j = {
+              k = '<Esc>',
+              j = false,
+            },
+            k = {
+              j = '<Esc>',
+            },
+          },
+          s = {
+            j = {
+              k = '<Esc>',
+              j = false,
+            },
+            k = {
+              j = '<Esc>',
+            },
+          },
+          v = {
+            j = {
+              k = false,
+              j = false,
+            },
+            k = {
+              j = false,
+            },
           },
         },
-        c = {
-          j = {
-            k = '<Esc>',
-            j = false,
-          },
-          k = {
-            j = '<Esc>',
-          },
-        },
-        t = {
-          j = {
-            k = '<Esc>',
-            j = false,
-          },
-          k = {
-            j = '<Esc>',
-          },
-        },
-        s = {
-          j = {
-            k = '<Esc>',
-            j = false,
-          },
-          k = {
-            j = '<Esc>',
-          },
-        },
-        v = {
-          j = {
-            k = false,
-            j = false,
-          },
-          k = {
-            j = false,
-          },
-        },
-      },
-    },
+      })
+    end,
   },
   {
     'mrjones2014/smart-splits.nvim',
@@ -85,9 +87,12 @@ return {
   { 'lambdalisue/suda.vim' },
   {
     'jinh0/eyeliner.nvim',
-    opts = {
-      highlight_on_key = true, -- show highlights only after keypress dim = false, -- dim all other characters if set to true (recommended!)
-    },
+    enabled = false,
+    config = function()
+      require('eyeliner').setup({
+        highlight_on_key = true, -- show highlights only after keypress dim = false, -- dim all other characters if set to true (recommended!)
+      })
+    end,
   },
   { 'tweekmonster/helpful.vim', init = function() vim.g.helpful = 1 end },
   { 'nanotee/zoxide.vim' },

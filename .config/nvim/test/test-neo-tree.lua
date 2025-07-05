@@ -27,7 +27,8 @@ require('lazy').setup({
       dependencies = {
         'nvim-lua/plenary.nvim',
         'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-        'muniftanjim/nui.nvim', -- "3rd/image.nvim", -- optional image support in preview window: see `# preview mode` for more information
+        'muniftanjim/nui.nvim',
+        -- "3rd/image.nvim", -- optional image support in preview window: see `# preview mode` for more information
       },
       enabled = true,
       lazy = false,
@@ -54,6 +55,7 @@ require('lazy').setup({
           quickfile = { enabled = true },
           terminal = { enabled = true },
           scratch = { enabled = true },
+          image = { enabled = true },
         })
         vim.notify = Snacks.notifier.notify
         vim.api.nvim_create_autocmd('User', {

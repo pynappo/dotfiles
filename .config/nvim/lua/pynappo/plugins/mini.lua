@@ -65,7 +65,17 @@ return {
     require('mini.surround').setup({
       custom_surroundings = nil,
       highlight_duration = 500,
-      mappings = keymaps.mini.surround,
+      mappings = {
+        add = 'ys', -- Add surrounding in Normal and Visual modes
+        delete = 'ds', -- Delete surrounding
+        find = '<leader>sf', -- Find surrounding (to the right)
+        find_left = '<leader>sF', -- Find surrounding (to the left)
+        highlight = '<leader>sh', -- Highlight surrounding
+        replace = 'cs', -- Replace surrounding
+        update_n_lines = '<leader>sn', -- Update `n_lines`
+        suffix_last = 'l', -- Suffix to search with "prev" method
+        suffix_next = 'n', -- Suffix to search with "next" method
+      },
       n_lines = 30,
       respect_selection_type = true,
       search_method = 'cover',
@@ -100,7 +110,6 @@ return {
     --   },
     -- })
 
-    vim.keymap.del('x', keymaps.mini.surround.add)
     -- local indentscope = require('mini.indentscope')
     -- indentscope.setup({
     --   draw = {

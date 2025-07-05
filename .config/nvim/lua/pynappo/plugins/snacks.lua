@@ -86,6 +86,9 @@ return {
         picker = {
           enabled = true,
         },
+        image = {
+          enabled = true,
+        },
       })
       vim.api.nvim_create_autocmd('User', {
         pattern = 'MiniFilesActionRename',

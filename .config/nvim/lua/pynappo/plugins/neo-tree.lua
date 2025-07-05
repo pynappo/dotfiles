@@ -27,6 +27,9 @@ return {
 
         log_level = 'trace',
         log_to_file = true,
+        clipboard = {
+          sync = 'universal',
+        },
         -- use_console = true,
         sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
         hide_root_node = true,
@@ -115,7 +118,7 @@ return {
             ['<cr>'] = 'open',
             -- ["<cr>"] = { "open", config = { expand_nested_files = true } }, -- expand nested file takes precedence
             ['<esc>'] = 'cancel', -- close preview or floating neo-tree window
-            ['P'] = { 'toggle_preview', config = { use_float = true, use_image_nvim = true } },
+            ['P'] = { 'toggle_preview', config = { use_float = true, use_image_nvim = true, use_snacks_image = true } },
             ['<C-f>'] = { 'scroll_preview', config = { direction = -10 } },
             ['<C-b>'] = { 'scroll_preview', config = { direction = 10 } },
             ['l'] = 'focus_preview',
@@ -200,7 +203,7 @@ return {
             mappings = {
               ['^'] = 'focus_parent',
               ['H'] = 'toggle_hidden',
-              ['/'] = 'fuzzy_finder',
+              ['/'] = { 'fuzzy_finder', config = { keep_filter_on_submit = true } },
               ['D'] = 'fuzzy_finder_directory',
               --["/"] = "filter_as_you_type", -- this was the default until v1.28
               ['#'] = 'fuzzy_sorter', -- fuzzy sorting using the fzy algorithm
@@ -225,6 +228,7 @@ return {
               ['ot'] = { 'order_by_type', nowait = false },
             },
             fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
+              ['<esc>'] = 'noop',
               ['<down>'] = 'move_cursor_down',
               ['<C-n>'] = 'move_cursor_down',
               ['<up>'] = 'move_cursor_up',
@@ -485,9 +489,6 @@ return {
               ['d'] = 'show_debug_info',
             },
           },
-        },
-        clipboard = {
-          sync = 'global',
         },
       })
     end,
