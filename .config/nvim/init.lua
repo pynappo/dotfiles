@@ -295,6 +295,8 @@ require('pynappo.tweaks')
 require('pynappo.autocmds').setup_overrides()
 vim.cmd.colorscheme('ayu')
 
+---@param a string
+local a = function(a) end
 vim.filetype.add({
   pattern = {
     ['${XDG_CONFIG_HOME}/waybar/config'] = 'json',
@@ -333,5 +335,19 @@ vim.api.nvim_create_autocmd('UIEnter', {
   end,
 })
 if vim.version().minor > 10 then
-  if vim.env.EMMYLUA then vim.lsp.enable('emmylua') end
+  if vim.env.EMMYLUA then
+    vim.lsp.config('emmylua', {})
+    vim.lsp.enable('emmylua')
+  end
 end
+vim.filetype.add({
+  pattern = {
+    ['.*'] = {
+      function(path, bufnr)
+        local content = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or ''
+        if content:match('ruby') then return 'ruby' end
+      end,
+      { priority = 10e4 },
+    },
+  },
+})

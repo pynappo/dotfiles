@@ -186,6 +186,7 @@ return {
             visible = true, -- when true, they will just be displayed differently than normal items
             force_visible_in_empty_folder = true, -- when true, hidden files will be shown if the root folder is otherwise empty
             show_hidden_count = true, -- when true, the number of hidden items in each folder will be shown as the last entry
+            children_inherit_highlights = false,
             hide_dotfiles = true,
             hide_gitignored = true,
             hide_hidden = true, -- only works on Windows for hidden files/directories
@@ -204,7 +205,7 @@ return {
               ['^'] = 'focus_parent',
               ['H'] = 'toggle_hidden',
               ['/'] = { 'fuzzy_finder', config = { keep_filter_on_submit = true } },
-              ['D'] = 'fuzzy_finder_directory',
+              -- ['D'] = 'fuzzy_finder_directory',
               --["/"] = "filter_as_you_type", -- this was the default until v1.28
               ['#'] = 'fuzzy_sorter', -- fuzzy sorting using the fzy algorithm
               -- ["D"] = "fuzzy_sorter_directory",

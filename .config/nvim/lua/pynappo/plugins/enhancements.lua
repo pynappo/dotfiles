@@ -83,7 +83,7 @@ return {
       vim.g.matchup_matchparen_offscreen = {}
     end,
   },
-  { 'Aasim-A/scrollEOF.nvim', config = false },
+  -- { 'Aasim-A/scrollEOF.nvim', config = false },
   { 'lambdalisue/suda.vim' },
   {
     'jinh0/eyeliner.nvim',

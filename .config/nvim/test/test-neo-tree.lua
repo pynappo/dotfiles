@@ -18,21 +18,15 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 require('lazy').setup({
   spec = {
-    -- {
-    --   'nvim-tree/nvim-tree.lua',
-    --   config = true,
-    -- },
     {
       'nvim-neo-tree/neo-tree.nvim',
       dependencies = {
         'nvim-lua/plenary.nvim',
-        'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-        'muniftanjim/nui.nvim',
-        -- "3rd/image.nvim", -- optional image support in preview window: see `# preview mode` for more information
+        'nvim-tree/nvim-web-devicons',
+        'MunifTanjim/nui.nvim',
       },
-      enabled = true,
-      lazy = false,
     },
+
     {
       'folke/snacks.nvim',
       config = function()
@@ -96,10 +90,10 @@ require('lazy').setup({
   disabled_plugins = {
     -- 'matchit',
     -- 'matchparen',
-    'netrw',
-    'netrwPlugin',
-    'netrwSettings',
-    'netrwFileHandlers',
+    -- 'netrw',
+    -- 'netrwPlugin',
+    -- 'netrwSettings',
+    -- 'netrwFileHandlers',
     -- 'gzip',
     -- 'zip',
     -- 'zipPlugin',
@@ -114,22 +108,3 @@ require('lazy').setup({
     -- 'rrhelper',
   },
 })
-
-vim.o.number = true
-vim.g.mapleader = ' '
-vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle reveal left<CR>')
-vim.keymap.set('n', '<leader>E', '<Cmd>Neotree filesystem reveal float<CR>', {})
-vim.api.nvim_create_user_command('Debug', function()
-  local bufnrs = vim.api.nvim_list_bufs()
-  local bufs = {}
-  for _, bufnr in pairs(bufnrs) do
-    bufs[bufnr] = { vim.api.nvim_buf_get_name(bufnr) }
-  end
-  local winnrs = vim.api.nvim_list_wins()
-  local wins = {}
-  for _, winnr in pairs(winnrs) do
-    wins[winnr] = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(winnr))
-  end
-  vim.print(bufs)
-  vim.print(wins)
-end, {})
