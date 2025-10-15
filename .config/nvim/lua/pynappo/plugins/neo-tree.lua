@@ -25,12 +25,30 @@ return {
         -- You can also add an external source by adding it's name to this list.
         -- The name used here must be the same name you would use in a require() call.
 
-        log_level = 'trace',
+        log_level = {
+          file = vim.log.levels.TRACE,
+          console = vim.log.levels.INFO,
+        },
         log_to_file = true,
+        -- use_console = true,
         clipboard = {
           sync = 'universal',
         },
-        -- use_console = true,
+        event_handlers = {
+          {
+            event = 'after_render',
+            handler = function(args)
+              -- local state = require('neo-tree.sources.manager').get_state_for_window(args.winid)
+              -- assert(state)
+              -- state.user = state.user or {}
+              -- if state.user.not_first_render then return end
+              -- ---@cast state neotree.sources.filesystem.State
+              -- state.config = { use_float = true, force = true }
+              -- state.commands.toggle_preview(state, { use_float = true, force = true })
+              -- state.user.not_first_render = true
+            end,
+          },
+        },
         sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
         hide_root_node = true,
         add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
@@ -64,6 +82,9 @@ return {
           --                       false : |     a    \/    b    \/    c     |
         },
         default_component_configs = {
+          icon = {
+            use_filtered_colors = false,
+          },
           container = {
             enable_character_fade = true,
             width = '100%',
@@ -153,7 +174,7 @@ return {
             ['m'] = 'move', -- takes text input for destination, also accepts the config.show_path and config.insert_as options
             ['e'] = 'toggle_auto_expand_width',
             ['q'] = 'close_window',
-            ['?'] = 'show_help',
+            ['?'] = { 'show_help', config = { sorter = function(a, b) return a.mapping.text < b.mapping.text end } },
             ['<'] = 'prev_source',
             ['>'] = 'next_source',
           },

@@ -1,73 +1,158 @@
 /* Center the bookmark bar */
 .bookmark-bar .observer {
- justify-content: center;
+	justify-content: center;
 }
 
 /* Screw the button, just press Alt lol */
 button.vivaldi {
-  display: none !important;
+	display: none !important;
 }
 
 #tabs-container.top {
-  padding-left: 0 !important;
+	padding-left: 0 !important;
 }
 
 /* Define any/all variables for centered URL bar */
 .UrlBar {
-  --widthOfAddressBar: 60%; /* variable */
+	--widthOfAddressBar: 60%; /* variable */
 }
 
 /* Set up a grid for the URL Bar */
 .UrlBar {
-  -webkit-app-region: drag; /* Allow dragging window from UrlBar */
-  display: grid;
-  grid-template-areas: "nav space1 url space2 search profile extensions";
-  grid-template-columns: auto 1fr minmax(min-content, var(--widthOfAddressBar)) 1fr auto auto auto;
+	-webkit-app-region: drag; /* Allow dragging window from UrlBar */
+	display: grid;
+	grid-template-areas: "nav space1 url space2 search profile extensions";
+	grid-template-columns: auto 1fr minmax(min-content, var(--widthOfAddressBar)) 1fr auto auto auto;
 }
 
 /* Define properties for grid area: nav */
 .UrlBar > div:first-child {
-  grid-area: nav;
-  min-width: fit-content;
+	grid-area: nav;
+	min-width: fit-content;
 }
 
 /* Define properties for grid area: url */
-.UrlBar-UrlField, .UrlBar-AddressField, .UrlBar-SearchField {
-  grid-area: url;
-  text-align: center; /* centers text when in focus */
+.UrlBar-UrlField,
+.UrlBar-AddressField,
+.UrlBar-SearchField {
+	grid-area: url;
+	text-align: center; /* centers text when in focus */
 }
 
 /* Define properties for grid area: search */
-.UrlBar > .button-toolbar:not(.profile-popup), /* search field button */
+.UrlBar > .button-toolbar:not(.profile-popup) /* search field button */,
 .UrlBar-SearchField {
-  grid-area: search;
-  min-width: fit-content;
+	grid-area: search;
+	min-width: fit-content;
 }
 
 /* Define properties for grid area: profile */
 .UrlBar .profile-popup {
-  grid-area: profile;
-  min-width: fit-content;
+	grid-area: profile;
+	min-width: fit-content;
 }
 
 /* Define properties for grid area: extensions */
 .UrlBar .toolbar-extensions {
-  grid-area: extensions;
-  min-width: fit-content;
+	grid-area: extensions;
+	min-width: fit-content;
 }
 /* centered addressfield URL */
-.UrlField:not(.UrlField--HasEditText) .UrlBar-UrlField {text-align: center;}
-.UrlFragment-Wrapper {width: fit-content; left: 0; right: 0; margin: auto;}
+.UrlField:not(.UrlField--HasEditText) .UrlBar-UrlField {
+	text-align: center;
+}
+.UrlFragment-Wrapper {
+	width: fit-content;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
 
 /* hide https:// display */
-.UrlBar-AddressField > .SiteInfoButton:is(.secure, .certified) + .UrlBar-UrlFieldWrapper .UrlFragment-Wrapper > .UrlFragment--Lowlight:first-of-type {opacity:0;}
+.UrlBar-AddressField > .SiteInfoButton:is(.secure, .certified)
+	+ .UrlBar-UrlFieldWrapper
+	.UrlFragment-Wrapper
+	> .UrlFragment--Lowlight:first-of-type {
+	opacity: 0;
+}
 
 /* secure domain green highlighter  */
-.UrlFragment-HostFragment-Subdomain, .UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD {-webkit-text-stroke-width: 0.6px;}
-.UrlBar-AddressField > .SiteInfoButton:is(.secure, .certified) + .UrlBar-UrlFieldWrapper :is(.UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD) {color: var(--colorSuccessBg);}
+.UrlFragment-HostFragment-Subdomain,
+.UrlFragment-HostFragment-Basedomain,
+.UrlFragment-HostFragment-TLD {
+	-webkit-text-stroke-width: 0.6px;
+}
+.UrlBar-AddressField
+	> .SiteInfoButton:is(.secure, .certified)
+	+ .UrlBar-UrlFieldWrapper
+	:is(.UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD) {
+	color: var(--colorSuccessBg);
+}
 
 /* warning domain pink highlighter */
-.UrlBar-AddressField > .SiteInfoButton.warning + .UrlBar-UrlFieldWrapper :is(.UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD) {color: deeppink;}
+.UrlBar-AddressField > .SiteInfoButton.warning
+	+ .UrlBar-UrlFieldWrapper
+	:is(.UrlFragment-HostFragment-Basedomain, .UrlFragment-HostFragment-TLD) {
+	color: deeppink;
+}
+/* full width tab bar */
+.resize {
+	max-width: 100% !important;
+	max-height: 100% !important;
+	width: auto; /* Allow natural width within the limit */
+	height: auto; /* Allow natural height within the limit */
+	box-sizing: border-box; /* Ensure padding and borders are included in the total size */
+}
+
+/* set flex on tab strip */
+.tab-strip {
+	display: flex !important;
+
+	.tab-position {
+		flex: 1 1 0;
+		position: relative !important;
+		transform: revert !important;
+		&.is-pinned,
+		&.accordion-toggle-arrow {
+			flex: 0 0 var(--Width);
+		}
+		.tab {
+			max-width: 100% !important;
+			--shadow-top: 0 0 0 0 transparent;
+			--shadow-bottom: 0 0 0 0 transparent;
+			--shadow-left: 0 0 0 0 transparent;
+			--shadow-right: 0 0 0 0 transparent;
+
+			--outline-color: var(--colorBgAlpha);
+			--outline-width: 2px;
+
+			box-shadow:
+				var(--shadow-top), var(--shadow-bottom), var(--shadow-left),
+				var(--shadow-right);
+
+			/* When a box is in a group, apply top and bottom inset shadows. */
+			&.tab-in-accordion {
+				--shadow-top: inset 0 var(--outline-width) 0 0 var(--outline-color);
+				--shadow-bottom: inset 0 calc(-1 * var(--outline-width)) 0 0
+					var(--outline-color);
+			}
+
+			/* When a box is the first in a group, apply a left inset shadow. */
+			&.tab-first-in-group {
+				--shadow-left: inset var(--outline-width) 0 0 0 var(--outline-color);
+			}
+
+			/* When a box is the last in a group, apply a right inset shadow. */
+			&.tab-last-in-group {
+				--shadow-right: inset calc(-1 * var(--outline-width)) 0 0 0
+					var(--outline-color);
+			}
+		}
+		.svg-tab-stack {
+			display: none;
+		}
+	}
+}
 
 /* highlight stuff */
 /* .tab-position .tab { */
@@ -75,21 +160,4 @@ button.vivaldi {
 /* } */
 /* .tab-position .tab:not(.active):hover { */
 /*   border: 2px solid #66aa22; */
-/* } */
-
-/* try to fix top tabs on linux */
-/* .tab-group-indicator { */
-/*   top: -3px !important; */
-/*   height: 10px !important; */
-/* } */
-/* #tabs-tabbar-container.top { */
-/*     padding-top: 0!important; */
-/* } */
-/* #header { */
-/*   min-height: 30px !important; */
-/* } */
-/* #browser.linux .window-buttongroup { */
-/*   position: absolute; */
-/*   right: 0px; */
-/*   top: 0px; */
 /* } */

@@ -229,4 +229,5 @@ return {
     --   'DiffviewFileHistory',
     -- },
   },
+  { 'akinsho/git-conflict.nvim', version = '*', config = true },
 }
