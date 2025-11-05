@@ -1,110 +1,57 @@
-import { Astal, Gtk, Gdk } from "astal/gtk3";
-import Notifd from "gi://AstalNotifd";
+import app from "ags/gtk4/app";
+import { Astal, Gtk } from "ags/gtk4";
+import AstalNotifd from "gi://AstalNotifd";
 import Notification from "./Notification";
-import { type Subscribable } from "astal/binding";
-import { GLib, Variable, bind, timeout } from "astal";
+import { createBinding, For, createState, onCleanup } from "ags";
 
-// see comment below in constructor
-const TIMEOUT_DELAY = 5000;
+export default function NotificationPopups() {
+  const monitors = createBinding(app, "monitors");
 
-// The purpose if this class is to replace Variable<Array<Widget>>
-// with a Map<number, Widget> type in order to track notification widgets
-// by their id, while making it conviniently bindable as an array
-class NotificationMap implements Subscribable {
-  // the underlying map to keep track of id widget pairs
-  private map: Map<number, Gtk.Widget> = new Map();
+  const notifd = AstalNotifd.get_default();
 
-  // it makes sense to use a Variable under the hood and use its
-  // reactivity implementation instead of keeping track of subscribers ourselves
-  private var: Variable<Array<Gtk.Widget>> = Variable([]);
+  const [notifications, setNotifications] = createState(
+    new Array<AstalNotifd.Notification>(),
+  );
 
-  // notify subscribers to rerender when state changes
-  private notify() {
-    this.var.set([...this.map.values()].reverse());
-  }
+  const notifiedHandler = notifd.connect("notified", (_, id, replaced) => {
+    const notification = notifd.get_notification(id);
 
-  constructor() {
-    const notifd = Notifd.get_default();
+    if (!notification) {
+      return;
+    }
+    if (replaced && notifications.get().some((n) => n.id === id)) {
+      setNotifications((ns) => ns.map((n) => (n.id === id ? notification : n)));
+    } else {
+      setNotifications((ns) => [notification, ...ns]);
+    }
+  });
 
-    /**
-     * uncomment this if you want to
-     * ignore timeout by senders and enforce our own timeout
-     * note that if the notification has any actions
-     * they might not work, since the sender already treats them as resolved
-     */
-    // notifd.ignoreTimeout = true
+  const resolvedHandler = notifd.connect("resolved", (_, id) => {
+    setNotifications((ns) => ns.filter((n) => n.id !== id));
+  });
 
-    notifd.connect("notified", (_, id) => {
-      this.set(
-        id,
-        Notification({
-          notification: notifd.get_notification(id)!,
-
-          // once hovering over the notification is done
-          // destroy the widget without calling notification.dismiss()
-          // so that it acts as a "popup" and we can still display it
-          // in a notification center like widget
-          // but clicking on the close button will close it
-          onHoverLost: () => this.delete(id),
-
-          // notifd by default does not close notifications
-          // until user input or the timeout specified by sender
-          // which we set to ignore above
-          setup: () =>
-            timeout(TIMEOUT_DELAY, () => {
-              /**
-               * uncomment this if you want to "hide" the notifications
-               * after TIMEOUT_DELAY
-               */
-              // this.delete(id)
-            }),
-        }),
-      );
-    });
-
-    // notifications can be closed by the outside before
-    // any user input, which have to be handled too
-    notifd.connect("resolved", (_, id) => {
-      this.delete(id);
-    });
-  }
-
-  private set(key: number, value: Gtk.Widget) {
-    // in case of replacecment destroy previous widget
-    this.map.get(key)?.destroy();
-    this.map.set(key, value);
-    this.notify();
-  }
-
-  private delete(key: number) {
-    this.map.get(key)?.destroy();
-    this.map.delete(key);
-    this.notify();
-  }
-
-  // needed by the Subscribable interface
-  get() {
-    return this.var.get();
-  }
-
-  // needed by the Subscribable interface
-  subscribe(callback: (list: Array<Gtk.Widget>) => void) {
-    return this.var.subscribe(callback);
-  }
-}
-
-export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
-  const { BOTTOM, RIGHT } = Astal.WindowAnchor;
-  const notifs = new NotificationMap();
+  onCleanup(() => {
+    notifd.disconnect(notifiedHandler);
+    notifd.disconnect(resolvedHandler);
+  });
 
   return (
-    <window
-      className="NotificationPopups"
-      gdkmonitor={gdkmonitor}
-      exclusivity={Astal.Exclusivity.EXCLUSIVE}
-      anchor={BOTTOM | RIGHT}
-    >
-      <box vertical>{bind(notifs)}</box>
-    </window>
+    <For each={monitors}>
+      {(monitor) => (
+        <window
+          $={(self) => onCleanup(() => self.destroy())}
+          class="NotificationPopups"
+          gdkmonitor={monitor}
+          visible={notifications((ns) => ns.length > 0)}
+          anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
+        >
+          <box orientation={Gtk.Orientation.VERTICAL}>
+            <For each={notifications}>
+              {(notification) => <Notification notification={notification} />}
+            </For>
+          </box>
+        </window>
+      )}
+    </For>
   );
 }

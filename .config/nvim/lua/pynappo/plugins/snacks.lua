@@ -105,10 +105,6 @@ return {
         end,
         {}
       )
-      vim.print = function(...)
-        require('snacks').debug.inspect(...)
-        return ...
-      end
       _G.backtrace = Snacks.debug.backtrace
       _G.bt = Snacks.debug.backtrace
       vim.api.nvim_create_user_command('Notifications', function() Snacks.notifier.show_history() end, {})

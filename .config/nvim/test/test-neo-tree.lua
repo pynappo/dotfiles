@@ -67,7 +67,7 @@ require('lazy').setup({
           end,
           {}
         )
-        vim.print = Snacks.debug.inspect
+        -- vim.print = Snacks.debug.inspect
         _G.backtrace = Snacks.debug.backtrace
         _G.bt = Snacks.debug.backtrace
         vim.api.nvim_create_user_command('Notifications', function() Snacks.notifier.show_history() end, {})

@@ -28,9 +28,6 @@
   sort = version:refname
 [column]
   ui = auto
-[fetch]
-  prune = true
-  pruneTags = true
 [commit]
   gpgsign = true
   template = ~/.config/git/templates/conventional-commit

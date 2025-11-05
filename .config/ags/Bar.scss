@@ -15,7 +15,6 @@ window.Bar {
     font-weight: bold;
 
     button {
-        all: unset;
         background-color: transparent;
 
         &:hover {
@@ -83,13 +82,13 @@ window.Bar {
         margin-left: 0;
     }
 
+    scale,
+    slider {
+        padding: 0;
+    }
     .AudioSlider {
-        * {
-            all: unset;
-        }
-
         icon {
-            margin-right: .6em;
+            margin-right: 1em;
         }
 
         margin: 0 1em;
