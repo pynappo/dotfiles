@@ -15,7 +15,6 @@ return {
     dependencies = {
       -- { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',
-      'mrcjkb/rustaceanvim',
       {
         'williamboman/mason-lspconfig.nvim',
         dependencies = { 'williamboman/mason.nvim' },
@@ -38,6 +37,7 @@ return {
       })
     end,
   },
+  'mrcjkb/rustaceanvim',
   {
     'williamboman/mason.nvim',
     opts = {

@@ -238,7 +238,10 @@ return {
               [']g'] = 'next_git_modified',
               ['i'] = {
                 'show_file_details',
-                config = { modified_format = function() return '' end, created_format = 'relative' },
+                config = {
+                  modified_format = 'relative',
+                  created_format = 'relative',
+                },
               },
               ['o'] = { 'show_help', nowait = false, config = { title = 'Order by', prefix_key = 'o' } },
               ['oc'] = { 'order_by_created', nowait = false },

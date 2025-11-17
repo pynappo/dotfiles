@@ -31,17 +31,9 @@ app.start({
 		return (
 			<For each={monitors}>
 				{(monitor, i) => {
-					var stickies = [1, 2, 3, 4, 5, 6, 7, 8];
-					if (monitors.length == 2) {
-						if (i.get() === 0) {
-							stickies = [1, 3, 5, 7];
-						} else {
-							stickies = [2, 4, 6, 8];
-						}
-					}
 					return (
 						<This this={app}>
-							<Bar gdkmonitor={monitor} sticky_workspace_ids={stickies} />
+							<Bar gdkmonitor={monitor} />
 						</This>
 					);
 				}}

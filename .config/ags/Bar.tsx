@@ -20,17 +20,13 @@ import { createPoll } from "ags/time";
 import { execAsync } from "ags/process";
 import GLib from "gi://GLib";
 import app from "ags/gtk4/app";
+import Pango from "gi://Pango?version=1.0";
 const apps = new AstalApps.Apps({
 	nameMultiplier: 2,
 	entryMultiplier: 2,
 	executableMultiplier: 2,
 });
-let class_to_icon: { [key: string]: string } = {};
-for (const app of apps.list) {
-	class_to_icon[app.wm_class] = app.icon_name;
-}
 
-const hyprland = AstalHyprland.get_default();
 // hyprland.connect("event", (_, event, args) => {
 // 	console.log("[hyprland]:", event, args);
 // });
@@ -75,10 +71,9 @@ function AudioSlider() {
 	const speaker = AstalWp.get_default()?.audio.defaultSpeaker!;
 
 	return (
-		<box class="AudioSlider" css="min-width: 140px">
+		<box class="AudioSlider" widthRequest={100}>
 			<image iconName={createBinding(speaker, "volumeIcon")} />
 			<slider
-				hexpand
 				onChangeValue={({ value }) => speaker.set_volume(value)}
 				value={createBinding(speaker, "volume")}
 			/>
@@ -201,28 +196,6 @@ let [urgentClients, setUrgentClients] = createState<{ [key: string]: boolean }>(
 let [urgentWorkspaces, setUrgentWorkspaces] = createState<{
 	[key: number]: number;
 }>({});
-hyprland.connect("urgent", (_, client) => {
-	let c = urgentClients.get();
-	let w = urgentWorkspaces.get();
-	c[client.address] = true;
-	if (w[client.workspace.id] == null) {
-		w[client.workspace.id] = 0;
-	}
-	w[client.workspace.id]++;
-	setUrgentClients(c);
-	setUrgentWorkspaces(w);
-});
-
-hyprland.connect("client-removed", (_, client) => {
-	let c = urgentClients.get();
-	delete c[client];
-	setUrgentClients(c);
-});
-hyprland.connect("workspace-removed", (_, id) => {
-	let w = urgentWorkspaces.get();
-	delete w[id];
-	setUrgentWorkspaces(w);
-});
 
 const monitors = createBinding(app, "monitors");
 const sticky_workspace_ids_per_monitor_count: number[][][] = [
@@ -235,6 +208,7 @@ const sticky_workspace_ids_per_monitor_count: number[][][] = [
 ];
 
 function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
+	const hyprland = AstalHyprland.get_default();
 	const real_workspace_ids = createBinding(hyprland, "workspaces").as(
 		(workspaces) => {
 			return workspaces
@@ -261,6 +235,14 @@ function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 			return [...new Set([...r, ...s])].sort((a, b) => a - b);
 		},
 	);
+	const on_monitor = createBinding(hyprland, "focusedWorkspace").as((ws) => {
+		return ws.id === ws.monitor.activeWorkspace.id;
+	});
+	const on_focused_monitor = createBinding(hyprland, "focusedWorkspace").as(
+		(ws) => {
+			return ws.id === hyprland.focusedWorkspace.id;
+		},
+	);
 	return (
 		<box class="Workspaces">
 			<For each={ids}>
@@ -279,31 +261,33 @@ function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 							</button>
 						);
 					}
-					const on_focused_workspace = createBinding(
-						hyprland,
-						"focusedWorkspace",
-					).as(() => {
-						return workspace.id == workspace.monitor.activeWorkspace.id;
-					});
 					return (
 						<button
 							class={"Workspace"}
 							onClicked={() => workspace.focus()}
 							$={(self) => {
-								toggleclass(
-									self,
-									"focused",
-									hyprland.focused_workspace.id == workspace.id,
-								);
-								toggleclass(self, "visible", on_focused_workspace.get());
+								{
+									const update_on_monitor = () => {
+										toggleclass(self, "visible", on_monitor.get());
+									};
+
+									onCleanup(on_monitor.subscribe(update_on_monitor));
+									update_on_monitor();
+								}
+
+								{
+									const update_focus = () => {
+										toggleclass(self, "focused", on_focused_monitor.get());
+									};
+									onCleanup(on_focused_monitor.subscribe(update_focus));
+									update_focus();
+								}
 							}}
 						>
 							<box>
 								<image
 									iconName={createBinding(workspace, "last_client").as(
-										(client) => {
-											return getClientIcon(client);
-										},
+										getClientIcon,
 									)}
 								/>
 								{workspace.name}
@@ -316,6 +300,10 @@ function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 	);
 }
 
+const class_to_icon: { [key: string]: string } = {};
+for (const app of apps.list) {
+	class_to_icon[app.wm_class] = app.icon_name;
+}
 const cache: { [key: number]: string } = {};
 function getClientIcon(client?: AstalHyprland.Client): string {
 	if (client === undefined || !Boolean(client)) return "";
@@ -336,24 +324,44 @@ function getClientIcon(client?: AstalHyprland.Client): string {
 }
 
 function Client(client: AstalHyprland.Client) {
-	let visible = createBinding(hyprland, "focusedWorkspace").as(() => {
-		return client.workspace.id == client.monitor.activeWorkspace.id;
+	const hyprland = AstalHyprland.get_default();
+	let on_monitor = createBinding(hyprland, "focusedWorkspace").as(() => {
+		return client.workspace.id === client.monitor.activeWorkspace.id;
 	});
 	if (!client.title) {
 		return <></>;
 	}
 	return (
 		<button
-			// onDestroy={() => {
-			// 	connections.forEach((n) => hyprland.disconnect(n));
-			// 	disconnectors.forEach((d) => d());
-			// }}
-			class={"Client"}
+			class="Client"
+			onClicked={() => {
+				client.workspace.focus();
+			}}
+			$={(self) => {
+				const update_on_monitor = () => {
+					toggleclass(self, "visible", on_monitor.get());
+				};
+
+				onCleanup(on_monitor.subscribe(update_on_monitor));
+				update_on_monitor();
+				const on_focused_monitor = createBinding(
+					hyprland,
+					"focusedWorkspace",
+				).as((ws) => {
+					return ws.id == hyprland.focusedWorkspace.id;
+				});
+				const update_focus = () => {
+					toggleclass(self, "focused", on_focused_monitor.get());
+				};
+				onCleanup(on_focused_monitor.subscribe(update_focus));
+				update_focus();
+			}}
 		>
 			<box>
 				<image iconName={getClientIcon(client)} />
 				<label
-					maxWidthChars={visible.as((v) => (v ? 20 : 10))}
+					maxWidthChars={on_monitor.as((v) => (v ? 20 : 10))}
+					ellipsize={Pango.EllipsizeMode.END}
 					label={createBinding(client, "title")}
 				/>
 			</box>
@@ -361,6 +369,7 @@ function Client(client: AstalHyprland.Client) {
 	);
 }
 function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
+	const hyprland = AstalHyprland.get_default();
 	const workspaces = createBinding(hyprland, "workspaces").as((workspaces) => {
 		return workspaces.sort((a, b) => a.id - b.id);
 	});
@@ -400,8 +409,9 @@ function Time({ format = "%H:%M:%S" }) {
 
 const inhibitList = ["bash", "-c", `./scripts/systemd-inhibit/list.sh`];
 const inhibitCmd = ["bash", "-c", `./scripts/systemd-inhibit/inhibit.sh`];
+const uninhibitCmd = ["bash", "-c", `./scripts/systemd-inhibit/uninhibit.sh`];
 
-const idle_inhibited = createPoll(false, 2000, inhibitList, (stdout, prev) => {
+const idle_inhibited = createPoll(false, 5000, inhibitList, (stdout, prev) => {
 	try {
 		const ags_inhibitor_found = stdout.indexOf("ags") > -1;
 		return ags_inhibitor_found;
@@ -424,7 +434,7 @@ function Idle({}) {
 					if (!inhibited) {
 						execAsync(inhibitCmd).catch(console.error);
 					} else {
-						execAsync(`pkill ${inhibitCmd[0]}`).catch(console.error);
+						execAsync(uninhibitCmd).catch(console.error);
 					}
 				}}
 			>
@@ -434,17 +444,34 @@ function Idle({}) {
 	);
 }
 
-export default function Bar({
-	gdkmonitor,
-	sticky_workspace_ids,
-}: {
-	gdkmonitor: Gdk.Monitor;
-	sticky_workspace_ids: number[];
-}) {
-	let win: Astal.Window;
+export default function Bar({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 	const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
 	const { EXCLUSIVE } = Astal.Exclusivity;
+	const hyprland = AstalHyprland.get_default();
+	hyprland.connect("urgent", (_, client) => {
+		let c = urgentClients.get();
+		let w = urgentWorkspaces.get();
+		c[client.address] = true;
+		if (w[client.workspace.id] == null) {
+			w[client.workspace.id] = 0;
+		}
+		w[client.workspace.id]++;
+		setUrgentClients(c);
+		setUrgentWorkspaces(w);
+	});
 
+	hyprland.connect("client-removed", (_, client) => {
+		let c = urgentClients.get();
+		delete c[client];
+		setUrgentClients(c);
+	});
+	hyprland.connect("workspace-removed", (_, id) => {
+		let w = urgentWorkspaces.get();
+		delete w[id];
+		setUrgentWorkspaces(w);
+	});
+
+	let win: Astal.Window;
 	onCleanup(() => {
 		// Root components (windows) are not automatically destroyed.
 		// When the monitor is disconnected from the system, this callback

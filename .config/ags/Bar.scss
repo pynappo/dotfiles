@@ -87,15 +87,11 @@ window.Bar {
         padding: 0;
     }
     .AudioSlider {
-        icon {
-            margin-right: 1em;
-        }
-
-        margin: 0 1em;
 
         trough {
             background-color: transparentize($fg, 0.8);
             border-radius: $radius;
+            min-width: 10em;
         }
 
         highlight {
@@ -110,6 +106,7 @@ window.Bar {
             min-height: 1em;
             min-width: 1em;
             margin: -.2em;
+            max-width: 1em;
         }
     }
 }
