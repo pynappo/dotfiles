@@ -14,7 +14,10 @@ TK
 
 ## Arch
 
-```
+In fish-shell:
+
+
+```fish
 cd $HOME
 git clone --bare git@github.com:pynappo/dotfiles.git $HOME/.files.git/
 git --git-dir=$HOME/.files.git/ --work-tree=$HOME checkout --force
