@@ -7,7 +7,6 @@ import NotificationPopups from "./NotificationPopups";
 
 app.start({
 	css: style,
-	gtkTheme: "adw-gtk3-dark",
 	main() {},
 });
 
@@ -26,6 +25,7 @@ app.start({
 	},
 	main: () => {
 		const monitors = createBinding(app, "monitors");
+		console.log(app.gtkTheme);
 		NotificationPopups();
 
 		return (

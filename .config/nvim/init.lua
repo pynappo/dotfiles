@@ -295,8 +295,6 @@ require('pynappo.tweaks')
 require('pynappo.autocmds').setup_overrides()
 vim.cmd.colorscheme('ayu')
 
----@param a string
-local a = function(a) end
 vim.filetype.add({
   pattern = {
     ['${XDG_CONFIG_HOME}/waybar/config'] = 'json',
@@ -319,12 +317,15 @@ if g.neovide then
   g.neovide_cursor_trail_size = 0.9
   g.neovide_remember_window_size = true
 end
+o.messagesopt = 'wait:0,history:5000'
 
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 -- vim.cmd.amenu([[PopUp.:Inspect <Cmd>Inspect<CR>]])
 vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
+
+if vim.version().minor > 11 then vim.cmd.packadd('nvim.undotree') end
 
 vim.api.nvim_create_autocmd('UIEnter', {
   callback = function()
@@ -334,20 +335,10 @@ vim.api.nvim_create_autocmd('UIEnter', {
     if log.size > 1024 * 1024 then vim.notify('log >1mb') end
   end,
 })
+
 if vim.version().minor > 10 then
   if vim.env.EMMYLUA then
     vim.lsp.config('emmylua', {})
     vim.lsp.enable('emmylua')
   end
 end
-vim.filetype.add({
-  pattern = {
-    ['.*'] = {
-      function(path, bufnr)
-        local content = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or ''
-        if content:match('ruby') then return 'ruby' end
-      end,
-      { priority = 10e4 },
-    },
-  },
-})

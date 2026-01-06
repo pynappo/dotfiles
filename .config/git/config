@@ -59,6 +59,8 @@
   hyperlinks = true
   side-by-side = false
   colorMoved = default
+  line-numbers = true
+	hunk-header-decoration-style = none
 [merge]
   tool = nvimdiff
   conflictstyle = zdiff3

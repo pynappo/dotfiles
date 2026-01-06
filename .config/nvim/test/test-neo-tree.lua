@@ -25,6 +25,11 @@ require('lazy').setup({
         'nvim-tree/nvim-web-devicons',
         'MunifTanjim/nui.nvim',
       },
+      ---@module "neo-tree"
+      ---@type neotree.Config
+      opts = {
+        git_status_async = false,
+      },
     },
 
     {

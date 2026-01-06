@@ -1,89 +1,89 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
 
 palette:
-  black: "#000000"
-  blue: "#4560f9"
-  cyan: "#72c2ea"
-  gray: "#666666"
-  green: "#76ef76"
-  orange: "#e7b165"
-  pink: "#eaa1ea"
-  purple: "#ab9aed"
-  red: "#ddaaaa"
-  white: "#ffffff"
-  yellow: "#dcdc42"
-console_title_template: "{{.UserName}} @ {{.Folder}} ({{.Shell}}{{if .Root}} [Admin]{{end}}) "
+    black: '#000000'
+    blue: '#4560f9'
+    cyan: '#72c2ea'
+    gray: '#666666'
+    green: '#76ef76'
+    orange: '#e7b165'
+    pink: '#eaa1ea'
+    purple: '#ab9aed'
+    red: '#ddaaaa'
+    white: '#ffffff'
+    yellow: '#dcdc42'
+console_title_template: '{{.UserName}} @ {{.Folder}} ({{.Shell}}{{if .Root}} [Admin]{{end}}) '
 blocks:
-- type: prompt
-  alignment: left
-  segments:
-  - properties:
-      macos: "\ue711"
-    style: diamond
-    leading_diamond: 
-    template: "{{ if .WSL }}WSL at {{ end }}{{.Icon}}"
-    foreground: darkGray
-    background: white
-    type: os
-  - style: powerline
-    template: " {{if .SSHSession}}\U000f0318 {{ .UserName }}@{{ truncE 12 .HostName }}{{end}}"
-    foreground: "#ffffff"
-    powerline_symbol: 
-    background: "#c386f1"
-    type: session
-  - properties:
-      style: unique
-    style: powerline
-    template: " \U000f024b {{ path .Path .Location }}"
-    foreground: p:white
-    powerline_symbol: 
-    background: darkGray
-    type: path
-  - properties:
-      fetch_status: true
-      fetch_upstream_icon: true
-    style: powerline
-    template: " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \U000f0193 {{ .StashCount }}{{ end }}"
-    foreground: black
-    powerline_symbol: 
-    background: lightBlue
-    type: git
-    background_templates:
-    - "{{ if gt .Ahead 0 }}p:green{{ end }}"
-    - "{{ if gt .Behind 0 }}p:yellow{{ end }}"
-  - style: powerline
-    template: " \uf0e7 "
-    foreground: black
-    powerline_symbol: 
-    background: yellow
-    type: root
-  - style: powerline
-    template: " \ue738 {{ .Full }}"
-    foreground: p:white
-    powerline_symbol: 
-    background: blue
-    type: java
-- type: rprompt
-  alignment: right
-  segments:
-  - properties:
-      charged_icon: 🔋
-      charging_icon: 
-      discharging_icon: ⌁
-    style: diamond
-    leading_diamond: 
-    trailing_diamond: 
-    template: " {{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }} "
-    foreground: black
-    background: yellow
-    type: battery
-    background_templates:
-    - "{{if eq \"Charging\" .State.String}}p:blue{{end}}"
-    - "{{if eq \"Discharging\" .State.String}}p:red{{end}}"
-    - "{{if eq \"Full\" .State.String}}p:green{{end}}"
-  - style: plain
-    template: "{{ if gt .Code 0 }}(exit code: {{ .Code }}){{ end }} {{ .CurrentDate | date .Format }} "
-    foreground: darkGray
-    type: time
-version: 3
+    - type: prompt
+      alignment: left
+      segments:
+        - options:
+            macos: 
+          leading_diamond: 
+          template: '{{ if .WSL }}WSL at {{ end }}{{.Icon}}'
+          foreground: darkGray
+          background: white
+          type: os
+          style: diamond
+        - template: " {{if .SSHSession}}\U000F0318 {{ .UserName }}@{{ truncE 12 .HostName }}{{end}}"
+          foreground: '#ffffff'
+          powerline_symbol: 
+          background: '#c386f1'
+          type: session
+          style: powerline
+        - options:
+            style: unique
+          template: " \U000F024B {{ path .Path .Location }}"
+          foreground: p:white
+          powerline_symbol: 
+          background: darkGray
+          type: path
+          style: powerline
+        - options:
+            fetch_status: true
+            fetch_upstream_icon: true
+          template: " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \U000F0193 {{ .StashCount }}{{ end }}"
+          foreground: black
+          powerline_symbol: 
+          background: lightBlue
+          type: git
+          style: powerline
+          background_templates:
+            - '{{ if gt .Ahead 0 }}p:green{{ end }}'
+            - '{{ if gt .Behind 0 }}p:yellow{{ end }}'
+        - template: '  '
+          foreground: black
+          powerline_symbol: 
+          background: yellow
+          type: root
+          style: powerline
+        - template: '  {{ .Full }}'
+          foreground: p:white
+          powerline_symbol: 
+          background: blue
+          type: java
+          style: powerline
+    - type: rprompt
+      alignment: right
+      segments:
+        - options:
+            charged_icon: "\U0001F50B"
+            charging_icon: 
+            discharging_icon: ⌁
+          leading_diamond: 
+          trailing_diamond: 
+          template: ' {{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }} '
+          foreground: black
+          background: yellow
+          type: battery
+          style: diamond
+          background_templates:
+            - '{{if eq "Charging" .State.String}}p:blue{{end}}'
+            - '{{if eq "Discharging" .State.String}}p:red{{end}}'
+            - '{{if eq "Full" .State.String}}p:green{{end}}'
+        - template: '{{ if gt .Code 0 }}(exit code: {{ .Code }}){{ end }} {{ .CurrentDate | date .Format }} '
+          foreground: darkGray
+          type: time
+          style: plain
+version: 4
 final_space: true

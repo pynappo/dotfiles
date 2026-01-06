@@ -108,7 +108,6 @@ if status is-interactive
   abbr -a --command git t tag
   abbr -a --command git s status
   abbr -a -- gpr 'gh pr checkout'
-  abbr -a -- sudo 'sudo -s'
   abbr -a -- sn 'sudo EDITOR=nvim'
   abbr -a -- sc 'systemctl'
   abbr -a -- jc 'journalctl'

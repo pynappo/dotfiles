@@ -1,6 +1,7 @@
 return {
   {
     'glacambre/firenvim',
+    enabled = false,
     init = function()
       local g, o = vim.g, vim.o
       g.firenvim_config = {

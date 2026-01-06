@@ -1,8 +1,9 @@
+@use 'sass:color';
+
 $error: #{"@error_color"};
 $fg-color: #{"@theme_fg_color"};
 $bg-color: #{"@theme_bg_color"};
 $error: red;
-$bg: #212223;
 $fg: #f1f1f1;
 $accent: #378DF7;
 $radius: 7px;
@@ -15,15 +16,13 @@ window.Bar {
     font-weight: bold;
 
     button {
-        background-color: transparent;
-
         &:hover {
-            background-color: transparentize($fg, 0.84);
-            border-color: transparentize($accent, 0.8);
+            background-color: color.scale($fg, $alpha: -80%);
+            border-color: color.scale($accent, $alpha: -80%);
         }
 
         &:active {
-            background-color: transparentize($fg, 0.8)
+            background-color: color.scale($fg, $alpha: -80%)
         }
     }
 
@@ -40,6 +39,12 @@ window.Bar {
     }
     .Workspace {
         padding: 0px 2px;
+        &:not(.real) {
+            color: grey;
+        }
+        &.real.sticky:not(.sticking_to_correct_monitor) {
+            color: brown;
+        }
         &.visible {
             box-shadow: inset 0 -2px white;
         }
@@ -89,7 +94,7 @@ window.Bar {
     .AudioSlider {
 
         trough {
-            background-color: transparentize($fg, 0.8);
+            background-color: color.scale($fg, $alpha: -80%);
             border-radius: $radius;
             min-width: 10em;
         }
@@ -104,9 +109,7 @@ window.Bar {
             background-color: $fg;
             border-radius: $radius;
             min-height: 1em;
-            min-width: 1em;
             margin: -.2em;
-            max-width: 1em;
         }
     }
 }

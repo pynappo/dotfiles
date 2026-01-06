@@ -1,1 +1,3 @@
-/usr/share/themes/catppuccin-macchiato-sapphire-standard+default/gtk-4.0/gtk.css
+/* ~/.config/gtk-4.0/gtk.css */
+@import url("./catppuccin-macchiato-green.css");
+@import url("./gtk4-vars.css");

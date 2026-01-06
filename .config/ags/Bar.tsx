@@ -1,8 +1,10 @@
 import {
 	Accessor,
 	For,
+	With,
 	createBinding,
 	createComputed,
+	createEffect,
 	createState,
 	onCleanup,
 } from "ags";
@@ -15,18 +17,23 @@ import AstalWp from "gi://AstalWp";
 import AstalNetwork from "gi://AstalNetwork";
 import AstalTray from "gi://AstalTray";
 import AstalApps from "gi://AstalApps?version=0.1";
-import { toggleclass, wsOnMonitor } from "./util";
+import { classNames } from "./util";
 import { createPoll } from "ags/time";
 import { execAsync } from "ags/process";
 import GLib from "gi://GLib";
 import app from "ags/gtk4/app";
 import Pango from "gi://Pango?version=1.0";
+
 const apps = new AstalApps.Apps({
 	nameMultiplier: 2,
 	entryMultiplier: 2,
 	executableMultiplier: 2,
 });
 
+let [urgentClients, setUrgentClients] = createState(new Map<string, boolean>());
+let [urgentWorkspaces, setUrgentWorkspaces] = createState(
+	new Map<number, number>(),
+);
 // hyprland.connect("event", (_, event, args) => {
 // 	console.log("[hyprland]:", event, args);
 // });
@@ -58,12 +65,14 @@ function SysTray() {
 function Wifi() {
 	const { wifi } = AstalNetwork.get_default();
 
-	return (
+	return wifi ? (
 		<image
 			tooltipText={createBinding(wifi, "ssid").as(String)}
 			class="Wifi"
 			iconName={createBinding(wifi, "iconName")}
 		/>
+	) : (
+		<box></box>
 	);
 }
 
@@ -190,107 +199,120 @@ function Media() {
 	);
 }
 
-let [urgentClients, setUrgentClients] = createState<{ [key: string]: boolean }>(
+const sticky_workspace_ids_by_monitor_count: { [key: string]: number[] }[] = [
 	{},
-);
-let [urgentWorkspaces, setUrgentWorkspaces] = createState<{
-	[key: number]: number;
-}>({});
-
-const monitors = createBinding(app, "monitors");
-const sticky_workspace_ids_per_monitor_count: number[][][] = [
-	[],
-	[[1, 2, 3, 4, 5, 6, 7, 8]],
-	[
-		[1, 3, 5, 7],
-		[2, 4, 6, 8],
-	],
+	{
+		"DP-2": [1, 2, 3, 4, 5, 6, 7, 8],
+	},
+	{
+		"DP-3": [2, 4, 6, 8],
+		"DP-2": [1, 3, 5, 7],
+	},
 ];
 
 function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 	const hyprland = AstalHyprland.get_default();
+	const hyprmonitor = createBinding(gdkmonitor, "connector").as((connector) => {
+		const m = hyprland.get_monitors().find((m) => m.name === connector);
+		return m;
+	});
 	const real_workspace_ids = createBinding(hyprland, "workspaces").as(
 		(workspaces) => {
 			return workspaces
-				.filter((ws) => wsOnMonitor(ws, gdkmonitor))
+				.filter((ws) => ws.monitor?.name === gdkmonitor.connector)
 				.map((ws) => ws.id);
 		},
 	);
 
+	const monitors = createBinding(app, "monitors");
+
 	const sticky_workspace_ids = monitors((ms) => {
-		let idx = -1;
-		for (let i = 0; i < ms.length; i++) {
-			const m = ms[i];
-			if (m.connector == gdkmonitor.connector) {
-				idx = i;
-				break;
-			}
-		}
-		const ids = sticky_workspace_ids_per_monitor_count[ms.length];
-		return ids[idx];
+		const ids = sticky_workspace_ids_by_monitor_count[ms.length];
+		return ids[gdkmonitor.connector];
 	});
-	const ids = createComputed(
-		[real_workspace_ids, sticky_workspace_ids],
-		(r, s) => {
-			return [...new Set([...r, ...s])].sort((a, b) => a - b);
-		},
+	const ids = createComputed(() =>
+		[...new Set([...real_workspace_ids(), ...sticky_workspace_ids()])].sort(
+			(a, b) => a - b,
+		),
 	);
-	const on_monitor = createBinding(hyprland, "focusedWorkspace").as((ws) => {
-		return ws.id === ws.monitor.activeWorkspace.id;
-	});
-	const on_focused_monitor = createBinding(hyprland, "focusedWorkspace").as(
-		(ws) => {
-			return ws.id === hyprland.focusedWorkspace.id;
-		},
-	);
+
 	return (
 		<box class="Workspaces">
 			<For each={ids}>
 				{(id) => {
-					const workspace = hyprland.get_workspace(id);
-					if (!workspace) {
-						return (
-							<button
-								class={"Workspace"}
-								onClicked={() => hyprland.dispatch("workspace", String(id))}
-							>
-								<box>
-									<image />
-									{id}
-								</box>
-							</button>
-						);
-					}
+					const workspace = createBinding(hyprland, "workspaces").as(() => {
+						return hyprland.get_workspace(id) as
+							| AstalHyprland.Workspace
+							| undefined;
+					});
+					const on_focused_monitor = createBinding(
+						hyprland,
+						"focusedWorkspace",
+					).as((focused) => focused && id === focused.id);
+					const on_monitor = hyprmonitor.as(
+						(hm) => hm && hm.active_workspace.id === id,
+					);
+					const sticky = sticky_workspace_ids.as((stickies) => {
+						return stickies.includes(id);
+					});
+					const sticky_on_correct_monitor = createComputed(() => {
+						if (!sticky()) {
+							return false;
+						}
+						const ws = workspace();
+						const hm = hyprmonitor();
+						return ws && hm && ws.monitor.id == hm.id;
+					});
+					const urgent = urgentWorkspaces.as((urgents) => {
+						const count = urgents.get(id);
+						return count && count > 0;
+					});
 					return (
 						<button
-							class={"Workspace"}
-							onClicked={() => workspace.focus()}
-							$={(self) => {
-								{
-									const update_on_monitor = () => {
-										toggleclass(self, "visible", on_monitor.get());
-									};
-
-									onCleanup(on_monitor.subscribe(update_on_monitor));
-									update_on_monitor();
-								}
-
-								{
-									const update_focus = () => {
-										toggleclass(self, "focused", on_focused_monitor.get());
-									};
-									onCleanup(on_focused_monitor.subscribe(update_focus));
-									update_focus();
+							class={createComputed(() => {
+								return classNames("Workspace", {
+									real: workspace(),
+									visible: on_monitor(),
+									sticky: sticky(),
+									sticking_to_correct_monitor: sticky_on_correct_monitor(),
+									focused: on_focused_monitor(),
+									urgent: urgent(),
+								});
+							})}
+							onClicked={() => {
+								const ws = workspace();
+								if (ws) {
+									const hm = hyprmonitor();
+									if (!hm) {
+										throw new Error(
+											`Could not find hyprmonitor for ${gdkmonitor.connector}`,
+										);
+									}
+									if (ws.monitor.id !== hm.id) ws.move_to(hm);
+									ws.focus();
+								} else {
+									hyprland.dispatch("workspace", String(id));
 								}
 							}}
 						>
 							<box>
-								<image
-									iconName={createBinding(workspace, "last_client").as(
-										getClientIcon,
-									)}
-								/>
-								{workspace.name}
+								<box>
+									<With value={workspace}>
+										{(ws) => {
+											if (!ws) {
+												return <image />;
+											}
+											return (
+												<image
+													iconName={createBinding(ws, "last_client").as(
+														getClientIcon,
+													)}
+												/>
+											);
+										}}
+									</With>
+								</box>
+								{String(id)}
 							</box>
 						</button>
 					);
@@ -328,34 +350,24 @@ function Client(client: AstalHyprland.Client) {
 	let on_monitor = createBinding(hyprland, "focusedWorkspace").as(() => {
 		return client.workspace.id === client.monitor.activeWorkspace.id;
 	});
-	if (!client.title) {
-		return <></>;
-	}
+	const on_focused_monitor = createBinding(hyprland, "focusedWorkspace").as(
+		(ws) => {
+			return ws.id == hyprland.focusedWorkspace.id;
+		},
+	);
+	const urgent = urgentClients.as((urgents) =>
+		Boolean(urgents.get(client.address)),
+	);
 	return (
 		<button
-			class="Client"
-			onClicked={() => {
-				client.workspace.focus();
-			}}
-			$={(self) => {
-				const update_on_monitor = () => {
-					toggleclass(self, "visible", on_monitor.get());
-				};
-
-				onCleanup(on_monitor.subscribe(update_on_monitor));
-				update_on_monitor();
-				const on_focused_monitor = createBinding(
-					hyprland,
-					"focusedWorkspace",
-				).as((ws) => {
-					return ws.id == hyprland.focusedWorkspace.id;
+			class={createComputed(() => {
+				return classNames("Client", {
+					urgent: urgent(),
+					focused: on_focused_monitor(),
+					visible: on_monitor(),
 				});
-				const update_focus = () => {
-					toggleclass(self, "focused", on_focused_monitor.get());
-				};
-				onCleanup(on_focused_monitor.subscribe(update_focus));
-				update_focus();
-			}}
+			})}
+			visible={createBinding(client, "title").as(Boolean)}
 		>
 			<box>
 				<image iconName={getClientIcon(client)} />
@@ -363,6 +375,18 @@ function Client(client: AstalHyprland.Client) {
 					maxWidthChars={on_monitor.as((v) => (v ? 20 : 10))}
 					ellipsize={Pango.EllipsizeMode.END}
 					label={createBinding(client, "title")}
+				/>
+				<Gtk.GestureClick
+					button={3}
+					onPressed={() => {
+						client.focus();
+					}}
+				/>
+				<Gtk.GestureClick
+					button={1}
+					onPressed={() => {
+						client.workspace.focus();
+					}}
 				/>
 			</box>
 		</button>
@@ -373,6 +397,15 @@ function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 	const workspaces = createBinding(hyprland, "workspaces").as((workspaces) => {
 		return workspaces.sort((a, b) => a.id - b.id);
 	});
+	const hyprmonitor = createBinding(gdkmonitor, "connector").as((connector) => {
+		const m = hyprland.get_monitors().find((m) => m.name === connector);
+		if (!m) {
+			throw new Error(
+				"Could not find corresponding hyprland monitor for " + connector,
+			);
+		}
+		return m;
+	});
 	return (
 		<box class="Clients">
 			<For each={workspaces}>
@@ -381,7 +414,9 @@ function Clients({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 					return (
 						<box
 							class={"WorkspaceClients"}
-							visible={wsOnMonitor(workspace, gdkmonitor)}
+							visible={createBinding(workspace, "monitor", "id").as((id) => {
+								return id === hyprmonitor().id;
+							})}
 						>
 							<For each={clients}>{Client}</For>
 						</box>
@@ -411,7 +446,7 @@ const inhibitList = ["bash", "-c", `./scripts/systemd-inhibit/list.sh`];
 const inhibitCmd = ["bash", "-c", `./scripts/systemd-inhibit/inhibit.sh`];
 const uninhibitCmd = ["bash", "-c", `./scripts/systemd-inhibit/uninhibit.sh`];
 
-const idle_inhibited = createPoll(false, 5000, inhibitList, (stdout, prev) => {
+const idle_inhibited = createPoll(false, 5000, inhibitList, (stdout, _) => {
 	try {
 		const ags_inhibitor_found = stdout.indexOf("ags") > -1;
 		return ags_inhibitor_found;
@@ -430,11 +465,10 @@ function Idle({}) {
 					return active ? "test" : "";
 				})}
 				onClicked={() => {
-					let inhibited = idle_inhibited.get();
-					if (!inhibited) {
-						execAsync(inhibitCmd).catch(console.error);
-					} else {
+					if (idle_inhibited()) {
 						execAsync(uninhibitCmd).catch(console.error);
+					} else {
+						execAsync(inhibitCmd).catch(console.error);
 					}
 				}}
 			>
@@ -444,30 +478,65 @@ function Idle({}) {
 	);
 }
 
+let a = 0;
 export default function Bar({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 	const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
-	const { EXCLUSIVE } = Astal.Exclusivity;
+	const { EXCLUSIVE, NORMAL } = Astal.Exclusivity;
 	const hyprland = AstalHyprland.get_default();
+	const b = a++;
+	console.log(`Bar ${b}`);
 	hyprland.connect("urgent", (_, client) => {
-		let c = urgentClients.get();
-		let w = urgentWorkspaces.get();
-		c[client.address] = true;
-		if (w[client.workspace.id] == null) {
-			w[client.workspace.id] = 0;
+		if (!client) return;
+		{
+			let c = urgentClients();
+			console.log(client.address, "is urgent");
+			c.set(client.address, true);
+			setUrgentClients(c);
 		}
-		w[client.workspace.id]++;
-		setUrgentClients(c);
-		setUrgentWorkspaces(w);
+		{
+			let w = urgentWorkspaces();
+			if (!w.has(client.workspace.id)) {
+				w.set(client.workspace.id, 0);
+			}
+
+			const count = w.get(client.workspace.id);
+			if (count) {
+				w.set(client.workspace.id, count + 1);
+			}
+			setUrgentWorkspaces(w);
+		}
 	});
 
-	hyprland.connect("client-removed", (_, client) => {
-		let c = urgentClients.get();
-		delete c[client];
+	const focusedClient = createBinding(hyprland, "focusedClient");
+	createEffect(() => {
+		const focused = focusedClient();
+		if (focused) {
+			{
+				let c = urgentClients();
+				c.set(focused.address, false);
+				setUrgentClients(c);
+			}
+			{
+				if (focused?.workspace?.id) {
+					let w = urgentWorkspaces();
+
+					const count = w.get(focused.workspace.id);
+					if (count && count > 0) {
+						w.set(focused.workspace.id, count - 1);
+					}
+					setUrgentWorkspaces(w);
+				}
+			}
+		}
+	});
+	hyprland.connect("client-removed", (_, client_address) => {
+		let c = urgentClients();
+		c.delete(client_address);
 		setUrgentClients(c);
 	});
 	hyprland.connect("workspace-removed", (_, id) => {
-		let w = urgentWorkspaces.get();
-		delete w[id];
+		let w = urgentWorkspaces();
+		w.delete(id);
 		setUrgentWorkspaces(w);
 	});
 

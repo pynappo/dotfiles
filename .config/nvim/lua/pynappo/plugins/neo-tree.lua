@@ -29,7 +29,7 @@ return {
           file = vim.log.levels.TRACE,
           console = vim.log.levels.INFO,
         },
-        log_to_file = true,
+        -- log_to_file = true,
         -- use_console = true,
         clipboard = {
           sync = 'universal',
