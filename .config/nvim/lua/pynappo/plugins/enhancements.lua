@@ -84,7 +84,8 @@ return {
     end,
   },
   -- { 'Aasim-A/scrollEOF.nvim', config = false },
-  { 'lambdalisue/suda.vim' },
+  -- { 'lambdalisue/suda.vim' },
+  { 'pynappo/sudow.nvim' },
   {
     'jinh0/eyeliner.nvim',
     enabled = false,

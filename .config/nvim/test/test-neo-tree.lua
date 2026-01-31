@@ -29,6 +29,10 @@ require('lazy').setup({
       ---@type neotree.Config
       opts = {
         git_status_async = false,
+        filesystem = {
+          use_libuv_file_watcher = true,
+        },
+        use_popups_for_input = false,
       },
     },
 

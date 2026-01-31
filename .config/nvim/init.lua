@@ -342,3 +342,4 @@ if vim.version().minor > 10 then
     vim.lsp.enable('emmylua')
   end
 end
+vim.o.winborder = 'rounded'

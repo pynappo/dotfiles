@@ -63,7 +63,7 @@ Variants {
           id: workspaceButton
           required property var modelData
           property HyprlandWorkspace workspace: {
-            typeof(modelData) == "number" ? null : modelData
+            typeof(modelData) == "object" ? modelData : null
           }
           property int workspace_id: {
             typeof(modelData) == "number" ? modelData : workspace.id
@@ -205,6 +205,7 @@ Variants {
         required property var modelData
         id: notificationPopup
         property Notification notif: modelData
+        visible: notif
         anchors {
           right: true
           bottom: true
@@ -215,53 +216,70 @@ Variants {
           bottom: 10
           left: 10
         }
-        color: activePalette.window
+        color: "transparent";
         implicitWidth: 320
         implicitHeight: 160
-        ColumnLayout {
+        Rectangle {
           anchors.fill: parent
-          // top
-          RowLayout {
-            Text {
-              text: "hi"
-              color: activePalette.text
-            }
-            Item {
-              Layout.fillWidth: true
-            }
-            Button {
-              text: "X"
-              onClicked: () => notificationPopup.notif?.dismiss()
-            }
-          }
-          // mid
-          RowLayout {
-            IconImage {
-              implicitSize: 50
-              source: Quickshell.iconPath(notificationPopup.notif?.appIcon ?? "checkmark")
-            }
-            Text {
-              text: notificationPopup.notif?.body ?? "asdf"
-            }
-          }
-          // footer (buttons)
-          RowLayout {
-            Repeater {
-              model: {
-                if (!notificationPopup.notif) {
-                  return []
-                }
-                return notificationPopup.notif?.actions;
-              }
-              Button {
-                required property NotificationAction modelData
+          radius: 5
+          color: activePalette.window
+          ColumnLayout {
+            anchors.fill: parent;
+            // top
+            Rectangle {
+              width: parent.width
+              color: "white";
+              RowLayout {
                 IconImage {
-                  source: Quickshell.iconPath(notificationPopup.notif?.identifier);
+                  implicitSize: 20
+                  source: Quickshell.iconPath(notificationPopup.notif?.appIcon ?? "checkmark")
                 }
-                Layout.fillWidth: true
-                text: modelData.text;
-                onClicked: () => {
-                  modelData.invoke()
+                Text {
+                  text: notificationPopup.notif.appName
+                  color: activePalette.text
+                }
+                Item {
+                  Layout.fillWidth: true
+                }
+                Button {
+                  width: parent.width * 2
+                  text: "X"
+                  onClicked: () => notificationPopup.notif?.dismiss()
+                }
+              }
+            }
+            // mid
+            RowLayout {
+              IconImage {
+                implicitSize: 20
+                source: Quickshell.iconPath(notificationPopup.notif?.image ?? "checkmark")
+              }
+              Text {
+                color: activePalette.text
+                text: notificationPopup.notif?.body ?? "asdf"
+                wrapMode: Text.WordWrap
+              }
+            }
+            // footer (buttons)
+            RowLayout {
+              Repeater {
+                model: {
+                  if (!notificationPopup.notif) {
+                    return []
+                  }
+                  return notificationPopup.notif?.actions;
+                }
+                Button {
+                  required property NotificationAction modelData
+                  Layout.fillWidth: true
+                  text: modelData.text;
+                  onClicked: () => {
+                    modelData.invoke()
+                  }
+
+                  IconImage {
+                    source: Quickshell.iconPath(notificationPopup.notif?.identifier);
+                  }
                 }
               }
             }

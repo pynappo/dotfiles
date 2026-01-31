@@ -89,6 +89,16 @@ return {
         image = {
           enabled = true,
         },
+        input = {
+          enabled = true,
+        },
+        styles = {
+          input = {
+            relative = 'cursor',
+            row = -3,
+            col = 0,
+          },
+        },
       })
       vim.api.nvim_create_autocmd('User', {
         pattern = 'MiniFilesActionRename',
@@ -117,6 +127,7 @@ return {
       vim.api.nvim_create_user_command('ScratchProfile', function() Snacks.profiler.scratch() end, {})
       vim.keymap.set('n', '<leader>uC', function() Snacks.picker.colorschemes() end, { desc = 'Colorschemes' })
       vim.keymap.set('n', '<leader>fu', function() Snacks.picker.colorschemes() end, { desc = 'Colorschemes' })
+      vim.ui.input = Snacks.input
     end,
   },
 }

@@ -48,6 +48,15 @@ return {
               -- state.user.not_first_render = true
             end,
           },
+
+          {
+            event = 'neo_tree_popup_input_ready',
+            handler = function(opts)
+              vim.print(opts)
+              vim.keymap.del('n', '<Esc>')
+              vim.keymap.set('n', '<Esc>', '<Cmd>stopinsert<Esc>', { buffer = opts.bufnr })
+            end,
+          },
         },
         sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
         hide_root_node = true,
@@ -164,14 +173,29 @@ return {
                 show_path = 'none', -- "none", "relative", "absolute"
               },
             },
-            ['A'] = 'add_directory', -- also accepts the config.show_path and config.insert_as options.
+            ['A'] = {
+              'add_directory',
+              config = {
+                show_path = 'relative',
+              },
+            }, -- also accepts the config.show_path and config.insert_as options.
             ['d'] = 'delete',
             ['r'] = 'rename',
             ['y'] = 'copy_to_clipboard',
             ['x'] = 'cut_to_clipboard',
             ['p'] = 'paste_from_clipboard',
-            ['c'] = 'copy', -- takes text input for destination, also accepts the config.show_path and config.insert_as options
-            ['m'] = 'move', -- takes text input for destination, also accepts the config.show_path and config.insert_as options
+            ['c'] = {
+              'copy',
+              config = {
+                show_path = 'relative',
+              },
+            }, -- takes text input for destination, also accepts the config.show_path and config.insert_as options
+            ['m'] = {
+              'move',
+              config = {
+                show_path = 'relative',
+              },
+            }, -- takes text input for destination, also accepts the config.show_path and config.insert_as options
             ['e'] = 'toggle_auto_expand_width',
             ['q'] = 'close_window',
             ['?'] = { 'show_help', config = { sorter = function(a, b) return a.mapping.text < b.mapping.text end } },
@@ -296,7 +320,7 @@ return {
         enable_opened_markers = true, -- Enable tracking of opened files. Required for `components.name.highlight_opened_files`
         enable_refresh_on_write = true, -- Refresh the tree when a file is written. Only used if `use_libuv_file_watcher` is false.
         enable_cursor_hijack = false, -- If enabled neotree will keep the cursor on the first letter of the filename when moving in the tree.
-        git_status_async = true,
+        git_status_async = false,
         -- These options are for people with VERY large git repos
         git_status_async_options = {
           batch_size = 1000, -- how many lines of git status results to process at a time
@@ -314,7 +338,7 @@ return {
         -- set to -1 to disable the resize timer entirely
         --                           -- NOTE: this will speed up to 50 ms for 1 second following a resize
         sort_function = nil, -- uses a custom function for sorting files and directories in the tree
-        use_popups_for_input = true, -- If false, inputs will use vim.ui.input() instead of custom floats.
+        use_popups_for_input = false, -- If false, inputs will use vim.ui.input() instead of custom floats.
         -- source_selector provides clickable tabs to switch between sources.
         --
         renderers = {

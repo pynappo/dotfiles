@@ -105,15 +105,15 @@ M.setup = {
         M.fish_style_abbr('VS', 'vert sb'),
         M.fish_style_abbr('s', 's/g<Left><Left>'),
         M.fish_style_abbr('h', 'vert h'),
-        M.fish_style_abbr('w', function()
-          local auto_p = 'w ++p'
-          if vim.env.USER == 'root' then return auto_p end
-          local prefixes = { '/etc' }
-          for _, prefix in ipairs(prefixes) do
-            if vim.startswith(vim.api.nvim_buf_get_name(0), prefix) then return 'SudaWrite' end
-          end
-          return auto_p
-        end),
+        -- M.fish_style_abbr('w', function()
+        --   local auto_p = 'w ++p'
+        --   if vim.env.USER == 'root' then return auto_p end
+        --   local prefixes = { '/etc' }
+        --   for _, prefix in ipairs(prefixes) do
+        --     if vim.startswith(vim.api.nvim_buf_get_name(0), prefix) then return 'SudaWrite' end
+        --   end
+        --   return auto_p
+        -- end),
         M.fish_style_abbr('!', 'term'),
       },
       [{ 'v' }] = {
