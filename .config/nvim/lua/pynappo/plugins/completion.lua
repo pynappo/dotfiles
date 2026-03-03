@@ -29,6 +29,7 @@ return {
         },
         menu = {
           winblend = 25,
+          border = 'none',
         },
         ghost_text = {
           enabled = true,

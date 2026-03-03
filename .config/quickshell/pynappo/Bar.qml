@@ -256,7 +256,7 @@ Variants {
               }
               Text {
                 color: activePalette.text
-                text: notificationPopup.notif?.body ?? "asdf"
+                text: notificationPopup.notif?.body ?? ""
                 wrapMode: Text.WordWrap
               }
             }

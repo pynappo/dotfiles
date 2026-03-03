@@ -13,7 +13,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- { 'folke/neodev.nvim', config = true },
       'mfussenegger/nvim-jdtls',
       {
         'williamboman/mason-lspconfig.nvim',

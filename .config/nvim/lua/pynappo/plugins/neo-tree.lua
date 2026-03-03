@@ -148,7 +148,7 @@ return {
             ['<cr>'] = 'open',
             -- ["<cr>"] = { "open", config = { expand_nested_files = true } }, -- expand nested file takes precedence
             ['<esc>'] = 'cancel', -- close preview or floating neo-tree window
-            ['P'] = { 'toggle_preview', config = { use_float = true, use_image_nvim = true, use_snacks_image = true } },
+            ['P'] = { 'toggle_preview', config = { use_float = false, use_image_nvim = true, use_snacks_image = true } },
             ['<C-f>'] = { 'scroll_preview', config = { direction = -10 } },
             ['<C-b>'] = { 'scroll_preview', config = { direction = 10 } },
             ['l'] = 'focus_preview',
@@ -170,7 +170,7 @@ return {
               'add',
               -- some commands may take optional config options, see `:h neo-tree-mappings` for details
               config = {
-                show_path = 'none', -- "none", "relative", "absolute"
+                show_path = 'absolute', -- "none", "relative", "absolute"
               },
             },
             ['A'] = {

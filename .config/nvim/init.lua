@@ -325,8 +325,6 @@ vim.cmd.amenu([[PopUp.:Telescope <Cmd>Telescope<CR>]])
 vim.cmd.amenu([[PopUp.Code\ action <Cmd>lua vim.lsp.buf.code_action()<CR>]])
 vim.cmd.amenu([[PopUp.LSP\ Hover <Cmd>lua vim.lsp.buf.hover()<CR>]])
 
-if vim.version().minor > 11 then vim.cmd.packadd('nvim.undotree') end
-
 vim.api.nvim_create_autocmd('UIEnter', {
   callback = function()
     local logpath = vim.fn.stdpath('state') .. '/log'
@@ -336,10 +334,12 @@ vim.api.nvim_create_autocmd('UIEnter', {
   end,
 })
 
-if vim.version().minor > 10 then
+local nvim_ver = vim.version().minor
+if nvim_ver > 10 then
   if vim.env.EMMYLUA then
     vim.lsp.config('emmylua', {})
     vim.lsp.enable('emmylua')
   end
 end
+if nvim_ver > 11 then vim.cmd.packadd('nvim.undotree') end
 vim.o.winborder = 'rounded'

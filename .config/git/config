@@ -103,6 +103,8 @@
   difft = difftastic
   mergeview = mergetool -t diffview
   amend = commit --amend
+	ls-gh-merged = !gh pr list --author pynappo --state merged --limit 1000 --json headRefName --jq '.[].headRefName'
+	prune-gh-merged = "!gh pr list --author pynappo --state merged --limit 1000 --json headRefName --jq '.[].headRefName' | xargs -I {} sh -c 'git branch -d {} 2>/dev/null || echo \"Local branch {} already gone\"; git push origin --delete {}'"
 [rebase]
   autoStash = true
   autoSquash = true

@@ -13,7 +13,7 @@ application/x-msdownload=org.gnome.FileRoller.desktop;
 
 [Default Applications]
 x-scheme-handler/ror2mm=r2modman.desktop
-x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
+x-scheme-handler/jetbrains=jetbrainsd.desktop
 x-scheme-handler/webcal=vivaldi-stable.desktop
 video/3gpp=mpv.desktop
 video/x-ms-wmv=mpv.desktop
