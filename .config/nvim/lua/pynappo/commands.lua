@@ -84,18 +84,13 @@ local commands = {
         end
       end
       -- check for .git above bufnr
-      local git_dirs = vim.fs.find('.git', {
-        limit = 1,
-        upward = true,
-        type = 'directory',
-        path = vim.api.nvim_buf_get_name(0),
-      })
-      if #git_dirs == 1 then
-        vim.cmd.tcd(git_dirs[1])
+      local root = vim.fs.root(0, { '.git' })
+      if not root then
+        vim.notify('could not find a root_dir for this buffer')
         return
       end
 
-      vim.notify('could not find a root_dir for this buffer')
+      return root
     end,
   },
   {

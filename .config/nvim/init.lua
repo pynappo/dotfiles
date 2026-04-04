@@ -317,7 +317,6 @@ if g.neovide then
   g.neovide_cursor_trail_size = 0.9
   g.neovide_remember_window_size = true
 end
-o.messagesopt = 'wait:0,history:5000'
 
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
 -- vim.cmd.amenu([[PopUp.:Inspect <Cmd>Inspect<CR>]])
@@ -341,5 +340,10 @@ if nvim_ver > 10 then
     vim.lsp.enable('emmylua')
   end
 end
-if nvim_ver > 11 then vim.cmd.packadd('nvim.undotree') end
+vim.lsp.enable({ 'lua_ls', 'tinymist', 'clangd', 'zls' })
+o.messagesopt = 'wait:0,history:5000'
+if nvim_ver > 11 then
+  vim.cmd.packadd('nvim.undotree')
+  require('vim._core.ui2').enable({})
+end
 vim.o.winborder = 'rounded'

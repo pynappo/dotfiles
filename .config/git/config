@@ -124,3 +124,6 @@
 [user]
 	email = pynappo@proton.me
 	name = pynappo
+[credential]
+	helper = 
+	helper = /usr/bin/git-credential-manager

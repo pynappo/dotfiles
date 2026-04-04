@@ -34,6 +34,9 @@ return {
         clipboard = {
           sync = 'universal',
         },
+        trash = {
+          command = function(...) require('neo-tree.sources.filesystem.lib.trash-freedesktop')(...) end,
+        },
         event_handlers = {
           {
             event = 'after_render',
@@ -170,13 +173,13 @@ return {
               'add',
               -- some commands may take optional config options, see `:h neo-tree-mappings` for details
               config = {
-                show_path = 'absolute', -- "none", "relative", "absolute"
+                show_path = 'none', -- "none", "relative", "absolute"
               },
             },
             ['A'] = {
               'add_directory',
               config = {
-                show_path = 'relative',
+                show_path = 'none',
               },
             }, -- also accepts the config.show_path and config.insert_as options.
             ['d'] = 'delete',

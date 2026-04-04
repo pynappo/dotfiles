@@ -4,13 +4,13 @@ return {
   {
     'numToStr/Comment.nvim',
     dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
+      -- 'JoosepAlviste/nvim-ts-context-commentstring',
     },
     event = 'BufReadPre',
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('Comment').setup({
-        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+        -- pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
       })
     end,
   },
@@ -21,7 +21,6 @@ return {
       require('leap').opts.special_keys.prev_group = '<bs>'
       require('leap.user').set_repeat_keys('<cr>', '<bs>')
     end,
-    keys = keymaps.setup.leap({ lazy = true }),
   },
   -- { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end },
   {
