@@ -50,7 +50,7 @@ Variants {
           const sticky_workspaces_maps = [
             [],
             [[1, 2, 3, 4, 5, 6, 7, 8]],
-            [[1, 3, 5, 7], [2, 4, 6 ,8]],
+            [[2, 4, 6 ,8], [1, 3, 5, 7]],
           ]
           const sticky_workspace_ids = sticky_workspaces_maps[Hyprland.monitors.values.length][panel.hyprmonitor.id]
           const fake_workspace_ids = sticky_workspace_ids.filter((id) => !panel.workspaces.find((ws) => ws.id == id))

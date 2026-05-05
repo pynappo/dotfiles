@@ -37,6 +37,9 @@ require('lazy').setup({
     },
 
     {
+      'preservim/nerdtree',
+    },
+    {
       'folke/snacks.nvim',
       config = function()
         local Snacks = require('snacks')

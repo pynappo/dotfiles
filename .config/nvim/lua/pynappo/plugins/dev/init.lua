@@ -1,3 +1,3 @@
 return {
-  -- 'pynappo/fuzzy-undotree.nvim',
+  'pynappo/hyprlang-to-lua.nvim',
 }

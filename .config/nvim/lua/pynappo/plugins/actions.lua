@@ -15,7 +15,7 @@ return {
     end,
   },
   {
-    'ggandor/leap.nvim',
+    url = 'https://codeberg.org/andyg/leap.nvim',
     config = function()
       require('leap').opts.special_keys.prev_target = '<bs>'
       require('leap').opts.special_keys.prev_group = '<bs>'

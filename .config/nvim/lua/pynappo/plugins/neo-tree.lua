@@ -25,17 +25,17 @@ return {
         -- You can also add an external source by adding it's name to this list.
         -- The name used here must be the same name you would use in a require() call.
 
-        log_level = {
-          file = vim.log.levels.TRACE,
-          console = vim.log.levels.INFO,
-        },
+        -- log_level = {
+        --   file = vim.log.levels.TRACE,
+        --   console = vim.log.levels.INFO,
+        -- },
         -- log_to_file = true,
         -- use_console = true,
         clipboard = {
           sync = 'universal',
         },
         trash = {
-          command = function(...) require('neo-tree.sources.filesystem.lib.trash-freedesktop')(...) end,
+          -- command = function(...) return require('neo-tree.trash.freedesktop').generate_trashfunc(...) end,
         },
         event_handlers = {
           {

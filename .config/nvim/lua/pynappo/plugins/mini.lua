@@ -31,6 +31,7 @@ return {
     local bd = function() mini_bufremove.delete() end
     user_command('Bdelete', bd, {})
     user_command('BD', bd, {})
+    require('mini.test').setup()
     require('mini.sessions').setup({
       -- Whether to read latest session if Neovim opened without file arguments
       autoread = false,

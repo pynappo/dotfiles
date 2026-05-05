@@ -2,16 +2,19 @@
   "openH264Enabled": true,
   "BACKGROUND_COLOR": "#121214",
   "offloadAdmControls": true,
-  "enableLibOpenH264Electron": false,
   "chromiumSwitches": {},
   "IS_MAXIMIZED": false,
   "IS_MINIMIZED": false,
   "WINDOW_BOUNDS": {
-    "x": 0,
+    "x": 3840,
     "y": 0,
     "width": 2560,
     "height": 1410
   },
   "DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING": true,
-  "SKIP_HOST_UPDATE": true
+  "openasar": {
+    "setup": true,
+    "quickstart": true,
+    "cmdPreset": "balanced"
+  }
 }

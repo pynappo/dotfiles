@@ -4,7 +4,7 @@ return {
     'stevearc/conform.nvim',
     config = function()
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = vim.tbl_keys(require('conform').formatters_by_ft),
+        pattern = "*",
         group = vim.api.nvim_create_augroup('conform_formatexpr', { clear = true }),
         callback = function() vim.opt_local.formatexpr = 'v:lua.require("conform").formatexpr()' end,
       })

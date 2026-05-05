@@ -213,7 +213,7 @@ require('lazy').setup({
   ---@diagnostic disable-next-line: assign-type-mismatch
   dev = {
     fallback = true,
-    path = '~/code/nvim',
+    path = '~/Projects/code/nvim',
     ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
     patterns = { 'pynappo', 'nvim-neo-tree' }, -- For example {"folke"}
   },
