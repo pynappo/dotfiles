@@ -106,3 +106,4 @@ image/tiff=sxiv.desktop
 image/x-tga=sxiv.desktop
 text/html=vivaldi-stable.desktop
 x-scheme-handler/discord=vesktop.desktop
+x-scheme-handler/grimoire=grimoire.desktop

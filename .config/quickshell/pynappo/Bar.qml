@@ -91,7 +91,7 @@ Variants {
             RowLayout {
               IconImage {
                 implicitSize: 15
-                source: Quickshell.iconPath(workspaceButton.workspace?.toplevels.values[1]?.wayland?.appId)
+                source: Quickshell.iconPath(workspaceButton.workspace?.toplevels.values[1]?.wayland?.appId, true)
               }
               Text {
                 id: text

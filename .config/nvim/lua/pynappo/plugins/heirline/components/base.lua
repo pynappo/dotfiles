@@ -202,7 +202,7 @@ local M = {
           icon = require('mini.icons').get('filetype', client.config.filetypes[1])
         end
         local child = {
-          { provider = icon or '?', hl = { bold = client.attached_buffers[vim.api.nvim_get_current_buf()] } },
+          { provider = icon or '?', hl = { bold = client.attached_buffers[vim.api.nvim_get_current_buf()] and true or false } },
           -- {
           --   condition = function() return not self.ignore_messages[client.name] end,
           --   provider = function()

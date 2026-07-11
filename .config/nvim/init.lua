@@ -177,122 +177,16 @@ vim.diagnostic.config({
   },
 })
 
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.uv.fs_stat(lazypath) then
-  vim.fn.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    '--single-branch',
-    'https://github.com/folke/lazy.nvim.git',
-    lazypath,
-  })
-end
-o.runtimepath:prepend(lazypath)
 vim.b.minitrailspace_disable = true
 require('pynappo.autocmds')
 local has_private = pcall(require, 'pynappo.private')
-require('lazy').setup({
-  profiling = {
-    require = true,
-    loader = true,
-  },
-  spec = {
-    { import = 'pynappo.plugins.extras' },
-    { import = 'pynappo.plugins.lang' },
-    { import = 'pynappo.plugins' },
-    { import = 'pynappo.private.plugins' },
-    -- { import = 'pynappo.plugins.colorschemes' },
-  },
-  lockfile = has_private and vim.fn.stdpath('config') .. '/private-lazy-lock.json' or nil,
-  -- debug = true,
-  git = {
-    log = { '--since=3 days ago' }, -- show commits from the last 3 days
-    timeout = 90, -- seconds
-  },
-  ---@diagnostic disable-next-line: assign-type-mismatch
-  dev = {
-    fallback = true,
-    path = '~/Projects/code/nvim',
-    ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-    patterns = { 'pynappo', 'nvim-neo-tree' }, -- For example {"folke"}
-  },
-  install = {
-    missing = true,
-    colorscheme = { 'ayu' },
-  },
-  ui = {
-    size = { width = 0.8, height = 0.8 },
-    border = 'single',
-    custom_keys = {
-      -- you can define custom key maps here.
-      -- To disable one of the defaults, set it to false
-
-      -- open lazygit log
-      ['<localleader>l'] = function(plugin)
-        require('lazy.util').float_term({ 'lazygit', 'log' }, {
-          cwd = plugin.dir,
-        })
-      end,
-
-      -- open a terminal for the plugin dir
-      ['<localleader>t'] = function(plugin)
-        require('lazy.util').float_term(nil, {
-          cwd = plugin.dir,
-        })
-      end,
-    },
-  },
-  diff = { cmd = 'diffview.nvim' },
-  checker = {
-    enabled = true,
-    notify = true,
-    frequency = 24 * 60 * 60,
-  },
-  change_detection = {
-    enabled = true,
-    notify = true, -- get a notification when changes are found
-  },
-  performance = {
-    rtp = {
-      reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
-      ---@type string[]
-      paths = {}, -- add any custom paths here that you want to incluce in the rtp
-      ---@type string[] list any plugins you want to disable here
-      disabled_plugins = {
-        -- 'matchit',
-        -- 'matchparen',
-        'netrw',
-        'netrwPlugin',
-        'netrwSettings',
-        'netrwFileHandlers',
-        -- 'gzip',
-        -- 'zip',
-        -- 'zipPlugin',
-        -- 'tar',
-        -- 'tarPlugin',
-        -- 'getscript',
-        -- 'getscriptPlugin',
-        -- 'vimball',
-        -- 'vimballPlugin',
-        -- '2html_plugin',
-        -- 'logipat',
-        -- 'rrhelper',
-      },
-    },
-  },
-  readme = {
-    root = vim.fn.stdpath('state') .. '/lazy/readme',
-    files = { 'README.md' },
-    skip_if_doc_exists = true,
-  },
-})
 
 require('pynappo.keymaps').setup.regular()
 require('pynappo.theme')
 require('pynappo.commands')
 require('pynappo.tweaks')
 require('pynappo.autocmds').setup_overrides()
+require('pynappo.plugins')
 vim.cmd.colorscheme('ayu')
 
 vim.filetype.add({
@@ -333,6 +227,12 @@ vim.api.nvim_create_autocmd('UIEnter', {
   end,
 })
 
+vim.filetype.add({
+  extension = {
+    scratch = 'scratch',
+  },
+})
+
 local nvim_ver = vim.version().minor
 if nvim_ver > 10 then
   if vim.env.EMMYLUA then
@@ -347,3 +247,4 @@ if nvim_ver > 11 then
   require('vim._core.ui2').enable({})
 end
 vim.o.winborder = 'rounded'
+

@@ -43,51 +43,30 @@ function utils.open(path)
   return nil, vim.print('custom ui.open: no handler worked')
 end
 
-utils.lazy = {
-  --- Require on index.
-  ---
-  --- Will only require the module after the first index of a module.
-  --- Only works for modules that export a table.
-  require_on_index = function(require_path)
-    return setmetatable({}, {
-      __index = function(_, key) return require(require_path)[key] end,
-
-      __newindex = function(_, key, value) require(require_path)[key] = value end,
-    })
-  end,
-
-  --- Requires only when you call the _module_ itself.
-  ---
-  --- If you want to require an exported value from the module,
-  --- see instead |lazy.require_on_exported_call()|
-  require_on_module_call = function(require_path)
-    return setmetatable({}, {
-      __call = function(_, ...) return require(require_path)(...) end,
-    })
-  end,
-
-  --- Require when an exported method is called.
-  ---
-  --- Creates a new function. Cannot be used to compare functions,
-  --- set new values, etc. Only useful for waiting to do the require until you actually
-  --- call the code.
-  ---
-  --- <pre>
-  --- -- This is not loaded yet
-  --- local lazy_mod = lazy.require_on_exported_call('my_module')
-  --- local lazy_func = lazy_mod.exported_func
-  ---
-  --- -- ... some time later
-  --- lazy_func(42)  -- <- Only loads the module now
-  ---
-  --- </pre>
-  require_on_exported_call = function(require_path)
-    return setmetatable({}, {
-      __index = function(_, k)
-        return function(...) return require(require_path)[k](...) end
-      end,
-    })
-  end,
+utils.repourl = {
+  github = function(repo) return 'https://github.com/' .. repo end,
+  gitlab = function(repo) return 'https://gitlab.com/' .. repo end,
+  codeberg = function(repo) return 'https://codeberg.com/' .. repo end,
 }
+
+local devdir = '~/Projects/code/nvim'
+---vim.pack.add but prefers local development versions of plugins found under the directory configured above.
+---@param specs (string|vim.pack.Spec)[]
+---@param opts vim.pack.keyset.add?
+function utils.packadddev(specs, opts)
+  local specs_from_remotes = {}
+  for _, spec in ipairs(specs) do
+    if type(spec) == 'string' then spec = { src = spec } end
+    local name = spec.name or spec.src:match('([^/]+)$')
+    assert(name, 'could not determine name for ' .. spec.src)
+    local devpath = vim.fs.joinpath(devdir, name)
+    if vim.uv.fs_stat(devpath) then
+      vim.opt.runtimepath:add(devpath)
+    else
+      specs_from_remotes[#specs_from_remotes + 1] = spec
+    end
+  end
+  vim.pack.add(specs_from_remotes, opts)
+end
 
 return utils

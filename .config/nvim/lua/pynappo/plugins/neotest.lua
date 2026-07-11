@@ -1,12 +1,11 @@
-return {
+local utils = require('pynappo.utils')
+local github = utils.repourl.github
+vim.pack.add({
   {
-    'nvim-neotest/neotest',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'rouge8/neotest-rust',
-      'nvim-neotest/nvim-nio',
-    },
+    src = github('nvim-neotest/neotest'),
     lazy = true,
   },
-}
+  github('neovim-treesitter/nvim-treesitter'),
+  github('rouge8/neotest-rust'),
+  github('nvim-neotest/nvim-nio'),
+})

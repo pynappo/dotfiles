@@ -11,7 +11,10 @@ hl.monitor({
 	mode = "highrr",
 	position = "0x0",
 	scale = "1.5",
-	vrr = 1,
+	bitdepth = 10,
+	sdr_max_luminance = 200,
+	sdr_min_luminance = 0.005,
+	vrr = 2,
 })
 
 hl.env("PROTON_WAYLAND_MONITOR", "DP-2")

@@ -43,11 +43,6 @@
   colorMoved = plain
   mnemonicPrefix = true
   renames = true
-[difftool]
-  prompt = false
-  trustExitCode = true
-[difftool "difftastic"]
-  cmd = difft "$LOCAL" "$REMOTE"
 [pager]
   diffFilter = delta --color-only
 [add.interactive]
@@ -99,8 +94,11 @@
   dpush = push --dry-run
   dft = difftool
   df = diff
-  difftastic = difftool -t difftastic
-  difft = difftastic
+  # Difftastic aliases, so `git dlog -p` is `git log -p`
+  # with difftastic and likewise for the other subcommands.
+  dlog = -c diff.external=difft log --ext-diff
+  dshow = -c diff.external=difft show --ext-diff
+  difft = -c diff.external=difft diff
   mergeview = mergetool -t diffview
   amend = commit --amend
 	ls-gh-merged = !gh pr list --author pynappo --state merged --limit 1000 --json headRefName --jq '.[].headRefName'
@@ -125,5 +123,6 @@
 	email = pynappo@proton.me
 	name = pynappo
 [credential]
-	helper = 
+	helper =
 	helper = /usr/bin/git-credential-manager
+	credentialStore = secretservice
