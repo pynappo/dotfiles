@@ -49,7 +49,7 @@ utils.repourl = {
   codeberg = function(repo) return 'https://codeberg.com/' .. repo end,
 }
 
-local devdir = '~/Projects/code/nvim'
+local devdir = vim.fn.expand('~/Projects/code/nvim')
 ---vim.pack.add but prefers local development versions of plugins found under the directory configured above.
 ---@param specs (string|vim.pack.Spec)[]
 ---@param opts vim.pack.keyset.add?
@@ -61,7 +61,7 @@ function utils.packadddev(specs, opts)
     assert(name, 'could not determine name for ' .. spec.src)
     local devpath = vim.fs.joinpath(devdir, name)
     if vim.uv.fs_stat(devpath) then
-      vim.opt.runtimepath:add(devpath)
+      vim.opt.runtimepath:append(devpath)
     else
       specs_from_remotes[#specs_from_remotes + 1] = spec
     end

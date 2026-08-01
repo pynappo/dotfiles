@@ -9,16 +9,16 @@ local keymaps = require('pynappo.keymaps')
 require('mini.move').setup({
   mappings = {
     -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
-    left = '<C-S-h>',
-    right = '<C-S-l>',
-    down = '<C-S-j>',
-    up = '<C-S-k>',
+    left = '<C-Left>',
+    right = '<C-Right>',
+    down = '<C-Down>',
+    up = '<C-Up>',
 
     -- Move current line in Normal mode
-    line_left = '<C-S-h>',
-    line_right = '<C-S-l>',
-    line_down = '<C-S-j>',
-    line_up = '<C-S-k>',
+    line_left = '<C-Left>',
+    line_right = '<C-Right>',
+    line_down = '<C-Down>',
+    line_up = '<C-Up>',
   },
 })
 local mini_bufremove = require('mini.bufremove')

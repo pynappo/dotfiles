@@ -2,18 +2,18 @@ local utils = require('pynappo.utils')
 local github = utils.repourl.github
 utils.packadddev({
 
-  github'Crysthamus/nvim-file-operations',
-  github'folke/snacks.nvim',
-  github'nvim-lua/plenary.nvim',
-  github'MunifTanjim/nui.nvim',
-  github'saifulapm/neotree-file-nesting-config',
+  github('Crysthamus/nvim-file-operations'),
+  github('folke/snacks.nvim'),
+  github('nvim-lua/plenary.nvim'),
+  github('MunifTanjim/nui.nvim'),
+  github('saifulapm/neotree-file-nesting-config'),
   {
-    src = github'nvim-neo-tree/neo-tree.nvim',
+    src = github('nvim-neo-tree/neo-tree.nvim'),
     version = 'v3.x',
   },
   {
     src = github('s1n7ax/nvim-window-picker'),
-    version = vim.version.range'2.*',
+    version = vim.version.range('2.*'),
   },
 })
 require('nvim-file-operations').setup()
@@ -247,6 +247,8 @@ require('neo-tree').setup({
       },
       ['<2-LeftMouse>'] = 'open',
       ['<cr>'] = 'open',
+      ['<tab>'] = 'select',
+      ['<c-;>'] = 'clear_selection',
       -- ["<cr>"] = { "open", config = { expand_nested_files = true } }, -- expand nested file takes precedence
       ['<esc>'] = 'cancel', -- close preview or floating neo-tree window
       ['P'] = { 'toggle_preview', config = { use_float = false, use_image_nvim = true, use_snacks_image = true } },
@@ -281,6 +283,7 @@ require('neo-tree').setup({
         },
       }, -- also accepts the config.show_path and config.insert_as options.
       ['d'] = 'delete',
+      ['T'] = 'trash',
       ['r'] = 'rename',
       ['y'] = 'copy_to_clipboard',
       ['x'] = 'cut_to_clipboard',

@@ -2,24 +2,10 @@
   "openH264Enabled": true,
   "BACKGROUND_COLOR": "#121214",
   "offloadAdmControls": true,
-  "chromiumSwitches": {},
-  "IS_MAXIMIZED": false,
-  "IS_MINIMIZED": false,
-  "WINDOW_BOUNDS": {
-    "x": 5124,
-    "y": 2,
-    "width": 1274,
-    "height": 1406
-  },
-  "DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING": true,
-  "openasar": {
-    "setup": true,
-    "quickstart": true,
-    "cmdPreset": "balanced"
-  },
-  "SKIP_HOST_UPDATE": true,
+  "DESKTOP_TTI_REMOVE_V8_CACHE_CLEAR": true,
   "DESKTOP_TTI_DNSTCP_WARMUP": true,
+  "DESKTOP_TTI_SPLASH_USE_WEBP": true,
   "DESKTOP_TTI_EARLY_UPDATE_CHECK": true,
   "DESKTOP_TTI_UPDATE_BACKOFF_MAX_MS": 20000,
-  "DESKTOP_TTI_SPLASH_USE_WEBP": true
+  "chromiumSwitches": {}
 }

@@ -1,10 +1,9 @@
 local function prequire(modname)
   local ok, err = pcall(require, modname)
-  if not ok then
-    vim.notify(("error when requiring %s: %s"):format(modname, err), vim.log.levels.ERROR)
-  end
+  if not ok then vim.notify(('error when requiring %s: %s'):format(modname, err), vim.log.levels.ERROR) end
 end
 prequire('pynappo.plugins.actions')
+prequire('pynappo.plugins.ai')
 prequire('pynappo.plugins.autopairs')
 prequire('pynappo.plugins.colorschemes')
 prequire('pynappo.plugins.conform')

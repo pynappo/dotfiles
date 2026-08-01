@@ -2,23 +2,19 @@
 local utils = require('pynappo.utils')
 if utils.is_termux then return end
 local github = require('pynappo.utils').repourl.github
-
-vim.api.nvim_create_autocmd('PackChanged', {
-  callback = function(event)
-    local name, kind = event.data.spec.name, event.data.kind
-    vim.print(name)
-    if name:find('blink.cmp', 1, true) and kind == 'install' or kind == 'update' then
-      vim.cmd.packadd('blink.cmp')
-      require('blink.cmp').build():pwait()
-    end
-  end,
-})
 vim.pack.add({
   github('Saghen/blink.cmp'),
   github('Saghen/blink.lib'),
   github('rafamadriz/friendly-snippets'),
 })
-require('blink-cmp').setup({
+local cmp = require('blink.cmp')
+cmp.build():pwait()
+cmp.setup()
+cmp.setup({
+  enabled = function()
+    if vim.bo.filetype == 'slopcode' then return 'force' end
+    return true
+  end,
   keymap = {
     preset = 'enter',
     ['<C-p>'] = { 'show', 'select_prev', 'fallback' },
@@ -57,12 +53,8 @@ require('blink-cmp').setup({
   sources = {
     -- Add your default providers list here (like 'lsp', 'path', 'snippets', 'buffer')
     default = { 'lsp', 'path', 'snippets', 'buffer' },
-    providers = {
-      path = {
-        override = {
-          get_trigger_characters = function(source) return { '/', '.', '\\', '@' } end,
-        },
-      },
+    per_filetype = {
+      slopcode = { inherit_defaults = true, 'omni' },
     },
   },
 })

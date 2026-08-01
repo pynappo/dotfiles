@@ -240,7 +240,7 @@ if nvim_ver > 10 then
     vim.lsp.enable('emmylua')
   end
 end
-vim.lsp.enable({ 'lua_ls', 'tinymist', 'clangd', 'zls' })
+vim.lsp.enable({ 'lua_ls', 'tinymist', 'clangd', 'zls', 'denols' })
 o.messagesopt = 'wait:0,history:5000'
 if nvim_ver > 11 then
   vim.cmd.packadd('nvim.undotree')
@@ -248,3 +248,8 @@ if nvim_ver > 11 then
 end
 vim.o.winborder = 'rounded'
 
+-- workaround for typst injections
+vim.api.nvim_set_hl(0, '@lsp.type.string.typst', {})
+
+-- disable black.vim plugin for neovim
+vim.g.load_black = true

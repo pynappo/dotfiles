@@ -5,4 +5,20 @@ vim.pack.add({
   github('MunifTanjim/nui.nvim'),
   github('AckslD/muren.nvim'),
 })
-require('regexplainer').setup()
+require('regexplainer').setup({
+  filetypes = {
+    'html',
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+    'ruby',
+    'python',
+    'go',
+    'rust',
+    'php',
+    'java',
+    'cs',
+    'lua',
+  },
+})

@@ -2,6 +2,8 @@ hl.monitor({
 	output = "DP-3",
 	mode = "2560x1440@170",
 	position = "-2560x0",
+	bitdepth = 10,
+	cm = "srgb",
 	scale = "1",
 	vrr = 3,
 })
@@ -12,6 +14,7 @@ hl.monitor({
 	position = "0x0",
 	scale = "1.5",
 	bitdepth = 10,
+	cm = "srgb",
 	sdr_max_luminance = 200,
 	sdr_min_luminance = 0.005,
 	vrr = 2,

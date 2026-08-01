@@ -14,8 +14,8 @@ autocmds.create, autocmds.pynappo_augroup = autocmds.create_wrapper('pynappo')
 
 if vim.g.started_by_firenvim then autocmds.create('BufEnter', { callback = function() vim.cmd.startinsert() end }) end
 
-autocmds.create('TextYankPost', {
-  callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 200 }) end,
+autocmds.create({ 'TextYankPost', 'TextPutPost' }, {
+  callback = function() vim.hl.hl_op({ higroup = 'Visual', timeout = 200 }) end,
   desc = 'Highlight on yank',
 })
 autocmds.create('BufReadPost', {

@@ -138,7 +138,7 @@ if status is-interactive
     echo $EDITOR $argv
   end
   function mz -d "mkdir and then z into it"
-    mkdir $argv
+    mkdir -p -- $argv
     cd $argv
   end
   # abbr -a edit_texts --position command --regex ".+\.txt" --function edit
