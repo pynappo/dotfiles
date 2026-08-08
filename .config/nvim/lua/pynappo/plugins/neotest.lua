@@ -5,7 +5,7 @@ vim.pack.add({
     src = github('nvim-neotest/neotest'),
     lazy = true,
   },
-  github('neovim-treesitter/nvim-treesitter'),
+  github('nvim-treesitter/nvim-treesitter'),
   github('rouge8/neotest-rust'),
   github('nvim-neotest/nvim-nio'),
 })

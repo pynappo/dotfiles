@@ -1,27 +1,21 @@
 local keymaps = require('pynappo.keymaps')
 local github = require('pynappo.utils').repourl.github
 vim.pack.add({
-  github('numToStr/Comment.nvim'),
-  -- 'JoosepAlviste/nvim-ts-context-commentstring',
   'https://codeberg.org/andyg/leap.nvim',
   github('kylechui/nvim-surround'),
   github('Wansmer/treesj'),
-  github('neovim-treesitter/nvim-treesitter'),
+  github('nvim-treesitter/nvim-treesitter'),
   github('monaqa/dial.nvim'),
   github('abecodes/tabout.nvim'),
 })
 require('leap').opts.special_keys.prev_target = '<bs>'
 require('leap').opts.special_keys.prev_group = '<bs>'
-require('leap.user').set_repeat_keys('<cr>', '<bs>')
 vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap)')
 vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
 keymaps.setup.treesj()
 require('treesj').setup({ use_default_keymaps = false })
 require('nvim-surround').setup()
 ---@diagnostic disable-next-line: missing-fields
-require('Comment').setup({
-  -- pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-})
 local augend = require('dial.augend')
 require('dial.config').augends:register_group({
   default = {
@@ -47,8 +41,7 @@ require('dial.config').augends:register_group({
     }),
   },
 })
-keymaps.setup.dial({ lazy = true })
-keys = keymaps.setup.substitute({ lazy = true })
+keymaps.setup.dial()
 require('tabout').setup({
   act_as_tab = true, -- shift content if tab out is not possible
   act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)

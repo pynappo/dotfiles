@@ -7,5 +7,14 @@
   "DESKTOP_TTI_SPLASH_USE_WEBP": true,
   "DESKTOP_TTI_EARLY_UPDATE_CHECK": true,
   "DESKTOP_TTI_UPDATE_BACKOFF_MAX_MS": 20000,
-  "chromiumSwitches": {}
+  "chromiumSwitches": {},
+  "DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING": true,
+  "IS_MAXIMIZED": false,
+  "IS_MINIMIZED": false,
+  "WINDOW_BOUNDS": {
+    "x": 4484,
+    "y": 3,
+    "width": 1913,
+    "height": 2109
+  }
 }

@@ -187,24 +187,6 @@ M.setup = {
         { '<leader>D', lsp.type_definition, { desc = '(LSP) Get type' } },
         { 'ga', lsp.code_action, { desc = '(LSP) Get code actions' } },
         { 'gr', lsp.references, { desc = '(LSP) Get references' } },
-        -- {
-        --   '<leader>f',
-        --   function()
-        --     local client_names = vim.tbl_map(
-        --       function(client) return client.name end,
-        --       vim.lsp.get_clients({ bufnr = 0 })
-        --     )
-        --     vim.ui.select(client_names, { prompt = 'Select a client to format current buffer:' }, function(client_name)
-        --       if vim.tbl_contains(client_names, client_name) then
-        --         local choice = client_name
-        --         require('conform').format({ filter = function(client) return client.name == choice end })
-        --       else
-        --         vim.notify('invalid client name', vim.log.levels.INFO)
-        --       end
-        --     end)
-        --   end,
-        --   { desc = '(LSP) Format (choose)' },
-        -- },
       },
     }, { remap = false, silent = true, buffer = bufnr })
   end,
@@ -408,7 +390,7 @@ M.setup = {
         { '<leader>fd', function() require('fzf-lua').diagnostics_workspace() end, { desc = '(FZF) Find files' } },
         {
           '<leader>f/',
-          function() require('fzf-lua').current_buffer_fuzzy_find() end,
+          function() require('fzf-lua').blines() end,
           { desc = '(FZF) Fuzzy find in buffer' },
         },
         { '<leader>fh', function() require('fzf-lua').help_tags() end, { desc = '(FZF) Neovim help' } },

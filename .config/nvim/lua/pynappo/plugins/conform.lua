@@ -29,8 +29,8 @@ require('conform').setup({
     css = web_dev,
     less = { 'deno_fmt' },
     json = { 'jq' },
-    ['_'] = { 'trim_whitespace' },
   },
+  format_on_save = {},
   formatters = {
     shfmt = {
       prepend_args = { '-i', '2' },
@@ -65,12 +65,6 @@ require('conform').setup({
   },
 })
 vim.g.conform_on_save = vim.nonnil(vim.g.conform_on_save, true)
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  callback = function(args)
-    if vim.g.conform_on_save then require('conform').format({ bufnr = args.buf, timeout_ms = nil }) end
-  end,
-})
 vim.api.nvim_create_user_command('ConformToggleOnSave', function()
   vim.g.conform_on_save = not vim.g.conform_on_save
   vim.notify('Auto-Conform on save: ' .. (vim.g.conform_on_save and 'Enabled' or 'Disabled'))

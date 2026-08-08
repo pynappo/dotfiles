@@ -21,6 +21,7 @@ hl.monitor({
 })
 
 hl.env("PROTON_WAYLAND_MONITOR", "DP-2")
+hl.env("WAYLANDDRV_PRIMARY_MONITOR", "DP-2")
 hl.workspace_rule({ workspace = "1", monitor = "DP-3" })
 hl.workspace_rule({ workspace = "2", monitor = "DP-2" })
 hl.workspace_rule({ workspace = "3", monitor = "DP-3" })

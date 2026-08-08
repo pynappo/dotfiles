@@ -253,3 +253,17 @@ vim.api.nvim_set_hl(0, '@lsp.type.string.typst', {})
 
 -- disable black.vim plugin for neovim
 vim.g.load_black = true
+
+vim.cmd([[
+    function! s:clipboard_changed(...) abort
+      if exists('g:loaded_clipboard_provider')
+        unlet g:loaded_clipboard_provider
+      endif
+      runtime autoload/provider/clipboard.vim
+    endfunction
+
+    if !exists('s:loaded')
+      call dictwatcheradd(g:, 'clipboard', function('s:clipboard_changed'))
+    endif
+    let s:loaded = v:true
+]])

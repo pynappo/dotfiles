@@ -1,11 +1,7 @@
 local utils = require('pynappo.utils')
 local github, gitlab = utils.repourl.github, utils.repourl.gitlab
 vim.pack.add({
-  github('neovim-treesitter/treesitter-parser-registry'),
-    github('neovim-treesitter/nvim-treesitter'),
-})
-
-vim.pack.add({
+  github('nvim-treesitter/nvim-treesitter'),
   gitlab('HiPhish/rainbow-delimiters.nvim'),
   github('windwp/nvim-ts-autotag'),
   { src = github('nvim-treesitter/nvim-treesitter-textobjects'), branch = 'main' },
@@ -31,21 +27,21 @@ vim.g.rainbow_delimiters = {
   },
   highlight = rainbow_highlight_names,
 }
-      ---@diagnostic disable-next-line: param-type-mismatch
-      require('nvim-treesitter').setup({
-        auto_install = true,
-        ensure_installed = {
-          'stable',
-          'unstable',
-        },
-      })
-      vim.api.nvim_create_autocmd('FileType', {
-        callback = function(details)
-          local bufnr = details.buf
-          if not pcall(vim.treesitter.start, bufnr) then return end
-          vim.wo.foldmethod = 'expr'
-          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-          vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end,
-      })
-      vim.treesitter.language.register('markdown', 'mdx')
+---@diagnostic disable-next-line: param-type-mismatch
+require('nvim-treesitter').setup({
+  auto_install = true,
+  ensure_installed = {
+    'stable',
+    'unstable',
+  },
+})
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(details)
+    local bufnr = details.buf
+    if not pcall(vim.treesitter.start, bufnr) then return end
+    vim.wo.foldmethod = 'expr'
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
+})
+vim.treesitter.language.register('markdown', 'mdx')

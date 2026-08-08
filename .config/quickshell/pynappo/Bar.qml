@@ -59,7 +59,7 @@ Variants {
             return id(a) - id(b)
           })
         }
-        WrapperRectangle {
+        Button {
           id: workspaceButton
           required property var modelData
           property HyprlandWorkspace workspace: {
@@ -68,14 +68,12 @@ Variants {
           property int workspace_id: {
             typeof(modelData) == "number" ? modelData : workspace.id
           }
-          margin: {
-            top: 1
-            bottom: 1
-          }
-          radius: 3
+          implicitWidth: workspaceMouseArea.width + 4
+          implicitHeight: workspaceMouseArea.height + 2
           WrapperMouseArea {
-            id: mouseArea
+            id: workspaceMouseArea
             acceptedButtons: Qt.LeftButton | Qt.RightButton
+            anchors.fill: parent
             onClicked: (mouse) => {
               if (mouse.button === Qt.LeftButton) {
                 if (workspaceButton.workspace) {
@@ -86,19 +84,18 @@ Variants {
               }
             }
             hoverEnabled: true
-            leftMargin: 5
-            rightMargin: 5
             RowLayout {
               IconImage {
                 implicitSize: 15
+                Layout.leftMargin: 5
                 source: Quickshell.iconPath(workspaceButton.workspace?.toplevels.values[1]?.wayland?.appId, true)
               }
               Text {
-                id: text
                 Layout.maximumWidth: 200
                 text: workspaceButton.workspace_id
                 wrapMode: Text.ElideRight
                 maximumLineCount: 1
+                color: activePalette.text
               }
             }
           }
@@ -116,16 +113,16 @@ Variants {
           model: {
             return modelData.toplevels;
           }
-          WrapperRectangle {
+          Button {
             id: toplevelButton
             required property var modelData
             property HyprlandToplevel toplevel: modelData
-            margin: {
-              top: 1
-              bottom: 1
-            }
-            radius: 3
+            implicitWidth: clientRow.implicitWidth
+            implicitHeight: clientRow.implicitHeight + 2
+            Layout.preferredWidth: implicitWidth
+            Layout.preferredHeight: implicitHeight
             WrapperMouseArea {
+              id: toplevelMouseArea
               acceptedButtons: Qt.LeftButton | Qt.RightButton
               onClicked: (mouse) => {
                 if (mouse.button === Qt.LeftButton) {
@@ -136,15 +133,18 @@ Variants {
               }
               hoverEnabled: true
               RowLayout {
+                id: clientRow
                 IconImage {
                   implicitSize: 15
-                  source: Quickshell.iconPath(toplevelButton.toplevel?.wayland?.appId)
+                  Layout.leftMargin: 5
+                  source: Quickshell.iconPath(toplevelButton.toplevel?.wayland?.appId, true)
                 }
                 Text {
                   Layout.maximumWidth: 200
                   text: toplevelButton.toplevel?.title ?? ""
                   elide: Text.ElideRight
                   wrapMode: Text.NoWrap
+                  color: activePalette.text
                 }
               }
             }
@@ -171,7 +171,7 @@ Variants {
             id: trayItemMenuAnchor
             anchor {
               item: trayItem
-              edges: Edges.Bottom | Edges.Right
+              edges: Edges.Top | Edges.Right
               gravity: Edges.Top | Edges.Left
             }
             menu: trayItem.modelData.menu
@@ -205,6 +205,7 @@ Variants {
         required property var modelData
         id: notificationPopup
         property Notification notif: modelData
+        property int notificationIndex: Services.Notifications.list.indexOf(modelData)
         visible: notif
         anchors {
           right: true
@@ -213,7 +214,7 @@ Variants {
         margins {
           right: 10
           top: 10
-          bottom: 10
+          bottom: 10 + notificationPopup.notificationIndex * (notificationPopup.implicitHeight + 10)
           left: 10
         }
         color: "transparent";
@@ -221,24 +222,27 @@ Variants {
         implicitHeight: 160
         Rectangle {
           anchors.fill: parent
-          radius: 5
+          radius: 10
           color: activePalette.window
+          clip: true
           ColumnLayout {
             anchors.fill: parent;
             // top
-            Rectangle {
-              width: parent.width
-              color: "white";
+            WrapperRectangle {
+              Layout.fillWidth: true
+              topLeftRadius: 10
+              topRightRadius: 10
+              color: activePalette.base
               RowLayout {
                 IconImage {
                   implicitSize: 20
-                  source: Quickshell.iconPath(notificationPopup.notif?.appIcon ?? "checkmark")
+                  source: Quickshell.iconPath(notificationPopup.notif?.appIcon ?? "checkmark", true)
                 }
                 Text {
                   text: notificationPopup.notif.appName
                   color: activePalette.text
                 }
-                Item {
+                Rectangle {
                   Layout.fillWidth: true
                 }
                 Button {
@@ -250,13 +254,16 @@ Variants {
             }
             // mid
             RowLayout {
-              IconImage {
-                implicitSize: 20
-                source: Quickshell.iconPath(notificationPopup.notif?.image ?? "checkmark")
+              Layout.fillWidth: true
+              Layout.minimumHeight: 0
+              Image {
+                source: URL(notificationPopup.notif?.image)
               }
               Text {
                 color: activePalette.text
                 text: notificationPopup.notif?.body ?? ""
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 wrapMode: Text.WordWrap
               }
             }
@@ -278,7 +285,7 @@ Variants {
                   }
 
                   IconImage {
-                    source: Quickshell.iconPath(notificationPopup.notif?.identifier);
+                    source: Quickshell.iconPath(notificationPopup.notif?.identifier, true);
                   }
                 }
               }

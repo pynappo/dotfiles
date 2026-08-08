@@ -1,8 +1,9 @@
 local theme = {}
 
-local OverrideTable = {}
+---@class pynappo.theme.Overrides
+local Overrides = {}
 
-function OverrideTable:new()
+function Overrides:new()
   local object = {
     vim_highlights = setmetatable({}, {
       __newindex = function(t, k, v)
@@ -35,7 +36,7 @@ function OverrideTable:new()
   return object
 end
 
-function OverrideTable.apply(self)
+function Overrides.apply(self)
   for _, table in pairs(self) do
     if type(table) == 'table' then
       local newindex_func = getmetatable(table).__newindex
@@ -47,11 +48,11 @@ function OverrideTable.apply(self)
 end
 
 theme.overrides = {
-  all = OverrideTable:new(),
+  all = Overrides:new(),
 }
 setmetatable(theme.overrides, {
   __index = function(t, k)
-    rawset(t, k, OverrideTable:new())
+    rawset(t, k, Overrides:new())
     return t[k]
   end,
 })
@@ -76,7 +77,6 @@ if not utils.is_gui and not utils.is_termux then
     theme.overrides.all.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE'
   end
 end
-
 function theme.set_rainbow_colors(prefix, colors)
   local hl_names = {}
   for _, color in ipairs(colors) do

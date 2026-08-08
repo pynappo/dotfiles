@@ -9,7 +9,6 @@ vim.pack.add({
 })
 local cmp = require('blink.cmp')
 cmp.build():pwait()
-cmp.setup()
 cmp.setup({
   enabled = function()
     if vim.bo.filetype == 'slopcode' then return 'force' end
