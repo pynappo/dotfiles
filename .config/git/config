@@ -122,7 +122,10 @@
 [user]
 	email = pynappo@proton.me
 	name = pynappo
+	signingkey = /home/dle/.ssh/id_ed25519.pub
 [credential]
 	helper =
 	helper = /usr/bin/git-credential-manager
 	credentialStore = secretservice
+	helper = 
+	helper = /usr/bin/git-credential-manager

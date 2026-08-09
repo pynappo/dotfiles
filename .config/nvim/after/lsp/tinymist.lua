@@ -1,7 +1,7 @@
 ---@type vim.lsp.Config
 return {
   settings = {
-    exportPdf = 'onType',
+    -- exportPdf = 'onType',
     formatterMode = 'typstyle',
   },
 }
