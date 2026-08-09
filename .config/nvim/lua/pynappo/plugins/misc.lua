@@ -2,6 +2,7 @@ local github = require('pynappo.utils').repourl.github
 vim.pack.add({
   github('rgroli/other.nvim'),
   github('dstein64/vim-startuptime'),
+  github('pynappo/hyprlang-to-lua.nvim'),
 })
 require('other-nvim').setup({
   mappings = {

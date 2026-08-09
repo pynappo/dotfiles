@@ -109,6 +109,10 @@
       "rev": "1d763ed4db7c810b5619ed9a16ccfcf092092144",
       "src": "https://github.com/tweekmonster/helpful.vim"
     },
+    "hyprlang-to-lua.nvim": {
+      "rev": "477430d9f379736bc2260086eb63517bb585b5d8",
+      "src": "https://github.com/pynappo/hyprlang-to-lua.nvim"
+    },
     "img-clip.nvim": {
       "rev": "b6ddfb97b5600d99afe3452d707444afda658aca",
       "src": "https://github.com/HakonHarnes/img-clip.nvim"
