@@ -1,6 +1,6 @@
--- Start of translated config by hyprlang-to-lua.nvim on 2026-08-08T23:07:52
+-- Start of translated config by hyprlang-to-lua.nvim on 2026-05-24T13:33:12
 hl.env("EDITOR", "nvim")
-hl.env("VISUAl", "nvim")
+hl.env("VISUAL", "nvim")
 hl.env("TERMINAL", "kitty")
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
 hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
@@ -97,9 +97,6 @@ hl.window_rule({
 })
 -- For all categories, see https://wiki.hyprland.org/Configuring/Variables/
 hl.config({
-	cursor = {},
-})
-hl.config({
 	input = {
 		kb_layout = "us",
 		kb_variant = "",
@@ -115,8 +112,6 @@ hl.config({
 		sensitivity = 0,
 		accel_profile = "flat",
 	},
-})
-hl.config({
 	general = {
 		gaps_in = 2,
 		gaps_out = 0,
@@ -129,8 +124,6 @@ hl.config({
 		resize_on_border = true,
 		extend_border_grab_area = 2,
 	},
-})
-hl.config({
 	decoration = {
 		rounding = 5,
 		blur = {
@@ -144,11 +137,12 @@ hl.config({
 			render_power = 3,
 		},
 	},
-})
--- https://wiki.hyprland.org/Configuring/Animations/
-hl.config({
+	-- https://wiki.hyprland.org/Configuring/Animations/
 	animations = {
 		enabled = true,
+	},
+	quirks = {
+		-- prefer_hdr = true,
 	},
 })
 hl.curve("myBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
@@ -163,6 +157,12 @@ hl.config({
 		preserve_split = true,
 	},
 })
+hl.workspace_rule({ workspace = "w[tv1]", gaps_in = 0, gaps_out = 0 })
+hl.workspace_rule({ workspace = "f[1]", gaps_in = 0, gaps_out = 0 })
+hl.window_rule({ border_size = 0, match = { float = "0", workspace = "w[tv1]" } })
+hl.window_rule({ match = { float = "0", workspace = "w[tv1]" }, rounding = 0 })
+hl.window_rule({ border_size = 0, match = { float = "0", workspace = "f[1]" } })
+hl.window_rule({ match = { float = "0", workspace = "f[1]" }, rounding = 0 })
 hl.config({
 	debug = {
 		disable_logs = true,
@@ -179,14 +179,16 @@ hl.config({
 		vrr = 1,
 		mouse_move_focuses_monitor = false,
 		mouse_move_enables_dpms = true,
-		key_press_enables_dpms = true,
+		key_press_enables_dpms = false,
 		render_unfocused_fps = 60,
 	},
 })
 hl.config({
 	render = {
-		direct_scanout = 1,
+		-- direct_scanout = 2,
 		cm_auto_hdr = 2,
+		non_shader_cm = 3,
+		non_shader_cm_interop = 1,
 	},
 })
 hl.config({
@@ -202,6 +204,7 @@ hl.config({
 		},
 	},
 })
+
 -- Example windowrule v1
 -- windowrule = float, ^(kitty)$ Example windowrule v2
 -- windowrulev2 = float,class:^(kitty)$,title:^(kitty)$
@@ -348,4 +351,4 @@ hl.bind(
 	hl.dsp.send_shortcut({ mods = "CTRL+SHIFT", key = "d", window = "vesktop" }),
 	{ non_consuming = true }
 )
--- End of translated config by hyprlang-to-lua.nvim on 2026-08-08T23:07:52
+-- End of translated config by hyprlang-to-lua.nvim on 2026-05-24T13:33:12

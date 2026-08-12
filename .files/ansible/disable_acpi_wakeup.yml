@@ -1,0 +1,33 @@
+---
+- name: On asrock motherboards, configure systemd service to disable XH00 ACPI wakeup
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+
+    - name: Create systemd service file
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/disable-acpi-wakeup.service
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          [Unit]
+          Description=Disable XH00 ACPI Wakeup Device
+          After=multi-user.target
+
+          [Service]
+          Type=oneshot
+          # Toggles XH00 only if currently enabled to avoid accidentally enabling it
+          ExecStart=/bin/sh -c 'grep -q "XH00.*enabled" /proc/acpi/wakeup && echo XH00 > /proc/acpi/wakeup'
+          RemainAfterExit=yes
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd daemon, enable, and start service
+      ansible.builtin.systemd:
+        name: disable-acpi-wakeup.service
+        daemon_reload: true
+        enabled: true
+        state: started

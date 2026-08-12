@@ -1,0 +1,3 @@
+[tasks.apply]
+description = "Apply the ACPI wakeup systemd service playbook"
+run = "ansible-playbook -i 'localhost,' -K disable_acpi_wakeup.yml"
