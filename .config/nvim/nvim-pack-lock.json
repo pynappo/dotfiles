@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "Comment.nvim": {
+      "rev": "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
+      "src": "https://github.com/numToStr/Comment.nvim"
+    },
     "async.nvim": {
       "rev": "46adf61a022d5c923f981d527443f406e7d0f63e",
       "src": "https://github.com/lewis6991/async.nvim"
@@ -157,6 +161,10 @@
     "muren.nvim": {
       "rev": "fa18f2df80a52afd201da062d1af0e80c8d1988e",
       "src": "https://github.com/AckslD/muren.nvim"
+    },
+    "neo-tree.nvim": {
+      "rev": "2b9e60152b606152467441b0a74879f41707fd96",
+      "src": "https://github.com/nvim-neo-tree/neo-tree.nvim"
     },
     "neogit": {
       "rev": "37e0f22a2345bad1bffe01b31970885882f46275",

@@ -19,9 +19,7 @@ vim.pack.add({
   github('williamboman/mason.nvim'),
 })
 require('mason').setup({
-  opts = {
-    PATH = 'append',
-  },
+  PATH = 'append',
 })
 require('mason-lspconfig').setup({
   ensure_installed = {},

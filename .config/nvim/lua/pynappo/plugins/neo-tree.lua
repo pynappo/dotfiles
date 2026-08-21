@@ -300,8 +300,6 @@ require('neo-tree').setup({
           show_path = 'relative',
         },
       }, -- takes text input for destination, also accepts the config.show_path and config.insert_as options
-      n = 'add',
-      N = 'add_directory',
       ['e'] = 'toggle_auto_expand_width',
       ['q'] = 'close_window',
       ['?'] = { 'show_help', config = { sorter = function(a, b) return a.mapping.text < b.mapping.text end } },
@@ -581,6 +579,7 @@ require('neo-tree').setup({
         ['a'] = 'noop',
         ['/'] = 'filter',
         ['f'] = 'filter_on_submit',
+        ['T'] = 'noop',
       },
     },
     custom_kinds = {

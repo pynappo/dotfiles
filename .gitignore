@@ -6,3 +6,4 @@ packer_compiled.lua
 .steam
 .ssh
 .gitconfig*
+!.gitconfig.example

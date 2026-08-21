@@ -47,7 +47,7 @@ end)
 -- bind = SUPER,page_down,pass,vesktop
 -- bind = SUPER,page_up,pass,vesktop
 -- source = ~/.config/hypr/myColors.conf
-require("local")
+pcall(require, "local")
 hl.window_rule({
 	name = "steammonitor",
 	match = {
