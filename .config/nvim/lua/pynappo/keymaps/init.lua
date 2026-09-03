@@ -400,7 +400,12 @@ M.setup = {
           function() require('fzf-lua').tags({ only_current_buffer = true }) end,
           { desc = '(FZF) Tags in buffer' },
         },
-        { '<leader>f?', function() require('fzf-lua').oldfiles() end, { desc = '(FZF) Oldfiles' } },
+        {
+          '<leader>gf?',
+          function() require('fzf-lua').oldfiles({ cwd_only = false }) end,
+          { desc = '(FZF) Oldfiles' },
+        },
+        { '<leader>f?', function() require('fzf-lua').oldfiles({ cwd_only = true }) end, { desc = '(FZF) Oldfiles' } },
       },
     }, {}, opts)
   end,

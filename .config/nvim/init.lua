@@ -267,3 +267,11 @@ vim.cmd([[
     endif
     let s:loaded = v:true
 ]])
+-- local count = 0
+-- vim.api.nvim_create_autocmd('CmdAtom', {
+--   callback = function(details)
+--     count = count + 1
+--     vim.print(details)
+--     return count > 10
+--   end,
+-- })

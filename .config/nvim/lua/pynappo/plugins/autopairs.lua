@@ -1,15 +1,16 @@
 local github = require('pynappo.utils').repourl.github
 
 vim.pack.add({
-  github('altermo/ultimate-autopair.nvim'),
+  github('windwp/nvim-autopairs'),
 })
-require('ultimate-autopair').setup({
-  { '$', '$', ft = { 'typst' } },
-  extensions = {
-    filetype = {
-      p = 90,
-      nft = { 'TelescopePrompt' },
-      tree = true,
-    },
-  },
-})
+require('nvim-autopairs').setup()
+-- require('ultimate-autopair').setup({
+--   { '$', '$', ft = { 'typst' } },
+--   extensions = {
+--     filetype = {
+--       p = 90,
+--       nft = { 'TelescopePrompt' },
+--       tree = true,
+--     },
+--   },
+-- })

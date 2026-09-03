@@ -4,34 +4,43 @@ local theme = {}
 local Overrides = {}
 
 function Overrides:new()
+  ---@class pynappo.theme.Overrides
   local object = {
-    vim_highlights = setmetatable({}, {
-      __newindex = function(t, k, v)
-        vim.cmd.highlight(k .. ' ' .. v)
-        rawset(t, k, v)
-      end,
-    }),
-    nvim_highlights = setmetatable({}, {
-      __newindex = function(t, k, v)
-        vim.api.nvim_set_hl(0, k, v)
-        rawset(t, k, v)
-      end,
-    }),
-    links = setmetatable({}, {
-      __newindex = function(t, k, v)
-        vim.cmd('highlight! link ' .. k .. ' ' .. v)
-        rawset(t, k, v)
-      end,
-    }),
-    functions = setmetatable({}, {
-      __newindex = function(t, k, v)
-        v()
-        rawset(t, k, v)
-      end,
-    }),
+    ---@type table<string, string>
+    vim_highlights = {},
+    ---@type table<string, vim.api.keyset.highlight>
+    nvim_highlights = {},
+    ---@type table<string, string>
+    links = {},
+    ---@type table<string, function>
+    functions = {},
   }
 
   setmetatable(object, self)
+  setmetatable(object.vim_highlights, {
+    __newindex = function(t, k, v)
+      vim.cmd.highlight(k .. ' ' .. v)
+      rawset(t, k, v)
+    end,
+  })
+  setmetatable(object.nvim_highlights, {
+    __newindex = function(t, k, v)
+      vim.api.nvim_set_hl(0, k, v)
+      rawset(t, k, v)
+    end,
+  })
+  setmetatable(object.links, {
+    __newindex = function(t, k, v)
+      vim.cmd('highlight! link ' .. k .. ' ' .. v)
+      rawset(t, k, v)
+    end,
+  })
+  setmetatable(object.functions, {
+    __newindex = function(t, k, v)
+      v()
+      rawset(t, k, v)
+    end,
+  })
   self.__index = self
   return object
 end
@@ -77,6 +86,7 @@ if not utils.is_gui and not utils.is_termux then
     theme.overrides.all.vim_highlights[hl] = 'guibg=NONE ctermbg=NONE'
   end
 end
+theme.overrides.all.nvim_highlights.DiagnosticUnnecessary = {}
 function theme.set_rainbow_colors(prefix, colors)
   local hl_names = {}
   for _, color in ipairs(colors) do

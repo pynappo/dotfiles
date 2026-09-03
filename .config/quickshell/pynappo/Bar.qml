@@ -189,6 +189,22 @@ Variants {
       }
 
       // right
+      Button {
+        id: sidebarToggleButton
+        Layout.rightMargin: 5
+        implicitWidth: 26
+        implicitHeight: 26
+        checkable: true
+        checked: notificationSidebar.visible
+        onCheckedChanged: () => notificationSidebar.visible = sidebarToggleButton.checked
+        IconImage {
+          anchors.centerIn: parent
+          implicitSize: 16
+          source: Quickshell.iconPath("notification-symbolic", true)
+        }
+        ToolTip.visible: hovered
+        ToolTip.text: "Notification history"
+      }
       Text {
         Layout.minimumWidth: 75
         Layout.rightMargin: 10
@@ -198,6 +214,109 @@ Variants {
       }
     }
 
+    // notifs history sidebar
+    PanelWindow {
+      id: notificationSidebar
+      visible: false
+      color: "transparent"
+      anchors {
+        right: true
+        top: true
+        bottom: true
+      }
+      margins {
+        right: 8
+        top: 8
+        bottom: 8
+      }
+      width: 340
+      ColumnLayout {
+        anchors.fill: parent
+        spacing: 8
+        Rectangle {
+          Layout.fillWidth: true
+          Layout.preferredHeight: 40
+          radius: 10
+          color: activePalette.window
+          RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 12
+            Text {
+              text: "Notifications"
+              font.bold: true
+              color: activePalette.text
+            }
+            Rectangle { Layout.fillWidth: true }
+            Button {
+              implicitWidth: 26
+              implicitHeight: 26
+              text: "X"
+              onClicked: () => notificationSidebar.visible = false
+            }
+          }
+        }
+        Rectangle {
+          Layout.fillWidth: true
+          Layout.fillHeight: true
+          radius: 10
+          color: activePalette.window
+          clip: true
+          ScrollView {
+            anchors.fill: parent
+            clip: true
+            ListView {
+              id: historyList
+              model: Services.Notifications.history
+              spacing: 6
+              anchors.fill: parent
+              delegate: Rectangle {
+                required property var modelData
+                width: historyList.width - 16
+                anchors.bottom: parent.top
+                implicitHeight: mainColumn.implicitHeight + 20
+                radius: 8
+                color: activePalette.base
+                ColumnLayout {
+                  id: mainColumn
+                  anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    margins: 10
+                  }
+                  RowLayout {
+                    IconImage {
+                      implicitSize: 20
+                      source: Quickshell.iconPath(modelData.appIcon, true)
+                    }
+                    Text {
+                      text: modelData.appName
+                      color: activePalette.text
+                      font.bold: true
+                    }
+                    Rectangle { Layout.fillWidth: true }
+                  }
+                  Image {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 120
+                    fillMode: Image.PreserveAspectFit
+                    source: modelData.image != "" ? URL(modelData.image) : ""
+                    visible: modelData.image != ""
+                  }
+                  Text {
+                    Layout.fillWidth: true
+                    color: activePalette.text
+                    text: modelData.body
+                    wrapMode: Text.WordWrap
+                    visible: modelData.body != ""
+                  }
+                }
+              }
+              }
+            }
+          }
+        }
+      }
     // notifs
     Variants {
       model: Services.Notifications.list
