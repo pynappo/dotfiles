@@ -87,6 +87,9 @@ Snacks.setup({
   },
   image = {
     enabled = true,
+    math = {
+      enabled = false,
+    },
   },
   input = {
     enabled = true,

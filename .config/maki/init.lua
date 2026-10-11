@@ -7,3 +7,4 @@ maki.setup({
 maki.keymap.set("n", "<C-f>", function()
 	maki.ui.action("file_picker")
 end)
+require("html_to_typst")

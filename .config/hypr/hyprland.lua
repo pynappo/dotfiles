@@ -137,6 +137,9 @@ hl.config({
 			render_power = 3,
 		},
 	},
+	misc = {
+		initial_workspace_tracking = 2,
+	},
 	-- https://wiki.hyprland.org/Configuring/Animations/
 	animations = {
 		enabled = true,
@@ -322,14 +325,6 @@ hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind("SUPER + mouse:274", hl.dsp.window.close({ window = "activewindow" }))
 hl.bind("SUPER + mouse:274", hl.dsp.window.close({ window = "activewindow" }))
 hl.bind("SUPER + T", hl.dsp.exec_cmd('hyprctl notify -1 5000 "rgb(00ff00)" "tagging on, g: game"'))
-hl.bind("SUPER + T", hl.dsp.submap("tag"))
-hl.define_submap("tag", function()
-	hl.bind("SUPER + G", hl.dsp.exec_cmd('hyprctl notify -1 5000 "rgb(00ff00)" "toggled activewindow as game"'))
-	hl.bind(
-		"catchall",
-		hl.dsp.exec_cmd('hyprctl notify -1 5000 "rgb(00ff00)" "tag submap off" && hyprctl dispatch submap reset')
-	)
-end)
 hl.bind("SUPER + V", hl.dsp.exec_cmd("cliphist list | rofi -dmenu | cliphist decode | wl-copy"))
 -- Alt-tab
 hl.bind("ALT + Tab", hl.dsp.window.cycle_next({}))
@@ -340,15 +335,8 @@ hl.layer_rule({ match = { class = "waybar" }, blur = true })
 hl.bind("SUPER + CTRL + SHIFT + b", function() --[[hyprlang-to-lua: no equivalent for forcerendererreload]]
 end)
 hl.bind("SUPER + ALT + d", hl.dsp.exit())
--- vim: tw=200
-hl.bind(
-	"CTRL + RIGHT",
-	hl.dsp.send_shortcut({ mods = "CTRL+SHIFT", key = "m", window = "vesktop" }),
-	{ non_consuming = true }
-)
-hl.bind(
-	"CTRL + LEFT",
-	hl.dsp.send_shortcut({ mods = "CTRL+SHIFT", key = "d", window = "vesktop" }),
-	{ non_consuming = true }
-)
+hl.bind("SUPER + D", hl.dsp.exec_cmd("/usr/lib/hyprwhspr/config/hyprland/hyprwhspr-tray.sh record"), {
+	description = "Speech-to-text",
+})
 -- End of translated config by hyprlang-to-lua.nvim on 2026-05-24T13:33:12
+-- vim: backupcopy=yes

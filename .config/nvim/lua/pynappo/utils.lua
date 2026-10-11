@@ -61,7 +61,7 @@ function utils.packadddev(specs, opts)
     assert(name, 'could not determine name for ' .. spec.src)
     local devpath = vim.fs.joinpath(devdir, name)
     if vim.uv.fs_stat(devpath) then
-      vim.opt.runtimepath:append(devpath)
+      vim.opt.runtimepath:prepend(devpath)
     else
       specs_from_remotes[#specs_from_remotes + 1] = spec
     end

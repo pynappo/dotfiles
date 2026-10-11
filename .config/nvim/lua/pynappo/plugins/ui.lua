@@ -49,14 +49,17 @@ local fold_marker_colors = theme.set_rainbow_colors(fold_marker_hl_prefix, color
 hooks.register(hooks.type.VIRTUAL_TEXT, function(_, _, row, virt_text)
   row = row + 1
   for i = #virt_text, 1, -1 do
+    local vt = virt_text[i]
     -- replace first blank character with fold marker if possible
-    if virt_text[i][1] ~= ' ' then
+    if vt[1] ~= ' ' then
+      if type(vt[2]) == 'string' then break end
+
       local fold_opened = vim.fn.foldclosed(row) == -1
       local no_fold_marker = fold_opened and vim.fn.foldlevel(row) <= vim.fn.foldlevel(row - 1)
       if not no_fold_marker then
-        local hl_number = tonumber(virt_text[i][2][2]:sub(-1))
-        virt_text[i][1] = fold_opened and fcs.foldopen or fcs.foldclose
-        virt_text[i][2][#virt_text[i][2]] = fold_marker_colors[hl_number]
+        local hl_number = tonumber(vt[2][2]:sub(-1))
+        vt[1] = fold_opened and fcs.foldopen or fcs.foldclose
+        vt[2][#vt[2]] = fold_marker_colors[hl_number]
       end
       break
     end
